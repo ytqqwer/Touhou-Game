@@ -1,0 +1,22 @@
+/*/
+!Classes/
+!Resources/
+!scripts/
+
+# android project
+!proj.android
+proj.android/assets/
+proj.android/bin/
+proj.android/gen/
+proj.android/libs/
+proj.android/local.properties
+proj.android/obj/
+
+# general temporaryy files
+*~
+*.swp
+
+# tag files(linux only)
+GPATH
+GRTAGS
+GTAGS
