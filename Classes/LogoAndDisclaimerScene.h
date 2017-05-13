@@ -2,6 +2,7 @@
 #define LOGOANDDISCLAIMERSCENE_H
 
 #include "cocos2d.h"
+#include "AppMacros.h"
 #include <string>
 
 USING_NS_CC;
@@ -10,7 +11,7 @@ class LogoAndDisclaimerScene : public Scene
 {
 public:
     LogoAndDisclaimerScene();
-    static Scene* create();
+    APP_SCENE_CREATE_FUNC(LogoAndDisclaimerScene, TAG);
 
     virtual bool init();
     virtual void update(float dt);
