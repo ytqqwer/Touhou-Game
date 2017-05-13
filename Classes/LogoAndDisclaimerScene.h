@@ -15,11 +15,16 @@ public:
     virtual bool init();
     virtual void update(float dt);
 
+    void switchToJumpTableScene();
+
 private:
     static const std::string TAG;
 
     // intorspection
     Size _visibleSize;
+
+    // game logic data
+    bool switchToJumpTable = false; // C++11 in place initialization
 };
 
 #endif // LOGOANDDISCLAIMERSCENE_H
