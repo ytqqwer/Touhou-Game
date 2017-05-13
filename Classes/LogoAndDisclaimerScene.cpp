@@ -55,7 +55,7 @@ LogoAndDisclaimerScene::init()
 
     /*  3. HelloWorld */
 
-    auto helloWorld = Sprite::create(IMG_HELLOWORLD);
+    auto helloWorld = Sprite::create(IMG_LOGO_HELLOWORLD);
     helloWorld->setPosition(_visibleSize / 2);
     this->addChild(helloWorld);
 
