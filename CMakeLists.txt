@@ -129,6 +129,7 @@ endif( WIN32 )
 
 set(GAME_SRC
   Classes/AppDelegate.cpp
+  Classes/PlaceHolder.cpp
   Classes/LogoAndDisclaimerScene.cpp
   Classes/NonGameplayScenesCache.cpp
   ${PLATFORM_SPECIFIC_SRC}
@@ -136,6 +137,7 @@ set(GAME_SRC
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
+  Classes/PlaceHolder.h
   Classes/AppMacros.h
   Classes/LogoAndDisclaimerScene.h
   Classes/resources.h.dir/logo.h

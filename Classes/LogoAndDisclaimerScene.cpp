@@ -1,5 +1,6 @@
 #include "LogoAndDisclaimerScene.h"
 #include "NonGameplayScenesCache.h"
+#include "PlaceHolder.h"
 #include "resources.h.dir/logo.h"
 #include <string>
 
@@ -32,11 +33,11 @@ LogoAndDisclaimerScene::init()
     this->addChild(sceneTag);
 #endif
 
-    /*  3. HelloWorld */
+    /*  3. PlaceHolder */
 
-    auto helloWorld = Sprite::create(IMG_LOGO_HELLOWORLD);
-    helloWorld->setPosition(_visibleSize / 2);
-    this->addChild(helloWorld);
+    auto p = PlaceHolder::createCircle(100, "LogoAndDisclaimerScene");
+    p->setPosition(_visibleSize / 2);
+    this->addChild(p);
 
     return true;
 }
