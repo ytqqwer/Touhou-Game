@@ -3,12 +3,12 @@
 
 #include "NonGameplayScenesCache.h"
 
-#define APP_SCENE_CREATE_FUNC(__TYPE__, TAG)                                                       \
+#define APP_SCENE_CREATE_FUNC(__TYPE__, __TAG__)                                                   \
     static Scene* create()                                                                         \
     {                                                                                              \
         /*  1 if found cache */                                                                    \
                                                                                                    \
-        auto cached = NonGameplayScenesCache::getInstance()->getScene(TAG);                        \
+        auto cached = NonGameplayScenesCache::getInstance()->getScene(__TAG__);                    \
         if (cached)                                                                                \
             return cached;                                                                         \
                                                                                                    \
@@ -17,7 +17,7 @@
         auto pRet = new (std::nothrow) __TYPE__();                                                 \
         if (pRet && pRet->init()) {                                                                \
             pRet->autorelease();                                                                   \
-            NonGameplayScenesCache::getInstance()->addScene(TAG, pRet);                            \
+            NonGameplayScenesCache::getInstance()->addScene(__TAG__, pRet);                        \
             return pRet;                                                                           \
         } else {                                                                                   \
             delete pRet;                                                                           \

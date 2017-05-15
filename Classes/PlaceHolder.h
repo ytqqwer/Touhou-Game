@@ -9,10 +9,11 @@ class PlaceHolder
 {
 public:
     static Sprite* createRect(const Size& size, const std::string& text, int fontSize = 16,
-                              Color3B bgColor = Color3B::GRAY, Color3B textColor = Color3B::WHITE);
+                              Color3B bgColor = Color3B(128, 128, 128),
+                              Color3B textColor = Color3B::WHITE);
 
     static Sprite* createCircle(int radius, const std::string& text, int fontSize = 16,
-                                Color3B bgColor = Color3B::GRAY,
+                                Color3B bgColor = Color3B(128, 128, 128),
                                 Color3B textColor = Color3B::WHITE);
 
 private:
