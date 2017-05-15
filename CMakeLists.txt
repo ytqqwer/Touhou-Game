@@ -129,16 +129,40 @@ endif( WIN32 )
 
 set(GAME_SRC
   Classes/AppDelegate.cpp
-  Classes/PlaceHolder.cpp
-  Classes/GameData.cpp
-  Classes/LogoAndDisclaimerScene.cpp
+  Classes/JumpTableScene.cpp
   Classes/NonGameplayScenesCache.cpp
+  Classes/PlaceHolder.cpp
+
+  # GameData
+  Classes/GameData.cpp
+
+  # Scene/Layer
+  Classes/ArmsStoreScene.cpp
+  Classes/BackgroundIntroScene.cpp
+  Classes/EquipScene.cpp
+  Classes/HomeScene.cpp
+  Classes/InventoryScene.cpp
+  Classes/JumpTableScene.cpp
+  Classes/KnowledgeBaseScene.cpp
+  Classes/KoumakanLibraryScene.cpp
+  Classes/KourindouScene.cpp
+  Classes/LogoAndDisclaimerScene.cpp
+  Classes/MainMenuScene.cpp
+  Classes/MapSelectScene.cpp
+  Classes/RoundSelectScene.cpp
+  Classes/SaveScene.cpp
+  Classes/StaffScene.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
+  Classes/AppMacros.h
+  Classes/JumpTableScene.h
+  Classes/NonGameplayScenesCache.h
   Classes/PlaceHolder.h
+
+  # GameData
   Classes/GameData.h
   Classes/GameData/CardDescription.h
   Classes/GameData/CharacterDescription.h
@@ -147,10 +171,26 @@ set(GAME_HEADERS
   Classes/GameData/PropDescription.h
   Classes/GameData/SaveDescription.h
   Classes/GameData/SpellDescription.h
-  Classes/AppMacros.h
-  Classes/LogoAndDisclaimerScene.h
+
+  # resources.h.dir
   Classes/resources.h.dir/logo.h
-  Classes/NonGameplayScenesCache.h
+
+  # Scene/Layer
+  Classes/ArmsStoreScene.h
+  Classes/BackgroundIntroScene.h
+  Classes/EquipScene.h
+  Classes/HomeScene.h
+  Classes/InventoryScene.h
+  Classes/JumpTableScene.h
+  Classes/KnowledgeBaseScene.h
+  Classes/KoumakanLibraryScene.h
+  Classes/KourindouScene.h
+  Classes/LogoAndDisclaimerScene.h
+  Classes/MainMenuScene.h
+  Classes/MapSelectScene.h
+  Classes/RoundSelectScene.h
+  Classes/SaveScene.h
+  Classes/StaffScene.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 
