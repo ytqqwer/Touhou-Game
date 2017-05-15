@@ -139,6 +139,7 @@ set(GAME_SRC
   # Scene/Layer
   Classes/ArmsStoreScene.cpp
   Classes/BackgroundIntroScene.cpp
+  Classes/ConversationLayer.cpp
   Classes/EquipScene.cpp
   Classes/HomeScene.cpp
   Classes/InventoryScene.cpp
@@ -151,6 +152,7 @@ set(GAME_SRC
   Classes/MapSelectScene.cpp
   Classes/RoundSelectScene.cpp
   Classes/SaveScene.cpp
+  Classes/SettingsLayer.cpp
   Classes/StaffScene.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
@@ -178,6 +180,7 @@ set(GAME_HEADERS
   # Scene/Layer
   Classes/ArmsStoreScene.h
   Classes/BackgroundIntroScene.h
+  Classes/ConversationLayer.h
   Classes/EquipScene.h
   Classes/HomeScene.h
   Classes/InventoryScene.h
@@ -190,6 +193,7 @@ set(GAME_HEADERS
   Classes/MapSelectScene.h
   Classes/RoundSelectScene.h
   Classes/SaveScene.h
+  Classes/SettingsLayer.h
   Classes/StaffScene.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
