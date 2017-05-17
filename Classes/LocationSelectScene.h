@@ -7,16 +7,16 @@
 
 USING_NS_CC;
 
-class MapSelectScene : public Scene
+class LocationSelectScene : public Scene
 {
 public:
-    APP_SCENE_CREATE_FUNC(MapSelectScene, TAG);
+    APP_SCENE_CREATE_FUNC(LocationSelectScene, TAG);
 
     virtual bool init();
     virtual void update(float dt);
 
 private:
-    MapSelectScene();
+    LocationSelectScene();
 
 private:
     static const std::string TAG;

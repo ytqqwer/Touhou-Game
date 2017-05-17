@@ -1,4 +1,4 @@
-#include "MapSelectScene.h"
+#include "LocationSelectScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 // #include "resources.h.dir/map_select.h"
@@ -7,15 +7,15 @@
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
 // 这个定义也不能写入 .h 文件中，放在对应的 .cpp 文件的开头是最好选择
-const std::string MapSelectScene::TAG{ "MapSelectScene" };
+const std::string LocationSelectScene::TAG{ "LocationSelectScene" };
 
-MapSelectScene::MapSelectScene()
+LocationSelectScene::LocationSelectScene()
 {
     _visibleSize = _director->getVisibleSize();
 }
 
 bool
-MapSelectScene::init()
+LocationSelectScene::init()
 {
     /*  1. super init first */
 
@@ -26,7 +26,7 @@ MapSelectScene::init()
 /*  2. debug info */
 
 #ifndef NDEBUG
-    auto sceneTag = Label::createWithTTF("MapSelectScene", "fonts/arial.ttf", 16);
+    auto sceneTag = Label::createWithTTF("LocationSelectScene", "fonts/arial.ttf", 16);
     sceneTag->setAnchorPoint(Vec2(0, 1));
     sceneTag->setPosition(Vec2(0, _visibleSize.height));
     sceneTag->setColor(Color3B::WHITE);
@@ -35,7 +35,7 @@ MapSelectScene::init()
 
     /*  3. PlaceHolder */
 
-    auto p = PlaceHolder::createCircle(100, "MapSelectScene");
+    auto p = PlaceHolder::createCircle(100, "LocationSelectScene");
     p->setPosition(_visibleSize / 2);
     this->addChild(p);
 
@@ -47,6 +47,6 @@ MapSelectScene::init()
 }
 
 void
-MapSelectScene::update(float dt)
+LocationSelectScene::update(float dt)
 {
 }

@@ -9,7 +9,7 @@
 #include "KoumakanLibraryScene.h"
 #include "KourindouScene.h"
 #include "MainMenuScene.h"
-#include "MapSelectScene.h"
+#include "LocationSelectScene.h"
 #include "PlaceHolder.h"
 #include "RoundSelectScene.h"
 #include "SaveScene.h"
@@ -72,7 +72,7 @@ JumpTableScene::init()
     ADD_MENU_ITEM_SCENE(KoumakanLibraryScene);
     ADD_MENU_ITEM_SCENE(KourindouScene);
     ADD_MENU_ITEM_SCENE(MainMenuScene);
-    ADD_MENU_ITEM_SCENE(MapSelectScene);
+    ADD_MENU_ITEM_SCENE(LocationSelectScene);
     ADD_MENU_ITEM_SCENE(RoundSelectScene);
 
     // SaveScene 有两种创建参数，不能直接使用 ADD_MENU_ITEM_SCENE

@@ -135,6 +135,7 @@ set(GAME_SRC
 
   # GameData
   Classes/GameData.cpp
+  Classes/GameData/impl/Save.cpp
 
   # Scene/Layer
   Classes/ArmsStoreScene.cpp
@@ -149,7 +150,7 @@ set(GAME_SRC
   Classes/KourindouScene.cpp
   Classes/LogoAndDisclaimerScene.cpp
   Classes/MainMenuScene.cpp
-  Classes/MapSelectScene.cpp
+  Classes/LocationSelectScene.cpp
   Classes/RoundSelectScene.cpp
   Classes/SaveScene.cpp
   Classes/SettingsLayer.cpp
@@ -166,13 +167,14 @@ set(GAME_HEADERS
 
   # GameData
   Classes/GameData.h
-  Classes/GameData/CardDescription.h
-  Classes/GameData/CharacterDescription.h
-  Classes/GameData/ConversationDescription.h
-  Classes/GameData/MapDescription.h
-  Classes/GameData/PropDescription.h
-  Classes/GameData/SaveDescription.h
-  Classes/GameData/SpellDescription.h
+  Classes/GameData/Character.h
+  Classes/GameData/Conversation.h
+  Classes/GameData/Item.h
+  Classes/GameData/Location.h
+  Classes/GameData/Round.h
+  Classes/GameData/Save.h
+  Classes/GameData/SpellCard.h
+  Classes/GameData/impl/Save.h
 
   # resources.h.dir
   Classes/resources.h.dir/logo.h
@@ -190,7 +192,7 @@ set(GAME_HEADERS
   Classes/KourindouScene.h
   Classes/LogoAndDisclaimerScene.h
   Classes/MainMenuScene.h
-  Classes/MapSelectScene.h
+  Classes/LocationSelectScene.h
   Classes/RoundSelectScene.h
   Classes/SaveScene.h
   Classes/SettingsLayer.h

@@ -1,4 +1,5 @@
 #include "AppDelegate.h"
+#include "SimpleAudioEngine.h"
 #include "LogoAndDisclaimerScene.h"
 
 USING_NS_CC;
@@ -68,7 +69,7 @@ AppDelegate::applicationDidFinishLaunching()
     log(">> physical size of the device is %.0f x %.0f", physicalSize.width, physicalSize.height);
 #endif
 
-    /*  4. other packages? */
+    /*  4. other packages? just leave it alone */
 
     register_all_packages();
 

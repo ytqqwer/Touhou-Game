@@ -1,11 +1,12 @@
 #include "GameData.h"
-#include "GameData/CardDescription.h"
-#include "GameData/CharacterDescription.h"
-#include "GameData/ConversationDescription.h"
-#include "GameData/MapDescription.h"
-#include "GameData/PropDescription.h"
-#include "GameData/SaveDescription.h"
-#include "GameData/SpellDescription.h"
+#include "GameData/Character.h"
+#include "GameData/Conversation.h"
+#include "GameData/Item.h"
+#include "GameData/Location.h"
+#include "GameData/Round.h"
+#include "GameData/SpellCard.h"
+#include "GameData/impl/Save.h"
+#include "resources.h.dir/gamedata.h"
 
 GameData* GameData::_self; // definition of _self
 
@@ -57,89 +58,120 @@ GameData::getCurrentSaveTag()
     return 1;
 }
 
-SaveDescription
-GameData::getSaveDescription(int saveTag)
-{
-}
-
 void
 GameData::saveSave()
 {
 }
 
 void
-GameData::switchSave(int saveTag)
+GameData::deleteSave(const string& saveTag)
 {
 }
+
 void
-GameData::deleteSave(int saveTag)
+GameData::switchSave(const string& saveTag)
 {
 }
 
-string
-GameData::getSceneBgpName(const string& sceneTag)
-{
-}
-
-string
-GameData::getSceneBgmName(const string& sceneTag)
-{
-}
 float
 GameData::getConversationSpeed()
 {
+    return 0.0f;
 }
+
 void
 GameData::setConversationSpeed(float relativeSpeed)
 {
 }
-vector<pair<int, pair<string, string>>>
-GameData::getSceneConversations(const string& sceneTag)
+
+vector<Dialogue>
+GameData::getConversation(const string& conversationTag)
 {
+    return vector<Dialogue>();
 }
 
-ConversationDescription
-GameData::getConversationDescription(const string& sceneTag)
+Location
+GameData::getCurrentLocation()
 {
+    return Location();
 }
 
-pair<string, int>
-GameData::getCurrentMapAndProcessInfo()
+vector<Location>
+GameData::getLocationList()
 {
+    return vector<Location>();
 }
 
-vector<MapDescription>
-GameData::getMapAndProcessInfoList()
+Location
+GameData::getLocation(const string& LocationTag)
 {
-}
-MapDescription
-GameData::getMapDescription(int mapTag)
-{
+    return Location();
 }
 
-vector<int>
+Round
+GameData::getRound(const string& RoundTag)
+{
+    return Round();
+}
+
+vector<Character>
 GameData::getAvailableCharacters()
 {
+    return vector<Character>();
 }
 
-CharacterDescription
-GameData::getCharacterShortDescription(int characterTag)
+bool
+GameData::switchCharacter(const string& characterTag)
 {
+    return false;
 }
 
-CharacterDescription
-GameData::getCharacterDescription()
+Character
+GameData::getCharacter(const string& characterTag)
 {
+    return Character();
 }
 
-pair<vector<int>, vector<int>>
-GameData::getCharacterEquipmentList(int characterTag)
+vector<Item>
+GameData::getCharacterItemList(const string& characterTag)
 {
+    return vector<Item>();
+}
+
+bool
+GameData::changeItem(const string& itemTag, int slot, const string& characterTag)
+{
+    return false;
+}
+
+vector<SpellCard>
+GameData::getCharacterSpellCardList(const string& characterTag)
+{
+    return vector<SpellCard>();
+}
+
+bool
+GameData::changeSpellCard(const string& spellCardTag, int slot, const string& characterTag)
+{
+    return false;
+}
+
+vector<Character::Attack>
+GameData::getAttackTypeList(const string& characterTag)
+{
+    return vector<Character::Attack>();
+}
+
+bool
+GameData::switchAttackType(Character::Attack::Type type, const string& characterTag)
+{
+    return false;
 }
 
 long
 GameData::getMoneyNum()
 {
+    return 0;
 }
 
 void
@@ -147,38 +179,29 @@ GameData::increaseMoney(long num)
 {
 }
 
-vector<PropDescription>
-GameData::getPropList()
+vector<Item>
+GameData::getItemList()
 {
+    return vector<Item>();
 }
 
-PropDescription
-GameData::getPropShortDescription(int propTag)
+Item
+GameData::getItem(const string& itemTag)
 {
+    return Item();
 }
 
-PropDescription
-GameData::getPropDescription(int propTag)
+vector<SpellCard>
+GameData::getSpellCardList()
 {
+    return vector<SpellCard>();
 }
 
-CardDescription
-GameData::getCardShortDescription(int cardTag)
+SpellCard
+GameData::getSpellCard(const string& spellcardTag)
 {
-}
-CardDescription
-GameData::getCardDescription(int cardTag)
-{
-}
-SpellDescription
-GameData::getSpellShortDescription(int spellTag)
-{
-}
-SpellDescription
-GameData::getSpellDescription(int spellTag)
-{
+    return SpellCard();
 }
 
 // FAKE IMPLEMENTATION END
 ////////////////////////////////////////////////////////////////////////////////
-
