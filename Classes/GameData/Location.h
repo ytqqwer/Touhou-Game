@@ -13,9 +13,6 @@ struct Location
     string backgroundMusic;   //背景音乐
     int passedRound;          //当前地点下，已经通过的关卡数
     int totalRound;           //当前地点下的关卡总数
-    vector<Round> roundList;  //关卡
-
-    vector<ConversationIndicator> conversations; //地点小对话
 };
 
 #endif

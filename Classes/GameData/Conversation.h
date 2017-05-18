@@ -41,12 +41,6 @@ struct Dialogue
     string backgroundMusic; //播放的背景音乐，大多数时为空，出现变化时就更改背景音乐
     string soundEffect;                  //播放的音效
     Dialogue::ScreenEffect screenEffect; //对话时可能用到的特效
-
-    /* 对话可得到的奖励 */
-
-    vector<string> itemsGot; //从对话中获得的道具
-    int moneyGot;               //从对话中获得的钱币
-                                //可继续添加更多功能
 };
 
 #endif

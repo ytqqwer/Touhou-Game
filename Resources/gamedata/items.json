@@ -1,0 +1,62 @@
+[
+    {
+        "tag": "1",
+        "name": "item 1",
+        "icon": "place_holder.png",
+        "description": "This is item1's description",
+        "maxUseCount": 1,
+        "healthPointCost": 1,
+        "manaCost": 1,
+        "coolDown": 1,
+        "isCarriable": true,
+        "isUseable": true,
+        "price": 1,
+        "isSpecial": false,
+        "inStore": "ArmsStore"
+    },
+    {
+        "tag": "2",
+        "name": "item 2",
+        "icon": "place_holder.png",
+        "description": "This is item2's description",
+        "maxUseCount": 2,
+        "healthPointCost": 2,
+        "manaCost": 2,
+        "coolDown": 2,
+        "isCarriable": true,
+        "isUseable": true,
+        "price": 2,
+        "isSpecial": false,
+        "inStore": "Kourindou"
+    },
+    {
+        "tag": "3",
+        "name": "item 3",
+        "icon": "place_holder.png",
+        "description": "This is item3's description",
+        "maxUseCount": 3,
+        "healthPointCost": 3,
+        "manaCost": 3,
+        "coolDown": 3,
+        "isCarriable": true,
+        "isUseable": true,
+        "price": 3,
+        "isSpecial": false,
+        "inStore": "ArmsStore"
+    },
+    {
+        "tag": "4",
+        "name": "item 4",
+        "icon": "place_holder.png",
+        "description": "This is item4's description",
+        "maxUseCount": 4,
+        "healthPointCost": 4,
+        "manaCost": 4,
+        "coolDown": 4,
+        "isCarriable": true,
+        "isUseable": true,
+        "price": 4,
+        "isSpecial": false,
+        "inStore": "Kourindou"
+    }
+]

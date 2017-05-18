@@ -135,7 +135,6 @@ set(GAME_SRC
 
   # GameData
   Classes/GameData.cpp
-  Classes/GameData/impl/Save.cpp
 
   # Scene/Layer
   Classes/ArmsStoreScene.cpp
@@ -174,7 +173,7 @@ set(GAME_HEADERS
   Classes/GameData/Round.h
   Classes/GameData/Save.h
   Classes/GameData/SpellCard.h
-  Classes/GameData/impl/Save.h
+  Classes/GameData/impl/json.h
 
   # resources.h.dir
   Classes/resources.h.dir/logo.h

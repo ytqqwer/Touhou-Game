@@ -26,8 +26,6 @@ struct Round
     string name;                  //关卡名
     string previewPicture;        //预览图片
     string description;           //关卡描述
-    int roundSequence;            //关卡的顺序
-    Round::Status status;         //关卡通过状态
     Round::Difficulty difficulty; //关卡难度评级
 
     string TMXMap; //该关卡对应的TMX地图

@@ -17,7 +17,6 @@ struct Character
 
         string tag;
         string description;
-        string exclusiveCharacterTag; //角色专属攻击方式
         Attack::Type type;
     };
 
@@ -49,8 +48,6 @@ struct Character
 
     float dashAccelerationBase;
     float dashAccelerationInc;
-
-    Character::Attack currentAttackMode;
 };
 
 #endif

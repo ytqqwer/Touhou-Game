@@ -6,6 +6,8 @@
 #include <utility>
 #include <vector>
 
+// 前向声明无法声明全称限定的类型名（C++ 的坑）
+// 所以不再使用前向声明，直接包含头文件
 #include "GameData/Character.h"
 #include "GameData/Conversation.h"
 #include "GameData/Item.h"
@@ -28,8 +30,8 @@ public:
     int getCurrentSaveTag();
     vector<Save> getSaveList();
     void saveSave();
-    void deleteSave(const string& saveTag);
-    void switchSave(const string& saveTag);
+    void deleteSave(int saveTag);
+    void switchSave(int saveTag);
 
     ////////////////////////////////////////////////////////////////////////////////
     // 对话 Conversation
@@ -38,56 +40,65 @@ public:
     float getConversationSpeed();
     void setConversationSpeed(float relativeSpeed);
 
+    // 返回 vector.empty() = true 时表示这个地点中无对话
+    // 在 HomeScene 中使用
+    vector<ConversationIndicator> getConversationIndicatorList(const string& locationTag);
+
     // 通过对话编号返回详细对话内容，包括对话的双方，对话的内容，对话过程中人物的变化
+    // 在 ConversationLayer 中使用
     vector<Dialogue> getConversation(const string& conversationTag);
 
     ////////////////////////////////////////////////////////////////////////////////
-    // 地点与进度 Location / Process
+    // 地点关卡与进度 Location / Round / Process
     // 区分 Location / Map / Round , Location 是地点，Map 特指 TMX 地图，Round 则是一个个关卡
 
     // 获取当前所处地点的详情
+    // 在 HomeScene RoundSelectScene 中使用
     Location getCurrentLocation();
 
     // 只返回已解锁地点的信息
     // 在 LocationSelectScene 中使用
     vector<Location> getLocationList();
 
-    // 获得指定地点的详情
-    Location getLocation(const string& locationTag);
+    vector<string> getUnlockedLocationTagList();
 
-    // 获得指定关卡的详情
+    bool switchLocation(const string& newLocationTag);
+
+    // 返回这个地点包含的关卡信息
     // 在 RoundSelectScene 中使用
-    Round getRound(const string& roundTag);
+    vector<Round> getRoundList(const string& locationTag);
 
     ////////////////////////////////////////////////////////////////////////////////
     // 人物属性与钱币 Character / Money
 
     // 返回现在可使用的角色的列表
-    vector<Character> getAvailableCharacters();
+    vector<Character> getAvailableCharacterList();
+
+    // 返回选定的要出战的角色的列表
+    // 在 RoundSelectScene 中使用
+    vector<Character> getOnStageCharacterTagList();
 
     // 获得角色的列表后，传入角色标签，自动切换为队伍其他角色
-    bool switchCharacter(const string& characterTag);
+    // 在 RoundSelectScene 中使用
+    bool switchOnStageCharacter(int nth, const string& characterTag);
 
-    // 在 EquipScene 中使用
-    Character getCharacter(const string& characterTag);
-
-    //获得指定角色使用或装备的道具列表
+    // 获得指定角色使用或装备的道具列表
     vector<Item> getCharacterItemList(const string& characterTag);
 
-    //获得指定的道具列表后，更换角色装备的道具
-    bool changeItem(const string& itemTag, int slot, const string& characterTag);
+    // 获得指定的道具列表后，更换角色装备的道具
+    bool changeItem(const string& characterTag, int slot, const string& itemTag);
 
-    //获得指定角色的符卡列表，包括专属符卡和购买的通用符卡
+    // 获得指定角色的符卡列表，包括专属符卡和购买的通用符卡
     vector<SpellCard> getCharacterSpellCardList(const string& characterTag);
 
-    //获得角色的符卡列表后，传入角色标签，符卡标签和栏位，更换该栏位的符卡
-    bool changeSpellCard(const string& spellCardTag, int slot, const string& characterTag);
+    // 获得角色的符卡列表后，传入角色标签，符卡标签和栏位，更换该栏位的符卡
+    bool changeSpellCard(const string& characterTag, int slot, const string& spellCardTag);
 
     // 获得指定角色的攻击方式列表，包括集中和发散两种攻击方式
-    vector<Character::Attack> getAttackTypeList(const string& characterTag);
+    vector<Character::Attack> getAttackList(const string& characterTag);
 
-    //获得角色的攻击方式列表后，传入角色标签，更换的攻击方式类型，自动切换为下一个攻击方式
-    bool switchAttackType(Character::Attack::Type type, const string& characterTag);
+    // 获得角色的攻击方式列表后，传入角色标签，更换的攻击方式类型，自动切换为下一个攻击方式
+    bool switchAttackType(const string& characterTag, Character::Attack::Type type);
 
     // int 类型可能不足以存储钱币数量，故使用 long 类型
     long getMoneyNum();
@@ -98,14 +109,17 @@ public:
     ////////////////////////////////////////////////////////////////////////////////
     // 道具与符卡与符咒 Item / Card / Spell
 
-    // 在 InventoryScene 中使用
-    vector<Item> getItemList();
+    // pair.first 是符卡， pair.second 是符卡数量
+    vector<pair<Item, int>> getAvailableItemList();
+    vector<Item> getItemListInStore(const string& storeTag);
+    vector<pair<SpellCard, int>> getAvailableSpellCardList();
+    void buyItem(const string& itemTag);
 
-    // 在 EquipScene，InventoryScene 中使用
-    Item getItem(const string& itemTag);
+    ////////////////////////////////////////////////////////////////////////////////
+    // 对话/通关奖励 Award
 
-    vector<SpellCard> getSpellCardList();
-    SpellCard getSpellCard(const string& spellcardTag);
+    void ConversationComplete(const string& conversationTag);
+    void RoundComplete(const string& roundTag);
 
     ////////////////////////////////////////////////////////////////////////////////
     // 资料库
@@ -115,7 +129,6 @@ public:
 private:
     GameData();
     bool init();
-    void FAKE_INIT();
 
 private:
     static GameData* _self;

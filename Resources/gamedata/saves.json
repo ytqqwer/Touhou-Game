@@ -1,0 +1,96 @@
+{
+    "currentSaveTag": 0,
+    "conversationSpeed": 1.0,
+    "bgmVolume": 1,
+    "effectVolume": 1,
+    "saveList": [
+        {
+            "tag": 0,
+            "name": "save 1",
+            "time": "2017/05/12 11:11",
+            "locationTag": "Hakurei Jinja",
+            "characterList": [
+                {
+                    "tag": "Reimu",
+                    "itemSlotNum": 2,
+                    "spellCardSlotNum": 2,
+                    "manaInc": 0,
+                    "walkSpeedInc": 0,
+                    "walkAccelerationInc": 0,
+                    "dashAccelerationInc": 0,
+                    "equipedItemList": [
+                        "1",
+                        "2"
+                    ],
+                    "equipedSpellCardList": [
+                        "1"
+                    ],
+                    "preferedAttackType": "FOCUS"
+                },
+                {
+                    "tag": "Marisa",
+                    "itemSlotNum": 2,
+                    "spellCardSlotNum": 2,
+                    "manaInc": 0,
+                    "walkSpeedInc": 0,
+                    "walkAccelerationInc": 0,
+                    "dashAccelerationInc": 0,
+                    "equipedItemList": [
+                        "2"
+                    ],
+                    "equipedSpellCardList": [
+                        "2"
+                    ],
+                    "preferedAttackType": "SPLIT"
+                }
+            ],
+            "onStageCharacterList": [
+                "Reimu",
+                "Marisa"
+            ],
+            "unlockedLocationList": [
+                {
+                    "tag": "Hakurei Jinja",
+                    "passedRound": 1
+                }
+            ],
+            "availableItemList": [
+                {
+                    "tag": "1",
+                    "amount": 2
+                },
+                {
+                    "tag": "2",
+                    "amount": 2
+                },
+                {
+                    "tag": "3",
+                    "amount": 2
+                },
+                {
+                    "tag": "4",
+                    "amount": 2
+                }
+            ],
+            "availableSpellCardList": [
+                {
+                    "tag": "1",
+                    "amount": 2
+                },
+                {
+                    "tag": "2",
+                    "amount": 2
+                },
+                {
+                    "tag": "3",
+                    "amount": 2
+                },
+                {
+                    "tag": "4",
+                    "amount": 2
+                }
+            ],
+            "money": 512
+        }
+    ]
+}

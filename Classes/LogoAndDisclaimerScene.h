@@ -19,6 +19,7 @@ public:
 
 private:
     LogoAndDisclaimerScene();
+    void testGameData();
 
 private:
     static const std::string TAG;

@@ -1,0 +1,32 @@
+[
+    {
+        "tag": "Hakurei Jinja",
+        "name": "Hakurei Jinja",
+        "previewPicture": "place_holder.png",
+        "backgroundPicture": "place_holder.png",
+        "backgroundMusic": "place_holder.png",
+        "roundList": [
+            {
+                "tag": "round 1",
+                "name": "round name 1",
+                "previewPicture": "place_holder.png",
+                "description": "This is round1's description",
+                "difficulty": "TWO"
+            },
+            {
+                "tag": "round 2",
+                "name": "round name 2",
+                "previewPicture": "place_holder.png",
+                "description": "This is round2's description",
+                "difficulty": "TWO"
+            }
+        ],
+        "conversationIndicatorList": [
+            {
+                "conversationTag": "1",
+                "icon": "place_holder.png",
+                "name": "Cirno"
+            }
+        ]
+    }
+]

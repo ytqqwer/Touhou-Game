@@ -1,0 +1,34 @@
+[
+    {
+        "tag": "1",
+        "name": "spell card 1",
+        "icon": "place_holder.png",
+        "description": "This is spell card1's description",
+        "manaCost": 1,
+        "coolDown": 1
+    },
+    {
+        "tag": "2",
+        "name": "spell card 2",
+        "icon": "place_holder.png",
+        "description": "This is spell card2's description",
+        "manaCost": 2,
+        "coolDown": 2
+    },
+    {
+        "tag": "3",
+        "name": "spell card 3",
+        "icon": "place_holder.png",
+        "description": "This is spell card3's description",
+        "manaCost": 3,
+        "coolDown": 3
+    },
+    {
+        "tag": "4",
+        "name": "spell card 4",
+        "icon": "place_holder.png",
+        "description": "This is spell card4's description",
+        "manaCost": 4,
+        "coolDown": 4
+    }
+]
