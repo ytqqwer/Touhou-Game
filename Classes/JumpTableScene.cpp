@@ -8,8 +8,8 @@
 #include "KnowledgeBaseScene.h"
 #include "KoumakanLibraryScene.h"
 #include "KourindouScene.h"
-#include "MainMenuScene.h"
 #include "LocationSelectScene.h"
+#include "MainMenuScene.h"
 #include "PlaceHolder.h"
 #include "RoundSelectScene.h"
 #include "SaveScene.h"
@@ -25,7 +25,7 @@
         PlaceHolder::createRect(Size(200, 100), #__TYPE__, 16, Color3B(100, 100, 100)),            \
         [this](Ref*) {                                                                             \
             auto s = __TYPE__::create();                                                           \
-            _director->replaceScene(s);                                                            \
+            _director->pushScene(s);                                                               \
         }));
 
 #ifdef ADD_MENU_ITEM_LAYER
@@ -37,7 +37,7 @@
         PlaceHolder::createRect(Size(200, 100), #__TYPE__, 16, Color3B(100, 100, 100)),            \
         [this](Ref*) {                                                                             \
             auto s = __TYPE__::createDebugScene();                                                 \
-            _director->replaceScene(s);                                                            \
+            _director->pushScene(s);                                                               \
         }));
 
 const std::string JumpTableScene::TAG{ "JumpTableScene" };
@@ -82,7 +82,7 @@ JumpTableScene::init()
                                 Color3B(100, 100, 100)),
         [this](Ref*) {
             auto s = SaveScene::create(false);
-            _director->replaceScene(s);
+            _director->pushScene(s);
         }));
     _jumpTable->addChild(MenuItemSprite::create(
         PlaceHolder::createRect(Size(200, 100), "SaveScene\n(SaveAction)", 16),
@@ -90,7 +90,7 @@ JumpTableScene::init()
                                 Color3B(100, 100, 100)),
         [this](Ref*) {
             auto s = SaveScene::create(true);
-            _director->replaceScene(s);
+            _director->pushScene(s);
         }));
 
     ADD_MENU_ITEM_SCENE(StaffScene);
