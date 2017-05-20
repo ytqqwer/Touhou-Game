@@ -1,8 +1,11 @@
 #include "RoundSelectScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
+#include "ui/CocosGUI.h"
 // #include "resources.h.dir/main_menu.h"
 #include <string>
+
+using namespace ui;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -33,11 +36,16 @@ RoundSelectScene::init()
     this->addChild(sceneTag);
 #endif
 
-    /*  3. PlaceHolder */
-
-    auto p = PlaceHolder::createCircle(100, "RoundSelectScene");
-    p->setPosition(_visibleSize / 2);
-    this->addChild(p);
+    /*  3. backButton */
+    auto backButton = Button::create("", "", "");
+    backButton->setScale(1.8);
+    backButton->setTitleFontName("微软雅黑");
+    backButton->setTitleFontSize(14);
+    backButton->setTitleText("back");
+    backButton->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
+    backButton->addTouchEventListener(
+        [=](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->popScene(); });
+    this->addChild(backButton);
 
     /*  4. schedule */
 
