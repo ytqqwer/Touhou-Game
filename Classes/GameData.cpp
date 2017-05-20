@@ -243,25 +243,22 @@ GameData::init()
 
     /* 1. 文件/JSON -> 内存/DOM */
 
-    ifstream saves_json("Resources/gamedata/saves.json");
+    auto fileUtil = FileUtils::getInstance();
+
+    ifstream saves_json(fileUtil->fullPathForFilename("gamedata/saves.json"));
+    ifstream characters_json(fileUtil->fullPathForFilename("gamedata/characters.json"));
+    ifstream locations_json(fileUtil->fullPathForFilename("gamedata/locations.json"));
+    ifstream conversations_json(fileUtil->fullPathForFilename("gamedata/conversations.json"));
+    ifstream items_json(fileUtil->fullPathForFilename("gamedata/items.json"));
+    ifstream spell_cards_json(fileUtil->fullPathForFilename("gamedata/spell_cards.json"));
+    ifstream awards_json(fileUtil->fullPathForFilename("gamedata/awards.json"));
+
     saves_json >> savesDom;
-
-    ifstream characters_json("Resources/gamedata/characters.json");
     characters_json >> characterListDom;
-
-    ifstream locations_json("Resources/gamedata/locations.json");
     locations_json >> locationListDom;
-
-    ifstream conversations_json("Resources/gamedata/conversations.json");
     conversations_json >> conversationListDom;
-
-    ifstream items_json("Resources/gamedata/items.json");
     items_json >> itemListDom;
-
-    ifstream spell_cards_json("Resources/gamedata/spell_cards.json");
     spell_cards_json >> spellCardListDom;
-
-    ifstream awards_json("Resources/gamedata/awards.json");
     awards_json >> awardListDom;
 
     return true;
