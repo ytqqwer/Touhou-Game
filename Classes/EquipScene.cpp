@@ -1,8 +1,10 @@
 #include "EquipScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
+#include "ui/CocosGUI.h"
 // #include "resources.h.dir/equip.h"
 #include <string>
+using namespace ui;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -42,6 +44,16 @@ EquipScene::init()
     /*  4. schedule */
 
     this->scheduleUpdate();
+	/* 5. 返回*/
+	auto ret = Button::create("", "", "");
+	ret->setTitleText("返回");
+	ret->setTitleFontSize(16);
+	ret->setAnchorPoint(Vec2(0, 1));
+	ret->setPosition(Vec2(0, _visibleSize.height-sceneTag->getContentSize().height));
+	ret->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+		Director::getInstance()->popScene();
+	});
+	addChild(ret);
 
     return true;
 }
