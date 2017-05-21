@@ -238,13 +238,25 @@ GameData::getInstance()
 bool
 GameData::init()
 {
-
-    cout << "curTime: " << getCurrentTime() << endl;
-
     /* 1. 文件/JSON -> 内存/DOM */
 
     auto fileUtil = FileUtils::getInstance();
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+
+    log(">> android writeable path: %s", fileUtil->getWritablePath().c_str());
+
+    // TODO
+
+    ifstream saves_json(fileUtil->fullPathForFilename("saves.json"));
+    ifstream characters_json(fileUtil->fullPathForFilename("characters.json"));
+    ifstream locations_json(fileUtil->fullPathForFilename("locations.json"));
+    ifstream conversations_json(fileUtil->fullPathForFilename("conversations.json"));
+    ifstream items_json(fileUtil->fullPathForFilename("items.json"));
+    ifstream spell_cards_json(fileUtil->fullPathForFilename("spell_cards.json"));
+    ifstream awards_json(fileUtil->fullPathForFilename("awards.json"));
+
+#else
     ifstream saves_json(fileUtil->fullPathForFilename("gamedata/saves.json"));
     ifstream characters_json(fileUtil->fullPathForFilename("gamedata/characters.json"));
     ifstream locations_json(fileUtil->fullPathForFilename("gamedata/locations.json"));
@@ -253,6 +265,7 @@ GameData::init()
     ifstream spell_cards_json(fileUtil->fullPathForFilename("gamedata/spell_cards.json"));
     ifstream awards_json(fileUtil->fullPathForFilename("gamedata/awards.json"));
 
+#endif
     saves_json >> savesDom;
     characters_json >> characterListDom;
     locations_json >> locationListDom;

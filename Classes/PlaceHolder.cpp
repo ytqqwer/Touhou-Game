@@ -18,7 +18,7 @@ PlaceHolder::createRect(const Size& size, const std::string& text, int fontSize,
 
     /*  2. text label  */
 
-    auto textLabel = LabelTTF::create(text, "font/arial.ttf", fontSize);
+    auto textLabel = LabelTTF::create(text, "fonts/arial.ttf", fontSize);
     textLabel->setColor(textColor);
     textLabel->setPosition(size / 2);
     bgRect->addChild(textLabel);
@@ -43,7 +43,7 @@ PlaceHolder::createCircle(int radius, const std::string& text, int fontSize, Col
 
     /*  2. text label */
 
-    auto textLabel = LabelTTF::create(text, "font/arial.ttf", fontSize);
+    auto textLabel = LabelTTF::create(text, "fonts/arial.ttf", fontSize);
     textLabel->setColor(textColor);
     textLabel->setPosition(Vec2(radius, radius));
     containerSprite->addChild(textLabel);
