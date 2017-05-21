@@ -249,23 +249,25 @@ GameData::getInstance()
 bool
 GameData::init()
 {
-    /* 1. 文件/JSON -> 内存/DOM */
+
+    /* 1. 打开文件流 */
 
     auto fileUtil = FileUtils::getInstance();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 
-    log(">> android writeable path: %s", fileUtil->getWritablePath().c_str());
+    // 在启动 cocos2d-x 引擎前，Java Activity 已经将 assets/gamedata 拷贝至
+    // writablePath/gamedata 了
 
-    // TODO
+    string prefix = fileUtil->getWritablePath();
 
-    ifstream saves_json(fileUtil->fullPathForFilename("saves.json"));
-    ifstream characters_json(fileUtil->fullPathForFilename("characters.json"));
-    ifstream locations_json(fileUtil->fullPathForFilename("locations.json"));
-    ifstream conversations_json(fileUtil->fullPathForFilename("conversations.json"));
-    ifstream items_json(fileUtil->fullPathForFilename("items.json"));
-    ifstream spell_cards_json(fileUtil->fullPathForFilename("spell_cards.json"));
-    ifstream awards_json(fileUtil->fullPathForFilename("awards.json"));
+    ifstream saves_json(prefix + "gamedata/saves.json");
+    ifstream characters_json(prefix + "gamedata/characters.json");
+    ifstream locations_json(prefix + "gamedata/locations.json");
+    ifstream conversations_json(prefix + "gamedata/conversations.json");
+    ifstream items_json(prefix + "gamedata/items.json");
+    ifstream spell_cards_json(prefix + "gamedata/spell_cards.json");
+    ifstream awards_json(prefix + "gamedata/awards.json");
 
 #else
     ifstream saves_json(fileUtil->fullPathForFilename("gamedata/saves.json"));
@@ -277,6 +279,9 @@ GameData::init()
     ifstream awards_json(fileUtil->fullPathForFilename("gamedata/awards.json"));
 
 #endif
+
+    /* 2. 文件流 -> 内存/DOM */
+
     saves_json >> savesDom;
     characters_json >> characterListDom;
     locations_json >> locationListDom;
@@ -284,6 +289,16 @@ GameData::init()
     items_json >> itemListDom;
     spell_cards_json >> spellCardListDom;
     awards_json >> awardListDom;
+
+    /* 3. 关闭文件流 */
+
+    saves_json.close();
+    characters_json.close();
+    locations_json.close();
+    conversations_json.close();
+    items_json.close();
+    spell_cards_json.close();
+    awards_json.close();
 
     return true;
 }
