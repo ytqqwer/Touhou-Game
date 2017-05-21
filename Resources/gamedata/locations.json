@@ -2,9 +2,9 @@
     {
         "tag": "Hakurei Jinja",
         "name": "Hakurei Jinja",
-        "previewPicture": "place_holder.png",
-        "backgroundPicture": "place_holder.png",
-        "backgroundMusic": "place_holder.png",
+        "previewPicture": "gamedata/locations/hakurei_jinja.png",
+        "backgroundPicture": "gamedata/locations/sample.mp3",
+        "backgroundMusic": "",
         "roundList": [
             {
                 "tag": "round 1",
@@ -18,7 +18,7 @@
                 "name": "round name 2",
                 "previewPicture": "place_holder.png",
                 "description": "This is round2's description",
-                "difficulty": "TWO"
+                "difficulty": "THREE"
             }
         ],
         "conversationIndicatorList": [

@@ -168,6 +168,7 @@ from_json(const json& j, Character& c)
         }
     }
 
+    c.healthPointInc = it->at("healthPointInc");
     c.manaInc = it->at("manaInc");
     c.walkSpeedInc = it->at("walkSpeedInc");
     c.walkAccelerationInc = it->at("walkAccelerationInc");
@@ -189,14 +190,24 @@ from_json(const json& j, Item& i)
     i.name = j.at("name");
     i.icon = j.at("icon");
     i.description = j.at("description");
+    i.type = (j.at("type") == "NORMAL") ? Item::Type::NORMAL : (j.at("type") == "STRENGTHEN")
+                                                                   ? Item::Type::STRENGTHEN
+                                                                   : Item::Type::SPECIAL;
+    i.isCarriable = j.at("isCarriable");
+    i.isUseable = j.at("isUseable");
+
     i.maxUseCount = j.at("maxUseCount");
     i.healthPointCost = j.at("healthPointCost");
     i.manaCost = j.at("manaCost");
     i.cooldown = j.at("coolDown");
-    i.isCarriable = j.at("isCarriable");
-    i.isUseable = j.at("isUseable");
+
+    i.healthPointInc = j.at("healthPointInc");
+    i.manaInc = j.at("manaInc");
+    i.walkSpeedInc = j.at("walkSpeedInc");
+    i.walkAccelerationInc = j.at("walkAccelerationInc");
+    i.dashAccelerationInc = j.at("dashAccelerationInc");
+
     i.price = j.at("price");
-    i.isSpecial = j.at("isSpecial");
 }
 
 // cardListDom[n] -> SpellCard
@@ -500,11 +511,18 @@ GameData::getAvailableCharacterList()
     return listRet;
 }
 
-vector<Character>
+vector<string>
 GameData::getOnStageCharacterTagList()
 {
-    // TODO
-    return vector<Character>();
+    int curSave = savesDom["currentSaveTag"];
+    json& onStageListDom = savesDom["saveList"][curSave]["onStageCharacterList"];
+
+    vector<string> characters;
+    for (auto const& c : onStageListDom) {
+        characters.push_back(c);
+    }
+
+    return characters;
 }
 
 bool
@@ -573,6 +591,10 @@ GameData::changeItem(const string& characterTag, int slot, const string& itemTag
     /* 2. 处理 Inc 变化 */
 
     // TODO
+
+    /* 2.1 减去旧的 */
+
+    /* 2.2 加上新的 */
 
     return true;
 }

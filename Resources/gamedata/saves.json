@@ -14,16 +14,17 @@
                     "tag": "Reimu",
                     "itemSlotNum": 2,
                     "spellCardSlotNum": 2,
-                    "manaInc": 0,
-                    "walkSpeedInc": 0,
-                    "walkAccelerationInc": 0,
-                    "dashAccelerationInc": 0,
+                    "healthPointInc": 0,
+                    "manaInc": 3,
+                    "walkSpeedInc": 3,
+                    "walkAccelerationInc": 3,
+                    "dashAccelerationInc": 3,
                     "equipedItemList": [
-                        "1",
-                        "2"
+                        "I1",
+                        "I2"
                     ],
                     "equipedSpellCardList": [
-                        "1"
+                        "C1"
                     ],
                     "preferedAttackType": "FOCUS"
                 },
@@ -31,15 +32,16 @@
                     "tag": "Marisa",
                     "itemSlotNum": 2,
                     "spellCardSlotNum": 2,
-                    "manaInc": 0,
-                    "walkSpeedInc": 0,
-                    "walkAccelerationInc": 0,
-                    "dashAccelerationInc": 0,
+                    "healthPointInc": 4,
+                    "manaInc": 4,
+                    "walkSpeedInc": 4,
+                    "walkAccelerationInc": 4,
+                    "dashAccelerationInc": 4,
                     "equipedItemList": [
-                        "2"
+                        "I4"
                     ],
                     "equipedSpellCardList": [
-                        "2"
+                        "C2"
                     ],
                     "preferedAttackType": "SPLIT"
                 }
@@ -56,37 +58,37 @@
             ],
             "availableItemList": [
                 {
-                    "tag": "1",
+                    "tag": "I1",
                     "amount": 2
                 },
                 {
-                    "tag": "2",
+                    "tag": "I2",
                     "amount": 2
                 },
                 {
-                    "tag": "3",
+                    "tag": "I3",
                     "amount": 2
                 },
                 {
-                    "tag": "4",
+                    "tag": "I4",
                     "amount": 2
                 }
             ],
             "availableSpellCardList": [
                 {
-                    "tag": "1",
+                    "tag": "C1",
                     "amount": 2
                 },
                 {
-                    "tag": "2",
+                    "tag": "C2",
                     "amount": 2
                 },
                 {
-                    "tag": "3",
+                    "tag": "C3",
                     "amount": 2
                 },
                 {
-                    "tag": "4",
+                    "tag": "C4",
                     "amount": 2
                 }
             ],

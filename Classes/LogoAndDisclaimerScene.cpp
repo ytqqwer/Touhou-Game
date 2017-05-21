@@ -92,9 +92,10 @@ LogoAndDisclaimerScene::testGameData()
     ptr->switchLocation("Hakurei Jinja");
     auto get_round_list = ptr->getRoundList("Hakurei Jinja");
     auto get_avail_characters = ptr->getAvailableCharacterList();
+    auto get_onstage_char_list = ptr->getOnStageCharacterTagList();
     ptr->switchOnStageCharacter(0, "Reimu");
-    ptr->changeItem("Reimu", 0, "2"); // two same items in one character
-    ptr->changeSpellCard("Reimu", 0, "2");
+    ptr->changeItem("Reimu", 0, "I2"); // two same items in one character
+    ptr->changeSpellCard("Reimu", 0, "C2");
     auto get_character_item_list = ptr->getCharacterItemList("Reimu");
     auto get_character_card_list = ptr->getCharacterSpellCardList("Reimu");
     auto get_attack_list = ptr->getAttackList("Reimu");
@@ -183,18 +184,32 @@ LogoAndDisclaimerScene::testGameData()
         cout << "  ..." << endl;
     }
 
+    log(">> getOnStageCharacterTagList: ");
+    for (auto const& c : get_onstage_char_list) {
+        cout << "  tag: " << c << endl;
+    }
+
     log(">> getCharacterItemList: ");
     for (auto const& i : get_character_item_list) {
         cout << "  tag: " << i.tag << endl;
         cout << "  name: " << i.name << endl;
         cout << "  icon: " << i.icon << endl;
         cout << "  description: " << i.description << endl;
+        cout << "  type: " << (i.type == Item::Type::NORMAL
+                                   ? "NORMAL"
+                                   : i.type == Item::Type::STRENGTHEN ? "STRENGTHEN" : "SPECIAL")
+             << endl;
+        cout << "  isCarriable: " << i.isCarriable << endl;
+        cout << "  isUseable: " << i.isUseable << endl;
         cout << "  maxUseCount: " << i.maxUseCount << endl;
         cout << "  healthPointCost: " << i.healthPointCost << endl;
         cout << "  manaCost: " << i.manaCost << endl;
         cout << "  coolDown: " << i.cooldown << endl;
-        cout << "  isCarriable: " << i.isCarriable << endl;
-        cout << "  isUseable: " << i.isUseable << endl;
+        cout << "  healthPointInc: " << i.healthPointInc << endl;
+        cout << "  manaInc: " << i.manaInc << endl;
+        cout << "  walkSpeedInc: " << i.walkSpeedInc << endl;
+        cout << "  walkAccelerationInc: " << i.walkAccelerationInc << endl;
+        cout << "  dashAccelerationInc: " << i.dashAccelerationInc << endl;
         cout << "  price: " << i.price << endl;
     }
 

@@ -76,7 +76,7 @@ public:
 
     // 返回选定的要出战的角色的列表
     // 在 RoundSelectScene 中使用
-    vector<Character> getOnStageCharacterTagList();
+    vector<string> getOnStageCharacterTagList();
 
     // 获得角色的列表后，传入角色标签，自动切换为队伍其他角色
     // 在 RoundSelectScene 中使用
