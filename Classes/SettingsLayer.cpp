@@ -3,26 +3,44 @@
 #endif
 
 #include "SettingsLayer.h"
-#include "PlaceHolder.h"
-// #include "resources.h.dir/settings_layer.h"
+#include "HomeScene.h"
+#include "SaveScene.h"
+#include "SimpleAudioEngine.h"
+#include "resources.h.dir/settings_layer.h"
 
-SettingsLayer::SettingsLayer()
+using namespace CocosDenshion;
+
+SettingsLayer::SettingsLayer(const string& TAG)
 {
     _visibleSize = _director->getVisibleSize();
+    currentScene = TAG;
 }
 
 Scene*
 SettingsLayer::createDebugScene()
 {
     auto s = Scene::create();
-    auto l = SettingsLayer::create();
-
+    auto l = SettingsLayer::create("MainMenuSence");
     if (s && l) {
         s->addChild(l);
         return s;
     } else {
         return nullptr;
     };
+}
+
+Layer*
+SettingsLayer::create(const string& TAG)
+{
+    Layer* pRet = new (std::nothrow) SettingsLayer(TAG);
+    if (pRet && pRet->init()) {
+        pRet->autorelease();
+        return pRet;
+    } else {
+        delete pRet;
+        pRet = nullptr;
+        return nullptr;
+    }
 }
 
 bool
@@ -34,17 +52,258 @@ SettingsLayer::init()
         return false;
     }
 
-    /*  2. PlaceHolder */
+    /*  2.创建背景 */
+    auto background = Sprite::create(IMG_SETTING_BACKGROUND);
+    background->setAnchorPoint(Vec2(0.5, 0.5));
+    background->setScale(1.3);
+    background->setPosition(_visibleSize.width / 2, _visibleSize.height / 2);
+    addChild(background);
 
-    auto p = PlaceHolder::createCircle(100, "SettingsLayer");
-    p->setPosition(_visibleSize / 2);
-    this->addChild(p);
+    /*  3.构建界面背景 */
+    auto layout = Layout::create();
 
-    this->scheduleUpdate();
+    if (currentScene == "HomeSence") {
+        layout->setSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 2.0));
+    }
+    if (currentScene == "MainMenuSence") {
+        layout->setSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 1.25));
+    }
+    if (currentScene == "GameplaySence") {
+        layout->setSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 1.5));
+    }
+    layout->setBackGroundColorType(LAYOUT_COLOR_SOLID);
+    layout->setBackGroundColor(Color3B(255, 255, 255));
+    layout->setBackGroundColorOpacity(90);
+    layout->setAnchorPoint(Vec2(0.5, 0.5));
+    layout->setPosition(Vec2(_visibleSize.width / 2.0, _visibleSize.height / 2.0));
+
+    /*  4.音乐和音效*/
+
+    // auto audioEngine = SimpleAudioEngine::getInstance();
+
+    string music = "音乐";
+    auto musicVolume = Label::createWithTTF(music, "fonts/dengxian.ttf", 20);
+    musicVolume->setTag(1);
+    musicVolume->setAnchorPoint(Vec2(0.0, 0.5));
+
+    auto _sliderMusicVolume = Slider::create();
+    _sliderMusicVolume->setTag(2);
+    _sliderMusicVolume->setTouchEnabled(true);
+    //_sliderMusicVolume->setPercent(audioEngine->getBackgroundMusicVolume()*100);
+    _sliderMusicVolume->loadBarTexture(IMG_SETTING_SLIDER_TRACK);
+    _sliderMusicVolume->loadSlidBallTextures(IMG_SETTING_SLIDER_THUMB, IMG_SETTING_SLIDER_THUMB);
+    _sliderMusicVolume->loadProgressBarTexture(IMG_SETTING_SLIDER_PROGRESS);
+    _sliderMusicVolume->setAnchorPoint(Vec2(0.4, 0.5));
+    _sliderMusicVolume->addEventListener(CC_CALLBACK_2(SettingsLayer::sliderEvent, this));
+
+    string effect = "音效";
+    auto effectVolume = Label::createWithTTF(effect, "fonts/dengxian.ttf", 20);
+    effectVolume->setTag(3);
+    effectVolume->setAnchorPoint(Vec2(0.0, 0.5));
+
+    auto _sliderEffectVolume = Slider::create();
+    _sliderEffectVolume->setTag(4);
+    _sliderEffectVolume->setTouchEnabled(true);
+    //_sliderEffectVolume->setPercent(audioEngine->getEffectsVolume()*100);
+    _sliderEffectVolume->loadBarTexture(IMG_SETTING_SLIDER_TRACK);
+    _sliderEffectVolume->loadSlidBallTextures(IMG_SETTING_SLIDER_THUMB, IMG_SETTING_SLIDER_THUMB);
+    _sliderEffectVolume->loadProgressBarTexture(IMG_SETTING_SLIDER_PROGRESS);
+    _sliderEffectVolume->setAnchorPoint(Vec2(0.4, 0.5));
+    _sliderEffectVolume->addEventListener(CC_CALLBACK_2(SettingsLayer::sliderEvent, this));
+
+    if (currentScene == "HomeSence") {
+        musicVolume->setPosition(
+            Vec2(layout->getSize().width / 8.0, layout->getSize().height * 4.0 / 5.0));
+        _sliderMusicVolume->setPosition(
+            Vec2(layout->getSize().width / 2.0, layout->getSize().height * 4.0 / 5.0));
+        effectVolume->setPosition(
+            Vec2(layout->getSize().width / 8.0, layout->getSize().height * 3.0 / 5.0));
+        _sliderEffectVolume->setPosition(
+            Vec2(layout->getSize().width / 2.0, layout->getSize().height * 3.0 / 5.0));
+    }
+    if (currentScene == "MainMenuSence") {
+        musicVolume->setPosition(
+            Vec2(layout->getSize().width / 8.0, layout->getSize().height * 7.0 / 8.0));
+        _sliderMusicVolume->setPosition(
+            Vec2(layout->getSize().width / 2.0, layout->getSize().height * 7.0 / 8.0));
+        effectVolume->setPosition(
+            Vec2(layout->getSize().width / 8.0, layout->getSize().height * 6.0 / 8.0));
+        _sliderEffectVolume->setPosition(
+            Vec2(layout->getSize().width / 2.0, layout->getSize().height * 6.0 / 8.0));
+    }
+    if (currentScene == "GameplaySence") {
+        musicVolume->setPosition(
+            Vec2(layout->getSize().width / 8.0, layout->getSize().height * 5.0 / 6.0));
+        _sliderMusicVolume->setPosition(
+            Vec2(layout->getSize().width / 2.0, layout->getSize().height * 5.0 / 6.0));
+        effectVolume->setPosition(
+            Vec2(layout->getSize().width / 8.0, layout->getSize().height * 4.0 / 6.0));
+        _sliderEffectVolume->setPosition(
+            Vec2(layout->getSize().width / 2.0, layout->getSize().height * 4.0 / 6.0));
+    }
+
+    layout->addChild(musicVolume);
+    layout->addChild(_sliderMusicVolume);
+    layout->addChild(effectVolume);
+    layout->addChild(_sliderEffectVolume);
+
+    /*  5.文字速度*/
+
+    if ((currentScene == "HomeSence") || (currentScene == "MainMenuSence")) {
+        string texSpeed = "文字播放速度";
+        auto texPlaySpeed = Label::createWithTTF(texSpeed, "fonts/dengxian.ttf", 20);
+        texPlaySpeed->setTag(5);
+        texPlaySpeed->setAnchorPoint(Vec2(0.0, 0.5));
+        if (currentScene == "HomeSence") {
+            texPlaySpeed->setPosition(
+                Vec2(layout->getSize().width / 8.0, layout->getSize().height * 2.0 / 5.0));
+        } else {
+            texPlaySpeed->setPosition(
+                Vec2(layout->getSize().width / 8.0, layout->getSize().height * 5.0 / 8.0));
+        }
+        layout->addChild(texPlaySpeed);
+    }
+
+    /*  6.按钮组*/
+
+    if (currentScene == "MainMenuSence") {
+        auto button1 = Button::create();
+        button1->setTag(7);
+        button1->setTouchEnabled(true);
+        button1->setTitleText("保存");
+        button1->setTitleFontSize(36);
+        button1->loadTextures(IMG_SETTING_BUTTON_NORMAL, IMG_SETTING_BUTTON_PRESSED);
+        button1->setPosition(
+            Vec2(layout->getSize().width / 2.0, layout->getSize().height * 4.0 / 8.0));
+        button1->setScale(0.7);
+        button1->addTouchEventListener(this, toucheventselector(SettingsLayer::touchEvent));
+        layout->addChild(button1);
+    }
+
+    if ((currentScene == "MainMenuSence") || (currentScene == "GameplaySence")) {
+        auto button2 = Button::create();
+        button2->setTag(8);
+        button2->setTouchEnabled(true);
+        button2->setTitleText("返回开始界面");
+        button2->setTitleFontSize(36);
+        button2->loadTextures(IMG_SETTING_BUTTON_NORMAL, IMG_SETTING_BUTTON_PRESSED);
+        if (currentScene == "MainMenuSence") {
+            button2->setPosition(
+                Vec2(layout->getSize().width / 2.0, layout->getSize().height * 3.0 / 8.0));
+        } else {
+            button2->setPosition(
+                Vec2(layout->getSize().width / 2.0, layout->getSize().height * 3.0 / 6.0));
+        }
+        button2->setScale(0.7);
+        button2->addTouchEventListener(this, toucheventselector(SettingsLayer::touchEvent));
+        layout->addChild(button2);
+    }
+
+    if (currentScene == "MainMenuSence") {
+        auto button3 = Button::create();
+        button3->setTag(9);
+        button3->setTouchEnabled(true);
+        button3->setTitleText("退出游戏");
+        button3->setTitleFontSize(36);
+        button3->loadTextures(IMG_SETTING_BUTTON_NORMAL, IMG_SETTING_BUTTON_PRESSED);
+        button3->setPosition(
+            Vec2(layout->getSize().width / 2.0, layout->getSize().height * 2.0 / 8.0));
+        button3->setScale(0.7);
+        button3->addTouchEventListener(this, toucheventselector(SettingsLayer::touchEvent));
+        layout->addChild(button3);
+    }
+
+    if (currentScene == "GameplaySence") {
+        auto button4 = Button::create();
+        button4->setTag(10);
+        button4->setTouchEnabled(true);
+        button4->setTitleText("放弃关卡");
+        button4->setTitleFontSize(36);
+        button4->loadTextures(IMG_SETTING_BUTTON_NORMAL, IMG_SETTING_BUTTON_PRESSED);
+        button4->setPosition(
+            Vec2(layout->getSize().width / 2.0, layout->getSize().height * 2.0 / 6.0));
+        button4->setScale(0.7);
+        button4->addTouchEventListener(this, toucheventselector(SettingsLayer::touchEvent));
+        layout->addChild(button4);
+    }
+
+    auto button5 = Button::create();
+    button5->setTag(11);
+    button5->setTouchEnabled(true);
+    button5->setTitleText("返回");
+    button5->setTitleFontSize(36);
+    button5->loadTextures(IMG_SETTING_BUTTON_NORMAL, IMG_SETTING_BUTTON_PRESSED);
+    if (currentScene == "HomeSence") {
+        button5->setPosition(Vec2(layout->getSize().width / 2.0, layout->getSize().height / 5.0));
+    }
+    if (currentScene == "MainMenuSence") {
+        button5->setPosition(Vec2(layout->getSize().width / 2.0, layout->getSize().height / 8.0));
+    }
+    if (currentScene == "GameplaySence") {
+        button5->setPosition(Vec2(layout->getSize().width / 2.0, layout->getSize().height / 6.0));
+    }
+    button5->setScale(0.7);
+    button5->addTouchEventListener(this, toucheventselector(SettingsLayer::touchEvent));
+    layout->addChild(button5);
+
+    addChild(layout);
     return true;
 }
 
 void
-SettingsLayer::update(float dt)
+SettingsLayer::sliderEvent(Ref* pSender, Slider::EventType type)
 {
+    // auto audioEngine = SimpleAudioEngine::getInstance();
+
+    if (type == Slider::EventType::ON_PERCENTAGE_CHANGED) {
+        auto slider = dynamic_cast<Slider*>(pSender);
+        int percent = slider->getPercent();
+        if (slider->getTag() == 2) {
+            // audioEngine->setBackgroundMusicVolume(percent/100.0);
+            // GameData音量接口
+            log("setBackgroundMusicVolume");
+        } else if (slider->getTag() == 4) {
+            ////GameData音量接口
+            // audioEngine->setEffectsVolume(percent/100.0);
+            log("setEffectsVolume");
+        }
+    }
+}
+
+void
+SettingsLayer::touchEvent(Object* pSender, TouchEventType type)
+{
+    Button* button = (Button*)pSender;
+    int tag = button->getTag();
+    if (type == TOUCH_EVENT_ENDED) {
+        switch (tag) {
+            case 7: {
+                auto s = SaveScene::create(true);
+                Director::getInstance()->pushScene(s);
+                break;
+            }
+            case 8: {
+                Director::getInstance()->popToRootScene();
+                auto s = HomeScene::create();
+                Director::getInstance()->pushScene(s);
+                break;
+            }
+            case 9: {
+                Director::getInstance()->end();
+                break;
+            }
+            case 10: {
+                // GameplaySence未实现
+                log("放弃关卡");
+                break;
+            }
+            case 11: {
+                Director::getInstance()->popScene();
+                // SettingsLayer::removeFromParent();
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }

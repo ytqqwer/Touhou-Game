@@ -6,25 +6,28 @@
 #define SETTINGS_LAYER_H
 
 #include "cocos2d.h"
+#include "ui/CocosGUI.h"
 #include <string>
 
 USING_NS_CC;
+using namespace std;
+using namespace cocos2d::ui;
 
 class SettingsLayer : public Layer
 {
 public:
-    CREATE_FUNC(SettingsLayer);
     static Scene* createDebugScene();
-
+    static Layer* create(const string& TAG);
     virtual bool init();
-    virtual void update(float dt);
+    void sliderEvent(Ref* pSender, Slider::EventType type);
+    void touchEvent(Object* pSender, TouchEventType type);
 
 private:
-    SettingsLayer(); // for autorelease consideration, make ctor private
+    SettingsLayer(const string& TAG); // for autorelease consideration, make ctor private
 
 private:
     // intorspection
     Size _visibleSize;
+    string currentScene;
 };
-
 #endif // SETTINGS_LAYER_H
