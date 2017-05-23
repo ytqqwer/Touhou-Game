@@ -2,9 +2,9 @@
     {
         "tag": "Hakurei Jinja",
         "name": "Hakurei Jinja",
-        "wordArt": "gamedata/locations/hakurei_jinja_word_art.png",
-        "previewPicture": "gamedata/locations/hakurei_jinja_bgp.png",
-        "backgroundPicture": "gamedata/locations/hakurei_jinja_bgp.png",
+        "wordArt": "gamedata/locations/L1_word_art.png",
+        "previewPicture": "gamedata/locations/L1_prev.png",
+        "backgroundPicture": "gamedata/locations/L1_bgp.jpg",
         "backgroundMusic": "gamedata/locations/sample.mp3",
         "roundList": [
             {
@@ -25,6 +25,207 @@
         "conversationIndicatorList": [
             {
                 "conversationTag": "1",
+                "icon": "place_holder.png",
+                "name": "Cirno"
+            }
+        ]
+    },
+    {
+        "tag": "L2",
+        "name": "L2",
+        "wordArt": "gamedata/locations/L2_word_art.png",
+        "previewPicture": "gamedata/locations/L2_prev.png",
+        "backgroundPicture": "gamedata/locations/L2_bgp.jpg",
+        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "roundList": [
+            {
+                "tag": "L2_1",
+                "name": "L2 round 1",
+                "previewPicture": "place_holder.png",
+                "description": "This is L2 round1's description",
+                "difficulty": "TWO"
+            },
+            {
+                "tag": "L2_2",
+                "name": "L2 round 2",
+                "previewPicture": "place_holder.png",
+                "description": "This is L2 round2's description",
+                "difficulty": "FOUR"
+            }
+        ],
+        "conversationIndicatorList": [
+            {
+                "conversationTag": "1",
+                "icon": "place_holder.png",
+                "name": "Cirno"
+            }
+        ]
+    },
+    {
+        "tag": "L3",
+        "name": "L3",
+        "wordArt": "gamedata/locations/L3_word_art.png",
+        "previewPicture": "gamedata/locations/L3_prev.png",
+        "backgroundPicture": "gamedata/locations/L3_bgp.png",
+        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "roundList": [
+            {
+                "tag": "L3_1",
+                "name": "L3 round 1",
+                "previewPicture": "place_holder.png",
+                "description": "This is L3 round1's description",
+                "difficulty": "ONE"
+            },
+            {
+                "tag": "L3_2",
+                "name": "L3 round 2",
+                "previewPicture": "place_holder.png",
+                "description": "This is L3 round2's description",
+                "difficulty": "THREE"
+            }
+        ],
+        "conversationIndicatorList": [
+            {
+                "conversationTag": "1",
+                "icon": "place_holder.png",
+                "name": "Cirno"
+            }
+        ]
+    },
+    {
+        "tag": "L4",
+        "name": "L4",
+        "wordArt": "gamedata/locations/L4_word_art.png",
+        "previewPicture": "gamedata/locations/L4_prev.png",
+        "backgroundPicture": "gamedata/locations/L4_bgp.png",
+        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "roundList": [
+            {
+                "tag": "L4_1",
+                "name": "L4 round 1",
+                "previewPicture": "place_holder.png",
+                "description": "This is L4 round1's description",
+                "difficulty": "THREE"
+            },
+            {
+                "tag": "L4_2",
+                "name": "L4 round 2",
+                "previewPicture": "place_holder.png",
+                "description": "This is L4 round2's description",
+                "difficulty": "THREE"
+            }
+        ],
+        "conversationIndicatorList": [
+            {
+                "conversationTag": "1",
+                "icon": "place_holder.png",
+                "name": "Cirno"
+            }
+        ]
+    },
+    {
+        "tag": "L5",
+        "name": "L5",
+        "wordArt": "gamedata/locations/L5_word_art.png",
+        "previewPicture": "gamedata/locations/L5_prev.png",
+        "backgroundPicture": "gamedata/locations/L5_bgp.png",
+        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "roundList": [
+            {
+                "tag": "L5_1",
+                "name": "L5 round 1",
+                "previewPicture": "place_holder.png",
+                "description": "This is L5 round1's description",
+                "difficulty": "TWO"
+            },
+            {
+                "tag": "L5_2",
+                "name": "L5 round 2",
+                "previewPicture": "place_holder.png",
+                "description": "This is L5 round2's description",
+                "difficulty": "THREE"
+            }
+        ],
+        "conversationIndicatorList": [
+            {
+                "conversationTag": "1",
+                "icon": "place_holder.png",
+                "name": "Cirno"
+            },
+            {
+                "conversationTag": "2",
+                "icon": "place_holder.png",
+                "name": "Cirno"
+            }
+        ]
+    },
+    {
+        "tag": "L6",
+        "name": "L6",
+        "wordArt": "gamedata/locations/L6_word_art.png",
+        "previewPicture": "gamedata/locations/L6_prev.png",
+        "backgroundPicture": "gamedata/locations/L6_bgp.png",
+        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "roundList": [
+            {
+                "tag": "L6_1",
+                "name": "L6 round 1",
+                "previewPicture": "place_holder.png",
+                "description": "This is L6 round1's description",
+                "difficulty": "TWO"
+            },
+            {
+                "tag": "L6_2",
+                "name": "L6 round 2",
+                "previewPicture": "place_holder.png",
+                "description": "This is L6 round2's description",
+                "difficulty": "THREE"
+            }
+        ],
+        "conversationIndicatorList": [
+            {
+                "conversationTag": "1",
+                "icon": "place_holder.png",
+                "name": "Cirno"
+            },
+            {
+                "conversationTag": "2",
+                "icon": "place_holder.png",
+                "name": "Cirno"
+            }
+        ]
+    },
+    {
+        "tag": "L7",
+        "name": "L7",
+        "wordArt": "gamedata/locations/L7_word_art.png",
+        "previewPicture": "gamedata/locations/L7_prev.png",
+        "backgroundPicture": "gamedata/locations/L7_bgp.png",
+        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "roundList": [
+            {
+                "tag": "L7_1",
+                "name": "L7 round 1",
+                "previewPicture": "place_holder.png",
+                "description": "This is L7 round1's description",
+                "difficulty": "TWO"
+            },
+            {
+                "tag": "L7_2",
+                "name": "L7 round 2",
+                "previewPicture": "place_holder.png",
+                "description": "This is L7 round2's description",
+                "difficulty": "THREE"
+            }
+        ],
+        "conversationIndicatorList": [
+            {
+                "conversationTag": "1",
+                "icon": "place_holder.png",
+                "name": "Cirno"
+            },
+            {
+                "conversationTag": "2",
                 "icon": "place_holder.png",
                 "name": "Cirno"
             }
