@@ -1,3 +1,7 @@
+﻿#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
 #ifndef SETTINGS_LAYER_H
 #define SETTINGS_LAYER_H
 

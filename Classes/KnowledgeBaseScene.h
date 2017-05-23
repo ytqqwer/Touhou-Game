@@ -1,3 +1,7 @@
+﻿#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
 #ifndef KNOWLEDGE_BASE_SCENE_H
 #define KNOWLEDGE_BASE_SCENE_H
 

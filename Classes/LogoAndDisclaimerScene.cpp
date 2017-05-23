@@ -1,3 +1,11 @@
+﻿#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
+#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
 #include "LogoAndDisclaimerScene.h"
 #include "BackgroundIntroScene.h"
 #include "GameData.h"
@@ -53,7 +61,7 @@ LogoAndDisclaimerScene::init()
     disclaimerLayer->addChild(whiteBg);
 
     string bodyText = "本作品是以上海爱丽丝幻乐团（ZUN）的东方project系列为原作的二"
-                      "次同人创作非官方作品或商业作品";
+                      "次同人创作非官方作品或商业作品。";
 
     auto body = Label::createWithTTF(bodyText, "fonts/dengxian.ttf", 32);
     body->setColor(Color3B::BLACK);

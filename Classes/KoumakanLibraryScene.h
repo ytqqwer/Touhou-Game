@@ -1,3 +1,7 @@
+﻿#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
 #ifndef KOUMAKAN_LIBRARY_SCENE_H
 #define KOUMAKAN_LIBRARY_SCENE_H
 

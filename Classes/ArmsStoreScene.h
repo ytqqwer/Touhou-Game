@@ -1,3 +1,7 @@
+﻿#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
 #ifndef ARMS_STORE_SCENE_H
 #define ARMS_STORE_SCENE_H
 

@@ -1,3 +1,7 @@
+﻿#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
 #ifndef STAFF_SCENE_H
 #define STAFF_SCENE_H
 

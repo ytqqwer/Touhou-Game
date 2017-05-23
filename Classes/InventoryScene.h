@@ -1,3 +1,7 @@
+﻿#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
 #ifndef INVENTORY_SCENE_H
 #define INVENTORY_SCENE_H
 

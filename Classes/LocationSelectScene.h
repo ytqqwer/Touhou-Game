@@ -1,3 +1,7 @@
+﻿#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
 #ifndef MAP_SELECT_SCENE_H
 #define MAP_SELECT_SCENE_H
 

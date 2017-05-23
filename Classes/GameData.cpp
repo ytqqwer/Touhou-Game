@@ -1,3 +1,7 @@
+﻿#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
 #include "GameData/impl/json.h"
 #include "resources.h.dir/gamedata.h"
 #include <ctime>

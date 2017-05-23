@@ -1,3 +1,7 @@
+﻿#ifdef WIN32
+#pragma execution_character_set("utf-8")
+#endif
+
 #include "SettingsLayer.h"
 #include "PlaceHolder.h"
 // #include "resources.h.dir/settings_layer.h"
