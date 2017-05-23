@@ -2,8 +2,8 @@
     {
         "tag": "Reimu",
         "name": "Hakurei Reimu",
-        "avatar": "place_holder.png",
-        "protrait": "place_holder.png",
+        "avatar": "gamedata/characters/remei_avatar.png",
+        "protrait": "gamedata/characters/reimu_pro.png",
         "preview": [
             "place_holder.png"
         ],
@@ -28,8 +28,8 @@
     {
         "tag": "Marisa",
         "name": "Kirisame Marisa",
-        "avatar": "place_holder.png",
-        "protrait": "place_holder.png",
+        "avatar": "gamedata/characters/marisa_avatar.png",
+        "protrait": "gamedata/characters/marisa_pro.png",
         "preview": [
             "place_holder.png"
         ],
