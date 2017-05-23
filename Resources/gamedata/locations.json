@@ -2,9 +2,10 @@
     {
         "tag": "Hakurei Jinja",
         "name": "Hakurei Jinja",
-        "previewPicture": "gamedata/locations/hakurei_jinja.png",
-        "backgroundPicture": "gamedata/locations/sample.mp3",
-        "backgroundMusic": "",
+        "wordArt": "gamedata/locations/hakurei_jinja_word_art.png",
+        "previewPicture": "gamedata/locations/hakurei_jinja_bgp.png",
+        "backgroundPicture": "gamedata/locations/hakurei_jinja_bgp.png",
+        "backgroundMusic": "gamedata/locations/sample.mp3",
         "roundList": [
             {
                 "tag": "round 1",

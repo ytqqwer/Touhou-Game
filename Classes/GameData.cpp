@@ -86,6 +86,7 @@ from_json(const json& j, Location& l)
 {
     l.tag = j.at("tag");
     l.name = j.at("name");
+    l.wordArt = j.at("wordArt");
     l.previewPicture = j.at("previewPicture");
     l.backgroundPicture = j.at("backgroundPicture");
     l.backgroundMusic = j.at("backgroundMusic");

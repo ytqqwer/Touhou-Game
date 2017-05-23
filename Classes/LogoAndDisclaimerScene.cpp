@@ -198,6 +198,7 @@ LogoAndDisclaimerScene::testGameData()
     auto l = get_current_location;
     cout << "  tag: " << l.tag << endl;
     cout << "  name: " << l.name << endl;
+    cout << "  wordArt: " << l.wordArt << endl;
     cout << "  previewPicture: " << l.previewPicture << endl;
     cout << "  backgroundPicture: " << l.backgroundPicture << endl;
     cout << "  backgroundMusic: " << l.backgroundMusic << endl;

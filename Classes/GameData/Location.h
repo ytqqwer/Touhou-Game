@@ -12,6 +12,7 @@ struct Location
 {
     string tag;               //地点标签
     string name;              //地点名称
+    string wordArt;           // 场景名字的艺术字
     string previewPicture;    //选取地点时的预览图片
     string backgroundPicture; //背景图片
     string backgroundMusic;   //背景音乐
