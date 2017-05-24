@@ -146,6 +146,9 @@ LogoAndDisclaimerScene::testGameData()
     ptr->switchOnStageCharacter(0, "Reimu");
     ptr->changeItem("Reimu", 0, "I2"); // two same items in one character
     ptr->changeSpellCard("Reimu", 0, "C2");
+
+    get_avail_characters = ptr->getAvailableCharacterList();
+
     auto get_character_item_list = ptr->getCharacterItemList("Reimu");
     auto get_character_card_list = ptr->getCharacterSpellCardList("Reimu");
     auto get_attack_list = ptr->getAttackList("Reimu");

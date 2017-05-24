@@ -14,7 +14,7 @@
                     "tag": "Reimu",
                     "itemSlotNum": 2,
                     "spellCardSlotNum": 2,
-                    "healthPointInc": 0,
+                    "healthPointInc": 3,
                     "manaInc": 3,
                     "walkSpeedInc": 3,
                     "walkAccelerationInc": 3,

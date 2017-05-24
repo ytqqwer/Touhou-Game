@@ -594,27 +594,75 @@ GameData::getCharacterItemList(const string& characterTag)
 }
 
 bool
-GameData::changeItem(const string& characterTag, int slot, const string& itemTag)
+GameData::changeItem(const string& characterTag, int slot, const string& newItemTag)
 {
-    /* 1. 更改已装备 item 记录 */
+
+    /* 1. 更改已装备道具的记录列表，同时记下旧装备的 tag */
+
+    string oldItemTag;
 
     int curSave = savesDom["currentSaveTag"];
     json& characterListDom = savesDom["saveList"][curSave]["characterList"];
 
     for (auto& c : characterListDom) {
         if (c["tag"] == characterTag) {
-            c["equipedItemList"][slot] = itemTag;
+            oldItemTag = c["equipedItemList"][slot];
+            c["equipedItemList"][slot] = newItemTag;
             break;
         }
     }
 
-    /* 2. 处理 Inc 变化 */
+    /* 2. 根据上一步找到的旧装备 tag，找到旧装备的属性记录 */
 
-    // TODO
+    auto oldItemIt =
+        find_if(itemListDom.begin(), itemListDom.end(), [&oldItemTag](const json& iToPred) -> bool {
+            if (iToPred["tag"] == oldItemTag) {
+                return true;
+            } else {
+                return false;
+            }
+        });
 
-    /* 2.1 减去旧的 */
+    /* 3. 根据传递进来的新装备 tag 形参，找到新装备的属性记录 */
 
-    /* 2.2 加上新的 */
+    auto newItemIt =
+        find_if(itemListDom.begin(), itemListDom.end(), [&newItemTag](const json& iToPred) -> bool {
+            if (iToPred["tag"] == newItemTag) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+    /* 4. 减去旧装备加成，加上新装备加成 */
+
+    for (auto& c : characterListDom) {
+        if (c["tag"] == characterTag) {
+            // 此处不能使用 -= 或者 +=，因为 nlohmann::json 没有重载 -= 和 += 运算符
+
+            // - 运算符两边的 json 对象都需要显式指定转换成的类型，不能依赖隐式类型转换。
+            // 没有最佳匹配，会引起 ambiguous
+
+            // 旧装备加成
+            c["healthPointInc"] =
+                c["healthPointInc"].get<int>() - oldItemIt->at("healthPointInc").get<int>();
+            c["manaInc"] = c["manaInc"].get<int>() - oldItemIt->at("manaInc").get<int>();
+            c["walkSpeedInc"] =
+                c["walkSpeedInc"].get<int>() - oldItemIt->at("walkSpeedInc").get<int>();
+            c["dashAccelerationInc"] = c["dashAccelerationInc"].get<int>() -
+                                       oldItemIt->at("dashAccelerationInc").get<int>();
+
+            // 新装备加成
+            c["healthPointInc"] =
+                c["healthPointInc"].get<int>() + newItemIt->at("healthPointInc").get<int>();
+            c["manaInc"] = c["manaInc"].get<int>() + newItemIt->at("manaInc").get<int>();
+            c["walkSpeedInc"] =
+                c["walkSpeedInc"].get<int>() + newItemIt->at("walkSpeedInc").get<int>();
+            c["dashAccelerationInc"] = c["dashAccelerationInc"].get<int>() -
+                                       newItemIt->at("dashAccelerationInc").get<int>();
+            break;
+        }
+    }
 
     return true;
 }
