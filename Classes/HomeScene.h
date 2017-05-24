@@ -1,13 +1,10 @@
 ﻿#ifdef WIN32
 #pragma execution_character_set("utf-8")
-#endif 
+#endif
 #ifndef HOME_SCENE_H
 #define HOME_SCENE_H
 
 #include "AppMacros.h"
-#include "cocos2d.h"
-#include <string>
-#include <vector>
 #include "GameData.h"
 #include "GameData/Character.h"
 #include "GameData/Conversation.h"
@@ -15,7 +12,10 @@
 #include "GameData/Location.h"
 #include "GameData/Round.h"
 #include "GameData/SpellCard.h"
+#include "cocos2d.h"
 #include "ui/CocosGUI.h"
+#include <string>
+#include <vector>
 
 USING_NS_CC;
 using namespace ui;
@@ -26,9 +26,10 @@ public:
 
     virtual bool init();
     virtual void update(float dt);
-	virtual void onEnter();
-	virtual void onExit();
-	void getPeople();
+    virtual void onEnter();
+    virtual void onExit();
+    void getPeople();
+
 private:
     HomeScene();
 
@@ -37,11 +38,11 @@ private:
 
     // intorspection
     Size _visibleSize;
-	int order;
-	vector<Character> people_array;
-	vector<SpellCard> card;
-	GameData *gamedata;
-	Sprite *cards[3];
+    int order;
+    vector<Character> people_array;
+    vector<SpellCard> card;
+    GameData* gamedata;
+    Sprite* cards[3];
 };
 
 #endif // HOME_SCENE_H
