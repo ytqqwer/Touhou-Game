@@ -2,7 +2,7 @@
     {
         "tag": "Reimu",
         "name": "Hakurei Reimu",
-        "avatar": "gamedata/characters/remei_avatar.png",
+        "avatar": "gamedata/characters/reimu_avatar.png",
         "protrait": "gamedata/characters/reimu_pro.png",
         "preview": [
             "place_holder.png"
@@ -47,6 +47,32 @@
             {
                 "tag": "attack 2",
                 "description": "This is Marisa's attack 2",
+                "type": "SPLIT"
+            }
+        ]
+    },
+    {
+        "tag": "Alice",
+        "name": "Alice",
+        "avatar": "gamedata/characters/alice_avatar.png",
+        "protrait": "gamedata/characters/alice_pro.png",
+        "preview": [
+            "place_holder.png"
+        ],
+        "healthPointBase": 100,
+        "manaBase": 100,
+        "walkSppedBase": 20,
+        "walkAccelerationBase": 20,
+        "dashAccelerationBase": 100,
+        "attackList": [
+            {
+                "tag": "attack 1",
+                "description": "This is Alice's attack 1",
+                "type": "FOCUS"
+            },
+            {
+                "tag": "attack 2",
+                "description": "This is Alice's attack 2",
                 "type": "SPLIT"
             }
         ]
