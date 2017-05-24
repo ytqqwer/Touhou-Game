@@ -3,8 +3,8 @@
 #endif
 
 #include "AppDelegate.h"
-#include "SimpleAudioEngine.h"
 #include "LogoAndDisclaimerScene.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 

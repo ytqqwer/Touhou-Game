@@ -17,6 +17,8 @@ public:
     APP_SCENE_CREATE_FUNC(RoundSelectScene, TAG);
 
     virtual bool init();
+    virtual void onEnter();
+    virtual void onExit();
     virtual void update(float dt);
 
 private:
