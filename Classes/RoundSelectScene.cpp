@@ -57,9 +57,10 @@ RoundSelectScene::onEnter()
 {
     Scene::onEnter();
     /***********************创建会变化的模块********************/
-    //取得当前所在的地点和回合，gameDate
+    //取得当前所在的地点和回合，gameDate，以及角色
     Location location = GameData::getInstance()->getCurrentLocation();
     vector<Round> round = GameData::getInstance()->getRoundList(location.tag);
+    vector<string> character = GameData::getInstance()->getOnStageCharacterTagList();
 
     //创建背景
     auto backGround = Sprite::create(location.backgroundPicture);
@@ -77,47 +78,34 @@ RoundSelectScene::onEnter()
     //获得当前关卡的预览图片
     auto preView = Sprite::create("roundselectscene/p1.png");
     preView->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
-    preView->setPosition(Vec2(_visibleSize.width * 0.4, _visibleSize.height * 0.7));
+    preView->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.7));
     this->addChild(preView);
     //难度字体
     auto difficultText = Text::create("难度", "Arial", 24);
-    difficultText->setPosition(Vec2(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.8)));
+    difficultText->setPosition(Vec2(Vec2(_visibleSize.width * 0.65, _visibleSize.height * 0.75)));
     difficultText->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
     this->addChild(difficultText);
 
-    //获得当前关卡的难度，并显示出来
-    int difficulty(static_cast<int>(round[1].difficulty)); //当前关卡的难度
     //设置5颗空星，表示难度，然后根据不同的回合难度换成相应的实心
-    auto difficult0 = Sprite::create("roundselectscene/star_2.png");
-    difficult0->setContentSize(Size(_visibleSize.width * 0.1, _visibleSize.height * 0.1));
-    difficult0->setPosition(Vec2(_visibleSize.width * 0.7, _visibleSize.height * 0.8));
-    this->addChild(difficult0);
+    Sprite* difficult[5];
+    for (int i = 0; i < 5; ++i) {
+        difficult[i] = Sprite::create("roundselectscene/star_2.png");
+        difficult[i]->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+        difficult[i]->setPosition(
+            Vec2(_visibleSize.width * (0.7 + 0.05 * i), _visibleSize.height * 0.75));
+        this->addChild(difficult[i]);
+    }
 
-    auto difficult1 = Sprite::create("roundselectscene/star_2.png");
-    difficult1->setContentSize(Size(_visibleSize.width * 0.1, _visibleSize.height * 0.1));
-    difficult1->setPosition(Vec2(_visibleSize.width * 0.75, _visibleSize.height * 0.8));
-    this->addChild(difficult1);
-
-    auto difficult2 = Sprite::create("roundselectscene/star_2.png");
-    difficult2->setContentSize(Size(_visibleSize.width * 0.1, _visibleSize.height * 0.1));
-    difficult2->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.8));
-    this->addChild(difficult2);
-
-    auto difficult3 = Sprite::create("roundselectscene/star_2.png");
-    difficult3->setContentSize(Size(_visibleSize.width * 0.1, _visibleSize.height * 0.1));
-    difficult3->setPosition(Vec2(_visibleSize.width * 0.85, _visibleSize.height * 0.8));
-    this->addChild(difficult3);
-
-    auto difficult4 = Sprite::create("roundselectscene/star_2.png");
-    difficult3->setContentSize(Size(_visibleSize.width * 0.1, _visibleSize.height * 0.1));
-    difficult3->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.8));
-    this->addChild(difficult4);
-
-    //根据当前难度，切换相应的星形
+    //根据当前难度，切换相应的星形 ,获得当前关卡的难度，并显示出来
+    int difficulty(static_cast<int>(round[0].difficulty));
+    for (int i = 0; i < difficulty; ++i) {
+        difficult[i]->setTexture("roundselectscene/star_1.png");
+        difficult[i]->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+    }
 
     //获得当前关卡的描述
     auto text = Text::create(round[1].description, "Arial", 24);
-    text->setPosition(Vec2(Vec2(_visibleSize.width * 0.7, _visibleSize.height * 0.7)));
+    text->setPosition(Vec2(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.65)));
     text->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
     this->addChild(text);
 
@@ -125,15 +113,100 @@ RoundSelectScene::onEnter()
 
     /*************创建当前地点的关卡选择,循环创建，不固定,同时设置关卡标签的监听事件，改变上面的固定的值******************/
     for (unsigned int i = 0; i < location.totalRound; ++i) {
-        auto roundButton = Button::create("roundselectscene/p1.png", "", "");
-        roundButton->setPosition(
-            Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.1 * (i + 1))));
-        roundButton->setTitleText(round[i].name);
-        roundButton->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
-        roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
+        if (i < location.passedRound - 1) { //对于已经通关的关卡的关卡
+            auto roundButton = Button::create("roundselectscene/p1.png", "", "");
+            roundButton->setPosition(
+                Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.1 * (i + 1))));
+            roundButton->setTitleText(round[i].name);
+            roundButton->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
+            roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
+                //根据点击的按钮设置当前的关卡难度，同时将当前选择的关卡保存，接口尚未实现，以后添加
+                int difficulty(static_cast<int>(round[i].difficulty));
+                for (int i = 0; i < difficulty; ++i) {
+                    difficult[i]->setTexture("roundselectscene/star_1.png");
+                    difficult[i]->setContentSize(
+                        Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+                }
+                for (int i = difficulty; i < 5; ++i) {
+                    difficult[i]->setTexture("roundselectscene/star_2.png");
+                    difficult[i]->setContentSize(
+                        Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+                }
 
-        });
-        this->addChild(roundButton);
+            });
+            this->addChild(roundButton);
+            /************显示是否可以打
+          auto roundButton1 = Button::create("roundselectscene/right.png", "", "");
+          roundButton1->setPosition(Vec2(_visibleSize.width * 0.15, _visibleSize.height * (0.8 - 0.1
+          * (i + 1))));
+          roundButton1->setContentSize(Size(_visibleSize.width * 0.1, _visibleSize.height * 0.1));
+          this->addChild(roundButton1);
+          ***************/
+        }
+
+        if (i == location.passedRound - 1) { //对于可以打，但还没通关的关卡
+            auto roundButton = Button::create("roundselectscene/p1.png", "", "");
+            roundButton->setPosition(
+                Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.1 * (i + 1))));
+            roundButton->setTitleText(round[i].name);
+            roundButton->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
+            roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
+                //根据点击的按钮设置当前的关卡难度，同时将当前选择的关卡保存，接口尚未实现，以后添加
+                int difficulty(static_cast<int>(round[i].difficulty));
+                for (int i = 0; i < difficulty; ++i) {
+                    difficult[i]->setTexture("roundselectscene/star_1.png");
+                    difficult[i]->setContentSize(
+                        Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+                }
+                for (int i = difficulty; i < 5; ++i) {
+                    difficult[i]->setTexture("roundselectscene/star_2.png");
+                    difficult[i]->setContentSize(
+                        Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+                }
+
+            });
+            this->addChild(roundButton);
+
+            /***********显示是否可以打
+            auto roundButton1 = Button::create("roundselectscene/right.png", "", "");
+            roundButton1->setPosition(Vec2(_visibleSize.width * 0.15, _visibleSize.height * (0.8 -
+            0.1 * (i + 1))));
+            roundButton1->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height *
+            0.15));
+            this->addChild(roundButton1);
+            ************/
+        }
+
+        if (i >= location.passedRound) { //对于没有通关的关卡
+            auto roundButton = Button::create("roundselectscene/p1.png", "", "");
+            roundButton->setPosition(
+                Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.1 * (i + 1))));
+            roundButton->setTitleText(round[i].name);
+            roundButton->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
+            roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
+                //根据点击的按钮设置当前的关卡难度
+                int difficulty(static_cast<int>(round[i].difficulty));
+                for (int i = 0; i < difficulty; ++i) {
+                    difficult[i]->setTexture("roundselectscene/star_1.png");
+                    difficult[i]->setContentSize(
+                        Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+                }
+                for (int i = difficulty; i < 5; ++i) {
+                    difficult[i]->setTexture("roundselectscene/star_2.png");
+                    difficult[i]->setContentSize(
+                        Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+                }
+            });
+            this->addChild(roundButton);
+
+            /********显示是否可以打
+            auto roundButton1 = Button::create("roundselectscene/p2.png", "", "");
+            roundButton1->setPosition(Vec2(_visibleSize.width * 0.15, _visibleSize.height * (0.8 -
+            0.1 * (i + 1))));
+            roundButton1->setContentSize(Size(_visibleSize.width * 0.1, _visibleSize.height * 0.1));
+            this->addChild(roundButton1);
+            **********/
+        }
     }
 }
 
