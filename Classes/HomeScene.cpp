@@ -5,9 +5,13 @@
 #include <string>
 #include <vector>
 
+#include "EquipScene.h"
 #include "HomeScene.h"
+#include "InventoryScene.h"
+#include "KoumakanLibraryScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
+#include "RoundSelectScene.h"
 
 // #include "resources.h.dir/home.h"
 #include <string>
@@ -32,7 +36,6 @@ HomeScene::init()
     if (!Scene::init()) {
         return false;
     }
-
     /* 2. 返回*/
     auto ret = Button::create("", "", "");
     ret->setTitleText("返回");
@@ -40,18 +43,27 @@ HomeScene::init()
     ret->setTitleFontSize(20);
     ret->setAnchorPoint(Vec2(0, 1));
     ret->setPosition(Vec2(0, _visibleSize.height));
-    ret->addTouchEventListener(
-        [](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->popScene(); });
+    ret->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            Director::getInstance()->popScene();
+        }
+    });
     addChild(ret, 2);
 
     /*出发按钮*/
     auto button_start = Button::create("homescene/p1.png");
     button_start->setTitleFontName("fonts/dengxian.ttf");
-    button_start->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.715));
+    button_start->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.705));
     button_start->setTitleText("出发");
     button_start->setTitleFontSize(18);
     button_start->setScale9Enabled(true);
     button_start->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
+
+    button_start->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            Director::getInstance()->pushScene(RoundSelectScene::create());
+        }
+    });
     addChild(button_start);
 
     /*整备按钮*/
@@ -62,6 +74,10 @@ HomeScene::init()
     button_equip->setTitleFontSize(18);
     button_equip->setScale9Enabled(true);
     button_equip->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
+    button_equip->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED)
+            Director::getInstance()->pushScene(EquipScene::create());
+    });
     addChild(button_equip);
 
     /*道具库按钮*/
@@ -72,6 +88,11 @@ HomeScene::init()
     button_inventory->setTitleFontSize(18);
     button_inventory->setScale9Enabled(true);
     button_inventory->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
+    button_inventory->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            Director::getInstance()->pushScene(InventoryScene::create());
+        }
+    });
     addChild(button_inventory);
 
     /*其他地图按钮*/
@@ -83,6 +104,11 @@ HomeScene::init()
     button_map->setScale9Enabled(true);
     button_map->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     button_map->setTitleFontName("fonts/dengxian.ttf");
+    button_map->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            ;
+        }
+    });
     addChild(button_map);
 
     /*更换角色*/
@@ -92,7 +118,7 @@ HomeScene::init()
     role_change->setScale9Enabled(true);
     role_change->setSize(Size(_visibleSize.width * 55 / 1280, _visibleSize.height * 108 / 720));
     role_change->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-        if (type == Widget::TouchEventType::BEGAN)
+        if (type == Widget::TouchEventType::ENDED)
             this->getPeople();
     });
     addChild(role_change);
@@ -142,6 +168,10 @@ HomeScene::init()
     know_button->setTitleText("资料库");
     know_button->setTitleFontSize(20);
     know_button->setScale(0.87);
+    know_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED)
+            Director::getInstance()->pushScene(KoumakanLibraryScene::create());
+    });
     addChild(know_button);
 
     /*系统商店*/
@@ -223,6 +253,31 @@ HomeScene::onEnter()
     /*人物*/
     people_array = gamedata->getAvailableCharacterList();
     getPeople();
+
+    /*对话图标*/
+    double dis = 0.43;
+    vector<ConversationIndicator> conversation = gamedata->getConversationIndicatorList(loc.tag);
+    for (int i = 0; i < conversation.size(); i++) {
+        auto newTalk = Sprite::create("homescene/p6.png");
+        newTalk->setContentSize(Size(70, 67.2));
+        newTalk->setPosition(Vec2(_visibleSize.width * (dis - 0.01), _visibleSize.height * 0.17));
+        addChild(newTalk, 2);
+
+        auto talk_button = Button::create("homescene/p5.png");
+        talk_button->setTitleFontName("fonts/dengxian.ttf");
+        talk_button->setAnchorPoint(Vec2(0, 1));
+        talk_button->setPosition(Vec2(_visibleSize.width * dis, _visibleSize.height * 0.15));
+        talk_button->setScale9Enabled(true);
+        talk_button->setSize(
+            Size(_visibleSize.width * 100 / 1280, _visibleSize.height * 100 / 720));
+        talk_button->setTitleText(conversation[i].name);
+        talk_button->setTitleFontSize(20);
+        talk_button->setScale(0.87);
+        addChild(talk_button, 1);
+        talk_button->addTouchEventListener(
+            CC_CALLBACK_2(HomeScene::getDialogue, this, conversation[i].conversationTag, newTalk));
+        dis += 0.08;
+    }
 }
 void
 HomeScene::getPeople()
@@ -237,7 +292,6 @@ HomeScene::getPeople()
     if (person)
         person->setOpacity(0);
     person = getChildByTag(order + 1000);
-    log("%d fewfew", people_array.size());
     if (person == NULL) {
         person = ImageView::create(people_array[order].portrait);
         person->setAnchorPoint(Vec2(0, 0));
@@ -258,6 +312,12 @@ HomeScene::getPeople()
 
     order++;
     order %= people_array.size();
+}
+void
+HomeScene::getDialogue(Ref* pSender, Widget::TouchEventType type, string tag, Sprite* newTalk)
+{
+    if (type == Widget::TouchEventType::ENDED)
+        newTalk->setOpacity(0);
 }
 void
 HomeScene::onExit()

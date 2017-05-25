@@ -29,6 +29,7 @@ public:
     virtual void onEnter();
     virtual void onExit();
     void getPeople();
+    void getDialogue(Ref*, Widget::TouchEventType, string, Sprite*);
 
 private:
     HomeScene();
