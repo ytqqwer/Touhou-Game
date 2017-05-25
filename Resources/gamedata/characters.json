@@ -2,7 +2,8 @@
     {
         "tag": "Reimu",
         "name": "Hakurei Reimu",
-        "avatar": "gamedata/characters/reimu_avatar.png",
+        "rectAvatar": "gamedata/characters/reimu_avatar_rect.png",
+        "circularAvatar": "gamedata/characters/reimu_avatar.png",
         "protrait": "gamedata/characters/reimu_pro.png",
         "preview": [
             "place_holder.png"
@@ -28,7 +29,8 @@
     {
         "tag": "Marisa",
         "name": "Kirisame Marisa",
-        "avatar": "gamedata/characters/marisa_avatar.png",
+        "rectAvatar": "gamedata/characters/marisa_avatar_rect.png",
+        "circularAvatar": "gamedata/characters/marisa_avatar.png",
         "protrait": "gamedata/characters/marisa_pro.png",
         "preview": [
             "place_holder.png"
@@ -54,7 +56,8 @@
     {
         "tag": "Alice",
         "name": "Alice",
-        "avatar": "gamedata/characters/alice_avatar.png",
+        "rectAvatar": "gamedata/characters/alice_avatar_rect.png",
+        "circularAvatar": "gamedata/characters/alice_avatar.png",
         "protrait": "gamedata/characters/alice_pro.png",
         "preview": [
             "place_holder.png"

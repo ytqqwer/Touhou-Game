@@ -26,9 +26,10 @@ struct Character
 
     /* 人物展示 */
 
-    string tag;             //角色标签
-    string name;            //角色名
-    string avatar;          //人物头像或图标地址
+    string tag;        //角色标签
+    string name;       //角色名
+    string rectAvatar; //人物头像或图标地址
+    string circularAvatar;
     string portrait;        //人物立绘，就一张
     vector<string> preview; //人物的动作预览图，在代码中组合成动态图片，
                             //用在 EquipScene 和 RoundSelectScene
