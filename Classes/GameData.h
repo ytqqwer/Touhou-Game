@@ -60,12 +60,15 @@ public:
     // 在 HomeScene RoundSelectScene 中使用
     Location getCurrentLocation();
 
-    // 只返回已解锁地点的信息
+    // 返回所有的地点
     // 在 LocationSelectScene 中使用
     vector<Location> getLocationList();
 
+    // 配合 getLocationList 使用，这个接口只返回已解锁地点的 tag
+    // 在 LocationSelectScene 中使用
     vector<string> getUnlockedLocationTagList();
 
+    // 在 LocationSelectScene 中使用
     bool switchLocation(const string& newLocationTag);
 
     // 返回这个地点包含的关卡信息
