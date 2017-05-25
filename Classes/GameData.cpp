@@ -517,6 +517,12 @@ GameData::getRoundList(const string& locationTag)
     return listRet;
 }
 
+bool
+GameData::setRoundToPlay(const string& roundTag)
+{
+  return true;
+}
+
 vector<Character>
 GameData::getAvailableCharacterList()
 {

@@ -72,6 +72,10 @@ public:
     // 在 RoundSelectScene 中使用
     vector<Round> getRoundList(const string& locationTag);
 
+    // 设置要玩的关卡。每个 Round 的 tag 都是唯一的，所以参数中不需要再传入 locationTag
+    // 在 RoundSelectScene 中使用
+    bool setRoundToPlay(const string& roundTag);
+
     ////////////////////////////////////////////////////////////////////////////////
     // 人物属性与钱币 Character / Money
 
