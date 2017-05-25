@@ -151,7 +151,8 @@ from_json(const json& j, Character& c)
     }
 
     c.name = it->at("name");
-    c.avatar = it->at("avatar");
+    c.rectAvatar = it->at("rectAvatar");
+    c.circularAvatar = it->at("circularAvatar");
     c.portrait = it->at("protrait");
 
     for (auto const& p : it->at("preview")) {
@@ -514,6 +515,12 @@ GameData::getRoundList(const string& locationTag)
     }
 
     return listRet;
+}
+
+bool
+GameData::setRoundToPlay(const string& roundTag)
+{
+  return true;
 }
 
 vector<Character>
