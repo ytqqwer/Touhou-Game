@@ -275,6 +275,14 @@ LogoAndDisclaimerScene::testGameData()
         cout << "  ..." << endl;
     }
 
+    log(">> getAttackList:");
+    for (auto const& a : get_attack_list) {
+        cout << "  tag: " << a.tag << endl;
+        cout << "  description: " << a.description << endl;
+        cout << "  type: " << ((a.type == Character::Attack::Type::FOCUS) ? "FOCUS" : "SPLIT")
+             << endl;
+    }
+
     log(">> getAvailItemList:");
     for (auto const& p : get_avail_item_list) {
         cout << "  tag: " << p.first.tag << endl;

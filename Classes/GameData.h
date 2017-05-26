@@ -117,9 +117,6 @@ public:
     // 获得指定角色的攻击方式列表，包括集中和发散两种攻击方式
     vector<Character::Attack> getAttackList(const string& characterTag);
 
-    // 获得角色的攻击方式列表后，传入角色标签，更换的攻击方式类型，自动切换为下一个攻击方式
-    bool switchAttackType(const string& characterTag, Character::Attack::Type type);
-
     // int 类型可能不足以存储钱币数量，故使用 long 类型
     long getMoneyNum();
 
@@ -145,6 +142,14 @@ public:
     // 资料库
 
     // 待定
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Gameplay 场景专用
+
+    Round getRoundToPlay();
+
+    // 获得角色的攻击方式列表后，传入角色标签，更换的攻击方式类型，自动切换为下一个攻击方式
+    bool switchAttackType(const string& characterTag, Character::Attack::Type type);
 
 private:
     GameData();

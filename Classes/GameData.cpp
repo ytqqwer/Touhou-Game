@@ -195,7 +195,10 @@ from_json(const json& j, Character& c)
 static void
 from_json(const json& j, Character::Attack& a)
 {
-    // TODO
+    a.tag = j.at("tag");
+    a.description = j.at("description");
+    a.type =
+        (j.at("type") == "FOCUS") ? Character::Attack::Type::FOCUS : Character::Attack::Type::SPLIT;
 }
 
 // itemListDom[n] -> Item
@@ -781,8 +784,25 @@ GameData::changeSpellCard(const string& characterTag, int slot, const string& sp
 vector<Character::Attack>
 GameData::getAttackList(const string& characterTag)
 {
-    // TODO
-    return vector<Character::Attack>();
+    vector<Character::Attack> listRet;
+    listRet.reserve(2);
+
+    auto it = find_if(characterListDom.begin(), characterListDom.end(),
+                      [&characterTag](const json& c) -> bool {
+                          if (c["tag"] == characterTag) {
+                              return true;
+                          } else {
+                              return false;
+                          }
+
+                      });
+
+    if (it != characterListDom.end()) {
+        listRet.push_back(it->at("attackList")[0]);
+        listRet.push_back(it->at("attackList")[1]);
+    }
+
+    return listRet;
 }
 
 bool
