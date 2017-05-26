@@ -37,6 +37,10 @@ static json itemListDom;
 static json spellCardListDom;
 static json awardListDom;
 
+// 用于支持玩 A 存档时，想存至 B 存档上
+// 我们记录更改到其他地方，而不能直接记录到 A 上
+static json cachedSave;
+
 static string
 getCurrentTime()
 {
@@ -56,6 +60,12 @@ getCurrentTime()
     return fmtTimeRet;
 }
 
+static void
+syncSaveChangesToFile()
+{
+    // TODO
+}
+
 /* 以下的 from_json 函数提供给 nlohmann::json 使用，使其能将 json 对象转成我们
  * 我们自定义的对象
  *
@@ -68,7 +78,8 @@ from_json(const json& j, Save& s)
 {
     s.tag = j.at("tag");
     s.name = j.at("name");
-    s.time = j.at("locationTag");
+    s.time = j.at("time");
+    s.locationTag = j.at("locationTag");
 }
 
 // locationListDom[n]["conversationIndicatorList"][n] -> ConversationIndicator
@@ -93,8 +104,8 @@ from_json(const json& j, Location& l)
     l.passedRound = 0;
     l.totalRound = j.at("roundList").size();
 
-    int curSave = savesDom["currentSaveTag"];
-    const json& unlockedLocListDom = savesDom["saveList"][curSave]["unlockedLocationList"];
+    const json& unlockedLocListDom = cachedSave["unlockedLocationList"];
+
     for (auto const& u : unlockedLocListDom) {
         if (u.at("tag") == l.tag) {
             l.passedRound = u.at("passedRound");
@@ -166,9 +177,8 @@ from_json(const json& j, Character& c)
 
     /* 2. savesDom 中的信息 */
 
-    int curSave = savesDom.at("currentSaveTag");
-    for (it = savesDom.at("saveList").at(curSave).at("characterList").begin();
-         it != savesDom.at("saveList").at(curSave).at("characterList").end(); ++it) {
+    for (it = cachedSave.at("characterList").begin(); it != cachedSave.at("characterList").end();
+         ++it) {
         if (it->at("tag").get<string>() == c.tag) {
             break;
         }
@@ -318,33 +328,64 @@ GameData::getCurrentSaveTag()
 vector<Save>
 GameData::getSaveList()
 {
-    int saveCnt = savesDom["saveList"].size();
     vector<Save> listRet;
-    listRet.reserve(saveCnt);
+    listRet.reserve(4);
 
     for (auto const& s : savesDom["saveList"]) {
-        listRet.push_back(s);
+
+        // tag 为 0 的存档是存档模板，非实际存档
+        if (s["tag"] != 0) {
+            listRet.push_back(s);
+        }
     }
 
     return listRet;
 }
 
-void
-GameData::saveSave()
+bool
+GameData::newGame()
 {
-    /* 1. 更改存档时间 */
+    return (newSave() >= 0) ? true : false;
+}
 
-    int curSave = savesDom["currentSaveTag"];
-    savesDom["saveList"][curSave]["time"] = getCurrentTime();
+void
+GameData::continueGame()
+{
+    int curSave = getCurrentSaveTag();
+    switchSave(curSave);
+}
 
-    /* 2. 写入文件 */
+int
+GameData::newSave()
+{
+    /*  1. 判断存档个数是否已满 */
 
-    // TODO
+    int saveCnt = savesDom["saveList"].size();
+    if (saveCnt == 4) {
+        return -1;
+    }
+
+    /*  2. 新建存档，新存档的编号是最后一个存档的编号 + 1 */
+
+    int newSaveTag = savesDom["saveList"].back()["tag"].get<int>() + 1;
+    savesDom["saveList"].push_back(savesDom["saveList"][0]);
+
+    auto& newSave = savesDom["saveList"].back();
+    newSave["tag"] = newSaveTag;
+    newSave["name"] = string("save ") + to_string(newSaveTag);
+    newSave["time"] = getCurrentTime();
+
+    switchSave(newSaveTag);
+    syncSaveChangesToFile();
+
+    return newSaveTag;
 }
 
 void
 GameData::deleteSave(int saveTag)
 {
+    // TODO 玩家要是删除自己正在玩的存档怎么办
+
     /* 1. DOM 操作 */
 
     bool found = false;
@@ -358,22 +399,42 @@ GameData::deleteSave(int saveTag)
     }
 
     if (found) {
-        // savesDom["saveList"].erase(it); // 太危险，待测试
+        savesDom["saveList"].erase(it); // 危险，待测试
     }
 
+    /* 2. 同步至文件 */
+
+    syncSaveChangesToFile();
+}
+
+void
+GameData::saveSave(int saveTag)
+{
+    /* 1. 更改 DOM 树 */
+
+    cachedSave["time"] = getCurrentTime();
+    savesDom["saveList"][saveTag] = cachedSave;
+
     /* 2. 写入文件 */
+
+    syncSaveChangesToFile();
 }
 
 void
 GameData::switchSave(int saveTag)
 {
-    /* 1. 保存当前存档的更改 */
-
-    // TODO
-
-    /* 2. 切换到新存档 */
+    // 不保存对当前存档的更改，用户不明确表示保存就不保存
 
     savesDom["currentSaveTag"] = saveTag;
+    cachedSave = savesDom["saveList"][saveTag];
+
+    // TODO
+    // TEST
+    log(">> cachedSave:");
+    log("  tag: %d", cachedSave["tag"].get<int>());
+    log("  time: %s", cachedSave["time"].get<string>().c_str());
+    log("  characterList[0][\"tag\"]: %s",
+        cachedSave["characterList"][0]["tag"].get<string>().c_str());
 }
 
 float
@@ -424,8 +485,7 @@ GameData::getConversation(const string& conversationTag)
 Location
 GameData::getCurrentLocation()
 {
-    int curSave = savesDom["currentSaveTag"];
-    string locTag = savesDom["saveList"][curSave]["locationTag"];
+    string locTag = cachedSave["locationTag"];
 
     // find the tag in locationListDom
 
@@ -456,8 +516,8 @@ GameData::getLocationList()
 vector<string>
 GameData::getUnlockedLocationTagList()
 {
-    int curSave = savesDom["currentSaveTag"];
-    const json& unlockedLocListDom = savesDom["saveList"][curSave]["unlockedLocationList"];
+    const json& unlockedLocListDom = cachedSave["unlockedLocationList"];
+
     vector<string> listRet;
     listRet.reserve(unlockedLocListDom.size());
 
@@ -487,8 +547,7 @@ GameData::getUnlockedLocationTagList()
 bool
 GameData::switchLocation(const string& newLocationTag)
 {
-    int curSave = savesDom["currentSaveTag"];
-    savesDom["saveList"][curSave]["locationTag"] = newLocationTag;
+    cachedSave["locationTag"] = newLocationTag;
     return true;
 }
 
@@ -520,14 +579,13 @@ GameData::getRoundList(const string& locationTag)
 bool
 GameData::setRoundToPlay(const string& roundTag)
 {
-  return true;
+    return true;
 }
 
 vector<Character>
 GameData::getAvailableCharacterList()
 {
-    int curSave = savesDom["currentSaveTag"];
-    const json& listDom = savesDom["saveList"][curSave]["characterList"];
+    const json& listDom = cachedSave["characterList"];
     vector<Character> listRet;
     listRet.reserve(listDom.size());
 
@@ -541,8 +599,7 @@ GameData::getAvailableCharacterList()
 vector<string>
 GameData::getOnStageCharacterTagList()
 {
-    int curSave = savesDom["currentSaveTag"];
-    json& onStageListDom = savesDom["saveList"][curSave]["onStageCharacterList"];
+    json& onStageListDom = cachedSave["onStageCharacterList"];
 
     vector<string> characters;
     for (auto const& c : onStageListDom) {
@@ -555,9 +612,7 @@ GameData::getOnStageCharacterTagList()
 bool
 GameData::switchOnStageCharacter(int nth, const string& characterTag)
 {
-    int curSave = savesDom["currentSaveTag"];
-    json& onStageCharList = savesDom["saveList"][curSave]["onStageCharacterList"];
-    onStageCharList[nth] = characterTag;
+    cachedSave["onStageCharacterList"][nth - 1] = characterTag;
 
     return true;
 }
@@ -567,8 +622,7 @@ GameData::getCharacterItemList(const string& characterTag)
 {
     /* 1. 找到人，并取其装备 tag 列表 */
 
-    int curSave = savesDom["currentSaveTag"];
-    const json& characterListDom = savesDom["saveList"][curSave]["characterList"];
+    const json& characterListDom = cachedSave["characterList"];
 
     const json* equipedItemListDomPtr;
     for (auto const& c : characterListDom) {
@@ -608,8 +662,7 @@ GameData::changeItem(const string& characterTag, int slot, const string& newItem
 
     string oldItemTag;
 
-    int curSave = savesDom["currentSaveTag"];
-    json& characterListDom = savesDom["saveList"][curSave]["characterList"];
+    json& characterListDom = cachedSave["characterList"];
 
     for (auto& c : characterListDom) {
         if (c["tag"] == characterTag) {
@@ -679,8 +732,7 @@ GameData::getCharacterSpellCardList(const string& characterTag)
 {
     /* 1. 找到人，并取其装备 tag 列表 */
 
-    int curSave = savesDom["currentSaveTag"];
-    const json& characterListDom = savesDom["saveList"][curSave]["characterList"];
+    const json& characterListDom = cachedSave["characterList"];
 
     const json* equipedCardListDomPtr;
     for (auto const& c : characterListDom) {
@@ -714,8 +766,7 @@ GameData::getCharacterSpellCardList(const string& characterTag)
 bool
 GameData::changeSpellCard(const string& characterTag, int slot, const string& spellCardTag)
 {
-    int curSave = savesDom["currentSaveTag"];
-    json& characterListDom = savesDom["saveList"][curSave]["characterList"];
+    json& characterListDom = cachedSave["characterList"];
 
     for (auto& c : characterListDom) {
         if (c["tag"] == characterTag) {
@@ -747,24 +798,21 @@ GameData::switchAttackType(const string& characterTag, Character::Attack::Type t
 long
 GameData::getMoneyNum()
 {
-    int curSave = savesDom["currentSaveTag"];
-    return savesDom["saveList"][curSave]["money"];
+    return cachedSave["money"];
 }
 
 void
 GameData::increaseMoney(long num)
 {
-    int curSave = savesDom["currentSaveTag"];
-    savesDom["sveList"][curSave]["money"] += num;
+    cachedSave["money"] = cachedSave["money"].get<long>() + num;
 }
 
 vector<pair<Item, int>>
 GameData::getAvailableItemList()
 {
-    int curSave = savesDom["currentSaveTag"];
-    const json& availItemListDom = savesDom["saveList"][curSave]["availableItemList"];
-    vector<pair<Item, int>> listRet;
+    const json& availItemListDom = cachedSave["availableItemList"];
 
+    vector<pair<Item, int>> listRet;
     listRet.reserve(availItemListDom.size());
 
     for (auto const& iToPred : itemListDom) {
@@ -803,8 +851,8 @@ GameData::getItemListInStore(const string& storeTag)
 vector<pair<SpellCard, int>>
 GameData::getAvailableSpellCardList()
 {
-    int curSave = savesDom["currentSaveTag"];
-    const json& availSpellCardListDom = savesDom["saveList"][curSave]["availableSpellCardList"];
+    const json& availSpellCardListDom = cachedSave["availableSpellCardList"];
+
     vector<pair<SpellCard, int>> listRet;
     listRet.reserve(availSpellCardListDom.size());
 
