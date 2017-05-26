@@ -3,12 +3,14 @@
 #endif
 
 #include "SettingsLayer.h"
-#include "HomeScene.h"
+#include "MainMenuScene.h"
 #include "SaveScene.h"
 #include "SimpleAudioEngine.h"
 #include "resources.h.dir/settings_layer.h"
 
 using namespace CocosDenshion;
+
+auto audioEngine = SimpleAudioEngine::getInstance();
 
 SettingsLayer::SettingsLayer(const string& TAG)
 {
@@ -20,7 +22,7 @@ Scene*
 SettingsLayer::createDebugScene()
 {
     auto s = Scene::create();
-    auto l = SettingsLayer::create("MainMenuSence");
+    auto l = SettingsLayer::create("HomeSence");
     if (s && l) {
         s->addChild(l);
         return s;
@@ -61,11 +63,10 @@ SettingsLayer::init()
 
     /*  3.构建界面背景 */
     auto layout = Layout::create();
-
-    if (currentScene == "HomeSence") {
+    if (currentScene == "MainMenuSence") {
         layout->setSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 2.0));
     }
-    if (currentScene == "MainMenuSence") {
+    if (currentScene == "HomeSence") {
         layout->setSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 1.25));
     }
     if (currentScene == "GameplaySence") {
@@ -79,8 +80,6 @@ SettingsLayer::init()
 
     /*  4.音乐和音效*/
 
-    // auto audioEngine = SimpleAudioEngine::getInstance();
-
     string music = "音乐";
     auto musicVolume = Label::createWithTTF(music, "fonts/dengxian.ttf", 20);
     musicVolume->setTag(1);
@@ -89,7 +88,7 @@ SettingsLayer::init()
     auto _sliderMusicVolume = Slider::create();
     _sliderMusicVolume->setTag(2);
     _sliderMusicVolume->setTouchEnabled(true);
-    //_sliderMusicVolume->setPercent(audioEngine->getBackgroundMusicVolume()*100);
+    _sliderMusicVolume->setPercent(audioEngine->getBackgroundMusicVolume() * 100);
     _sliderMusicVolume->loadBarTexture(IMG_SETTING_SLIDER_TRACK);
     _sliderMusicVolume->loadSlidBallTextures(IMG_SETTING_SLIDER_THUMB, IMG_SETTING_SLIDER_THUMB);
     _sliderMusicVolume->loadProgressBarTexture(IMG_SETTING_SLIDER_PROGRESS);
@@ -104,14 +103,14 @@ SettingsLayer::init()
     auto _sliderEffectVolume = Slider::create();
     _sliderEffectVolume->setTag(4);
     _sliderEffectVolume->setTouchEnabled(true);
-    //_sliderEffectVolume->setPercent(audioEngine->getEffectsVolume()*100);
+    _sliderEffectVolume->setPercent(audioEngine->getEffectsVolume() * 100);
     _sliderEffectVolume->loadBarTexture(IMG_SETTING_SLIDER_TRACK);
     _sliderEffectVolume->loadSlidBallTextures(IMG_SETTING_SLIDER_THUMB, IMG_SETTING_SLIDER_THUMB);
     _sliderEffectVolume->loadProgressBarTexture(IMG_SETTING_SLIDER_PROGRESS);
     _sliderEffectVolume->setAnchorPoint(Vec2(0.4, 0.5));
     _sliderEffectVolume->addEventListener(CC_CALLBACK_2(SettingsLayer::sliderEvent, this));
 
-    if (currentScene == "HomeSence") {
+    if (currentScene == "MainMenuSence") {
         musicVolume->setPosition(
             Vec2(layout->getSize().width / 8.0, layout->getSize().height * 4.0 / 5.0));
         _sliderMusicVolume->setPosition(
@@ -121,7 +120,7 @@ SettingsLayer::init()
         _sliderEffectVolume->setPosition(
             Vec2(layout->getSize().width / 2.0, layout->getSize().height * 3.0 / 5.0));
     }
-    if (currentScene == "MainMenuSence") {
+    if (currentScene == "HomeSence") {
         musicVolume->setPosition(
             Vec2(layout->getSize().width / 8.0, layout->getSize().height * 7.0 / 8.0));
         _sliderMusicVolume->setPosition(
@@ -154,7 +153,7 @@ SettingsLayer::init()
         auto texPlaySpeed = Label::createWithTTF(texSpeed, "fonts/dengxian.ttf", 20);
         texPlaySpeed->setTag(5);
         texPlaySpeed->setAnchorPoint(Vec2(0.0, 0.5));
-        if (currentScene == "HomeSence") {
+        if (currentScene == "MainMenuSence") {
             texPlaySpeed->setPosition(
                 Vec2(layout->getSize().width / 8.0, layout->getSize().height * 2.0 / 5.0));
         } else {
@@ -166,7 +165,7 @@ SettingsLayer::init()
 
     /*  6.按钮组*/
 
-    if (currentScene == "MainMenuSence") {
+    if (currentScene == "HomeSence") {
         auto button1 = Button::create();
         button1->setTag(7);
         button1->setTouchEnabled(true);
@@ -180,14 +179,14 @@ SettingsLayer::init()
         layout->addChild(button1);
     }
 
-    if ((currentScene == "MainMenuSence") || (currentScene == "GameplaySence")) {
+    if ((currentScene == "HomeSence") || (currentScene == "GameplaySence")) {
         auto button2 = Button::create();
         button2->setTag(8);
         button2->setTouchEnabled(true);
         button2->setTitleText("返回开始界面");
         button2->setTitleFontSize(36);
         button2->loadTextures(IMG_SETTING_BUTTON_NORMAL, IMG_SETTING_BUTTON_PRESSED);
-        if (currentScene == "MainMenuSence") {
+        if (currentScene == "HomeSence") {
             button2->setPosition(
                 Vec2(layout->getSize().width / 2.0, layout->getSize().height * 3.0 / 8.0));
         } else {
@@ -199,7 +198,7 @@ SettingsLayer::init()
         layout->addChild(button2);
     }
 
-    if (currentScene == "MainMenuSence") {
+    if (currentScene == "HomeSence") {
         auto button3 = Button::create();
         button3->setTag(9);
         button3->setTouchEnabled(true);
@@ -233,10 +232,10 @@ SettingsLayer::init()
     button5->setTitleText("返回");
     button5->setTitleFontSize(36);
     button5->loadTextures(IMG_SETTING_BUTTON_NORMAL, IMG_SETTING_BUTTON_PRESSED);
-    if (currentScene == "HomeSence") {
+    if (currentScene == "MainMenuSence") {
         button5->setPosition(Vec2(layout->getSize().width / 2.0, layout->getSize().height / 5.0));
     }
-    if (currentScene == "MainMenuSence") {
+    if (currentScene == "HomeSence") {
         button5->setPosition(Vec2(layout->getSize().width / 2.0, layout->getSize().height / 8.0));
     }
     if (currentScene == "GameplaySence") {
@@ -253,18 +252,16 @@ SettingsLayer::init()
 void
 SettingsLayer::sliderEvent(Ref* pSender, Slider::EventType type)
 {
-    // auto audioEngine = SimpleAudioEngine::getInstance();
-
     if (type == Slider::EventType::ON_PERCENTAGE_CHANGED) {
         auto slider = dynamic_cast<Slider*>(pSender);
         int percent = slider->getPercent();
         if (slider->getTag() == 2) {
-            // audioEngine->setBackgroundMusicVolume(percent/100.0);
+            audioEngine->setBackgroundMusicVolume(percent / 100.0);
             // GameData音量接口
             log("setBackgroundMusicVolume");
         } else if (slider->getTag() == 4) {
-            ////GameData音量接口
-            // audioEngine->setEffectsVolume(percent/100.0);
+            audioEngine->setEffectsVolume(percent / 100.0);
+            // GameData音量接口
             log("setEffectsVolume");
         }
     }
@@ -284,7 +281,7 @@ SettingsLayer::touchEvent(Object* pSender, TouchEventType type)
             }
             case 8: {
                 Director::getInstance()->popToRootScene();
-                auto s = HomeScene::create();
+                auto s = MainMenuScene::create();
                 Director::getInstance()->pushScene(s);
                 break;
             }
