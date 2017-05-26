@@ -144,7 +144,7 @@ LogoAndDisclaimerScene::testGameData()
     auto get_round_list = ptr->getRoundList("Hakurei Jinja");
     auto get_avail_characters = ptr->getAvailableCharacterList();
     auto get_onstage_char_list = ptr->getOnStageCharacterTagList();
-    ptr->switchOnStageCharacter(0, "Reimu");
+    ptr->switchOnStageCharacter(1, "Reimu");
     ptr->changeItem("Reimu", 0, "I2"); // two same items in one character
     ptr->changeSpellCard("Reimu", 0, "C2");
 

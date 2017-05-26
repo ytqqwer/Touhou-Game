@@ -78,7 +78,8 @@ from_json(const json& j, Save& s)
 {
     s.tag = j.at("tag");
     s.name = j.at("name");
-    s.time = j.at("locationTag");
+    s.time = j.at("time");
+    s.locationTag = j.at("locationTag");
 }
 
 // locationListDom[n]["conversationIndicatorList"][n] -> ConversationIndicator
@@ -578,7 +579,7 @@ GameData::getRoundList(const string& locationTag)
 bool
 GameData::setRoundToPlay(const string& roundTag)
 {
-  return true;
+    return true;
 }
 
 vector<Character>
@@ -611,9 +612,7 @@ GameData::getOnStageCharacterTagList()
 bool
 GameData::switchOnStageCharacter(int nth, const string& characterTag)
 {
-    int curSave = savesDom["currentSaveTag"];
-    json& onStageCharList = savesDom["saveList"][curSave]["onStageCharacterList"];
-    onStageCharList[nth] = characterTag;
+    cachedSave["onStageCharacterList"][nth - 1] = characterTag;
 
     return true;
 }
