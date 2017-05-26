@@ -126,12 +126,13 @@ LogoAndDisclaimerScene::testGameData()
     /* 1. 看其运行时会不会崩溃 */
 
     auto ptr = GameData::getInstance();
+    ptr->newGame();
 
     auto get_current_save_tag = ptr->getCurrentSaveTag();
     auto vector_save = ptr->getSaveList();
-    ptr->saveSave();
-    // gdptr->deleteSave(get_current_save_tag); // too dangerous
-    // gdptr->switchSave(get_current_save_tag); // too dangerous
+    ptr->saveSave(get_current_save_tag);
+    // ptr->deleteSave(get_current_save_tag); // too dangerous
+    // ptr->switchSave(get_current_save_tag); // too dangerous
     ptr->setConversationSpeed(1.1);
     auto get_conversation_speed = ptr->getConversationSpeed();
     auto get_conversation_indicator_list = ptr->getConversationIndicatorList("Hakurei Jinja");

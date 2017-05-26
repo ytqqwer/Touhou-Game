@@ -33,8 +33,17 @@ public:
 
     int getCurrentSaveTag();
     vector<Save> getSaveList();
-    void saveSave();
+
+    // 在 MainMenuScene 中由【新游戏】按钮使用。现有存档数已满时【新游戏】失败
+    bool newGame();
+    void continueGame();
+
+    // 返回新存档的 tag
+    // 存档数量有上限，若现有存档数已满，创建新存档的操作会失败，返回 -1
+    int newSave();
+
     void deleteSave(int saveTag);
+    void saveSave(int saveTag);
     void switchSave(int saveTag);
 
     ////////////////////////////////////////////////////////////////////////////////
