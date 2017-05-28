@@ -32,22 +32,6 @@ RoundSelectScene::init()
     if (!Scene::init()) {
         return false;
     }
-    /*****************静态不会变化的板块.创建大概模型*****************/
-    //创建返回按钮
-    auto backButton = Button::create("roundselectscene/p1.png", "", "");
-    backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
-    backButton->setTitleText("返回");
-    backButton->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
-    backButton->addTouchEventListener(
-        [](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->popScene(); });
-    this->addChild(backButton);
-
-    //创建游戏开始按钮,等创建好了gameScene会添加一个事件监听器
-    auto beginButton = Button::create("roundselectscene/p10.png", "", "");
-    beginButton->setTitleText("开始游戏");
-    beginButton->setContentSize(Size(_visibleSize.width * 0.3, _visibleSize.height * 0.3));
-    beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
-    this->addChild(beginButton, 2);
 
     return true;
 }
@@ -56,6 +40,24 @@ void
 RoundSelectScene::onEnter()
 {
     Scene::onEnter();
+
+	/*****************静态不会变化的板块.创建大概模型*****************/
+	//创建返回按钮
+	auto backButton = Button::create("roundselectscene/p1.png", "", "");
+	backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
+	backButton->setTitleText("返回");
+	backButton->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
+	backButton->addTouchEventListener(
+		[](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->popScene(); });
+	this->addChild(backButton);
+
+	//创建游戏开始按钮,等创建好了gameScene会添加一个事件监听器
+	auto beginButton = Button::create("roundselectscene/p10.png", "", "");
+	beginButton->setTitleText("开始游戏");
+	beginButton->setContentSize(Size(_visibleSize.width * 0.3, _visibleSize.height * 0.3));
+	beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
+	this->addChild(beginButton, 2);
+
     /***********************创建会变化的模块********************/
     //取得当前所在的地点和回合，gameDate，以及角色,以及当前可以使用的所有角色
     Location location = GameData::getInstance()->getCurrentLocation();
@@ -214,17 +216,17 @@ RoundSelectScene::onEnter()
                     Vec2(_visibleSize.width * (0.5 + 0.2 * i), _visibleSize.height * 0.4));
                 this->addChild(sprite, 3);
 
-                /***************设置该角色的符卡
+                //设置该角色的符卡
                 vector<SpellCard>  card =
                 GameData::getInstance()->getCharacterSpellCardList(characters.at(j).tag);
                 Sprite *cardSprite[3];
                 for (int k = 0; k < card.size(); ++k)
                 {
                         cardSprite[k] = Sprite::create(card.at(k).icon);
-                        cardSprite[k]->setPosition(Vec2(_visibleSize.width*(0.5 + 0.1*i),
-                _visibleSize.height*0.3));
-                        cardSprite[k]->setContentSize(Size(_visibleSize.width*0.1,
-                _visibleSize.height*0.1));
+                        cardSprite[k]->setPosition(Vec2(_visibleSize.width*(0.45 + 0.2*i),
+                _visibleSize.height*0.25));
+                        cardSprite[k]->setContentSize(Size(_visibleSize.width*0.06,
+                _visibleSize.height*0.06));
                         this->addChild(cardSprite[k], 3);
                 }
                 //设置角色的道具
@@ -234,13 +236,12 @@ RoundSelectScene::onEnter()
                 for (int k = 0; k < item.size(); ++k)
                 {
                         itemSprite[k] = Sprite::create(item.at(k).icon);
-                        itemSprite[k]->setPosition(Vec2(_visibleSize.width*(0.5 + 0.1*i),
-                _visibleSize.height*0.2));
-                        itemSprite[k]->setContentSize(Size(_visibleSize.width*0.1,
-                _visibleSize.height*0.1));
+                        itemSprite[k]->setPosition(Vec2(_visibleSize.width*(0.45 + 0.2*i),
+                _visibleSize.height*0.15));
+                        itemSprite[k]->setContentSize(Size(_visibleSize.width*0.06,
+                _visibleSize.height*0.06));
                         this->addChild(itemSprite[k], 3);
                 }
-                *********************/
 
                 //角色的修改按钮
                 auto button = Button::create("roundselectscene/right.png");
@@ -251,15 +252,15 @@ RoundSelectScene::onEnter()
                     sprite->setTexture(characters.at((j + 1) / characters.size()).portrait);
                     sprite->setContentSize(
                         Size(_visibleSize.width * 0.1, _visibleSize.height * 0.15));
-                    /***********修改符卡
+                    //修改符卡
                     vector<SpellCard> card =
                     GameData::getInstance()->getCharacterSpellCardList(characters.at((j + 1) /
                     characters.size()).tag);
                     for (int k = 0; k < card.size(); ++k)
                     {
                             cardSprite[k]->setTexture(card.at(k).icon);
-                            cardSprite[k]->setContentSize(Size(_visibleSize.width*0.1,
-                    _visibleSize.height*0.1));
+                            cardSprite[k]->setContentSize(Size(_visibleSize.width*0.06,
+                    _visibleSize.height*0.06));
                     }
                     //修改道具
                     vector<Item> item =
@@ -268,10 +269,9 @@ RoundSelectScene::onEnter()
                     for (int k = 0; k < card.size(); ++k)
                     {
                             itemSprite[k]->setTexture(item.at(k).icon);
-                            itemSprite[k]->setContentSize(Size(_visibleSize.width*0.1,
-                    _visibleSize.height*0.1));
+                            itemSprite[k]->setContentSize(Size(_visibleSize.width*0.06,
+                    _visibleSize.height*0.06));
                     }
-                    *************/
                 });
                 this->addChild(button, 3);
             }
@@ -283,6 +283,7 @@ void
 RoundSelectScene::onExit()
 {
     Scene::onExit();
+	this->removeAllChildren();
 }
 
 void
