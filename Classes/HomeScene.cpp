@@ -258,7 +258,7 @@ HomeScene::onEnter()
     double dis = 0.43;
     vector<ConversationIndicator> conversation = gamedata->getConversationIndicatorList(loc.tag);
     for (int i = 0; i < conversation.size(); i++) {
-        auto newTalk = Sprite::create("homescene/p6.png");
+        auto newTalk = Sprite::create("homescene/p7.png");
         newTalk->setContentSize(Size(70, 67.2));
         newTalk->setPosition(Vec2(_visibleSize.width * (dis - 0.01), _visibleSize.height * 0.17));
         addChild(newTalk, 2);
