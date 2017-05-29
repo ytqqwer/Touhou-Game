@@ -3,7 +3,8 @@
 #endif
 
 #include "AppDelegate.h"
-#include "LogoAndDisclaimerScene.h"
+#include "GameData.h"
+#include "JumpTableScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -77,9 +78,15 @@ AppDelegate::applicationDidFinishLaunching()
 
     register_all_packages();
 
-    /*  5. run with scence */
+    /*  5. configure game */
 
-    auto scene = LogoAndDisclaimerScene::create();
+    auto audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
+    audioEngine->setBackgroundMusicVolume(GameData::getInstance()->getSavedBgmVolume());
+    audioEngine->setEffectsVolume(GameData::getInstance()->getSavedEffectsVolume());
+
+    /*  6. run with scence */
+
+    auto scene = JumpTableScene::create();
     director->runWithScene(scene);
 
     return true;
