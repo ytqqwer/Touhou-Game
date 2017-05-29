@@ -440,17 +440,22 @@ GameData::switchSave(int saveTag)
         cachedSave["characterList"][0]["tag"].get<string>().c_str());
 }
 
-float
-GameData::getConversationSpeed()
-{
-    return savesDom["conversationSpeed"];
-}
+// 音量（Volume）/ 对话速度（ConversationSpedd） 类接口有类似的内部实现。
+// 此处作成宏，让编译器帮我们生成
 
-void
-GameData::setConversationSpeed(float relativeSpeed)
-{
-    savesDom["conversationSpeed"] = relativeSpeed;
-}
+#define APP_IMPLEMENT_GET_AND_SAVE(funcName, domNodeName)                                          \
+    float GameData::getSaved##funcName() { return savesDom[#domNodeName]; }                        \
+                                                                                                   \
+    void GameData::save##funcName(float newVolume)                                                 \
+    {                                                                                              \
+        if (newVolume >= 0 && newVolume <= 1) {                                                    \
+            savesDom[#domNodeName] = newVolume;                                                    \
+        }                                                                                          \
+    }
+
+APP_IMPLEMENT_GET_AND_SAVE(BgmVolume, bgmVolume)
+APP_IMPLEMENT_GET_AND_SAVE(EffectsVolume, effectsVolume)
+APP_IMPLEMENT_GET_AND_SAVE(ConversationSpeed, conversationSpeed)
 
 vector<ConversationIndicator>
 GameData::getConversationIndicatorList(const string& locationTag)

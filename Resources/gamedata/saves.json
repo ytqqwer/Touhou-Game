@@ -1,8 +1,8 @@
 {
     "currentSaveTag": 0,
-    "conversationSpeed": 1.0,
-    "bgmVolume": 1,
-    "effectVolume": 1,
+    "conversationSpeed": 0.6,
+    "bgmVolume": 0.6,
+    "effectsVolume": 0.6,
     "saveList": [
         {
             "tag": 0,

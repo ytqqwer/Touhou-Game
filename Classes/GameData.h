@@ -47,11 +47,21 @@ public:
     void switchSave(int saveTag);
 
     ////////////////////////////////////////////////////////////////////////////////
+    // 背景音乐、特效音量大小 BGM / Effect
+
+    // [0, 1]
+    float getSavedBgmVolume();
+    void saveBgmVolume(float newVolume);
+
+    float getSavedEffectsVolume();
+    void saveEffectsVolume(float newVolume);
+
+    ////////////////////////////////////////////////////////////////////////////////
     // 对话 Conversation
 
-    // 调整对话显示速度，1 为标准速度，1 以下为减缓，1 以上为加快，与 1 的比例为速度相对比
-    float getConversationSpeed();
-    void setConversationSpeed(float relativeSpeed);
+    // 调整对话显示速度，[0, 1]
+    float getSavedConversationSpeed();
+    void saveConversationSpeed(float relativeSpeed);
 
     // 返回 vector.empty() = true 时表示这个地点中无对话
     // 在 HomeScene 中使用

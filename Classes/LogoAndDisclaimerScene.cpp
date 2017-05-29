@@ -133,8 +133,12 @@ LogoAndDisclaimerScene::testGameData()
     ptr->saveSave(get_current_save_tag);
     // ptr->deleteSave(get_current_save_tag); // too dangerous
     // ptr->switchSave(get_current_save_tag); // too dangerous
-    ptr->setConversationSpeed(1.1);
-    auto get_conversation_speed = ptr->getConversationSpeed();
+    ptr->saveBgmVolume(0.7);
+    auto get_saved_bgm_volume = ptr->getSavedBgmVolume();
+    ptr->saveEffectsVolume(0.7);
+    auto get_saved_effects_volume = ptr->getSavedEffectsVolume();
+    ptr->saveConversationSpeed(0.7);
+    auto get_saved_conversation_speed = ptr->getSavedConversationSpeed();
     auto get_conversation_indicator_list = ptr->getConversationIndicatorList("Hakurei Jinja");
     auto get_conversation = ptr->getConversation("1");
     auto get_current_location = ptr->getCurrentLocation();
