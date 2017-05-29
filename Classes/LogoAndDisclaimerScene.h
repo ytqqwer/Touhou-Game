@@ -23,8 +23,6 @@ private:
     void switchToJumpTableScene();
     void switchToBackgroundIntroScene();
 
-    void testGameData();
-
 private:
     // intorspection
     Size _visibleSize;

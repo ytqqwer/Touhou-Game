@@ -22,6 +22,11 @@ using json = nlohmann::json;
 GameData* GameData::_self; // definition of _self
 
 ////////////////////////////////////////////////////////////////////////////////
+// 开发阶段
+
+static void inDevelop();
+
+////////////////////////////////////////////////////////////////////////////////
 // FILE LOCAL VARIABLES / FUNCTIONS
 // 根据面向对象编程的观点，下面这些变量和函数应该的声明应该写入 GameData.h 头文件，但这会使得
 // GameData.h 头文件依赖增多，体积变大。一种解决方案是让 GameData 类维护一个指向 GameDataImpl
@@ -318,6 +323,9 @@ GameData::init()
     items_json.close();
     spell_cards_json.close();
     awards_json.close();
+
+    // 若 GameData 正在开发阶段
+    inDevelop();
 
     return true;
 }
@@ -915,4 +923,213 @@ void
 GameData::RoundComplete(const string& roundTag)
 {
     // TODO
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 开发阶段测试和特殊初始化 In Development
+
+static void
+testSelf()
+{
+    /* 1. 看其运行时会不会崩溃 */
+
+    auto ptr = GameData::getInstance();
+
+    auto get_current_save_tag = ptr->getCurrentSaveTag();
+    auto vector_save = ptr->getSaveList();
+    ptr->saveSave(get_current_save_tag);
+    // ptr->deleteSave(get_current_save_tag); // too dangerous
+    // ptr->switchSave(get_current_save_tag); // too dangerous
+    ptr->saveBgmVolume(0.7);
+    auto get_saved_bgm_volume = ptr->getSavedBgmVolume();
+    ptr->saveEffectsVolume(0.7);
+    auto get_saved_effects_volume = ptr->getSavedEffectsVolume();
+    ptr->saveConversationSpeed(0.7);
+    auto get_saved_conversation_speed = ptr->getSavedConversationSpeed();
+    auto get_conversation_indicator_list = ptr->getConversationIndicatorList("Hakurei Jinja");
+    auto get_conversation = ptr->getConversation("1");
+    auto get_current_location = ptr->getCurrentLocation();
+    auto get_location_list = ptr->getLocationList();
+    auto get_unlocked_location_tag_list = ptr->getUnlockedLocationTagList();
+    ptr->switchLocation("Hakurei Jinja");
+    auto get_round_list = ptr->getRoundList("Hakurei Jinja");
+    auto get_avail_characters = ptr->getAvailableCharacterList();
+    ptr->switchOnStageCharacter(1, "Marisa");
+    ptr->switchOnStageCharacter(2, "Reimu");
+    auto get_onstage_char_list = ptr->getOnStageCharacterTagList();
+    ptr->changeItem("Reimu", 0, "I2"); // two same items in one character
+    ptr->changeSpellCard("Reimu", 0, "C2");
+
+    get_avail_characters = ptr->getAvailableCharacterList();
+
+    auto get_character_item_list = ptr->getCharacterItemList("Reimu");
+    auto get_character_card_list = ptr->getCharacterSpellCardList("Reimu");
+    auto get_attack_list = ptr->getAttackList("Reimu");
+    ptr->switchAttackType("Reimu", Character::Attack::Type::FOCUS);
+    auto get_money_num = ptr->getMoneyNum();
+    ptr->increaseMoney(+1024);
+    get_money_num = ptr->getMoneyNum();
+    auto get_avail_item_list = ptr->getAvailableItemList();
+    auto get_item_list_in_store_1 = ptr->getItemListInStore("ArmsStore");
+    auto get_item_list_in_store_2 = ptr->getItemListInStore("Kourindou");
+    auto get_avail_card_list = ptr->getAvailableSpellCardList();
+
+    /* 2. 测试其返回的结果是否正确 */
+
+    log("\n==================== GameData Test Begin ====================");
+
+    log(">> GetSaveList:");
+    for (auto const& s : vector_save) {
+        cout << "  tag: " << s.tag << endl;
+        cout << "  name: " << s.name << endl;
+        cout << "  time: " << s.time << endl;
+        cout << "  locationTag: " << s.locationTag << endl;
+    }
+
+    log(">> getConversationIndicatorList:");
+    for (auto const& i : get_conversation_indicator_list) {
+        cout << "  conversationTag: " << i.conversationTag << endl;
+        cout << "  icon: " << i.icon << endl;
+        cout << "  name: " << i.name << endl;
+    }
+
+    log(">> getConversation:");
+    for (auto const& d : get_conversation) {
+        cout << "  characterName: " << d.characterName << endl;
+        cout << "  characterNameWrodArt" << d.characterNameWordArt << endl;
+        cout << "  characterPicPosition"
+             << (d.characterPicPosition == Dialogue::PicturePosition::LEFT
+                     ? "LEFT"
+                     : d.characterPicPosition == Dialogue::PicturePosition::MID ? "MID" : "RIGHT")
+             << endl;
+        cout << "  content: " << d.content << endl;
+        cout << "  backgrouondPicture: " << d.backgroundPicture << endl;
+        cout << "  backgroundMusic: " << d.backgroundMusic << endl;
+        cout << "  soundEffect: " << d.soundEffect << endl;
+        cout << "  screenEffect: "
+             << (d.screenEffect == Dialogue::ScreenEffect::NONE ? "NONE" : "SHAKE");
+    }
+
+    log(">> getCurrentLocation: ");
+    auto l = get_current_location;
+    cout << "  tag: " << l.tag << endl;
+    cout << "  name: " << l.name << endl;
+    cout << "  wordArt: " << l.wordArt << endl;
+    cout << "  previewPicture: " << l.previewPicture << endl;
+    cout << "  backgroundPicture: " << l.backgroundPicture << endl;
+    cout << "  backgroundMusic: " << l.backgroundMusic << endl;
+    cout << "  passedRound: " << l.passedRound << endl;
+    cout << "  totalRound: " << l.totalRound << endl;
+
+    log(">> getLocationList: ");
+    for (auto const& l : get_location_list) {
+        cout << "  tag: " << l.tag << endl;
+        cout << "  name: " << l.name << endl;
+        cout << "  previewPicture: " << l.previewPicture << endl;
+        cout << "  backgroundPicture: " << l.backgroundPicture << endl;
+        cout << "  backgroundMusic: " << l.backgroundMusic << endl;
+        cout << "  passedRound: " << l.passedRound << endl;
+        cout << "  totalRound: " << l.totalRound << endl;
+    }
+
+    log(">> getUnlockedLocationTagList: ");
+    for (auto const& t : get_unlocked_location_tag_list) {
+        cout << "  tag: " << t << endl;
+    }
+
+    log(">> getAvailCharacterList: ");
+    for (auto const& c : get_avail_characters) {
+        cout << "  tag: " << c.tag << endl;
+        cout << "  name: " << c.name << endl;
+        cout << "  avatar: " << c.name << endl;
+        cout << "  itemSlotNum: " << c.itemSlotNum << endl;
+        cout << "  spellCardSlotNum: " << c.spellCardSlotNum << endl;
+        cout << "  healthPointBase: " << c.healthPointBase << endl;
+        cout << "  healthPointInc: " << c.healthPointInc << endl;
+        cout << "  manaBase: " << c.manaBase << endl;
+        cout << "  manaInc: " << c.manaInc << endl;
+        cout << "  ..." << endl;
+    }
+
+    log(">> getOnStageCharacterTagList: ");
+    for (auto const& c : get_onstage_char_list) {
+        cout << "  tag: " << c << endl;
+    }
+
+    log(">> getCharacterItemList: ");
+    for (auto const& i : get_character_item_list) {
+        cout << "  tag: " << i.tag << endl;
+        cout << "  name: " << i.name << endl;
+        cout << "  icon: " << i.icon << endl;
+        cout << "  description: " << i.description << endl;
+        cout << "  type: " << (i.type == Item::Type::NORMAL
+                                   ? "NORMAL"
+                                   : i.type == Item::Type::STRENGTHEN ? "STRENGTHEN" : "SPECIAL")
+             << endl;
+        cout << "  isCarriable: " << i.isCarriable << endl;
+        cout << "  isUseable: " << i.isUseable << endl;
+        cout << "  maxUseCount: " << i.maxUseCount << endl;
+        cout << "  healthPointCost: " << i.healthPointCost << endl;
+        cout << "  manaCost: " << i.manaCost << endl;
+        cout << "  coolDown: " << i.cooldown << endl;
+        cout << "  healthPointInc: " << i.healthPointInc << endl;
+        cout << "  manaInc: " << i.manaInc << endl;
+        cout << "  walkSpeedInc: " << i.walkSpeedInc << endl;
+        cout << "  walkAccelerationInc: " << i.walkAccelerationInc << endl;
+        cout << "  dashAccelerationInc: " << i.dashAccelerationInc << endl;
+        cout << "  price: " << i.price << endl;
+    }
+
+    log(">> getCharacterSpellCardList: ");
+    for (auto const& c : get_character_card_list) {
+        cout << "  tag: " << c.tag << endl;
+        cout << "  ..." << endl;
+    }
+
+    log(">> getAttackList:");
+    for (auto const& a : get_attack_list) {
+        cout << "  tag: " << a.tag << endl;
+        cout << "  description: " << a.description << endl;
+        cout << "  type: " << ((a.type == Character::Attack::Type::FOCUS) ? "FOCUS" : "SPLIT")
+             << endl;
+    }
+
+    log(">> getAvailItemList:");
+    for (auto const& p : get_avail_item_list) {
+        cout << "  tag: " << p.first.tag << endl;
+        cout << "  amount: " << p.second << endl;
+
+        cout << "  ..." << endl;
+    }
+
+    log(">> getAvailSpellCardList:");
+    for (auto const& p : get_avail_card_list) {
+        cout << "  tag: " << p.first.tag << endl;
+        cout << "  amount: " << p.second << endl;
+        cout << "  ..." << endl;
+    }
+
+    log(">> getItemListInStore(\"ArmsStore\"):");
+    for (auto const& i : get_item_list_in_store_1) {
+        cout << "  tag: " << i.tag << endl;
+        cout << "  ..." << endl;
+    }
+
+    log(">> getItemListInStore(\"Kourindou\")");
+    for (auto const& i : get_item_list_in_store_2) {
+        cout << "  tag: " << i.tag << endl;
+        cout << "  ..." << endl;
+    }
+
+    log("==================== GameData Test End ====================");
+}
+
+static void
+inDevelop()
+{
+    auto ptr = GameData::getInstance();
+
+    ptr->newGame();
+
+    testSelf();
 }
