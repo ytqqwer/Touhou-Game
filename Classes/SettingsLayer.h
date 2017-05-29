@@ -8,6 +8,7 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include <string>
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 using namespace std;
@@ -29,5 +30,7 @@ private:
     // intorspection
     Size _visibleSize;
     string currentScene;
+
+    CocosDenshion::SimpleAudioEngine* audioEngine;
 };
 #endif // SETTINGS_LAYER_H

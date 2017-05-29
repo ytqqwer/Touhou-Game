@@ -10,11 +10,10 @@
 
 using namespace CocosDenshion;
 
-auto audioEngine = SimpleAudioEngine::getInstance();
-
 SettingsLayer::SettingsLayer(const string& TAG)
 {
     _visibleSize = _director->getVisibleSize();
+    audioEngine = SimpleAudioEngine::getInstance();
     currentScene = TAG;
 }
 
