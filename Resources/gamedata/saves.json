@@ -44,6 +44,24 @@
                         "C2"
                     ],
                     "preferedAttackType": "SPLIT"
+                },
+                {
+                    "tag": "Alice",
+                    "itemSlotNum": 2,
+                    "spellCardSlotNum": 2,
+                    "healthPointInc": 3,
+                    "manaInc": 3,
+                    "walkSpeedInc": 3,
+                    "walkAccelerationInc": 3,
+                    "dashAccelerationInc": 3,
+                    "equipedItemList": [
+                        "I3"
+                    ],
+                    "equipedSpellCardList": [
+                        "C1",
+                        "C4"
+                    ],
+                    "preferedAttackType": "SPLIT"
                 }
             ],
             "onStageCharacterList": [
