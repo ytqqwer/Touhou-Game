@@ -19,7 +19,7 @@
 #include <vector>
 
 USING_NS_CC;
-
+using namespace ui;
 class EquipScene : public Scene
 {
 public:
@@ -29,6 +29,9 @@ public:
     virtual void update(float dt);
     virtual void onEnter();
     virtual void onExit();
+    void getPeople(Ref*, Widget::TouchEventType, Character);
+    Sprite* EquipScene::getRect(double, double, double, double);
+    string getNumber(int, int);
 
 private:
     EquipScene();
@@ -39,6 +42,7 @@ private:
     // intorspection
     Size _visibleSize;
     GameData* gamedata;
+    int sum;
 };
 
 #endif // EQUIP_SCENE_H
