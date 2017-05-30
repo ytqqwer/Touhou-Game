@@ -5,14 +5,15 @@
 #ifndef SETTINGS_LAYER_H
 #define SETTINGS_LAYER_H
 
+#include "SimpleAudioEngine.h"
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include <string>
-#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 using namespace std;
 using namespace cocos2d::ui;
+using namespace CocosDenshion;
 
 class SettingsLayer : public Layer
 {
@@ -30,7 +31,6 @@ private:
     // intorspection
     Size _visibleSize;
     string currentScene;
-
-    CocosDenshion::SimpleAudioEngine* audioEngine;
+    SimpleAudioEngine* audioEngine;
 };
 #endif // SETTINGS_LAYER_H
