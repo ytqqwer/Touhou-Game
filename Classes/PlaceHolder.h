@@ -21,7 +21,49 @@ public:
                                 Color3B textColor = Color3B::WHITE);
 
 private:
-    PlaceHolder(); // for autorelease consideration, make ctor private
+    PlaceHolder();
+};
+
+// 为了更灵活的配置 placeholder ，我们创建 PlaceHolderGenerator 类
+// 它包含 PlaceHolder 类的所有功能，但更灵活同时也更复杂
+
+class PlaceHolderGenerator
+{
+public:
+    enum class PlaceHolderShape
+    {
+        RECT,
+        CIRCLE,
+    };
+
+public:
+    PlaceHolderGenerator();
+
+    // 配置 placeholder
+    // 其中 shape，size/radius 是必配置项
+    PlaceHolderGenerator& setShape(PlaceHolderShape shape);
+    PlaceHolderGenerator& setSize(Size s);    // for rect use only
+    PlaceHolderGenerator& setRadius(float r); // for circle use only
+    PlaceHolderGenerator& setEnableBorder(bool trueOrFalse);
+    PlaceHolderGenerator& setBorderColor(const Color3B& borderColor);
+    PlaceHolderGenerator& setText(const std::string& text);
+    PlaceHolderGenerator& setFontSize(int size);
+    PlaceHolderGenerator& setBgColor(const Color3B& bgColor);
+    PlaceHolderGenerator& setTextColor(const Color3B& textColor);
+
+    // 生成 placeholder
+    Sprite* generate();
+
+private:
+    PlaceHolderShape shape;
+    Size size;
+    float radius;
+    bool enableBorder;
+    Color3B borderColor;
+    std::string text;
+    int fontSize;
+    Color3B bgColor;
+    Color3B textColor;
 };
 
 #endif
