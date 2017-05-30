@@ -274,11 +274,13 @@ SettingsLayer::touchEvent(Object* pSender, TouchEventType type)
     if (type == TOUCH_EVENT_ENDED) {
         switch (tag) {
             case 7: {
+                this->removeFromParent();
                 auto s = SaveScene::create(true);
                 Director::getInstance()->pushScene(s);
                 break;
             }
             case 8: {
+                this->removeFromParent();
                 Director::getInstance()->popToRootScene();
                 auto s = MainMenuScene::create();
                 Director::getInstance()->pushScene(s);
@@ -289,13 +291,13 @@ SettingsLayer::touchEvent(Object* pSender, TouchEventType type)
                 break;
             }
             case 10: {
-                // GameplaySence未实现
-                log("放弃关卡");
+                // GameplaySence 未实现
+                // TODO
+                log("放弃关卡，返回主菜单");
                 break;
             }
             case 11: {
-                Director::getInstance()->popScene();
-                // SettingsLayer::removeFromParent();
+                this->removeFromParent();
                 break;
             }
             default:
