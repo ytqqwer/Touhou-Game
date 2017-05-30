@@ -12,6 +12,7 @@
 #include "GameData/Location.h"
 #include "GameData/Round.h"
 #include "GameData/SpellCard.h"
+#include "SettingsLayer.h"
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include <string>

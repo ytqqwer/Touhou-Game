@@ -161,6 +161,12 @@ HomeScene::init()
     set_button->setTitleText("设置");
     set_button->setTitleFontSize(20);
     set_button->setScale(0.87);
+    set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            auto lay = SettingsLayer::create("HomeScene");
+            this->addChild(lay, 5);
+        }
+    });
     addChild(set_button);
 
     /*资料库按钮*/
