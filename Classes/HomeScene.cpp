@@ -25,7 +25,8 @@ HomeScene::HomeScene()
 {
     gamedata = GameData::getInstance();
     _visibleSize = _director->getVisibleSize();
-    order = 0;
+    people_array = gamedata->getAvailableCharacterList();
+    sum = order = 0;
 }
 
 bool
@@ -118,8 +119,12 @@ HomeScene::init()
     role_change->setScale9Enabled(true);
     role_change->setSize(Size(_visibleSize.width * 55 / 1280, _visibleSize.height * 108 / 720));
     role_change->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-        if (type == Widget::TouchEventType::ENDED)
+        if (type == Widget::TouchEventType::ENDED) {
+            person[order]->setPosition(Vec2(-_visibleSize.width, 0));
+            order++;
+            order %= people_array.size();
             this->getPeople();
+        }
     });
     addChild(role_change);
     /*卡片*/
@@ -200,6 +205,21 @@ HomeScene::init()
     coin->setColor(Color3B::BLACK);
     addChild(coin);
 
+    bg = Sprite::create();
+    addChild(bg, -1);
+    word = Sprite::create();
+    addChild(word);
+    prog_text = Label::createWithTTF("", "fonts/dengxian.ttf", 20);
+    addChild(prog_text);
+    money_text = Label::createWithTTF("", "fonts/dengxian.ttf", 20);
+    addChild(money_text);
+    for (int i = 0; i < min(4, (int)people_array.size()); i++) {
+        person[i] = ImageView::create(people_array[i].portrait);
+        person[i]->setAnchorPoint(Vec2(0, 0));
+        person[i]->setPosition(Vec2(-_visibleSize.width, 0));
+        person[i]->setScale(508.0 / 1280 * _visibleSize.width / person[0]->getContentSize().width);
+        addChild(person[i]);
+    }
     return true;
 }
 
@@ -213,21 +233,19 @@ HomeScene::onEnter()
     Scene::onEnter();
 
     auto loc = gamedata->getCurrentLocation();
-
     /*背景*/
-    auto bg = Sprite::create(loc.backgroundPicture);
+
+    bg->setTexture(loc.backgroundPicture);
     bg->setContentSize(_visibleSize);
     bg->setPosition(_visibleSize / 2);
-    addChild(bg, -1);
 
     /*地点艺术字*/
-    auto word = Sprite::create(loc.wordArt);
+    word->setTexture(loc.wordArt);
     word->setAnchorPoint(Vec2(0, 1));
     word->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.077));
     word->setPosition(Vec2(_visibleSize.width * 0.53, _visibleSize.height * 0.955));
     word->setColor(Color3B(254, 250, 153));
     word->setOpacity(150);
-    addChild(word);
 
     /*具体进度*/
     int cnt = 0;
@@ -237,43 +255,40 @@ HomeScene::onEnter()
     str[cnt++] = '/';
     sprintf(str + cnt, "%d", loc.totalRound);
     string prog = str;
-    auto prog_text = Label::createWithTTF(prog, "fonts/dengxian.ttf", 20);
     prog_text->setPosition(Vec2(_visibleSize.width * 0.67, _visibleSize.height * 0.925));
     prog_text->setColor(Color3B::BLACK);
-    addChild(prog_text);
+    prog_text->setString(prog);
 
     /*具体钱币*/
     sprintf(str, "%ld", gamedata->getMoneyNum());
     prog = str;
-    auto money_text = Label::createWithTTF(prog, "fonts/dengxian.ttf", 20);
     money_text->setPosition(Vec2(_visibleSize.width * 0.745, _visibleSize.height * 0.925));
     money_text->setColor(Color3B::BLACK);
-    addChild(money_text);
+    money_text->setString(prog);
 
     /*人物*/
-    people_array = gamedata->getAvailableCharacterList();
+
     getPeople();
 
     /*对话图标*/
     double dis = 0.43;
-    vector<ConversationIndicator> conversation = gamedata->getConversationIndicatorList(loc.tag);
-    for (int i = 0; i < conversation.size(); i++) {
+    auto conversation = gamedata->getConversationIndicatorList(loc.tag);
+    for (int i = 0; i < min(3, (int)conversation.size()); i++) {
         auto newTalk = Sprite::create("homescene/p7.png");
-        newTalk->setContentSize(Size(70, 67.2));
+        newTalk->setContentSize(
+            Size(70.0 / 1280 * _visibleSize.width, 67.2 / 720 * _visibleSize.height));
+        newTalk->setOpacity(255);
         newTalk->setPosition(Vec2(_visibleSize.width * (dis - 0.01), _visibleSize.height * 0.17));
-        addChild(newTalk, 2);
+        addChild(newTalk, 2, ++sum);
 
-        auto talk_button = Button::create("homescene/p5.png");
-        talk_button->setTitleFontName("fonts/dengxian.ttf");
+        auto talk_button = Button::create(conversation[i].icon);
+        static double scale =
+            100.0 / 1280 * _visibleSize.width / talk_button->getContentSize().width;
         talk_button->setAnchorPoint(Vec2(0, 1));
         talk_button->setPosition(Vec2(_visibleSize.width * dis, _visibleSize.height * 0.15));
         talk_button->setScale9Enabled(true);
-        talk_button->setSize(
-            Size(_visibleSize.width * 100 / 1280, _visibleSize.height * 100 / 720));
-        talk_button->setTitleText(conversation[i].name);
-        talk_button->setTitleFontSize(20);
-        talk_button->setScale(0.87);
-        addChild(talk_button, 1);
+        talk_button->setScale(scale);
+        addChild(talk_button, 1, ++sum);
         talk_button->addTouchEventListener(
             CC_CALLBACK_2(HomeScene::getDialogue, this, conversation[i].conversationTag, newTalk));
         dis += 0.08;
@@ -283,44 +298,36 @@ void
 HomeScene::getPeople()
 {
     /*人物*/
-    int h = order - 1;
-    h += 1000;
-    if (h == 999) {
-        h = people_array.size() + 999;
-    }
-    auto person = getChildByTag(h);
-    if (person)
-        person->setOpacity(0);
-    person = getChildByTag(order + 1000);
-    if (person == NULL) {
-        person = ImageView::create(people_array[order].portrait);
-        person->setAnchorPoint(Vec2(0, 0));
-        person->setPosition(Vec2(_visibleSize.width * 0.05, 0));
-        person->setScale(508.0 / 1280 * _visibleSize.width / person->getContentSize().width);
-        addChild(person, 0, order + 1000);
-    } else {
-        person->setOpacity(255);
-    }
+    person[order]->setPosition(Vec2(_visibleSize.width * 0.05, 0));
+
     /*卡片*/
     card = gamedata->getCharacterSpellCardList(people_array[order].tag);
-    for (int i = 0; i < min(3, (int)card.size()); i++) {
-        cards[i]->setTexture(card[i].icon);
-        cards[i]->setContentSize(Size(_visibleSize.width * 0.041, _visibleSize.width * 0.065));
-        if (i == 1)
-            cards[i]->setPosition(Vec2(_visibleSize.width * 0.04, _visibleSize.height * 0.20));
+    string img;
+    double width = 0.041, height = 0.065;
+    for (int i = 0; i < 3; i++) {
+        if (i < card.size())
+            img = card[i].icon;
+        else {
+            img = "homescene/p2.png";
+            width = height = 0.047;
+        }
+        cards[i]->setTexture(img);
+        cards[i]->setContentSize(Size(_visibleSize.width * width, _visibleSize.width * height));
     }
-
-    order++;
-    order %= people_array.size();
 }
 void
-HomeScene::getDialogue(Ref* pSender, Widget::TouchEventType type, string tag, Sprite* newTalk)
+HomeScene::getDialogue(Ref* pSender, Widget::TouchEventType type, string tag, Sprite* talk)
 {
-    if (type == Widget::TouchEventType::ENDED)
-        newTalk->setOpacity(0);
+    if (type == Widget::TouchEventType::ENDED) {
+        talk->setOpacity(0);
+    }
 }
 void
 HomeScene::onExit()
 {
+    for (int i = 1; i <= sum; i++) {
+        removeChildByTag(i);
+    }
+    sum = 0;
     Scene::onExit();
 }

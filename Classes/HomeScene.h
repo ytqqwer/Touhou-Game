@@ -44,6 +44,12 @@ private:
     vector<SpellCard> card;
     GameData* gamedata;
     Sprite* cards[3];
+    Sprite* bg;           //背景
+    Sprite* word;         //艺术字
+    Label* prog_text;     //进度
+    Label* money_text;    //钱币
+    ImageView* person[4]; //人物立绘
+    int sum;
 };
 
 #endif // HOME_SCENE_H
