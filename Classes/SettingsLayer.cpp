@@ -3,9 +3,9 @@
 #endif
 
 #include "SettingsLayer.h"
+#include "GameData.h"
 #include "MainMenuScene.h"
 #include "SaveScene.h"
-#include "GameData.h"
 #include "SimpleAudioEngine.h"
 #include "resources.h.dir/settings_layer.h"
 
@@ -51,6 +51,16 @@ SettingsLayer::init()
     if (!Layer::init()) {
         return false;
     }
+
+    //触摸截断
+    this->setLocalZOrder(8888);
+    this->setTouchEnabled(true);
+    EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->setSwallowTouches(true);
+    listener->onTouchBegan = [](Touch* t, Event* e) { return true; };
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener,
+                                                                                          this);
 
     /*  2.创建背景 */
     auto background = Sprite::create(IMG_SETTING_BACKGROUND);
@@ -255,11 +265,11 @@ SettingsLayer::sliderEvent(Ref* pSender, Slider::EventType type)
         int percent = slider->getPercent();
         if (slider->getTag() == 2) {
             audioEngine->setBackgroundMusicVolume(percent / 100.0);
-			GameData::getInstance()->saveBgmVolume(percent/100.0);
-           } else if (slider->getTag() == 4) {
+            GameData::getInstance()->saveBgmVolume(percent / 100.0);
+        } else if (slider->getTag() == 4) {
             audioEngine->setEffectsVolume(percent / 100.0);
-			GameData::getInstance()->saveEffectsVolume(percent / 100.0);
-            }
+            GameData::getInstance()->saveEffectsVolume(percent / 100.0);
+        }
     }
 }
 
