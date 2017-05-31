@@ -30,7 +30,7 @@ public:
     virtual void onEnter();
     virtual void onExit();
     void getPeople(Ref*, Widget::TouchEventType, Character);
-    Sprite* EquipScene::getRect(double, double, double, double);
+    Sprite* getRect(double, double, double, double);
     string getNumber(int, int);
 
 private:
