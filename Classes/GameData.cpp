@@ -86,7 +86,9 @@ getCurrentTime()
 static void
 syncSaveChangesToFile()
 {
-    // TODO
+    ofstream saves_json(FileUtils::getInstance()->fullPathForFilename("gamedata/saves.json"),
+                        ios_base::trunc | ios_base::out);
+    saves_json << setw(4) << savesDom;
 }
 
 /* 以下的 from_json 函数提供给 nlohmann::json 使用，使其能将 json 对象转成我们
@@ -1149,9 +1151,12 @@ testSelf()
 static void
 inDevelop()
 {
-    auto ptr = GameData::getInstance();
-
-    ptr->newGame();
+    auto g = GameData::getInstance();
+    if (g->getSaveList().size() == 0) {
+        g->newGame();
+    } else {
+        g->continueGame();
+    }
 
     testSelf();
 }
