@@ -60,6 +60,8 @@ static json awardListDom;
 // 我们需要记录更改到其他地方，而不能直接记录到 A 上
 static json cachedSave;
 
+static string roundToPlayTag;
+
 // 在开发阶段使用，用于特殊初始化 GameData 和测试 GameData
 // 此处是函数声明，定义在此文件的最后
 static void inDevelop();
@@ -619,7 +621,28 @@ GameData::getRoundList(const string& locationTag)
 bool
 GameData::setRoundToPlay(const string& roundTag)
 {
+    roundToPlayTag = roundTag;
     return true;
+}
+
+Round
+GameData::getRoundToPlay()
+{
+    const json* roundPtr = nullptr;
+
+    for (auto const& l : locationListDom) {
+        for (auto const& r : l["roundList"]) {
+            if (r["tag"] == roundToPlayTag) {
+                roundPtr = &r;
+                goto found;
+            }
+        }
+    }
+
+found:
+
+    // *ptr -> Round
+    return *roundPtr;
 }
 
 vector<Character>
@@ -997,6 +1020,8 @@ testSelf()
     auto get_item_list_in_store_1 = ptr->getItemListInStore("ArmsStore");
     auto get_item_list_in_store_2 = ptr->getItemListInStore("Kourindou");
     auto get_avail_card_list = ptr->getAvailableSpellCardList();
+    ptr->setRoundToPlay("round 1");
+    auto get_round_to_play = ptr->getRoundToPlay();
 
     /* 2. 测试其返回的结果是否正确 */
 
@@ -1144,6 +1169,27 @@ testSelf()
         cout << "  tag: " << i.tag << endl;
         cout << "  ..." << endl;
     }
+
+    log(">> getRoundToPlay()");
+    cout << "  tag: " << get_round_to_play.tag << endl;
+    cout << "  name: " << get_round_to_play.name << endl;
+    cout << "  previewPicture: " << get_round_to_play.previewPicture << endl;
+    cout << "  description: " << get_round_to_play.description << endl;
+    {
+        auto d = get_round_to_play.difficulty;
+        cout << "  difficulty: "
+             << (d == Round::Difficulty::ONE
+                     ? "ONE"
+                     : d == Round::Difficulty::TWO
+                           ? "TWO"
+                           : d == Round::Difficulty::THREE
+                                 ? "THREE"
+                                 : d == Round::Difficulty::FOUR
+                                       ? "FOURE"
+                                       : d == Round::Difficulty::FIVE ? "FIVE" : "NONE")
+             << endl;
+    }
+    cout << "  TMXMap: " << get_round_to_play.TMXMap << endl;
 
     log("==================== GameData Test End ====================");
 }
