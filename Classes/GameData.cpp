@@ -164,6 +164,8 @@ from_json(const json& j, Round& r)
 
         r.difficulty = dEnum;
     }
+
+    r.TMXMap = j.at("TMXMap");
 }
 
 // savesDom["saveList"][n]["characterList"][n] -> Character
@@ -195,6 +197,7 @@ from_json(const json& j, Character& c)
 
     c.healthPointBase = it->at("healthPointBase");
     c.manaBase = it->at("manaBase");
+    c.walkSpeedBase = it->at("walkSppedBase");
     c.walkAccelerationBase = it->at("walkAccelerationBase");
     c.dashAccelerationBase = it->at("dashAccelerationBase");
 
