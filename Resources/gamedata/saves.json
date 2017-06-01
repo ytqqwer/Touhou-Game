@@ -24,7 +24,9 @@
                         "I2"
                     ],
                     "equipedSpellCardList": [
-                        "C1"
+                        "C1",
+                        "C3",
+                        "C5"
                     ],
                     "preferedAttackType": "FOCUS"
                 },
@@ -41,7 +43,8 @@
                         "I4"
                     ],
                     "equipedSpellCardList": [
-                        "C2"
+                        "C2",
+                        "C4"
                     ],
                     "preferedAttackType": "SPLIT"
                 },
@@ -58,8 +61,8 @@
                         "I3"
                     ],
                     "equipedSpellCardList": [
-                        "C1",
-                        "C4"
+                        "C3",
+                        "C5"
                     ],
                     "preferedAttackType": "SPLIT"
                 }
@@ -90,12 +93,24 @@
                 {
                     "tag": "I4",
                     "amount": 2
+                },
+                {
+                    "tag": "I5",
+                    "amount": 2
+                },
+                {
+                    "tag": "I6",
+                    "amount": 2
+                },
+                {
+                    "tag": "I7",
+                    "amount": 2
                 }
             ],
             "availableSpellCardList": [
                 {
                     "tag": "C1",
-                    "amount": 2
+                    "amount": 1
                 },
                 {
                     "tag": "C2",
@@ -103,11 +118,15 @@
                 },
                 {
                     "tag": "C3",
-                    "amount": 2
+                    "amount": 3
                 },
                 {
                     "tag": "C4",
-                    "amount": 2
+                    "amount": 4
+                },
+                {
+                    "tag": "C5",
+                    "amount": 5
                 }
             ],
             "money": 512
