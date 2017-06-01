@@ -2,14 +2,30 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "GameData/impl/json.h"
-#include "resources.h.dir/gamedata.h"
-#include <ctime>
-#include <fstream>
-#include <iostream>
-#include <utility>
-
-using json = nlohmann::json;
+/*
+ *  这个文件实现 GameData.h 中定义的数据接口。实现方式很不 elegant ;)，因为我们在其中混杂
+ *
+ * 在实现 GameData 的接口时我们要用到一些辅助函数/变量。为了不污染 GameData.h 接口定义头文件，
+ * 并没有将这些函数/变量的声明放入 GameData 类定义中，而是将这些辅助函数做成了【scope 和
+ * linkage 均为文件级的 static 函数】放入了本文件中。当然，也有接口继承这种面向对象的方法
+ * 来解决这个问题。但是那种实现有一定的复杂性。当实现的复杂性超过面向对象方法的复杂性时，
+ * 我们会考虑使用面向对象方法来做。
+ *
+ * --- 本文件自上而下由三部分组成 ---
+ *
+ *   1. 用于辅助 GameData 接口实现的 static 函数/变量
+ *      - 其中包括提供给 nolmann::json 使用，将 json 节点转为自定义类对象的 from_json 函数。
+ *        为了实现的方便，这些 from_json 函数不仅仅是数据的简单转换，也包含了游戏逻辑
+ *       （暂时找不到 elegant 的方法来分离），会用到那些辅助 GameData 实现的 static 变量，
+ *        很难将其作成单独的编译单元
+ *
+ *   2. GameData 接口的实现
+ *      - 对文件的操作
+ *      - 对第 1 部分所定义的 json DOM 树的操作
+ *
+ *   3. 开发阶段的特殊初始化和测试 GameData 的 InDevelop 函数以及其子函数
+ *      - 这些函数有会用到 GameData 内部实现的具体设施，不能作成单独的编译单元
+ */
 
 #include "GameData.h"
 #include "GameData/Character.h"
@@ -19,20 +35,18 @@ using json = nlohmann::json;
 #include "GameData/Round.h"
 #include "GameData/SpellCard.h"
 
+#include "GameData/impl/json.h"
+using json = nlohmann::json;
+
+#include <ctime>
+#include <fstream>
+#include <iostream>
+#include <utility>
+
 GameData* GameData::_self; // definition of _self
 
 ////////////////////////////////////////////////////////////////////////////////
-// 开发阶段
-
-static void inDevelop();
-
-////////////////////////////////////////////////////////////////////////////////
-// FILE LOCAL VARIABLES / FUNCTIONS
-// 根据面向对象编程的观点，下面这些变量和函数应该的声明应该写入 GameData.h 头文件，但这会使得
-// GameData.h 头文件依赖增多，体积变大。一种解决方案是让 GameData 类维护一个指向 GameDataImpl
-// 的指针，将这些变量/函数放入 GameDataImpl 中，但这还需要维护一个 GameDataImpl 类。为简单起见，
-// 我们采用 C 语言的特性，使用 static 变量/函数，使 变量/函数 的可见性局限于文件范围内，这样也能
-// 达到封装和隐藏的目的。
+// 第一部分：用于辅助 GameData 接口实现的 static 函数/变量
 
 static json savesDom;
 static json characterListDom;
@@ -43,8 +57,12 @@ static json spellCardListDom;
 static json awardListDom;
 
 // 用于支持玩 A 存档时，想存至 B 存档上
-// 我们记录更改到其他地方，而不能直接记录到 A 上
+// 我们需要记录更改到其他地方，而不能直接记录到 A 上
 static json cachedSave;
+
+// 在开发阶段使用，用于特殊初始化 GameData 和测试 GameData
+// 此处是函数声明，定义在此文件的最后
+static void inDevelop();
 
 static string
 getCurrentTime()
@@ -247,6 +265,7 @@ from_json(const json& j, SpellCard& c)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// 第二部分：GameData 接口的实现
 
 GameData::GameData()
 {
@@ -926,7 +945,7 @@ GameData::RoundComplete(const string& roundTag)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// 开发阶段测试和特殊初始化 In Development
+// 第三部分：开发阶段测试和特殊初始化 In Development
 
 static void
 testSelf()
