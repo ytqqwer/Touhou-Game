@@ -12,6 +12,7 @@
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 #include "RoundSelectScene.h"
+#include "SimpleAudioEngine.h"
 
 // #include "resources.h.dir/home.h"
 #include <string>
@@ -27,6 +28,8 @@ HomeScene::HomeScene()
     _visibleSize = _director->getVisibleSize();
     people_array = gamedata->getAvailableCharacterList();
     sum = order = 0;
+    loc = gamedata->getCurrentLocation();
+    music = "";
 }
 
 bool
@@ -37,7 +40,7 @@ HomeScene::init()
     if (!Scene::init()) {
         return false;
     }
-    /* 2. 返回*/
+    /* 返回*/
     auto ret = Button::create("", "", "");
     ret->setTitleText("返回");
     ret->setTitleColor(Color3B(0, 0, 0));
@@ -235,7 +238,14 @@ HomeScene::onEnter()
 {
     Scene::onEnter();
 
-    auto loc = gamedata->getCurrentLocation();
+    /*背景音乐*/
+    if (music != loc.backgroundMusic) {
+        auto play = SimpleAudioEngine::getInstance();
+        play->stopBackgroundMusic();
+        play->playBackgroundMusic(loc.backgroundMusic.c_str(), true);
+        music = loc.backgroundMusic;
+    }
+
     /*背景*/
 
     bg->setTexture(loc.backgroundPicture);

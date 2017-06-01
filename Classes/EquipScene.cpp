@@ -91,11 +91,6 @@ EquipScene::onEnter()
         if (i == 0)
             getPeople(button, Widget::TouchEventType::ENDED, people[i]);
     }
-    dis -= 0.03;
-    auto people_list = Label::createWithTTF("（头像列表）", "fonts/dengxian.ttf", 20);
-    people_list->setPosition(Vec2(_visibleSize.width * 0.17, _visibleSize.height * dis));
-    people_list->setColor(Color3B::BLACK);
-    addChild(people_list);
 
     auto box_1 = getRect(0.27, 0.46, 0.0017, 0.002);
     box_1->setAnchorPoint(Vec2(0, 0));

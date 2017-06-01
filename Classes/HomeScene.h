@@ -51,6 +51,8 @@ private:
     Label* money_text;    //钱币
     ImageView* person[4]; //人物立绘
     int sum;
+    Location loc; //地点
+    string music;
 };
 
 #endif // HOME_SCENE_H
