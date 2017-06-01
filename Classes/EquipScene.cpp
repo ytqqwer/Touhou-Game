@@ -116,13 +116,13 @@ EquipScene::onEnter()
     box_4->setPosition(box_3->getContentSize() / 2);
     box_3->addChild(box_4);
 
-    auto deco_1 = Sprite::create("EquipScene/p2.png");
+    auto deco_1 = Sprite::create("equipscene/p2.png");
     deco_1->setContentSize(Size(_visibleSize.width * 0.04, _visibleSize.height * 0.055));
     deco_1->setPosition(
         Vec2(box_4->getContentSize().width * 0.9, box_4->getContentSize().height * 0.5));
     box_4->addChild(deco_1);
 
-    auto deco_2 = Sprite::create("EquipScene/p2.png");
+    auto deco_2 = Sprite::create("equipscene/p2.png");
     deco_2->setContentSize(Size(_visibleSize.width * 0.04, _visibleSize.height * 0.055));
     deco_2->setPosition(
         Vec2(box_4->getContentSize().width * 0.9, box_3->getContentSize().height * 0.162));
@@ -155,7 +155,6 @@ EquipScene::getPeople(Ref* ref, Widget::TouchEventType type, Character people)
         removeChildByTag(i);
     }
     sum = 0;
-
     auto person = Sprite::create(people.portrait);
     person->setContentSize(Size(_visibleSize.width * 0.08, _visibleSize.width * 0.08 * 600 / 450));
     person->setPosition(Vec2(_visibleSize.width * 0.32, _visibleSize.height * 0.74));
@@ -220,7 +219,7 @@ EquipScene::getPeople(Ref* ref, Widget::TouchEventType type, Character people)
             card_text->setAlignment(TextHAlignment::CENTER);
             addChild(card_text, 1, ++sum);
         } else {
-            card = Sprite::create("EquipScene/p3.png");
+            card = Sprite::create("equipscene/p3.png");
             card->setContentSize(Size(_visibleSize.width * 0.07, _visibleSize.width * 0.07));
         }
         card->setColor(Color3B::WHITE);
@@ -250,7 +249,7 @@ EquipScene::getPeople(Ref* ref, Widget::TouchEventType type, Character people)
             tool_text->setAlignment(TextHAlignment::CENTER);
             addChild(tool_text, 1, ++sum);
         } else {
-            tool = Sprite::create("EquipScene/p3.png");
+            tool = Sprite::create("equipscene/p3.png");
             tool->setContentSize(Size(_visibleSize.width * 0.07, _visibleSize.width * 0.07));
         }
         tool->setColor(Color3B::WHITE);

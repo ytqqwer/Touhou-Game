@@ -128,19 +128,16 @@ HomeScene::init()
     });
     addChild(role_change);
     /*卡片*/
-    cards[0] = Sprite::create("homescene/p2.png");
-    cards[0]->setPosition(Vec2(_visibleSize.width * 0.04, _visibleSize.height * 0.32));
-    cards[0]->setContentSize(Size(_visibleSize.width * 0.047, _visibleSize.width * 0.047));
+    cards[0] = Sprite::create();
+    cards[0]->setPosition(Vec2(_visibleSize.width * 0.042, _visibleSize.height * 0.33));
     addChild(cards[0]);
 
-    cards[1] = Sprite::create("homescene/p2.png");
-    cards[1]->setPosition(Vec2(_visibleSize.width * 0.04, _visibleSize.height * 0.19));
-    cards[1]->setContentSize(Size(_visibleSize.width * 0.047, _visibleSize.width * 0.047));
+    cards[1] = Sprite::create();
+    cards[1]->setPosition(Vec2(_visibleSize.width * 0.042, _visibleSize.height * 0.2));
     addChild(cards[1]);
 
-    cards[2] = Sprite::create("homescene/p2.png");
-    cards[2]->setPosition(Vec2(_visibleSize.width * 0.04, _visibleSize.height * 0.08));
-    cards[2]->setContentSize(Size(_visibleSize.width * 0.047, _visibleSize.width * 0.047));
+    cards[2] = Sprite::create();
+    cards[2]->setPosition(Vec2(_visibleSize.width * 0.042, _visibleSize.height * 0.07));
     addChild(cards[2]);
 
     /*地点,进度...等背景*/
