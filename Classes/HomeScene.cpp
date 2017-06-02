@@ -287,7 +287,7 @@ HomeScene::onEnter()
     getPeople();
 
     /*对话图标*/
-    double dis = 0.43;
+    double dis = 0.36;
     auto conversation = gamedata->getConversationIndicatorList(loc.tag);
     for (int i = 0; i < min(3, (int)conversation.size()); i++) {
         auto newTalk = Sprite::create("homescene/p7.png");
@@ -307,7 +307,7 @@ HomeScene::onEnter()
         addChild(talk_button, 1, ++sum);
         talk_button->addTouchEventListener(
             CC_CALLBACK_2(HomeScene::getDialogue, this, conversation[i].conversationTag, newTalk));
-        dis += 0.08;
+        dis += 0.10;
     }
 }
 void
