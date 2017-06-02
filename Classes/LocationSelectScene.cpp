@@ -70,7 +70,7 @@ LocationSelectScene::init()
     addChild(up, 2);
 
     /*返回*/
-    auto ret = Button::create("location_select/bac.png");
+    auto ret = Button::create("location_select/back.png");
     ret->setTitleColor(Color3B(0, 0, 0));
     ret->setTitleFontSize(30);
     ret->setAnchorPoint(Vec2(0, 1));
@@ -83,7 +83,7 @@ LocationSelectScene::init()
     addChild(ret, 2);
 
     /*特殊地点   红魔馆大图书馆*/
-    auto koumakanLibrary = Button::create("location_select/hmlib.png");
+    auto koumakanLibrary = Button::create("location_select/KoumakanLibrary.png");
     koumakanLibrary->setTitleColor(Color3B(0, 0, 0));
     koumakanLibrary->setTitleFontSize(30);
     koumakanLibrary->setAnchorPoint(Vec2(0, 1));
@@ -96,7 +96,7 @@ LocationSelectScene::init()
     addChild(koumakanLibrary, 2);
 
     /*特殊地点   香霖堂*/
-    auto Kourindou = Button::create("location_select/xlin.png");
+    auto Kourindou = Button::create("location_select/Kourindou.png");
     Kourindou->setTitleColor(Color3B(0, 0, 0));
     Kourindou->setTitleFontSize(30);
     Kourindou->setAnchorPoint(Vec2(0, 1));
@@ -109,7 +109,7 @@ LocationSelectScene::init()
     addChild(Kourindou, 2);
 
     /*特殊地点   军火店*/
-    auto ArmsStore = Button::create("location_select/junhuo.png");
+    auto ArmsStore = Button::create("location_select/ArmsStore.png");
     ArmsStore->setTitleColor(Color3B(0, 0, 0));
     ArmsStore->setTitleFontSize(30);
     ArmsStore->setAnchorPoint(Vec2(0, 1));
