@@ -9,6 +9,7 @@
 #include "HomeScene.h"
 #include "InventoryScene.h"
 #include "KoumakanLibraryScene.h"
+#include "LocationSelectScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 #include "RoundSelectScene.h"
@@ -110,7 +111,7 @@ HomeScene::init()
     button_map->setTitleFontName("fonts/dengxian.ttf");
     button_map->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            ;
+            Director::getInstance()->pushScene(LocationSelectScene::create());
         }
     });
     addChild(button_map);
@@ -237,6 +238,8 @@ void
 HomeScene::onEnter()
 {
     Scene::onEnter();
+
+    loc = gamedata->getCurrentLocation();
 
     /*背景音乐*/
     if (music != loc.backgroundMusic) {
