@@ -2,13 +2,10 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#ifdef WIN32
-#pragma execution_character_set("utf-8")
-#endif
-
 #include "LogoAndDisclaimerScene.h"
 #include "BackgroundIntroScene.h"
 #include "GameData.h"
+#include "HomeScene.h"
 #include "JumpTableScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
@@ -98,22 +95,26 @@ LogoAndDisclaimerScene::init()
 
     // 都展示完了，切换到下一场景
 
-    this->scheduleOnce([this](float) { this->switchToJumpTableScene(); },
-                       _logoLast + _disclaimerLast, "nextScene");
+    this->scheduleOnce(
+        [this](float) {
+            auto s = HomeScene::create();
+            _director->replaceScene(s);
+        },
+        _logoLast + _disclaimerLast, "nextScene");
+
+    /*  5. 一点击画面就会进入 JumpTable
+     *     Non-Gameplay 一些重要场景开发尚未完成，需要 JumpTable
+     */
+
+    auto touchListener = EventListenerTouchOneByOne::create();
+    touchListener->onTouchBegan = [this](Touch*, Event* e) -> bool {
+        this->unscheduleAllCallbacks();
+        auto tbl = JumpTableScene::create();
+        Director::getInstance()->replaceScene(tbl);
+        return true;
+    };
+
+    _director->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
 
     return true;
-}
-
-void
-LogoAndDisclaimerScene::switchToJumpTableScene()
-{
-    auto s = JumpTableScene::create();
-    _director->replaceScene(s);
-}
-
-void
-LogoAndDisclaimerScene::switchToBackgroundIntroScene()
-{
-    auto s = BackgroundIntroScene::create();
-    _director->replaceScene(s);
 }

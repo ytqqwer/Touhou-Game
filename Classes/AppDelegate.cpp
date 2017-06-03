@@ -4,7 +4,7 @@
 
 #include "AppDelegate.h"
 #include "GameData.h"
-#include "JumpTableScene.h"
+#include "LogoAndDisclaimerScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -86,7 +86,7 @@ AppDelegate::applicationDidFinishLaunching()
 
     /*  6. run with scence */
 
-    auto scene = JumpTableScene::create();
+    auto scene = LogoAndDisclaimerScene::create();
     director->runWithScene(scene);
 
     return true;
