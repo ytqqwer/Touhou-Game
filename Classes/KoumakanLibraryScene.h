@@ -26,7 +26,7 @@ private:
     static const std::string TAG;
 
     // intorspection
-    Size _visibleSize;
+    Size _visibleSize;	
 };
 
 #endif // KOUMAKAN_LIBRARY_SCENE_H
