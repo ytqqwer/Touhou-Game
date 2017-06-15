@@ -60,15 +60,16 @@ MainMenuScene::init()
     /*新游戏*/
     auto NGButton = Button::create("", "", "");
     NGButton->setTitleText("新游戏");
+    NGButton->setTitleFontName("fonts/dengxian.ttf");
     NGButton->setTitleColor(Color3B(194, 134, 11));
     NGButton->setTitleFontSize(50);
     NGButton->setAnchorPoint(Vec2(0, 0));
     NGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.57));
     NGButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         gamedata = GameData::getInstance();
-        auto lac = gamedata->newGame();
+        auto canNew = gamedata->newGame();
 
-        if (!lac) {
+        if (canNew) {
             Director::getInstance()->pushScene(HomeScene::create());
         }
     });
@@ -77,6 +78,7 @@ MainMenuScene::init()
     /*载入游戏*/
     auto LGButton = Button::create("", "", "");
     LGButton->setTitleText("载入游戏");
+    LGButton->setTitleFontName("fonts/dengxian.ttf");
     LGButton->setTitleColor(Color3B(194, 134, 11));
     LGButton->setTitleFontSize(50);
     LGButton->setAnchorPoint(Vec2(0, 0));
@@ -91,6 +93,7 @@ MainMenuScene::init()
     /*设置*/
     auto SGButton = Button::create("", "", "");
     SGButton->setTitleText("设置");
+    SGButton->setTitleFontName("fonts/dengxian.ttf");
     SGButton->setTitleColor(Color3B(194, 134, 11));
     SGButton->setTitleFontSize(30);
     SGButton->setAnchorPoint(Vec2(0, 0));
@@ -106,6 +109,7 @@ MainMenuScene::init()
     /*职员表*/
     auto ZGButton = Button::create("", "", "");
     ZGButton->setTitleText("职员表");
+    ZGButton->setTitleFontName("fonts/dengxian.ttf");
     ZGButton->setTitleColor(Color3B(194, 134, 11));
     ZGButton->setTitleFontSize(30);
     ZGButton->setAnchorPoint(Vec2(0, 0));
@@ -114,6 +118,7 @@ MainMenuScene::init()
     /*退出游戏*/
     auto ret = Button::create("", "", "");
     ret->setTitleText("退出");
+    ret->setTitleFontName("fonts/dengxian.ttf");
     ret->setTitleColor(Color3B(184, 134, 11));
     ret->setTitleFontSize(25);
     ret->setAnchorPoint(Vec2(0, 0));
