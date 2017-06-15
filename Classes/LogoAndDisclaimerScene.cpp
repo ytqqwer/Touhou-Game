@@ -5,8 +5,8 @@
 #include "LogoAndDisclaimerScene.h"
 #include "BackgroundIntroScene.h"
 #include "GameData.h"
-#include "HomeScene.h"
 #include "JumpTableScene.h"
+#include "MainMenuScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 #include "resources.h.dir/logo.h"
@@ -97,7 +97,7 @@ LogoAndDisclaimerScene::init()
 
     this->scheduleOnce(
         [this](float) {
-            auto s = HomeScene::create();
+            auto s = MainMenuScene::create();
             _director->replaceScene(s);
         },
         _logoLast + _disclaimerLast, "nextScene");
