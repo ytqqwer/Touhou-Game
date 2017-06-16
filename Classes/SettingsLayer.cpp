@@ -5,6 +5,7 @@
 #include "SettingsLayer.h"
 #include "GameData.h"
 #include "MainMenuScene.h"
+#include "RoundSelectScene.h"
 #include "SaveScene.h"
 #include "SimpleAudioEngine.h"
 #include "resources.h.dir/settings_layer.h"
@@ -50,6 +51,10 @@ SettingsLayer::init()
 
     if (!Layer::init()) {
         return false;
+    }
+
+    if (currentScene == "GameplaySence") {
+        Director::getInstance()->pause();
     }
 
     //触摸截断
@@ -298,12 +303,16 @@ SettingsLayer::touchEvent(Object* pSender, TouchEventType type)
                 break;
             }
             case 10: {
-                // GameplayScene 未实现
-                // TODO
-                log("放弃关卡，返回主菜单");
+                this->removeFromParent();
+                Director::getInstance()->popScene();
+                auto s = RoundSelectScene::create();
+                Director::getInstance()->pushScene(s);
                 break;
             }
             case 11: {
+                if (currentScene == "GameplaySence") {
+                    Director::getInstance()->resume();
+                }
                 this->removeFromParent();
                 break;
             }
