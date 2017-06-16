@@ -119,11 +119,11 @@ void Enemy::run()
 	}
 	if (enemyPos.x - poi.x > 0)
 	{
-		this->getPhysicsBody()->applyImpulse(Vec2(-10.0f, 0.0f));
+		this->getPhysicsBody()->applyImpulse(Vec2(-3.0f, 0.0f));
 		//this->getPhysicsBody()->setVelocity(Vec2(-200.f, 0.0f));
 	}
 	else {
-		this->getPhysicsBody()->applyImpulse(Vec2(10.0f, 0.0f));
+		this->getPhysicsBody()->applyImpulse(Vec2(3.0f, 0.0f));
 		//this->getPhysicsBody()->setVelocity(Vec2(200.f, 0.0f));
 	}
 }
