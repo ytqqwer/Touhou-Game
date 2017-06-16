@@ -26,9 +26,15 @@ class MainMenuScene : public Scene
 public:
 	APP_SCENE_CREATE_FUNC(MainMenuScene, TAG);
 
+<<<<<<< HEAD
 	virtual bool init();
 	virtual void onEnter();
 	virtual void update(float dt);
+=======
+    virtual bool init();
+    virtual void onEnter();
+    virtual void update(float dt);
+>>>>>>> refs/remotes/origin/master
 
 private:
 	MainMenuScene();
@@ -36,9 +42,15 @@ private:
 private:
 	static const std::string TAG;
 
+<<<<<<< HEAD
 	// intorspection
 	Size _visibleSize;
 	GameData* gamedata;
+=======
+    // intorspection
+    Size _visibleSize;
+    GameData* gamedata;
+>>>>>>> refs/remotes/origin/master
 };
 
 #endif // MAIN_MENU_SCENE_H

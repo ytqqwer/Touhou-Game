@@ -55,9 +55,25 @@ SettingsLayer::init()
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (currentScene == "GameplaySence") {
 		Director::getInstance()->pause();
 	}
+=======
+    if (currentScene == "GameplaySence") {
+        Director::getInstance()->pause();
+    }
+
+    //触摸截断
+    this->setLocalZOrder(8888);
+    this->setTouchEnabled(true);
+    EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->setSwallowTouches(true);
+    listener->onTouchBegan = [](Touch* t, Event* e) { return true; };
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener,
+                                                                                          this);
+>>>>>>> refs/remotes/origin/master
 
 	//触摸截断
 	this->setLocalZOrder(8888);
@@ -286,6 +302,7 @@ SettingsLayer::sliderEvent(Ref* pSender, Slider::EventType type)
 void
 SettingsLayer::touchEvent(Object* pSender, TouchEventType type)
 {
+<<<<<<< HEAD
 	Button* button = (Button*)pSender;
 	int tag = button->getTag();
 	if (type == TOUCH_EVENT_ENDED) {
@@ -326,3 +343,45 @@ SettingsLayer::touchEvent(Object* pSender, TouchEventType type)
 		}
 	}
 }
+=======
+    Button* button = (Button*)pSender;
+    int tag = button->getTag();
+    if (type == TOUCH_EVENT_ENDED) {
+        switch (tag) {
+            case 7: {
+                this->removeFromParent();
+                auto s = SaveScene::create(true);
+                Director::getInstance()->pushScene(s);
+                break;
+            }
+            case 8: {
+                this->removeFromParent();
+                Director::getInstance()->popToRootScene();
+                auto s = MainMenuScene::create();
+                Director::getInstance()->pushScene(s);
+                break;
+            }
+            case 9: {
+                Director::getInstance()->end();
+                break;
+            }
+            case 10: {
+                this->removeFromParent();
+                Director::getInstance()->popScene();
+                auto s = RoundSelectScene::create();
+                Director::getInstance()->pushScene(s);
+                break;
+            }
+            case 11: {
+                if (currentScene == "GameplaySence") {
+                    Director::getInstance()->resume();
+                }
+                this->removeFromParent();
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+>>>>>>> refs/remotes/origin/master

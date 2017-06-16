@@ -24,8 +24,13 @@ const std::string MainMenuScene::TAG{ "MainMenuScene" };
 
 MainMenuScene::MainMenuScene()
 {
+<<<<<<< HEAD
 	gamedata = GameData::getInstance();
 	_visibleSize = _director->getVisibleSize();
+=======
+    gamedata = GameData::getInstance();
+    _visibleSize = _director->getVisibleSize();
+>>>>>>> refs/remotes/origin/master
 }
 
 bool
@@ -47,6 +52,7 @@ MainMenuScene::init()
 	this->addChild(sceneTag);
 #endif
 
+<<<<<<< HEAD
 	/*  3. PlaceHolder
 	auto p = PlaceHolder::createCircle(100, "MainMenuScene");
 	p->setPosition(_visibleSize / 2);
@@ -87,6 +93,9 @@ MainMenuScene::init()
 
 	);
 	addChild(LGButton);
+=======
+    /*  3. PlaceHolder
+>>>>>>> refs/remotes/origin/master
 
 	/*设置*/
 	auto SGButton = Button::create("", "", "");
@@ -126,6 +135,7 @@ MainMenuScene::init()
 		[](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->end(); });
 	addChild(ret);
 
+<<<<<<< HEAD
 	return true;
 }
 void
@@ -140,8 +150,94 @@ MainMenuScene::onEnter()
 	bg->setContentSize(_visibleSize);
 	bg->setPosition(_visibleSize / 2);
 	addChild(bg, -1);
-}
+=======
+    /*新游戏*/
+    auto NGButton = Button::create("", "", "");
+    NGButton->setTitleText("新游戏");
+    NGButton->setTitleFontName("fonts/dengxian.ttf");
+    NGButton->setTitleColor(Color3B(194, 134, 11));
+    NGButton->setTitleFontSize(50);
+    NGButton->setAnchorPoint(Vec2(0, 0));
+    NGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.57));
+    NGButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        gamedata = GameData::getInstance();
+        auto canNew = gamedata->newGame();
 
+        if (canNew) {
+            Director::getInstance()->pushScene(HomeScene::create());
+        }
+    });
+    addChild(NGButton);
+
+    /*载入游戏*/
+    auto LGButton = Button::create("", "", "");
+    LGButton->setTitleText("载入游戏");
+    LGButton->setTitleFontName("fonts/dengxian.ttf");
+    LGButton->setTitleColor(Color3B(194, 134, 11));
+    LGButton->setTitleFontSize(50);
+    LGButton->setAnchorPoint(Vec2(0, 0));
+    LGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.43));
+    LGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        Director::getInstance()->pushScene(SaveScene::create());
+    }
+
+                                    );
+    addChild(LGButton);
+
+    /*设置*/
+    auto SGButton = Button::create("", "", "");
+    SGButton->setTitleText("设置");
+    SGButton->setTitleFontName("fonts/dengxian.ttf");
+    SGButton->setTitleColor(Color3B(194, 134, 11));
+    SGButton->setTitleFontSize(30);
+    SGButton->setAnchorPoint(Vec2(0, 0));
+    SGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.34));
+    SGButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            auto lay = SettingsLayer::create("MainMenuScene");
+            this->addChild(lay, 5);
+        }
+    });
+
+    addChild(SGButton);
+    /*职员表*/
+    auto ZGButton = Button::create("", "", "");
+    ZGButton->setTitleText("职员表");
+    ZGButton->setTitleFontName("fonts/dengxian.ttf");
+    ZGButton->setTitleColor(Color3B(194, 134, 11));
+    ZGButton->setTitleFontSize(30);
+    ZGButton->setAnchorPoint(Vec2(0, 0));
+    ZGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.27));
+    addChild(ZGButton);
+    /*退出游戏*/
+    auto ret = Button::create("", "", "");
+    ret->setTitleText("退出");
+    ret->setTitleFontName("fonts/dengxian.ttf");
+    ret->setTitleColor(Color3B(184, 134, 11));
+    ret->setTitleFontSize(25);
+    ret->setAnchorPoint(Vec2(0, 0));
+    ret->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.2));
+
+    ret->addTouchEventListener(
+        [](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->end(); });
+    addChild(ret);
+
+    return true;
+>>>>>>> refs/remotes/origin/master
+}
+void
+MainMenuScene::onEnter()
+{
+    Scene::onEnter();
+
+    auto loc = gamedata->getCurrentLocation();
+
+    /*背景*/
+    auto bg = Sprite::create(loc.backgroundPicture);
+    bg->setContentSize(_visibleSize);
+    bg->setPosition(_visibleSize / 2);
+    addChild(bg, -1);
+}
 void
 MainMenuScene::update(float dt)
 {
