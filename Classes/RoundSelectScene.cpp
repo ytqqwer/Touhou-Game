@@ -12,6 +12,8 @@
 //需要用到的头文件
 #include "GameData.h"
 
+#include "GameScene.h"
+
 using namespace ui;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
@@ -57,6 +59,8 @@ RoundSelectScene::onEnter()
 	beginButton->setContentSize(Size(_visibleSize.width * 0.3, _visibleSize.height * 0.3));
 	beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
 	this->addChild(beginButton, 2);
+
+	beginButton->addTouchEventListener(CC_CALLBACK_0(RoundSelectScene::gameSceneCallback, this));
 
     /***********************创建会变化的模块********************/
     //取得当前所在的地点和回合，gameDate，以及角色,以及当前可以使用的所有角色
@@ -290,3 +294,12 @@ void
 RoundSelectScene::update(float dt)
 {
 }
+
+void RoundSelectScene::gameSceneCallback()
+{
+	auto gameScene = GameScene::create();
+	TransitionScene *transition = TransitionPageTurn::create(0.2f, gameScene, false);
+	Director::getInstance()->replaceScene(transition);
+
+}
+
