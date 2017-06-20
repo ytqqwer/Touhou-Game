@@ -55,7 +55,7 @@ MainMenuScene::init()
 
     /*  4. schedule */
 
-    this->scheduleUpdate();
+    //this->scheduleUpdate();
 
     /*新游戏*/
     auto NGButton = Button::create("", "", "");
@@ -69,9 +69,12 @@ MainMenuScene::init()
         gamedata = GameData::getInstance();
         auto canNew = gamedata->newGame();
 
-        if (canNew) {
-            Director::getInstance()->pushScene(HomeScene::create());
-        }
+		//有不能创建新存档的BUG，暂时注释掉
+        //if (canNew) {
+        //    Director::getInstance()->pushScene(HomeScene::create());
+        //}
+
+		Director::getInstance()->pushScene(HomeScene::create());
     });
     addChild(NGButton);
 
@@ -86,7 +89,6 @@ MainMenuScene::init()
     LGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         Director::getInstance()->pushScene(SaveScene::create());
     }
-
                                     );
     addChild(LGButton);
 
@@ -128,20 +130,30 @@ MainMenuScene::init()
         [](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->end(); });
     addChild(ret);
 
+
+	
     return true;
 }
+
 void
 MainMenuScene::onEnter()
 {
     Scene::onEnter();
 
-    auto loc = gamedata->getCurrentLocation();
-
+	//auto loc = gamedata->getCurrentLocation();
     /*背景*/
-    auto bg = Sprite::create(loc.backgroundPicture);
-    bg->setContentSize(_visibleSize);
+    //auto bg = Sprite::create(loc.backgroundPicture);
+	auto bg = Sprite::create("mainmenuscene/begin.png");
+    //bg->setContentSize(_visibleSize);
+	bg->setScale(1.35);
     bg->setPosition(_visibleSize / 2);
     addChild(bg, -1);
+	
+	auto move = MoveBy::create(200, Vec2(0 , _visibleSize.height));
+	auto move_back = move->reverse();
+	auto seq = Sequence::create(move, move_back, nullptr);
+	bg->runAction(RepeatForever::create(seq));
+
 }
 void
 MainMenuScene::update(float dt)

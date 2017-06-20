@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include "Player.h"
-#include "GameScene.h"
+#include "GameplayScene.h"
 
 bool Enemy::init()
 {
@@ -9,11 +9,11 @@ bool Enemy::init()
 
 	Animation *enemyAnimation = Animation::create();
 	for (int i = 1; i <= 6; i++)
-		enemyAnimation->addSpriteFrameWithFile("gamescene/opossum-" + std::to_string(i) + ".png");
+		enemyAnimation->addSpriteFrameWithFile("gameplayscene/opossum-" + std::to_string(i) + ".png");
 
 	enemyAnimation->setDelayPerUnit(0.15f);
 
-	enemySprite = Sprite::create("gamescene/opossum-1.png"); //此处必须初始化一张角色纹理，否则后面无法切换纹理
+	enemySprite = Sprite::create("gameplayscene/opossum-1.png"); //此处必须初始化一张角色纹理，否则后面无法切换纹理
 
 	enemyAnim = Animate::create(enemyAnimation);
 	enemySprite->runAction(RepeatForever::create(enemyAnim)); //初始时刻在奔跑
@@ -38,70 +38,6 @@ bool Enemy::init()
 
 	this->setTag(103);
 
-	return true;
-}
-
-bool Enemy::onContactBegin(PhysicsContact& contact)
-{
-	auto nodeA = contact.getShapeA()->getBody()->getNode();
-	auto nodeB = contact.getShapeB()->getBody()->getNode();
-
-	if (nodeA && nodeB)
-	{
-		if (nodeA->getTag() == 102)
-		{
-			ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
-			ps->setTexture(Director::getInstance()->getTextureCache()->addImage("gamescene/smallOrb000.png"));
-			ps->setPosition(nodeA->getPosition());
-
-			nodeB->getParent()->addChild(ps, 10);//从敌人获取场景，无法从通过BatchNode创建的精灵获取parent
-
-			nodeA->removeFromParentAndCleanup(true);//移除子弹
-
-			auto enemy = (Enemy*)nodeB;
-			enemy->hp = enemy->hp - 5;
-			if (enemy->hp < 0)
-			{
-				nodeB->removeFromParentAndCleanup(true);
-			}
-		}
-		else if (nodeB->getTag() == 102)
-		{
-
-			ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
-			ps->setTexture(Director::getInstance()->getTextureCache()->addImage("gamescene/smallOrb000.png"));
-			ps->setPosition(nodeB->getPosition());
-
-			nodeA->getParent()->addChild(ps, 10);
-
-			nodeB->removeFromParentAndCleanup(true);//移除子弹
-
-			auto enemy = (Enemy*)nodeA;
-			enemy->hp = enemy->hp - 5;
-			if (enemy->hp < 0)
-			{
-				nodeA->removeFromParentAndCleanup(true);
-			}
-		}
-		else if (nodeA->getTag() == 100)
-		{
-			auto enemy = (Enemy*)nodeB;
-			enemy->hp = enemy->hp - 5;
-			enemy->_canJump = true;
-		}
-		else if (nodeB->getTag() == 100)
-		{
-			auto enemy = (Enemy*)nodeA;
-			enemy->hp = enemy->hp - 5;
-			enemy->_canJump = true;
-		}
-
-	}
-	return true;
-}
-
-bool Enemy::onContactSeparate(const PhysicsContact & contact)
-{
 	return true;
 }
 

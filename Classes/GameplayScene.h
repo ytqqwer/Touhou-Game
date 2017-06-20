@@ -7,15 +7,16 @@
 
 USING_NS_CC;
 
-class GameScene : public cocos2d::Scene
+class GameplayScene : public cocos2d::Scene
 {
 public:
 	//static Scene* createScene();
 
-	CREATE_FUNC(GameScene);
+	CREATE_FUNC(GameplayScene);
 
 	void onEnter() override;
 	void onExit() override;
+	void cleanup() override;
 	virtual bool init() override;
 
 	void initBackGround();
@@ -38,14 +39,12 @@ public:
 	Sprite* camera;
 	TMXTiledMap* _map;
 	Layer* mapLayer;
+	
+	bool onContactGround(const PhysicsContact& contact);
+	bool onContactBullet(const PhysicsContact& contact);
 
-	//PhysicsWorld* _pWorld;
-
-	bool onContactBegin(const PhysicsContact& contact);
 	bool onTouchBegan(Touch* touch, Event *event);
 	void onTouchEnded(Touch* touch, Event *event);
-
-
 
 	Vector <Sprite *> vecBullet;//子弹容器  
 	SpriteBatchNode* bulletBatchNode;//批次渲染节点  
@@ -54,8 +53,9 @@ public:
 
 
 private:
+	static const std::string TAG;
+
 	bool createPhysical(float scale);
-	//Scene* gameScene;
 
 };
 

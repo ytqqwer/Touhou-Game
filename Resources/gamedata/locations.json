@@ -1,7 +1,7 @@
 [
     {
         "tag": "Hakurei Jinja",
-        "name": "Hakurei Jinja",
+        "name": "博丽神社",
         "wordArt": "gamedata/locations/L1_word_art.png",
         "previewPicture": "gamedata/locations/L1_prev.png",
         "backgroundPicture": "gamedata/locations/L1_bgp.jpg",
@@ -9,20 +9,29 @@
         "roundList": [
             {
                 "tag": "round 1",
-                "name": "round name 1",
+                "name": "下山路",
                 "previewPicture": "place_holder.png",
-                "description": "This is round1's description",
+                "description": "妖怪横行的山路，吓跑了不少的参拜者。",
                 "difficulty": "TWO",
                 "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
             },
             {
                 "tag": "round 2",
-                "name": "round name 2",
+                "name": "兽道",
                 "previewPicture": "place_holder.png",
-                "description": "This is round2's description",
+                "description": "野兽徘徊的林地，当心喜欢恶作剧的小妖精。",
                 "difficulty": "THREE",
                 "TMXMap": "gamedata/locations/L1_rounds/r2.tmx"
+            },
+            {
+                "tag": "round 3",
+                "name": "宵暗的森林",
+                "previewPicture": "place_holder.png",
+                "description": "请不要在夜晚靠近这片区域。",
+                "difficulty": "FOUR",
+                "TMXMap": "gamedata/locations/L1_rounds/r2.tmx"
             }
+
         ],
         "conversationIndicatorList": [
             {
@@ -39,7 +48,7 @@
     },
     {
         "tag": "L2",
-        "name": "L2",
+        "name": "雾之湖",
         "wordArt": "gamedata/locations/L2_word_art.png",
         "previewPicture": "gamedata/locations/L2_prev.png",
         "backgroundPicture": "gamedata/locations/L2_bgp.jpg",
@@ -72,7 +81,7 @@
     },
     {
         "tag": "L3",
-        "name": "L3",
+        "name": "迷途竹林",
         "wordArt": "gamedata/locations/L3_word_art.png",
         "previewPicture": "gamedata/locations/L3_prev.png",
         "backgroundPicture": "gamedata/locations/L3_bgp.jpg",
@@ -105,7 +114,7 @@
     },
     {
         "tag": "L4",
-        "name": "L4",
+        "name": "魔法森林",
         "wordArt": "gamedata/locations/L4_word_art.png",
         "previewPicture": "gamedata/locations/L4_prev.png",
         "backgroundPicture": "gamedata/locations/L4_bgp.png",
@@ -138,7 +147,7 @@
     },
     {
         "tag": "L5",
-        "name": "L5",
+        "name": "有顶天",
         "wordArt": "gamedata/locations/L5_word_art.png",
         "previewPicture": "gamedata/locations/L5_prev.png",
         "backgroundPicture": "gamedata/locations/L5_bgp.png",
@@ -176,7 +185,7 @@
     },
     {
         "tag": "L6",
-        "name": "L6",
+        "name": "玄武川",
         "wordArt": "gamedata/locations/L6_word_art.png",
         "previewPicture": "gamedata/locations/L6_prev.png",
         "backgroundPicture": "gamedata/locations/L6_bgp.png",
@@ -214,7 +223,7 @@
     },
     {
         "tag": "L7",
-        "name": "L7",
+        "name": "红魔馆大图书馆",
         "wordArt": "gamedata/locations/L7_word_art.png",
         "previewPicture": "gamedata/locations/L7_prev.png",
         "backgroundPicture": "gamedata/locations/L7_bgp.jpg",

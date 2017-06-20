@@ -1,4 +1,4 @@
-#include "GameScene.h"
+#include "GameplayScene.h"
 #include "Enemy.h"
 #include "SettingsLayer.h"
 
@@ -9,20 +9,27 @@ using namespace CocosDenshion;
 
 #define PTM_RATIO 1
 
-void GameScene::onEnter()
+const std::string GameplayScene::TAG{ "GameplayScene" };
+
+void GameplayScene::onEnter()
 {
 	Scene::onEnter();
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	SimpleAudioEngine::getInstance()->playBackgroundMusic("gameScene/bgm001.mp3", true);//开启循环
+	SimpleAudioEngine::getInstance()->playBackgroundMusic("gameplayscene/bgm001.mp3", true);//开启循环
 }
 
-void GameScene::onExit()
+void GameplayScene::onExit()
 {
-	Scene::onExit();
 	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+	Scene::onExit();
 }
 
-bool GameScene::init()
+void GameplayScene::cleanup() {
+	Director::getInstance()->getEventDispatcher()->removeEventListenersForTarget(this);
+	//this->removeAllChildren();
+}
+
+bool GameplayScene::init()
 {
 	if (!Scene::init()) {
 		return false;
@@ -64,11 +71,11 @@ bool GameScene::init()
 }
 
 
-void GameScene::initBackGround()
+void GameplayScene::initBackGround()
 {
 	auto backGroundLayer = Layer::create();
 
-	Sprite* bg = Sprite::create("gamescene/gbg.png");
+	Sprite* bg = Sprite::create("gameplayscene/gbg.png");
 	bg->setAnchorPoint(Point::ZERO);
 	bg->setPosition(Point::ZERO);
 	bg->setScale(1.5);
@@ -79,10 +86,10 @@ void GameScene::initBackGround()
 }
 
 
-void GameScene::initMap()
+void GameplayScene::initMap()
 {
 	mapLayer = Layer::create();
-	_map = TMXTiledMap::create("gamescene/test.tmx");
+	_map = TMXTiledMap::create("gameplayscene/test.tmx");
 	_map->setScale(1.0f);
 	mapLayer->addChild(_map);
 	this->addChild(mapLayer,0);
@@ -93,7 +100,7 @@ void GameScene::initMap()
 }
 
 //创建静态刚体，接受参数设置刚体大小倍率
-bool GameScene::createPhysical(float scale)
+bool GameplayScene::createPhysical(float scale)
 {
 	// 找出阻挡区域所在的层
 	TMXObjectGroup* group = _map->getObjectGroup("physics");
@@ -213,7 +220,7 @@ bool GameScene::createPhysical(float scale)
 	return true;
 }
 
-bool GameScene::onContactBegin(const PhysicsContact& contact) {
+bool GameplayScene::onContactGround(const PhysicsContact& contact) {
 
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
 	auto nodeB = contact.getShapeB()->getBody()->getNode();
@@ -232,8 +239,66 @@ bool GameScene::onContactBegin(const PhysicsContact& contact) {
 	return true;
 }
 
+bool GameplayScene::onContactBullet(const PhysicsContact& contact)
+{
+	auto nodeA = contact.getShapeA()->getBody()->getNode();
+	auto nodeB = contact.getShapeB()->getBody()->getNode();
 
-void GameScene::initCtrlPanel()
+	if (nodeA && nodeB)
+	{
+		if (nodeA->getTag() == 102)
+		{
+			ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
+			ps->setTexture(Director::getInstance()->getTextureCache()->addImage("gameplayscene/smallOrb000.png"));
+			ps->setPosition(nodeA->getPosition());
+
+			nodeB->getParent()->addChild(ps, 10);//从敌人获取场景，无法从通过BatchNode创建的精灵获取parent
+
+			nodeA->removeFromParentAndCleanup(true);//移除子弹
+
+			auto enemy = (Enemy*)nodeB;
+			enemy->hp = enemy->hp - 5;
+			if (enemy->hp < 0)
+			{
+				nodeB->removeFromParentAndCleanup(true);
+			}
+		}
+		else if (nodeB->getTag() == 102)
+		{
+
+			ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
+			ps->setTexture(Director::getInstance()->getTextureCache()->addImage("gameplayscene/smallOrb000.png"));
+			ps->setPosition(nodeB->getPosition());
+
+			nodeA->getParent()->addChild(ps, 10);
+
+			nodeB->removeFromParentAndCleanup(true);//移除子弹
+
+			auto enemy = (Enemy*)nodeA;
+			enemy->hp = enemy->hp - 5;
+			if (enemy->hp < 0)
+			{
+				nodeA->removeFromParentAndCleanup(true);
+			}
+		}
+		else if (nodeA->getTag() == 100)
+		{
+			auto enemy = (Enemy*)nodeB;
+			enemy->hp = enemy->hp - 5;
+			enemy->_canJump = true;
+		}
+		else if (nodeB->getTag() == 100)
+		{
+			auto enemy = (Enemy*)nodeA;
+			enemy->hp = enemy->hp - 5;
+			enemy->_canJump = true;
+		}
+
+	}
+	return true;
+}
+
+void GameplayScene::initCtrlPanel()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto visibleOrigin = Director::getInstance()->getVisibleOrigin();
@@ -246,7 +311,7 @@ void GameScene::initCtrlPanel()
 	set_button->setScale(1.5);
 	set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
 		if (type == Widget::TouchEventType::ENDED) {
-			auto layer = SettingsLayer::create("HomeScene");
+			auto layer = SettingsLayer::create("GameplayScene");
 			this->addChild(layer, 1000);//最大优先级
 		}
 	});	
@@ -260,8 +325,8 @@ void GameScene::initCtrlPanel()
 
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);
-	listener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
-	listener->onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded, this);
+	listener->onTouchBegan = CC_CALLBACK_2(GameplayScene::onTouchBegan, this);
+	listener->onTouchEnded = CC_CALLBACK_2(GameplayScene::onTouchEnded, this);
 
 	auto dispatcher = Director::getInstance()->getEventDispatcher();
 	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
@@ -270,7 +335,7 @@ void GameScene::initCtrlPanel()
 
 }
 
-bool GameScene::onTouchBegan(Touch* touch, Event *event) {
+bool GameplayScene::onTouchBegan(Touch* touch, Event *event) {
 	auto location = touch->getLocation();
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 
@@ -302,7 +367,7 @@ bool GameScene::onTouchBegan(Touch* touch, Event *event) {
 	return true;
 }
 
-void GameScene::onTouchEnded(Touch * touch, Event * event)
+void GameplayScene::onTouchEnded(Touch * touch, Event * event)
 {
 	auto location = touch->getLocation();
 	auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -321,7 +386,7 @@ void GameScene::onTouchEnded(Touch * touch, Event * event)
 	//自动减速还没有做
 }
 
-void GameScene::initCharacter()
+void GameplayScene::initCharacter()
 {
 	TMXObjectGroup* temp = _map->getObjectGroup("player");
 	auto ts = temp->getObject("birthPoint");
@@ -338,7 +403,7 @@ void GameScene::initCharacter()
 	mapLayer->addChild(_player);
 }
 
-void GameScene::initCamera()
+void GameplayScene::initCamera()
 {
 	auto mapSize = _map->getMapSize();
 	auto mapTileSize = _map->getTileSize();
@@ -350,11 +415,11 @@ void GameScene::initCamera()
 	auto follow = Follow::create(camera, Rect(0, 0, mapSize.width * mapTileSize.width * 3, mapSize.height * mapTileSize.height - 50));
 	mapLayer->runAction(follow);
 
-	// camera->schedule(CC_SCHEDULE_SELECTOR(GameScene::moveCamera));
+	// camera->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::moveCamera));
 	//this->scheduleUpdate();
 }
 
-//void GameScene::moveCamera(float dt)
+//void GameplayScene::moveCamera(float dt)
 //{
 //	//	Player* p = (Player *)this->getChildByName("player");
 //
@@ -363,23 +428,23 @@ void GameScene::initCamera()
 //	camera->setPosition(poi.x + 100, poi.y + 70);
 //}
 
-void GameScene::initLauncher()
+void GameplayScene::initLauncher()
 {
 	auto s = Director::getInstance()->getWinSize();
 
 	//创建BatchNode节点，成批渲染子弹
-	bulletBatchNode = SpriteBatchNode::create("gamescene/bullet1.png");
+	bulletBatchNode = SpriteBatchNode::create("gameplayscene/bullet1.png");
 	mapLayer->addChild(bulletBatchNode);
 
 	//每隔0.2S调用一次发射子弹函数  
-	//this->schedule(CC_SCHEDULE_SELECTOR(GameScene::ShootBullet), 0.2f);
+	//this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.2f);
 	//每隔0.4S调用一次发射子弹函数  
-	this->schedule(CC_SCHEDULE_SELECTOR(GameScene::ShootBullet), 0.4f);
+	this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.4f);
 }
 
 
 //用缓存的方法创建子弹，并初始化子弹的运动和运动后的事件
-void GameScene::ShootBullet(float dt) {
+void GameplayScene::ShootBullet(float dt) {
 	Size winSize = Director::getInstance()->getWinSize();
 	auto playerPos = _player->getPosition();
 	//auto playerPos = _launcher->getPosition();//改为发射器发射
@@ -448,7 +513,7 @@ void GameScene::ShootBullet(float dt) {
 	}
 
 	//子弹执行完动作后进行函数回调，调用移除子弹函数  
-	auto actionDone = CallFuncN::create(CC_CALLBACK_1(GameScene::removeBullet, this));
+	auto actionDone = CallFuncN::create(CC_CALLBACK_1(GameplayScene::removeBullet, this));
 
 	//子弹开始跑动
 	Sequence* sequence = Sequence::create(fire1, actionDone, NULL);
@@ -459,7 +524,7 @@ void GameScene::ShootBullet(float dt) {
 }
 
 //移除子弹，将子弹从容器中移除，同时也从SpriteBatchNode中移除
-void GameScene::removeBullet(Node* pNode) {
+void GameplayScene::removeBullet(Node* pNode) {
 	if (NULL == pNode) {
 		return;
 	}
@@ -468,7 +533,7 @@ void GameScene::removeBullet(Node* pNode) {
 	vecBullet.eraseObject(bullet);
 }
 
-void GameScene::initEnemy()
+void GameplayScene::initEnemy()
 {
 	TMXObjectGroup* group = _map->getObjectGroup("enemy");
 	auto objects = group->getObjects();
@@ -492,27 +557,29 @@ void GameScene::initEnemy()
 }
 
 //初始化监听器，手动指定优先级
-void GameScene::initListener()
+void GameplayScene::initListener()
 {
 	auto dispatcher = Director::getInstance()->getEventDispatcher();
 
 	auto listener = EventListenerPhysicsContact::create();
-	listener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
-
+	listener->onContactBegin = CC_CALLBACK_1(GameplayScene::onContactGround, this);
 	//dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 	dispatcher->addEventListenerWithFixedPriority(listener, 20);
 
-	auto e = Enemy::create();
 	auto contactListener = EventListenerPhysicsContact::create();
-	contactListener->onContactBegin = CC_CALLBACK_1(Enemy::onContactBegin, e);
-	contactListener->onContactSeparate = CC_CALLBACK_1(Enemy::onContactSeparate, e);
-	//dispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+	contactListener->onContactBegin = CC_CALLBACK_1(GameplayScene::onContactBullet,this);
 	dispatcher->addEventListenerWithFixedPriority(contactListener, 10);
+
+	//auto e = Enemy::create();
+	//auto contactListener = EventListenerPhysicsContact::create();
+	//contactListener->onContactBegin = std::bind(&Enemy::onContactBullet,e);
+	////dispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+	//dispatcher->addEventListenerWithFixedPriority(contactListener, 10);
 
 }
 
 
-void GameScene::update(float dt)
+void GameplayScene::update(float dt)
 {
 	//Player* p = (Player *)this->getChildByName("player");
 	//Vec2 poi = p->getPosition();
