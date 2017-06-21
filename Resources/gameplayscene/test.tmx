@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="70" tilewidth="16" tileheight="16" nextobjectid="100">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="70" tilewidth="16" tileheight="16" nextobjectid="106">
  <tileset firstgid="1" name="jungle tileset" tilewidth="16" tileheight="16" tilecount="741" columns="39">
   <image source="jungle tileset.png" trans="000000" width="624" height="304"/>
  </tileset>
@@ -38,6 +38,12 @@
   <object id="97" x="2348" y="4" width="52" height="984"/>
   <object id="98" x="4" y="0" width="20" height="368"/>
   <object id="99" x="24" y="0" width="2320" height="48"/>
+  <object id="105" x="1456" y="672">
+   <polyline points="0,0 160,0"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="launcher">
+  <object id="104" x="1632" y="396" width="24" height="24"/>
  </objectgroup>
  <objectgroup name="enemy">
   <object id="64" x="1576" y="884" width="48" height="44"/>
@@ -59,7 +65,7 @@
  </layer>
  <layer name="2-1" width="150" height="70">
   <data encoding="base64" compression="zlib">
-   eJzt2zsKAjEYhdGgo25B7X2uxOdKfO6/8pZBFMVGGc+BjzDdFH+RBFIKAAAAAAAAAAAAAAAA8AuGTSmjNG6+/ScAAP/DHgwAANpllb39Om3Stlp3aW/fz4cOmZ1jOqVztV7S1VwBAAAQnZwPu6lJvWrtp4GzIx+aZHamaZbm1bpIS3MFAAAAALRQ/c7n/s3Pq28AAACgHZ7dDzy6C3A/AAAAAAAAAADAu26BBgsH
+   eJzt2zkKAkEUBNBBR72CmruexPUkrvePrLARB0VBRd+D4jPZBD+obuiqAgAAAAAAAAAAAAAAAL5Bv66qQTKsP/0nAAD/QwcDAIDfski3XyarZF3MTbLV+3nSLruzTw7JsZin5GyvAAAAiFbOh+2kTjrF7CY9Z0eeNMrujJNJMi3mLJnbKwB4u6bOp/vxiqbOp/sBAPCvync+129+7n0DAAAAv6HpfuDWXYD7AQAAAAAAAAAAHnUB0IwNDw==
   </data>
  </layer>
 </map>

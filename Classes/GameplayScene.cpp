@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "SettingsLayer.h"
 
+#include "Emitters\FirstEmitter.h"
 #include "resources.h.dir\common.h"
 
 #include "SimpleAudioEngine.h"
@@ -430,14 +431,31 @@ void GameplayScene::initCamera()
 
 void GameplayScene::initLauncher()
 {
-	auto s = Director::getInstance()->getWinSize();
+	TMXObjectGroup* group = _map->getObjectGroup("launcher");
+	auto objects = group->getObjects();
+
+	for (auto v : objects)
+	{
+		auto dict = v.asValueMap();
+		if (dict.size() == 0)
+			continue;
+		float x = dict["x"].asFloat();
+		float y = dict["y"].asFloat();
+
+		auto _launcher = Sprite::create("CloseNormal.png");
+		_launcher->setPosition(x,y);
+		mapLayer->addChild(_launcher);//不要忘记addChild
+
+		auto fe = FirstEmitter::create(_launcher);
+		mapLayer->addChild(fe);
+
+		fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
+	}
 
 	//创建BatchNode节点，成批渲染子弹
 	bulletBatchNode = SpriteBatchNode::create("gameplayscene/bullet1.png");
 	mapLayer->addChild(bulletBatchNode);
 
-	//每隔0.2S调用一次发射子弹函数  
-	//this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.2f);
 	//每隔0.4S调用一次发射子弹函数  
 	this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.4f);
 }
