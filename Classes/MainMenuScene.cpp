@@ -55,7 +55,7 @@ MainMenuScene::init()
 
     /*  4. schedule */
 
-    //this->scheduleUpdate();
+    // this->scheduleUpdate();
 
     /*新游戏*/
     auto NGButton = Button::create("", "", "");
@@ -69,12 +69,12 @@ MainMenuScene::init()
         gamedata = GameData::getInstance();
         auto canNew = gamedata->newGame();
 
-		//有不能创建新存档的BUG，暂时注释掉
-        //if (canNew) {
+        //有不能创建新存档的BUG，暂时注释掉
+        // if (canNew) {
         //    Director::getInstance()->pushScene(HomeScene::create());
         //}
 
-		Director::getInstance()->pushScene(HomeScene::create());
+        Director::getInstance()->pushScene(HomeScene::create());
     });
     addChild(NGButton);
 
@@ -88,8 +88,7 @@ MainMenuScene::init()
     LGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.43));
     LGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         Director::getInstance()->pushScene(SaveScene::create());
-    }
-                                    );
+    });
     addChild(LGButton);
 
     /*设置*/
@@ -130,8 +129,6 @@ MainMenuScene::init()
         [](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->end(); });
     addChild(ret);
 
-
-	
     return true;
 }
 
@@ -139,22 +136,21 @@ void
 MainMenuScene::onEnter()
 {
     Scene::onEnter();
-	
-	//每次进入该场景时都会创建一个背景图片，等待以后改进
-	//auto loc = gamedata->getCurrentLocation();
+
+    //每次进入该场景时都会创建一个背景图片，等待以后改进
+    // auto loc = gamedata->getCurrentLocation();
     /*背景*/
-    //auto bg = Sprite::create(loc.backgroundPicture);
-	auto bg = Sprite::create("mainmenuscene/begin.png");
-    //bg->setContentSize(_visibleSize);
-	bg->setScale(1.35);
+    // auto bg = Sprite::create(loc.backgroundPicture);
+    auto bg = Sprite::create("mainmenuscene/begin.png");
+    // bg->setContentSize(_visibleSize);
+    bg->setScale(1.35);
     bg->setPosition(_visibleSize / 2);
     addChild(bg, -1);
-	
-	auto move = MoveBy::create(40, Vec2(0 , _visibleSize.height/4));
-	auto move_back = move->reverse();
-	auto seq = Sequence::create(move, move_back, nullptr);
-	bg->runAction(RepeatForever::create(seq));
 
+    auto move = MoveBy::create(40, Vec2(0, _visibleSize.height / 4));
+    auto move_back = move->reverse();
+    auto seq = Sequence::create(move, move_back, nullptr);
+    bg->runAction(RepeatForever::create(seq));
 }
 void
 MainMenuScene::update(float dt)

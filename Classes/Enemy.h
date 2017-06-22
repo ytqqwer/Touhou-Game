@@ -1,38 +1,36 @@
-#ifndef _ENEMY_H_
+ï»¿#ifndef _ENEMY_H_
 #define _ENEMY_H_
 
 #include "cocos2d.h"
 
 using namespace cocos2d;
 
-class Enemy :public Node
+class Enemy : public Node
 {
-public:	
-	CREATE_FUNC(Enemy);
-
-	virtual bool init() override;
-	
 public:
-	void run(); //µĞÈËÒÆ¶¯
-	void jump(); //µĞÈËÌøÔ¾
+    CREATE_FUNC(Enemy);
 
-	void AI(float dt);
+    virtual bool init() override;
 
-	void decreaseHp(Node *node);
-	
-	bool _canJump = false;
+public:
+    void run();  //æ•Œäººç§»åŠ¨
+    void jump(); //æ•Œäººè·³è·ƒ
+
+    void AI(float dt);
+
+    void decreaseHp(Node* node);
+
+    bool _canJump = false;
 
 private:
-	Sprite *enemySprite; //µĞÈË¾«Áé
+    Sprite* enemySprite; //æ•Œäººç²¾çµ
 
-	Animate *enemyAnim;
-	Texture2D *jumpTexture;
+    Animate* enemyAnim;
+    Texture2D* jumpTexture;
 
-	int hp = 200;
-	//bool _isAir = true;
-	//bool _isLand = false;
-
+    int hp = 200;
+    // bool _isAir = true;
+    // bool _isLand = false;
 };
-
 
 #endif

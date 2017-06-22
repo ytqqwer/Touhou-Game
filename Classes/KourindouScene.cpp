@@ -2,9 +2,9 @@
 #pragma execution_character_set("utf-8")
 #endif
 
+#include "KourindouScene.h"
 #include "EquipScene.h"
 #include "InventoryScene.h"
-#include "KourindouScene.h"
 #include "LocationSelectScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"

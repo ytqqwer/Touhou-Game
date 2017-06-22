@@ -2,13 +2,13 @@
 #pragma execution_character_set("utf-8")
 #endif
 
+#include "LocationSelectScene.h"
 #include "ArmsStoreScene.h"
 #include "EquipScene.h"
 #include "HomeScene.h"
 #include "InventoryScene.h"
 #include "KoumakanLibraryScene.h"
 #include "KourindouScene.h"
-#include "LocationSelectScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 #include "RoundSelectScene.h"

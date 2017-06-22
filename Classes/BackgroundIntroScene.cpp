@@ -54,4 +54,3 @@ void
 BackgroundIntroScene::update(float dt)
 {
 }
-

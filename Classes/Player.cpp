@@ -1,129 +1,137 @@
-#include "Player.h"
+ï»¿#include "Player.h"
 #include "GameplayScene.h"
 
-bool Player::init()
+bool
+Player::init()
 {
-	if (!Node::init())
-		return false;
+    if (!Node::init())
+        return false;
 
-	//¶¨ÒåÁ½½ÇÉ«µÄĞòÁĞÖ¡¶¯»­,×¢Òâ´Ë´¦Òª¾­³£ÇĞ»»ÎÆÀí£¬ËùÒÔ²»ÄÜÓÃAnimationCache
-	p1Animation = Animation::create();
-	for (int i = 0; i <= 7; i++)
-		p1Animation->addSpriteFrameWithFile("gameplayscene/walkFront00" + std::to_string(i) + ".png");
-	p1Animation->setDelayPerUnit(0.15f);
+    //å®šä¹‰ä¸¤è§’è‰²çš„åºåˆ—å¸§åŠ¨ç”»,æ³¨æ„æ­¤å¤„è¦ç»å¸¸åˆ‡æ¢çº¹ç†ï¼Œæ‰€ä»¥ä¸èƒ½ç”¨AnimationCache
+    p1Animation = Animation::create();
+    for (int i = 0; i <= 7; i++)
+        p1Animation->addSpriteFrameWithFile("gameplayscene/walkFront00" + std::to_string(i) +
+                                            ".png");
+    p1Animation->setDelayPerUnit(0.15f);
 
-	jumpAnimation = Animation::create();
-	for (int i = 0; i <= 9; i++)
-		jumpAnimation->addSpriteFrameWithFile("gameplayscene/jumpFront00" + std::to_string(i) + ".png");
-	jumpAnimation->setDelayPerUnit(0.1f);
+    jumpAnimation = Animation::create();
+    for (int i = 0; i <= 9; i++)
+        jumpAnimation->addSpriteFrameWithFile("gameplayscene/jumpFront00" + std::to_string(i) +
+                                              ".png");
+    jumpAnimation->setDelayPerUnit(0.1f);
 
-	//Animation *p2Animation = Animation::create();
-	//for (int i = 1; i <= 12; i++)
-	//	p2Animation->addSpriteFrameWithFile("");
-	//p2Animation->setDelayPerUnit(0.1f);
+    // Animation *p2Animation = Animation::create();
+    // for (int i = 1; i <= 12; i++)
+    //	p2Animation->addSpriteFrameWithFile("");
+    // p2Animation->setDelayPerUnit(0.1f);
 
-	std::string playerTextureName = "gameplayscene/walkFront001.png";
+    std::string playerTextureName = "gameplayscene/walkFront001.png";
 
-	playerSprite = Sprite::create(playerTextureName); //´Ë´¦±ØĞë³õÊ¼»¯Ò»ÕÅ½ÇÉ«ÎÆÀí£¬·ñÔòºóÃæÎŞ·¨ÇĞ»»ÎÆÀí	
-	this->addChild(playerSprite);
+    playerSprite =
+        Sprite::create(playerTextureName); //æ­¤å¤„å¿…é¡»åˆå§‹åŒ–ä¸€å¼ è§’è‰²çº¹ç†ï¼Œå¦åˆ™åé¢æ— æ³•åˆ‡æ¢çº¹ç†
+    this->addChild(playerSprite);
 
-	Animation *playerAnimation;
-	playerAnimation = p1Animation;
+    Animation* playerAnimation;
+    playerAnimation = p1Animation;
 
-	playerAnim = Animate::create(playerAnimation);
+    playerAnim = Animate::create(playerAnimation);
 
-	playerAnim->setTag(1);
+    playerAnim->setTag(1);
 
-	AnimationCache::getInstance()->addAnimation(jumpAnimation, "jumpAnimation");
-	AnimationCache::getInstance()->addAnimation(p1Animation, "p1Animation");
+    AnimationCache::getInstance()->addAnimation(jumpAnimation, "jumpAnimation");
+    AnimationCache::getInstance()->addAnimation(p1Animation, "p1Animation");
 
-	playerSprite->runAction(RepeatForever::create(playerAnim));//³õÊ¼Ê±¿Ì½ÇÉ«ÔÚ±¼ÅÜ
-	//playerSprite->runAction(RepeatForever::create(Animate::create(AnimationCache::getInstance()->getAnimation("p1Animation"))));//³õÊ¼Ê±¿Ì½ÇÉ«ÔÚ±¼ÅÜ
+    playerSprite->runAction(RepeatForever::create(playerAnim)); //åˆå§‹æ—¶åˆ»è§’è‰²åœ¨å¥”è·‘
+    // playerSprite->runAction(RepeatForever::create(Animate::create(AnimationCache::getInstance()->getAnimation("p1Animation"))));//åˆå§‹æ—¶åˆ»è§’è‰²åœ¨å¥”è·‘
 
-	auto bo = PhysicsBody::createBox(Size(50, 75));
-	bo->setDynamic(true);
-	bo->setMass(1);
-	bo->setGravityEnable(true);
-	bo->setRotationEnable(false);
-	bo->getFirstShape()->setDensity(0);
-	bo->getFirstShape()->setFriction(0.2);
-	bo->getFirstShape()->setRestitution(0);
+    auto bo = PhysicsBody::createBox(Size(50, 75));
+    bo->setDynamic(true);
+    bo->setMass(1);
+    bo->setGravityEnable(true);
+    bo->setRotationEnable(false);
+    bo->getFirstShape()->setDensity(0);
+    bo->getFirstShape()->setFriction(0.2);
+    bo->getFirstShape()->setRestitution(0);
 
-	//bo->setTag(101)
-	bo->setCategoryBitmask(playerCategory);
-	bo->setCollisionBitmask(groundCategory | enemyCategory);
-	bo->setContactTestBitmask(groundCategory | enemyCategory);
+    // bo->setTag(101)
+    bo->setCategoryBitmask(playerCategory);
+    bo->setCollisionBitmask(groundCategory | enemyCategory);
+    bo->setContactTestBitmask(groundCategory | enemyCategory);
 
-	this->setPhysicsBody(bo); //Ìæ»»µô¸ÕÌå
+    this->setPhysicsBody(bo); //æ›¿æ¢æ‰åˆšä½“
 
-	//this->setScale(0.8);//ÉèÖÃ´óĞ¡µÄ¿Ì¶È
+    // this->setScale(0.8);//è®¾ç½®å¤§å°çš„åˆ»åº¦
 
-	return true;
+    return true;
 }
 
-void Player::playerRunRight(float dt)
+void
+Player::playerRunRight(float dt)
 {
-	auto body = this->getPhysicsBody();
-	auto velocity = body->getVelocity();
+    auto body = this->getPhysicsBody();
+    auto velocity = body->getVelocity();
 
-	Vec2 impluse = Vec2(0, 0);
-	//Vec2 impluse = Vec2(20.0f, 0.0f);
-	//body->applyForce(Vec2(100.0f,0.0f));
+    Vec2 impluse = Vec2(0, 0);
+    // Vec2 impluse = Vec2(20.0f, 0.0f);
+    // body->applyForce(Vec2(100.0f,0.0f));
 
-	if (velocity.x < -10) {
-		body->setVelocity(Vec2(100, velocity.y));
-	}
+    if (velocity.x < -10) {
+        body->setVelocity(Vec2(100, velocity.y));
+    }
 
-	if (velocity.x < MAX_SPEED) {
-		impluse.x = std::min(MAX_SPEED / ACCELERATE_TIME * dt, MAX_SPEED - velocity.x);
-	}
-	body->applyImpulse(impluse);
+    if (velocity.x < MAX_SPEED) {
+        impluse.x = std::min(MAX_SPEED / ACCELERATE_TIME * dt, MAX_SPEED - velocity.x);
+    }
+    body->applyImpulse(impluse);
 }
 
-void Player::playerRunLeft(float dt)
+void
+Player::playerRunLeft(float dt)
 {
-	auto body = this->getPhysicsBody();
-	auto velocity = body->getVelocity();
+    auto body = this->getPhysicsBody();
+    auto velocity = body->getVelocity();
 
-	Vec2 impluse = Vec2(0, 0);
-	//Vec2 impluse = Vec2(-20.0f, 0.0f);
-	//body->applyForce(Vec2(-100.0f, 0.0f));
+    Vec2 impluse = Vec2(0, 0);
+    // Vec2 impluse = Vec2(-20.0f, 0.0f);
+    // body->applyForce(Vec2(-100.0f, 0.0f));
 
-	if (velocity.x > 10) {
-		body->setVelocity(Vec2(-100, velocity.y));
-	}
+    if (velocity.x > 10) {
+        body->setVelocity(Vec2(-100, velocity.y));
+    }
 
-	if (velocity.x > -MAX_SPEED) {
-		impluse.x = -std::min(MAX_SPEED / ACCELERATE_TIME * dt, MAX_SPEED + velocity.x);
-	}
-	body->applyImpulse(impluse);
+    if (velocity.x > -MAX_SPEED) {
+        impluse.x = -std::min(MAX_SPEED / ACCELERATE_TIME * dt, MAX_SPEED + velocity.x);
+    }
+    body->applyImpulse(impluse);
 }
 
-void Player::playerJump()
+void
+Player::playerJump()
 {
-	auto body = this->getPhysicsBody();
-	auto curVelocity = body->getVelocity();
-	body->setVelocity(Vec2(curVelocity.x, 0));//ÔÙ´ÎÌøÔ¾Ê±£¬ÖØÖÃYÖáËÙ¶ÈÎª0
+    auto body = this->getPhysicsBody();
+    auto curVelocity = body->getVelocity();
+    body->setVelocity(Vec2(curVelocity.x, 0)); //å†æ¬¡è·³è·ƒæ—¶ï¼Œé‡ç½®Yè½´é€Ÿåº¦ä¸º0
 
-	Vec2 impluse = Vec2(0.0f, 500.0f);
-	body->applyImpulse(impluse);
-	//body->setVelocity(Vec2(0, 700.0f));
-	
-	auto playerAnimate = Animate::create(AnimationCache::getInstance()->getAnimation("jumpAnimation"));
-	playerSprite->stopAllActions();
-//	playerSprite->stopActionByTag(1);//ÏÈÍ£Ö¹¶¯×÷
-	
+    Vec2 impluse = Vec2(0.0f, 500.0f);
+    body->applyImpulse(impluse);
+    // body->setVelocity(Vec2(0, 700.0f));
 
-	auto actionDone = CallFuncN::create(CC_CALLBACK_1(Player::resetAction, this));
-	auto sequence = Sequence::create(Repeat::create(playerAnimate, 1) ,actionDone, NULL);
-	playerSprite->runAction(sequence);
+    auto playerAnimate =
+        Animate::create(AnimationCache::getInstance()->getAnimation("jumpAnimation"));
+    playerSprite->stopAllActions();
+    //	playerSprite->stopActionByTag(1);//å…ˆåœæ­¢åŠ¨ä½œ
+
+    auto actionDone = CallFuncN::create(CC_CALLBACK_1(Player::resetAction, this));
+    auto sequence = Sequence::create(Repeat::create(playerAnimate, 1), actionDone, NULL);
+    playerSprite->runAction(sequence);
 }
 
-void Player::resetAction(Node* pNode) 
+void
+Player::resetAction(Node* pNode)
 {
-	playerSprite->stopAllActions(); 
-	//playerSprite->stopActionByTag(1);
+    playerSprite->stopAllActions();
+    // playerSprite->stopActionByTag(1);
 
-	playerSprite->runAction(RepeatForever::create(Animate::create(AnimationCache::getInstance()->getAnimation("p1Animation"))));
-
+    playerSprite->runAction(RepeatForever::create(
+        Animate::create(AnimationCache::getInstance()->getAnimation("p1Animation"))));
 }

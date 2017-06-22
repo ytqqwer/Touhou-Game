@@ -1,4 +1,4 @@
-#ifndef GAME_SCENE_H
+Ôªø#ifndef GAME_SCENE_H
 #define GAME_SCENE_H
 
 #include "cocos2d.h"
@@ -10,53 +10,51 @@ USING_NS_CC;
 class GameplayScene : public cocos2d::Scene
 {
 public:
-	//static Scene* createScene();
+    // static Scene* createScene();
 
-	CREATE_FUNC(GameplayScene);
+    CREATE_FUNC(GameplayScene);
 
-	void onEnter() override;
-	void onExit() override;
-	void cleanup() override;
-	virtual bool init() override;
+    void onEnter() override;
+    void onExit() override;
+    void cleanup() override;
+    virtual bool init() override;
 
-	void initBackGround();
-	void initMap();
-	void initCtrlPanel();
-	void initCharacter();
-	void initCamera();
-	void initLauncher();
-	void initEnemy();
-	void initListener();
+    void initBackGround();
+    void initMap();
+    void initCtrlPanel();
+    void initCharacter();
+    void initCamera();
+    void initLauncher();
+    void initEnemy();
+    void initListener();
 
-	//void moveCamera(float);
+    // void moveCamera(float);
 
-	Player* _player;
+    Player* _player;
 
-	ParticleSystem* ps;
+    ParticleSystem* ps;
 
-	void update(float dt);
+    void update(float dt);
 
-	Sprite* camera;
-	TMXTiledMap* _map;
-	Layer* mapLayer;
-	
-	bool onContactGround(const PhysicsContact& contact);
-	bool onContactBullet(const PhysicsContact& contact);
+    Sprite* camera;
+    TMXTiledMap* _map;
+    Layer* mapLayer;
 
-	bool onTouchBegan(Touch* touch, Event *event);
-	void onTouchEnded(Touch* touch, Event *event);
+    bool onContactGround(const PhysicsContact& contact);
+    bool onContactBullet(const PhysicsContact& contact);
 
-	Vector <Sprite *> vecBullet;//◊”µØ»›∆˜  
-	SpriteBatchNode* bulletBatchNode;//≈˙¥Œ‰÷»æΩ⁄µ„  
-	void ShootBullet(float dt);
-	void removeBullet(Node * pNode);
+    bool onTouchBegan(Touch* touch, Event* event);
+    void onTouchEnded(Touch* touch, Event* event);
 
+    Vector<Sprite*> vecBullet;        //Â≠êÂºπÂÆπÂô®
+    SpriteBatchNode* bulletBatchNode; //ÊâπÊ¨°Ê∏≤ÊüìËäÇÁÇπ
+    void ShootBullet(float dt);
+    void removeBullet(Node* pNode);
 
 private:
-	static const std::string TAG;
+    static const std::string TAG;
 
-	bool createPhysical(float scale);
-
+    bool createPhysical(float scale);
 };
 
 #endif

@@ -1,21 +1,22 @@
-#include "EmitterStyle.h"
+ï»¿#include "EmitterStyle.h"
 
-/*É¢ÉäĞÍ·¢ÉäÆ÷*/
+/*æ•£å°„å‹å‘å°„å™¨*/
 
-class FirstEmitter :public EmitterStyle {
+class FirstEmitter : public EmitterStyle
+{
 public:
-	FirstEmitter(Node* character);
-	APP_CREATE_EMITTER(FirstEmitter);
-	virtual void createBullet(float dt);
-	virtual void shootBullet1(float dt);
-	virtual void shootBullet2(float dt);
-	virtual void shootBullet3(float dt);
+    FirstEmitter(Node* character);
+    APP_CREATE_EMITTER(FirstEmitter);
+    virtual void createBullet(float dt);
+    virtual void shootBullet1(float dt);
+    virtual void shootBullet2(float dt);
+    virtual void shootBullet3(float dt);
 
 private:
-	int number;        //ÌõÊı
-	int count;         
-	int mode;
-	float startAngle;  //ÆğÊ¼½Ç¶È
-	float endAngle;    //ÖÕÖ¹½Ç¶È
-	float varAngle;    //±ä»¯½Ç¶È
+    int number; //æ¡æ•°
+    int count;
+    int mode;
+    float startAngle; //èµ·å§‹è§’åº¦
+    float endAngle;   //ç»ˆæ­¢è§’åº¦
+    float varAngle;   //å˜åŒ–è§’åº¦
 };

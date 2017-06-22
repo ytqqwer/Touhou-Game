@@ -1,12 +1,12 @@
-#pragma once
-#include "cocos2d.h"
+ï»¿#include "cocos2d.h"
 USING_NS_CC;
 
-class Bullet :public Sprite {
+class Bullet : public Sprite
+{
 public:
 private:
-	int kind;  //ÖÖÀà
-	int type;  //ÀàĞÍ
-	int life;  //ÉúÃü
-	int human; //ÉËº¦
+    int kind;  //ç§ç±»
+    int type;  //ç±»å‹
+    int life;  //ç”Ÿå‘½
+    int human; //ä¼¤å®³
 };

@@ -1,102 +1,103 @@
-#include "Enemy.h"
-#include "Player.h"
+ï»¿#include "Enemy.h"
 #include "GameplayScene.h"
+#include "Player.h"
 
-bool Enemy::init()
+bool
+Enemy::init()
 {
-	if (!Node::init())
-		return false;
+    if (!Node::init())
+        return false;
 
-	Animation *enemyAnimation = Animation::create();
-	for (int i = 1; i <= 6; i++)
-		enemyAnimation->addSpriteFrameWithFile("gameplayscene/opossum-" + std::to_string(i) + ".png");
+    Animation* enemyAnimation = Animation::create();
+    for (int i = 1; i <= 6; i++)
+        enemyAnimation->addSpriteFrameWithFile("gameplayscene/opossum-" + std::to_string(i) +
+                                               ".png");
 
-	enemyAnimation->setDelayPerUnit(0.15f);
+    enemyAnimation->setDelayPerUnit(0.15f);
 
-	enemySprite = Sprite::create("gameplayscene/opossum-1.png"); //´Ë´¦±ØÐë³õÊ¼»¯Ò»ÕÅ½ÇÉ«ÎÆÀí£¬·ñÔòºóÃæÎÞ·¨ÇÐ»»ÎÆÀí
+    enemySprite = Sprite::create(
+        "gameplayscene/opossum-1.png"); //æ­¤å¤„å¿…é¡»åˆå§‹åŒ–ä¸€å¼ è§’è‰²çº¹ç†ï¼Œå¦åˆ™åŽé¢æ— æ³•åˆ‡æ¢çº¹ç†
 
-	enemyAnim = Animate::create(enemyAnimation);
-	enemySprite->runAction(RepeatForever::create(enemyAnim)); //³õÊ¼Ê±¿ÌÔÚ±¼ÅÜ
-	this->addChild(enemySprite);
+    enemyAnim = Animate::create(enemyAnimation);
+    enemySprite->runAction(RepeatForever::create(enemyAnim)); //åˆå§‹æ—¶åˆ»åœ¨å¥”è·‘
+    this->addChild(enemySprite);
 
-	auto enemyBody = PhysicsBody::createBox(enemySprite->getContentSize()); //ÕâÀïÒªÓÃ°üÎ§ºÐ£¬Èç¹ûÓÃÔ²ÐÎµÄ»°»áµ¼ÖÂ¹ö¶¯	
-	enemyBody->setDynamic(true);
-	enemyBody->setMass(1);
-	enemyBody->setGravityEnable(true);
-	enemyBody->setRotationEnable(false);
+    auto enemyBody = PhysicsBody::createBox(
+        enemySprite->getContentSize()); //è¿™é‡Œè¦ç”¨åŒ…å›´ç›’ï¼Œå¦‚æžœç”¨åœ†å½¢çš„è¯ä¼šå¯¼è‡´æ»šåŠ¨
+    enemyBody->setDynamic(true);
+    enemyBody->setMass(1);
+    enemyBody->setGravityEnable(true);
+    enemyBody->setRotationEnable(false);
 
-	enemyBody->getFirstShape()->setDensity(0);
-	enemyBody->getFirstShape()->setFriction(0.2);
-	enemyBody->getFirstShape()->setRestitution(0);//ÉèÖÃ¸ÕÌå»Øµ¯Á¦
+    enemyBody->getFirstShape()->setDensity(0);
+    enemyBody->getFirstShape()->setFriction(0.2);
+    enemyBody->getFirstShape()->setRestitution(0); //è®¾ç½®åˆšä½“å›žå¼¹åŠ›
 
-	enemyBody->setCategoryBitmask(enemyCategory);
-	enemyBody->setCollisionBitmask(groundCategory | bulletCategory | playerCategory);
-	enemyBody->setContactTestBitmask(groundCategory | bulletCategory);
+    enemyBody->setCategoryBitmask(enemyCategory);
+    enemyBody->setCollisionBitmask(groundCategory | bulletCategory | playerCategory);
+    enemyBody->setContactTestBitmask(groundCategory | bulletCategory);
 
-	this->setPhysicsBody(enemyBody);
-	//enemySprite->setPhysicsBody(enemyBody);//´íÎóÊ¾Àý£¬Ó¦¸Ã¸øÊµÀý¶ÔÏóÉèÖÃ¸ÕÌå£¬¶ø²»ÊÇÒ»¸öÓÃÀ´ÏÔÊ¾Í¼Æ¬µÄ¾«Áé
+    this->setPhysicsBody(enemyBody);
+    // enemySprite->setPhysicsBody(enemyBody);//é”™è¯¯ç¤ºä¾‹ï¼Œåº”è¯¥ç»™å®žä¾‹å¯¹è±¡è®¾ç½®åˆšä½“ï¼Œè€Œä¸æ˜¯ä¸€ä¸ªç”¨æ¥æ˜¾ç¤ºå›¾ç‰‡çš„ç²¾çµ
 
-	this->setTag(103);
+    this->setTag(103);
 
-	return true;
+    return true;
 }
 
-
-void Enemy::run()
+void
+Enemy::run()
 {
-	//³¯Íæ¼ÒÒÆ¶¯
-	Player* p = (Player *)this->getParent()->getChildByName("player");
-	Vec2 poi = p->getPosition();
+    //æœçŽ©å®¶ç§»åŠ¨
+    Player* p = (Player*)this->getParent()->getChildByName("player");
+    Vec2 poi = p->getPosition();
 
-	Point enemyPos = this->getPosition();
+    Point enemyPos = this->getPosition();
 
-	if (enemyPos.x - poi.x > 500) {
-		return;
-	}
-	if (enemyPos.x - poi.x > 0)
-	{
-		this->getPhysicsBody()->applyImpulse(Vec2(-3.0f, 0.0f));
-		//this->getPhysicsBody()->setVelocity(Vec2(-200.f, 0.0f));
-	}
-	else {
-		this->getPhysicsBody()->applyImpulse(Vec2(3.0f, 0.0f));
-		//this->getPhysicsBody()->setVelocity(Vec2(200.f, 0.0f));
-	}
+    if (enemyPos.x - poi.x > 500) {
+        return;
+    }
+    if (enemyPos.x - poi.x > 0) {
+        this->getPhysicsBody()->applyImpulse(Vec2(-3.0f, 0.0f));
+        // this->getPhysicsBody()->setVelocity(Vec2(-200.f, 0.0f));
+    } else {
+        this->getPhysicsBody()->applyImpulse(Vec2(3.0f, 0.0f));
+        // this->getPhysicsBody()->setVelocity(Vec2(200.f, 0.0f));
+    }
 }
 
-void Enemy::jump()
+void
+Enemy::jump()
 {
-	auto body = this->getPhysicsBody();
-	//auto curVelocity = body->getVelocity();
-	//body->setVelocity(Vec2(curVelocity.x, 0));//ÔÙ´ÎÌøÔ¾Ê±£¬ÖØÖÃYÖáËÙ¶ÈÎª0
-	Vec2 impluse = Vec2(0.0f, 400.0f);
-	body->applyImpulse(impluse);
+    auto body = this->getPhysicsBody();
+    // auto curVelocity = body->getVelocity();
+    // body->setVelocity(Vec2(curVelocity.x, 0));//å†æ¬¡è·³è·ƒæ—¶ï¼Œé‡ç½®Yè½´é€Ÿåº¦ä¸º0
+    Vec2 impluse = Vec2(0.0f, 400.0f);
+    body->applyImpulse(impluse);
 }
 
-void Enemy::AI(float dt)
+void
+Enemy::AI(float dt)
 {
-	int weight = random(0, 1000);//È¨ÖØ
-	if (weight >= 20)
-	{
-		run();
-	}
-	else if (weight < 20)
-	{
-		if (_canJump == false) return;	//µ±µÐÈËÔÚ¿ÕÖÐµÄÊ±ºò²»¿ÉÒÔÔÙÌøÔ¾
-		if (_canJump)
-		{
-			jump();
-			this->_canJump = false;
-		}
-	}
+    int weight = random(0, 1000); //æƒé‡
+    if (weight >= 20) {
+        run();
+    } else if (weight < 20) {
+        if (_canJump == false)
+            return; //å½“æ•Œäººåœ¨ç©ºä¸­çš„æ—¶å€™ä¸å¯ä»¥å†è·³è·ƒ
+        if (_canJump) {
+            jump();
+            this->_canJump = false;
+        }
+    }
 }
 
-void Enemy::decreaseHp(Node *node)
+void
+Enemy::decreaseHp(Node* node)
 {
-	auto enemy = (Enemy*)node;
-	enemy->hp = enemy->hp - 5;
-	if (enemy->hp < 0)
-	{
-		enemy->removeFromParentAndCleanup(true);
-	}
+    auto enemy = (Enemy*)node;
+    enemy->hp = enemy->hp - 5;
+    if (enemy->hp < 0) {
+        enemy->removeFromParentAndCleanup(true);
+    }
 }

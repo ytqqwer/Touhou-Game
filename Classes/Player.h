@@ -1,39 +1,38 @@
-#pragma once
+Ôªø#ifndef GAMEPLAY_PLAYER_H
+#define GAMEPLAY_PLAYER_H
 
 #include "cocos2d.h"
-#include "resources.h.dir\common.h"
+#include "resources.h.dir/common.h"
 
 #define MAX_SPEED 400.0
 #define ACCELERATE_TIME 1.0
 
 using namespace cocos2d;
 
-class Player:public Node
+class Player : public Node
 {
 public:
-	virtual bool init() override;
-	CREATE_FUNC(Player);
+    virtual bool init() override;
+    CREATE_FUNC(Player);
 
 public:
-		
-	void playerRunLeft(float dt);
-	void playerRunRight(float dt);
-	void playerJump();
+    void playerRunLeft(float dt);
+    void playerRunRight(float dt);
+    void playerJump();
 
-	void resetAction(Node * pNode);
+    void resetAction(Node* pNode);
 
-	String attackDirection = "right";
+    String attackDirection = "right";
 
 private:
-	Sprite *playerSprite; //Ω«…´æ´¡È
-	Animate *playerAnim;
-	Texture2D *jumpTexture;
+    Sprite* playerSprite; //ËßíËâ≤Á≤æÁÅµ
+    Animate* playerAnim;
+    Texture2D* jumpTexture;
 
+    Animation* p1Animation;
+    Animation* jumpAnimation;
 
-	Animation* p1Animation;
-	Animation* jumpAnimation;
-
-	//int hp = 100;
-
-	
+    // int hp = 100;
 };
+
+#endif

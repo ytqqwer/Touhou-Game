@@ -1,9 +1,9 @@
-#include "GameplayScene.h"
+ï»¿#include "GameplayScene.h"
 #include "Enemy.h"
 #include "SettingsLayer.h"
 
-#include "Emitters\FirstEmitter.h"
-#include "resources.h.dir\common.h"
+#include "Emitters/FirstEmitter.h"
+#include "resources.h.dir/common.h"
 
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
@@ -12,406 +12,403 @@ using namespace CocosDenshion;
 
 const std::string GameplayScene::TAG{ "GameplayScene" };
 
-void GameplayScene::onEnter()
+void
+GameplayScene::onEnter()
 {
-	Scene::onEnter();
-	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	SimpleAudioEngine::getInstance()->playBackgroundMusic("gameplayscene/bgm001.mp3", true);//¿ªÆôÑ­»·
+    Scene::onEnter();
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+    SimpleAudioEngine::getInstance()->playBackgroundMusic("gameplayscene/bgm001.mp3",
+                                                          true); //å¼€å¯å¾ªçŽ¯
 }
 
-void GameplayScene::onExit()
+void
+GameplayScene::onExit()
 {
-	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-	Scene::onExit();
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+    Scene::onExit();
 }
 
-void GameplayScene::cleanup() {
-	Director::getInstance()->getEventDispatcher()->removeEventListenersForTarget(this);
-	//this->removeAllChildren();
-}
-
-bool GameplayScene::init()
+void
+GameplayScene::cleanup()
 {
-	if (!Scene::init()) {
-		return false;
-	}
-
-	this->initWithPhysics();//³õÊ¼»¯ÎïÀíÊÀ½ç	
-	Vect gravity(0, -1000.0f);	//ÓÎÏ·³¡¾°µÄÖØÁ¦
-	this->getPhysicsWorld()->setGravity(gravity); //ÉèÖÃÖØÁ¦
-	//this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL); //µ÷ÊÔÄ£Ê½¿´°üÎ§ºÐ
-	
-	//³õÊ¼»¯µØÍ¼±³¾°
-	initBackGround();
-
-	// ³õÊ¼»¯µØÍ¼
-	initMap();
-
-	// ³õÊ¼»¯¿ØÖÆÃæ°å
-	initCtrlPanel();
-
-	// ¼ÓÔØ½ÇÉ«
-	initCharacter();
-
-	// ¼ÓÔØÉãÏñ»ú
-	initCamera();
-
-	// ¼ÓÔØ·¢ÉäÆ÷
-	initLauncher();
-
-	// ¼ÓÔØµÐÈË
-	initEnemy();
-
-	// ¼ÓÔØ¼àÌýÆ÷
-	initListener();
-
-	// Æô¶¯Ö¡¶¨Ê±Æ÷
-	scheduleUpdate();
-
-	return true;
+    Director::getInstance()->getEventDispatcher()->removeEventListenersForTarget(this);
+    // this->removeAllChildren();
 }
 
-
-void GameplayScene::initBackGround()
+bool
+GameplayScene::init()
 {
-	auto backGroundLayer = Layer::create();
+    if (!Scene::init()) {
+        return false;
+    }
 
-	Sprite* bg = Sprite::create("gameplayscene/gbg.png");
-	bg->setAnchorPoint(Point::ZERO);
-	bg->setPosition(Point::ZERO);
-	bg->setScale(1.8);
+    this->initWithPhysics();                      //åˆå§‹åŒ–ç‰©ç†ä¸–ç•Œ
+    Vect gravity(0, -1000.0f);                    //æ¸¸æˆåœºæ™¯çš„é‡åŠ›
+    this->getPhysicsWorld()->setGravity(gravity); //è®¾ç½®é‡åŠ›
+    // this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL); //è°ƒè¯•æ¨¡å¼çœ‹åŒ…å›´ç›’
 
-	backGroundLayer->addChild(bg);
+    //åˆå§‹åŒ–åœ°å›¾èƒŒæ™¯
+    initBackGround();
 
-	this->addChild(backGroundLayer, -100);
+    // åˆå§‹åŒ–åœ°å›¾
+    initMap();
+
+    // åˆå§‹åŒ–æŽ§åˆ¶é¢æ¿
+    initCtrlPanel();
+
+    // åŠ è½½è§’è‰²
+    initCharacter();
+
+    // åŠ è½½æ‘„åƒæœº
+    initCamera();
+
+    // åŠ è½½å‘å°„å™¨
+    initLauncher();
+
+    // åŠ è½½æ•Œäºº
+    initEnemy();
+
+    // åŠ è½½ç›‘å¬å™¨
+    initListener();
+
+    // å¯åŠ¨å¸§å®šæ—¶å™¨
+    scheduleUpdate();
+
+    return true;
 }
 
-
-void GameplayScene::initMap()
+void
+GameplayScene::initBackGround()
 {
-	mapLayer = Layer::create();
-	_map = TMXTiledMap::create("gameplayscene/test.tmx");
-	_map->setScale(1.0f);
-	mapLayer->addChild(_map);
-	this->addChild(mapLayer,0);
+    auto backGroundLayer = Layer::create();
 
-	//´´½¨¾²Ì¬¸ÕÌåÇ½  
-	createPhysical(1);
+    Sprite* bg = Sprite::create("gameplayscene/gbg.png");
+    bg->setAnchorPoint(Point::ZERO);
+    bg->setPosition(Point::ZERO);
+    bg->setScale(1.8);
 
+    backGroundLayer->addChild(bg);
+
+    this->addChild(backGroundLayer, -100);
 }
 
-//´´½¨¾²Ì¬¸ÕÌå£¬½ÓÊÜ²ÎÊýÉèÖÃ¸ÕÌå´óÐ¡±¶ÂÊ
-bool GameplayScene::createPhysical(float scale)
+void
+GameplayScene::initMap()
 {
-	// ÕÒ³ö×èµ²ÇøÓòËùÔÚµÄ²ã
-	TMXObjectGroup* group = _map->getObjectGroup("physics");
-	auto objects = group->getObjects();
-	//Value objectsVal = Value(objects);
-	//log("%s", objectsVal.getDescription().c_str());
+    mapLayer = Layer::create();
+    _map = TMXTiledMap::create("gameplayscene/test.tmx");
+    _map->setScale(1.0f);
+    mapLayer->addChild(_map);
+    this->addChild(mapLayer, 0);
 
-	for (auto& v : objects)
-	{
-		auto dict = v.asValueMap();
-
-		if (dict.size() == 0)
-			continue;
-
-		// ¶ÁÈ¡ËùÓÐÐÎ×´µÄÆðÊ¼µã  
-		float x = dict["x"].asFloat() * scale;
-		float y = dict["y"].asFloat() * scale;
-		//log("x:%f\ny:%f", x, y);
-
-		//¶à±ßÐÎpolygonPoints
-		if (dict.find("points") != dict.end()) {
-			auto polygon_points = dict["points"].asValueVector();
-
-			Vec2 points[20];
-			int shapeVecAmount = 0;					//Ã¿¸öshapeµÄ¶¥µã¸öÊý
-
-													// ±ØÐë½«ËùÓÐ¶ÁÈ¡µÄ¶¨µãÄæÏò£¬ÒòÎª·­×ªyÖ®ºó£¬Èý½ÇÐÎ¶¨µãµÄË³ÐòÒÑ¾­ÄæÐòÁË£¬¹¹Ôìb2PolygonShape»ácrash  
-			int c = polygon_points.size();
-			polygon_points.resize(c);
-			c--;
-
-			for (auto obj : polygon_points)
-			{
-				// Ïà¶ÔÓÚÆðÊ¼µãµÄÆ«ÒÆ
-				float offx = obj.asValueMap()["x"].asFloat() * scale;
-				float offy = obj.asValueMap()["y"].asFloat() * scale;
-
-				points[c] = Vec2((x + offx) / PTM_RATIO, (y - offy) / PTM_RATIO);
-				c--;
-				shapeVecAmount++;
-			}
-
-			PhysicsBody* _pBody = PhysicsBody::createPolygon(points, shapeVecAmount);
-			_pBody->getFirstShape()->setDensity(0);
-			_pBody->getFirstShape()->setFriction(1.0);
-			_pBody->getFirstShape()->setRestitution(0);
-			_pBody->setDynamic(false);
-
-			_pBody->setCategoryBitmask(groundCategory);		//¸ø¶à±ßÐÎµØÃæÉèÖÃÑÚÂë£¬Ä¬ÈÏÖµÎª0xFFFFFFFF
-			_pBody->setCollisionBitmask(playerCategory | enemyCategory);				//Ä¬ÈÏÖµÎª0xFFFFFFFF
-			_pBody->setContactTestBitmask(playerCategory);			//Ä¬ÈÏÖµÎª0
-
-
-			auto sprite = Sprite::create();
-			sprite->setTag(98);
-			sprite->setPhysicsBody(_pBody);
-			mapLayer->addChild(sprite);
-		}
-		else if (dict.find("polylinePoints") != dict.end()) {
-			auto polyline_points = dict["polylinePoints"].asValueVector();
-
-			int shapeVecAmount = 0;					//Ã¿¸öshapeµÄ¶¥µã¸öÊý
-			Vec2 points[20];
-
-			int i = 0;
-			for (auto obj : polyline_points)
-			{
-				float offx = obj.asValueMap()["x"].asFloat() * scale;
-				float offy = obj.asValueMap()["y"].asFloat() * scale;
-
-				points[i] = Vec2((x + offx) / PTM_RATIO, (y - offy) / PTM_RATIO);
-				i++;
-				shapeVecAmount++;
-			}
-
-			PhysicsBody* _pBody = PhysicsBody::createEdgeChain(points, shapeVecAmount);
-			_pBody->getFirstShape()->setDensity(0);
-			_pBody->getFirstShape()->setFriction(1.0);
-			_pBody->getFirstShape()->setRestitution(0);
-			_pBody->setDynamic(false);
-
-			_pBody->setCategoryBitmask(groundCategory);		//¸øÕÛÏßµØÃæÉèÖÃÑÚÂë£¬Ä¬ÈÏÖµÎª0xFFFFFFFF
-			_pBody->setCollisionBitmask(playerCategory | enemyCategory);	//Ä¬ÈÏÖµÎª0xFFFFFFFF
-			_pBody->setContactTestBitmask(playerCategory | enemyCategory);	//Ä¬ÈÏÖµÎª0
-
-
-			auto sprite = Sprite::create();
-			sprite->setPhysicsBody(_pBody);
-			sprite->setTag(99);
-
-			mapLayer->addChild(sprite);
-		}
-		else {
-			PhysicsBody* _pBody;
-
-			float width = dict["width"].asFloat() * scale;
-			float height = dict["height"].asFloat() * scale;
-
-			_pBody = PhysicsBody::createBox(Size(width, height));
-			_pBody->getFirstShape()->setDensity(0);
-			_pBody->getFirstShape()->setFriction(1.0);
-			_pBody->getFirstShape()->setRestitution(0);
-			_pBody->setDynamic(false);
-
-			//_pBody->setTag(100);
-			_pBody->setCategoryBitmask(groundCategory);		//¸ø¾ØÐÎµØÃæÉèÖÃÑÚÂë£¬Ä¬ÈÏÖµÎª0xFFFFFFFF
-			_pBody->setCollisionBitmask(playerCategory | enemyCategory);				//Ä¬ÈÏÖµÎª0xFFFFFFFF
-			_pBody->setContactTestBitmask(playerCategory | enemyCategory);			//Ä¬ÈÏÖµÎª0
-
-			auto sprite = Sprite::create();
-			sprite->setTag(100);
-			sprite->setPosition(x + width / 2.0f, y + height / 2.0f);
-			sprite->setPhysicsBody(_pBody);
-			mapLayer->addChild(sprite);
-		}
-	}
-	return true;
+    //åˆ›å»ºé™æ€åˆšä½“å¢™
+    createPhysical(1);
 }
 
-bool GameplayScene::onContactGround(const PhysicsContact& contact) {
-
-	auto nodeA = contact.getShapeA()->getBody()->getNode();
-	auto nodeB = contact.getShapeB()->getBody()->getNode();
-
-	if (nodeA && nodeB)
-	{
-		if (nodeA->getTag() == 99)	//Åöµ½ÁËÕÛÏß
-		{
-			return contact.getContactData()->normal.y > 0;
-		}
-		else if (nodeB->getTag() == 99)
-		{
-			return contact.getContactData()->normal.y > 0;
-		}
-		else if (nodeA->getTag() == 100)	//Åöµ½ÁËµØÃæ
-		{
-			auto enemy = (Enemy*)nodeB;
-			enemy->_canJump = true;
-		}
-		else if (nodeB->getTag() == 100)
-		{
-			auto enemy = (Enemy*)nodeA;
-			enemy->_canJump = true;
-		}
-
-	}
-	return true;
-}
-
-bool GameplayScene::onContactBullet(const PhysicsContact& contact)
+//åˆ›å»ºé™æ€åˆšä½“ï¼ŒæŽ¥å—å‚æ•°è®¾ç½®åˆšä½“å¤§å°å€çŽ‡
+bool
+GameplayScene::createPhysical(float scale)
 {
-	auto nodeA = contact.getShapeA()->getBody()->getNode();
-	auto nodeB = contact.getShapeB()->getBody()->getNode();
+    // æ‰¾å‡ºé˜»æŒ¡åŒºåŸŸæ‰€åœ¨çš„å±‚
+    TMXObjectGroup* group = _map->getObjectGroup("physics");
+    auto objects = group->getObjects();
+    // Value objectsVal = Value(objects);
+    // log("%s", objectsVal.getDescription().c_str());
 
-	if (nodeA && nodeB)
-	{
-		if (nodeA->getTag() == 102)
-		{
-			ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
-			ps->setTexture(Director::getInstance()->getTextureCache()->addImage("gameplayscene/smallOrb000.png"));
-			//auto pos = mapLayer->convertToNodeSpace(nodeA->getPosition());//Á£×ÓÐ§¹ûÌí¼Ó´æÔÚÏà¶Ô×ø±êÎÊÌâ
-			//ps->setPosition(pos);
-			ps->setPosition(nodeA->getPosition());
+    for (auto& v : objects) {
+        auto dict = v.asValueMap();
 
-			//mapLayer->addChild(ps, 10);
-			nodeB->getParent()->addChild(ps, 10);
+        if (dict.size() == 0)
+            continue;
 
-			nodeA->removeFromParentAndCleanup(true);//ÒÆ³ý×Óµ¯
+        // è¯»å–æ‰€æœ‰å½¢çŠ¶çš„èµ·å§‹ç‚¹
+        float x = dict["x"].asFloat() * scale;
+        float y = dict["y"].asFloat() * scale;
+        // log("x:%f\ny:%f", x, y);
 
-			auto enemy = (Enemy*)nodeB;
-			enemy->decreaseHp(nodeB);	//ÊÖ»ú¶ËÉËº¦ÅÐ¶¨´æÔÚÎÊÌâ
-		}
-		else if (nodeB->getTag() == 102)
-		{
+        //å¤šè¾¹å½¢polygonPoints
+        if (dict.find("points") != dict.end()) {
+            auto polygon_points = dict["points"].asValueVector();
 
-			ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
-			ps->setTexture(Director::getInstance()->getTextureCache()->addImage("gameplayscene/smallOrb000.png"));
-			//auto pos = mapLayer->convertToNodeSpace(nodeB->getPosition());
-			//ps->setPosition(pos);
-			ps->setPosition(nodeB->getPosition());
+            Vec2 points[20];
+            int shapeVecAmount = 0; //æ¯ä¸ªshapeçš„é¡¶ç‚¹ä¸ªæ•°
 
-			//mapLayer->addChild(ps, 10);
-			nodeA->getParent()->addChild(ps, 10);
+            // å¿…é¡»å°†æ‰€æœ‰è¯»å–çš„å®šç‚¹é€†å‘ï¼Œå› ä¸ºç¿»è½¬yä¹‹åŽï¼Œä¸‰è§’å½¢å®šç‚¹çš„é¡ºåºå·²ç»é€†åºäº†ï¼Œæž„é€ b2PolygonShapeä¼šcrash
+            int c = polygon_points.size();
+            polygon_points.resize(c);
+            c--;
 
-			nodeB->removeFromParentAndCleanup(true);//ÒÆ³ý×Óµ¯
+            for (auto obj : polygon_points) {
+                // ç›¸å¯¹äºŽèµ·å§‹ç‚¹çš„åç§»
+                float offx = obj.asValueMap()["x"].asFloat() * scale;
+                float offy = obj.asValueMap()["y"].asFloat() * scale;
 
-			auto enemy = (Enemy*)nodeA;
-			enemy->decreaseHp(nodeA);
-		}
+                points[c] = Vec2((x + offx) / PTM_RATIO, (y - offy) / PTM_RATIO);
+                c--;
+                shapeVecAmount++;
+            }
 
-	}
-	return true;
+            PhysicsBody* _pBody = PhysicsBody::createPolygon(points, shapeVecAmount);
+            _pBody->getFirstShape()->setDensity(0);
+            _pBody->getFirstShape()->setFriction(1.0);
+            _pBody->getFirstShape()->setRestitution(0);
+            _pBody->setDynamic(false);
+
+            _pBody->setCategoryBitmask(groundCategory); //ç»™å¤šè¾¹å½¢åœ°é¢è®¾ç½®æŽ©ç ï¼Œé»˜è®¤å€¼ä¸º0xFFFFFFFF
+            _pBody->setCollisionBitmask(playerCategory | enemyCategory); //é»˜è®¤å€¼ä¸º0xFFFFFFFF
+            _pBody->setContactTestBitmask(playerCategory);               //é»˜è®¤å€¼ä¸º0
+
+            auto sprite = Sprite::create();
+            sprite->setTag(98);
+            sprite->setPhysicsBody(_pBody);
+            mapLayer->addChild(sprite);
+        } else if (dict.find("polylinePoints") != dict.end()) {
+            auto polyline_points = dict["polylinePoints"].asValueVector();
+
+            int shapeVecAmount = 0; //æ¯ä¸ªshapeçš„é¡¶ç‚¹ä¸ªæ•°
+            Vec2 points[20];
+
+            int i = 0;
+            for (auto obj : polyline_points) {
+                float offx = obj.asValueMap()["x"].asFloat() * scale;
+                float offy = obj.asValueMap()["y"].asFloat() * scale;
+
+                points[i] = Vec2((x + offx) / PTM_RATIO, (y - offy) / PTM_RATIO);
+                i++;
+                shapeVecAmount++;
+            }
+
+            PhysicsBody* _pBody = PhysicsBody::createEdgeChain(points, shapeVecAmount);
+            _pBody->getFirstShape()->setDensity(0);
+            _pBody->getFirstShape()->setFriction(1.0);
+            _pBody->getFirstShape()->setRestitution(0);
+            _pBody->setDynamic(false);
+
+            _pBody->setCategoryBitmask(groundCategory); //ç»™æŠ˜çº¿åœ°é¢è®¾ç½®æŽ©ç ï¼Œé»˜è®¤å€¼ä¸º0xFFFFFFFF
+            _pBody->setCollisionBitmask(playerCategory | enemyCategory);   //é»˜è®¤å€¼ä¸º0xFFFFFFFF
+            _pBody->setContactTestBitmask(playerCategory | enemyCategory); //é»˜è®¤å€¼ä¸º0
+
+            auto sprite = Sprite::create();
+            sprite->setPhysicsBody(_pBody);
+            sprite->setTag(99);
+
+            mapLayer->addChild(sprite);
+        } else {
+            PhysicsBody* _pBody;
+
+            float width = dict["width"].asFloat() * scale;
+            float height = dict["height"].asFloat() * scale;
+
+            _pBody = PhysicsBody::createBox(Size(width, height));
+            _pBody->getFirstShape()->setDensity(0);
+            _pBody->getFirstShape()->setFriction(1.0);
+            _pBody->getFirstShape()->setRestitution(0);
+            _pBody->setDynamic(false);
+
+            //_pBody->setTag(100);
+            _pBody->setCategoryBitmask(groundCategory); //ç»™çŸ©å½¢åœ°é¢è®¾ç½®æŽ©ç ï¼Œé»˜è®¤å€¼ä¸º0xFFFFFFFF
+            _pBody->setCollisionBitmask(playerCategory | enemyCategory);   //é»˜è®¤å€¼ä¸º0xFFFFFFFF
+            _pBody->setContactTestBitmask(playerCategory | enemyCategory); //é»˜è®¤å€¼ä¸º0
+
+            auto sprite = Sprite::create();
+            sprite->setTag(100);
+            sprite->setPosition(x + width / 2.0f, y + height / 2.0f);
+            sprite->setPhysicsBody(_pBody);
+            mapLayer->addChild(sprite);
+        }
+    }
+    return true;
 }
 
-void GameplayScene::initCtrlPanel()
+bool
+GameplayScene::onContactGround(const PhysicsContact& contact)
 {
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto visibleOrigin = Director::getInstance()->getVisibleOrigin();
 
-	auto controlPanel = Layer::create();
-	this->addChild(controlPanel);
+    auto nodeA = contact.getShapeA()->getBody()->getNode();
+    auto nodeB = contact.getShapeB()->getBody()->getNode();
 
-	auto set_button = Button::create("CloseNormal.png");
-	set_button->setPosition(Vec2(visibleSize.width * 0.080, visibleSize.height * 0.950));
-	set_button->setScale(1.5);
-	set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-		if (type == Widget::TouchEventType::ENDED) {
-			auto layer = SettingsLayer::create("GameplayScene");
-			this->addChild(layer, 1000);//×î´óÓÅÏÈ¼¶
-		}
-	});	
-	controlPanel->addChild(set_button);
-	
-	auto listener = EventListenerTouchOneByOne::create();
-	listener->setSwallowTouches(true);
-	listener->onTouchBegan = CC_CALLBACK_2(GameplayScene::onTouchBegan, this);
-	listener->onTouchEnded = CC_CALLBACK_2(GameplayScene::onTouchEnded, this);
-
-	auto dispatcher = Director::getInstance()->getEventDispatcher();
-	dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-	//this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-	//this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
-
+    if (nodeA && nodeB) {
+        if (nodeA->getTag() == 99) //ç¢°åˆ°äº†æŠ˜çº¿
+        {
+            return contact.getContactData()->normal.y > 0;
+        } else if (nodeB->getTag() == 99) {
+            return contact.getContactData()->normal.y > 0;
+        } else if (nodeA->getTag() == 100) //ç¢°åˆ°äº†åœ°é¢
+        {
+            auto enemy = (Enemy*)nodeB;
+            enemy->_canJump = true;
+        } else if (nodeB->getTag() == 100) {
+            auto enemy = (Enemy*)nodeA;
+            enemy->_canJump = true;
+        }
+    }
+    return true;
 }
 
-bool GameplayScene::onTouchBegan(Touch* touch, Event *event) {
-	auto location = touch->getLocation();
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-
-	//Player* p = (Player *)this->getParent()->getChildByName("player");
-	//auto body = p->getPhysicsBody();
-
-	auto body = _player->getPhysicsBody();
-
-	if (location.x > visibleSize.width / 2 && location.y < visibleSize.height / 2) {
-		//´¥ÅöÓÒÏÂÆÁ
-		//_player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
-		_player->setScaleX(1);//ÈËÎï·­×ª
-		_player->attackDirection = "right";
-		_player->schedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
-	}
-
-	else if (location.x < visibleSize.width / 2 && location.y < visibleSize.height / 2) {
-		//´¥Åö×óÏÂÆÁ  
-		//_player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
-		_player->setScaleX(-1);//ÈËÎï·­×ª
-		_player->attackDirection = "left";
-		_player->schedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
-	}
-
-	else if (location.y >= visibleSize.height / 2) {
-		//´¥ÅöÉÏÆÁ
-		_player->playerJump();
-	}
-	return true;
-}
-
-void GameplayScene::onTouchEnded(Touch * touch, Event * event)
+bool
+GameplayScene::onContactBullet(const PhysicsContact& contact)
 {
-	auto location = touch->getLocation();
-	auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto nodeA = contact.getShapeA()->getBody()->getNode();
+    auto nodeB = contact.getShapeB()->getBody()->getNode();
 
-	if (location.x > visibleSize.width / 2 && location.y < visibleSize.height / 2) {
-		//´¥ÅöÓÒÏÂ·½½áÊø£¬½â³ýÏòÓÒ×´Ì¬ 
-		_player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
-	}
-	else if (location.x < visibleSize.width / 2 && location.y < visibleSize.height / 2) {
-		//´¥Åö×óÏÂ·½½áÊø£¬½â³ýÏò×ó×´Ì¬
-		_player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
-	}
-	else if (location.y >= visibleSize.height / 2) {
-		//Çë²»ÒªÍÏ¶¯Êó±ê
-	}
-	//×Ô¶¯¼õËÙ»¹Ã»ÓÐ×ö
+    if (nodeA && nodeB) {
+        if (nodeA->getTag() == 102) {
+            ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
+            ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
+                "gameplayscene/smallOrb000.png"));
+            // auto pos =
+            // mapLayer->convertToNodeSpace(nodeA->getPosition());//ç²’å­æ•ˆæžœæ·»åŠ å­˜åœ¨ç›¸å¯¹åæ ‡é—®é¢˜
+            // ps->setPosition(pos);
+            ps->setPosition(nodeA->getPosition());
+
+            // mapLayer->addChild(ps, 10);
+            nodeB->getParent()->addChild(ps, 10);
+
+            nodeA->removeFromParentAndCleanup(true); //ç§»é™¤å­å¼¹
+
+            auto enemy = (Enemy*)nodeB;
+            enemy->decreaseHp(nodeB); //æ‰‹æœºç«¯ä¼¤å®³åˆ¤å®šå­˜åœ¨é—®é¢˜
+        } else if (nodeB->getTag() == 102) {
+
+            ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
+            ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
+                "gameplayscene/smallOrb000.png"));
+            // auto pos = mapLayer->convertToNodeSpace(nodeB->getPosition());
+            // ps->setPosition(pos);
+            ps->setPosition(nodeB->getPosition());
+
+            // mapLayer->addChild(ps, 10);
+            nodeA->getParent()->addChild(ps, 10);
+
+            nodeB->removeFromParentAndCleanup(true); //ç§»é™¤å­å¼¹
+
+            auto enemy = (Enemy*)nodeA;
+            enemy->decreaseHp(nodeA);
+        }
+    }
+    return true;
 }
 
-void GameplayScene::initCharacter()
+void
+GameplayScene::initCtrlPanel()
 {
-	TMXObjectGroup* temp = _map->getObjectGroup("player");
-	auto ts = temp->getObject("birthPoint");
-	//log("%s", Value(ts).getDescription().c_str());
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto visibleOrigin = Director::getInstance()->getVisibleOrigin();
 
-	float a = ts["x"].asFloat();
-	float b = ts["y"].asFloat();
+    auto controlPanel = Layer::create();
+    this->addChild(controlPanel);
 
-	_player = Player::create();
-	_player->setTag(101);
-	_player->setName("player");
-	_player->setPosition(a, b);
+    auto set_button = Button::create("CloseNormal.png");
+    set_button->setPosition(Vec2(visibleSize.width * 0.080, visibleSize.height * 0.950));
+    set_button->setScale(1.5);
+    set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            auto layer = SettingsLayer::create("GameplayScene");
+            this->addChild(layer, 1000); //æœ€å¤§ä¼˜å…ˆçº§
+        }
+    });
+    controlPanel->addChild(set_button);
 
-	mapLayer->addChild(_player);
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->setSwallowTouches(true);
+    listener->onTouchBegan = CC_CALLBACK_2(GameplayScene::onTouchBegan, this);
+    listener->onTouchEnded = CC_CALLBACK_2(GameplayScene::onTouchEnded, this);
+
+    auto dispatcher = Director::getInstance()->getEventDispatcher();
+    dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+    // this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    // this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 
-void GameplayScene::initCamera()
+bool
+GameplayScene::onTouchBegan(Touch* touch, Event* event)
 {
-	auto mapSize = _map->getMapSize();
-	auto mapTileSize = _map->getTileSize();
+    auto location = touch->getLocation();
+    auto visibleSize = Director::getInstance()->getVisibleSize();
 
-	camera = Sprite::create();
-	camera->setPosition(_player->getPosition());
-	this->addChild(camera);
+    // Player* p = (Player *)this->getParent()->getChildByName("player");
+    // auto body = p->getPhysicsBody();
 
-	auto follow = Follow::create(camera, Rect(0, 0, mapSize.width * mapTileSize.width * 3, mapSize.height * mapTileSize.height - 50));
-	mapLayer->runAction(follow);
+    auto body = _player->getPhysicsBody();
 
-	// camera->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::moveCamera));
-	//this->scheduleUpdate();
+    if (location.x > visibleSize.width / 2 && location.y < visibleSize.height / 2) {
+        //è§¦ç¢°å³ä¸‹å±
+        //_player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
+        _player->setScaleX(1); //äººç‰©ç¿»è½¬
+        _player->attackDirection = "right";
+        _player->schedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
+    }
+
+    else if (location.x < visibleSize.width / 2 && location.y < visibleSize.height / 2) {
+        //è§¦ç¢°å·¦ä¸‹å±
+        //_player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
+        _player->setScaleX(-1); //äººç‰©ç¿»è½¬
+        _player->attackDirection = "left";
+        _player->schedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
+    }
+
+    else if (location.y >= visibleSize.height / 2) {
+        //è§¦ç¢°ä¸Šå±
+        _player->playerJump();
+    }
+    return true;
 }
 
-//void GameplayScene::moveCamera(float dt)
+void
+GameplayScene::onTouchEnded(Touch* touch, Event* event)
+{
+    auto location = touch->getLocation();
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+
+    if (location.x > visibleSize.width / 2 && location.y < visibleSize.height / 2) {
+        //è§¦ç¢°å³ä¸‹æ–¹ç»“æŸï¼Œè§£é™¤å‘å³çŠ¶æ€
+        _player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
+    } else if (location.x < visibleSize.width / 2 && location.y < visibleSize.height / 2) {
+        //è§¦ç¢°å·¦ä¸‹æ–¹ç»“æŸï¼Œè§£é™¤å‘å·¦çŠ¶æ€
+        _player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
+    } else if (location.y >= visibleSize.height / 2) {
+        //è¯·ä¸è¦æ‹–åŠ¨é¼ æ ‡
+    }
+    //è‡ªåŠ¨å‡é€Ÿè¿˜æ²¡æœ‰åš
+}
+
+void
+GameplayScene::initCharacter()
+{
+    TMXObjectGroup* temp = _map->getObjectGroup("player");
+    auto ts = temp->getObject("birthPoint");
+    // log("%s", Value(ts).getDescription().c_str());
+
+    float a = ts["x"].asFloat();
+    float b = ts["y"].asFloat();
+
+    _player = Player::create();
+    _player->setTag(101);
+    _player->setName("player");
+    _player->setPosition(a, b);
+
+    mapLayer->addChild(_player);
+}
+
+void
+GameplayScene::initCamera()
+{
+    auto mapSize = _map->getMapSize();
+    auto mapTileSize = _map->getTileSize();
+
+    camera = Sprite::create();
+    camera->setPosition(_player->getPosition());
+    this->addChild(camera);
+
+    auto follow = Follow::create(camera, Rect(0, 0, mapSize.width * mapTileSize.width * 3,
+                                              mapSize.height * mapTileSize.height - 50));
+    mapLayer->runAction(follow);
+
+    // camera->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::moveCamera));
+    // this->scheduleUpdate();
+}
+
+// void GameplayScene::moveCamera(float dt)
 //{
 //	//	Player* p = (Player *)this->getChildByName("player");
 //
@@ -420,181 +417,183 @@ void GameplayScene::initCamera()
 //	camera->setPosition(poi.x + 100, poi.y + 70);
 //}
 
-void GameplayScene::initLauncher()
+void
+GameplayScene::initLauncher()
 {
-	TMXObjectGroup* group = _map->getObjectGroup("launcher");
-	auto objects = group->getObjects();
+    TMXObjectGroup* group = _map->getObjectGroup("launcher");
+    auto objects = group->getObjects();
 
-	for (auto v : objects)
-	{
-		auto dict = v.asValueMap();
-		if (dict.size() == 0)
-			continue;
-		float x = dict["x"].asFloat();
-		float y = dict["y"].asFloat();
+    for (auto v : objects) {
+        auto dict = v.asValueMap();
+        if (dict.size() == 0)
+            continue;
+        float x = dict["x"].asFloat();
+        float y = dict["y"].asFloat();
 
-		auto _launcher = Sprite::create("CloseNormal.png");
-		_launcher->setPosition(x,y);
-		mapLayer->addChild(_launcher);//²»ÒªÍü¼ÇaddChild
+        auto _launcher = Sprite::create("CloseNormal.png");
+        _launcher->setPosition(x, y);
+        mapLayer->addChild(_launcher); //ä¸è¦å¿˜è®°addChild
 
-		auto fe = FirstEmitter::create(_launcher);
-		mapLayer->addChild(fe);
+        auto fe = FirstEmitter::create(_launcher);
+        mapLayer->addChild(fe);
 
-		fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
-	}
+        fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
+    }
 
-	//´´½¨BatchNode½Úµã£¬³ÉÅúäÖÈ¾×Óµ¯
-	bulletBatchNode = SpriteBatchNode::create("gameplayscene/bullet1.png");
-	mapLayer->addChild(bulletBatchNode);
+    //åˆ›å»ºBatchNodeèŠ‚ç‚¹ï¼Œæˆæ‰¹æ¸²æŸ“å­å¼¹
+    bulletBatchNode = SpriteBatchNode::create("gameplayscene/bullet1.png");
+    mapLayer->addChild(bulletBatchNode);
 
-	//Ã¿¸ô0.4Sµ÷ÓÃÒ»´Î·¢Éä×Óµ¯º¯Êý  
-	this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.4f);
+    //æ¯éš”0.4Sè°ƒç”¨ä¸€æ¬¡å‘å°„å­å¼¹å‡½æ•°
+    this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.4f);
 }
 
-
-//ÓÃ»º´æµÄ·½·¨´´½¨×Óµ¯£¬²¢³õÊ¼»¯×Óµ¯µÄÔË¶¯ºÍÔË¶¯ºóµÄÊÂ¼þ
-void GameplayScene::ShootBullet(float dt) {
-	Size winSize = Director::getInstance()->getWinSize();
-	auto playerPos = _player->getPosition();
-	//auto playerPos = _launcher->getPosition();//¸ÄÎª·¢ÉäÆ÷·¢Éä
-	//´Ó»º´æÖÐ´´½¨×Óµ¯  
-	auto spritebullet = Sprite::createWithTexture(bulletBatchNode->getTexture());
-	spritebullet->setTag(102);
-
-	auto spritebullet2 = Sprite::createWithTexture(bulletBatchNode->getTexture());
-	spritebullet2->setTag(102);
-
-	//½«´´½¨ºÃµÄ×Óµ¯Ìí¼Óµ½BatchNodeÖÐ½øÐÐÅú´ÎäÖÈ¾
-	bulletBatchNode->addChild(spritebullet);
-	bulletBatchNode->addChild(spritebullet2);
-
-	//¸ø´´½¨ºÃµÄ×Óµ¯Ìí¼Ó¸ÕÌå
-	do {
-		auto _body = PhysicsBody::createBox(spritebullet->getContentSize());
-		_body->setRotationEnable(false);
-		_body->setGravityEnable(false);
-		//_body->setTag(102);
-
-		_body->setContactTestBitmask(bulletCategory);
-		_body->setCollisionBitmask(enemyCategory);
-		_body->setContactTestBitmask(enemyCategory);
-		spritebullet->setPhysicsBody(_body);
-	} while (0);
-
-	do {
-		auto _body = PhysicsBody::createBox(spritebullet->getContentSize());
-		_body->setRotationEnable(false);
-		_body->setGravityEnable(false);
-		//_body->setTag(102);
-
-		_body->setCategoryBitmask(bulletCategory);
-		_body->setCollisionBitmask(enemyCategory);
-		_body->setContactTestBitmask(enemyCategory);
-
-		spritebullet2->setPhysicsBody(_body);
-	} while (0);
-
-	//½«´´½¨ºÃµÄ×Óµ¯Ìí¼Óµ½ÈÝÆ÷  
-	vecBullet.pushBack(spritebullet);
-	vecBullet.pushBack(spritebullet2);
-
-	Point bulletPos = (Point(playerPos.x, playerPos.y));
-
-	//spritebullet->setScale(1.3f);
-
-	spritebullet->setPosition(bulletPos);
-	//spritebullet2->setPosition(bulletPos);
-	spritebullet2->setPosition(Point(playerPos.x, playerPos.y - 30));
-
-	float realFlyDuration = 1.0;
-	//×Óµ¯ÔËÐÐµÄ¾àÀëºÍÊ±¼ä
-	//auto actionMove = MoveBy::create(realFlyDuration, Point(0,winSize.height));
-	//auto actionMove2 = MoveBy::create(realFlyDuration, Point(0,-winSize.height));
-	auto actionMove = MoveBy::create(realFlyDuration, Point(winSize.width, 0));
-	auto fire1 = actionMove;
-	auto actionMove2 = MoveBy::create(realFlyDuration, Point(winSize.width, 0));
-	auto fire2 = actionMove2;
-
-	if (_player->attackDirection.compare("right"))
-	{
-		fire1 = actionMove->reverse();
-		fire2 = actionMove2->reverse();
-	}
-
-	//×Óµ¯Ö´ÐÐÍê¶¯×÷ºó½øÐÐº¯Êý»Øµ÷£¬µ÷ÓÃÒÆ³ý×Óµ¯º¯Êý  
-	auto actionDone = CallFuncN::create(CC_CALLBACK_1(GameplayScene::removeBullet, this));
-
-	//×Óµ¯¿ªÊ¼ÅÜ¶¯
-	Sequence* sequence = Sequence::create(fire1, actionDone, NULL);
-	Sequence* sequence2 = Sequence::create(fire2, actionDone, NULL);
-
-	spritebullet->runAction(sequence);
-	spritebullet2->runAction(sequence2);
-}
-
-//ÒÆ³ý×Óµ¯£¬½«×Óµ¯´ÓÈÝÆ÷ÖÐÒÆ³ý£¬Í¬Ê±Ò²´ÓSpriteBatchNodeÖÐÒÆ³ý
-void GameplayScene::removeBullet(Node* pNode) {
-	if (NULL == pNode) {
-		return;
-	}
-	Sprite* bullet = (Sprite*)pNode;
-	this->bulletBatchNode->removeChild(bullet, true);
-	vecBullet.eraseObject(bullet);
-}
-
-void GameplayScene::initEnemy()
+//ç”¨ç¼“å­˜çš„æ–¹æ³•åˆ›å»ºå­å¼¹ï¼Œå¹¶åˆå§‹åŒ–å­å¼¹çš„è¿åŠ¨å’Œè¿åŠ¨åŽçš„äº‹ä»¶
+void
+GameplayScene::ShootBullet(float dt)
 {
-	TMXObjectGroup* group = _map->getObjectGroup("enemy");
-	auto objects = group->getObjects();
-	//Value objectsVal = Value(objects);
-	//log("%s", objectsVal.getDescription().c_str());
+    Size winSize = Director::getInstance()->getWinSize();
+    auto playerPos = _player->getPosition();
+    // auto playerPos = _launcher->getPosition();//æ”¹ä¸ºå‘å°„å™¨å‘å°„
+    //ä»Žç¼“å­˜ä¸­åˆ›å»ºå­å¼¹
+    auto spritebullet = Sprite::createWithTexture(bulletBatchNode->getTexture());
+    spritebullet->setTag(102);
 
-	for (auto v : objects)
-	{
-		auto dict = v.asValueMap();
-		if (dict.size() == 0)
-			continue;
+    auto spritebullet2 = Sprite::createWithTexture(bulletBatchNode->getTexture());
+    spritebullet2->setTag(102);
 
-		float x = dict["x"].asFloat();
-		float y = dict["y"].asFloat();
+    //å°†åˆ›å»ºå¥½çš„å­å¼¹æ·»åŠ åˆ°BatchNodeä¸­è¿›è¡Œæ‰¹æ¬¡æ¸²æŸ“
+    bulletBatchNode->addChild(spritebullet);
+    bulletBatchNode->addChild(spritebullet2);
 
-		Enemy* _enemy = Enemy::create();
-		_enemy->setPosition(x, y);
-		mapLayer->addChild(_enemy);
-		_enemy->schedule(CC_SCHEDULE_SELECTOR(Enemy::AI));
-	}
+    //ç»™åˆ›å»ºå¥½çš„å­å¼¹æ·»åŠ åˆšä½“
+    do {
+        auto _body = PhysicsBody::createBox(spritebullet->getContentSize());
+        _body->setRotationEnable(false);
+        _body->setGravityEnable(false);
+        //_body->setTag(102);
+
+        _body->setContactTestBitmask(bulletCategory);
+        _body->setCollisionBitmask(enemyCategory);
+        _body->setContactTestBitmask(enemyCategory);
+        spritebullet->setPhysicsBody(_body);
+    } while (0);
+
+    do {
+        auto _body = PhysicsBody::createBox(spritebullet->getContentSize());
+        _body->setRotationEnable(false);
+        _body->setGravityEnable(false);
+        //_body->setTag(102);
+
+        _body->setCategoryBitmask(bulletCategory);
+        _body->setCollisionBitmask(enemyCategory);
+        _body->setContactTestBitmask(enemyCategory);
+
+        spritebullet2->setPhysicsBody(_body);
+    } while (0);
+
+    //å°†åˆ›å»ºå¥½çš„å­å¼¹æ·»åŠ åˆ°å®¹å™¨
+    vecBullet.pushBack(spritebullet);
+    vecBullet.pushBack(spritebullet2);
+
+    Point bulletPos = (Point(playerPos.x, playerPos.y));
+
+    // spritebullet->setScale(1.3f);
+
+    spritebullet->setPosition(bulletPos);
+    // spritebullet2->setPosition(bulletPos);
+    spritebullet2->setPosition(Point(playerPos.x, playerPos.y - 30));
+
+    float realFlyDuration = 1.0;
+    //å­å¼¹è¿è¡Œçš„è·ç¦»å’Œæ—¶é—´
+    // auto actionMove = MoveBy::create(realFlyDuration, Point(0,winSize.height));
+    // auto actionMove2 = MoveBy::create(realFlyDuration, Point(0,-winSize.height));
+    auto actionMove = MoveBy::create(realFlyDuration, Point(winSize.width, 0));
+    auto fire1 = actionMove;
+    auto actionMove2 = MoveBy::create(realFlyDuration, Point(winSize.width, 0));
+    auto fire2 = actionMove2;
+
+    if (_player->attackDirection.compare("right")) {
+        fire1 = actionMove->reverse();
+        fire2 = actionMove2->reverse();
+    }
+
+    //å­å¼¹æ‰§è¡Œå®ŒåŠ¨ä½œåŽè¿›è¡Œå‡½æ•°å›žè°ƒï¼Œè°ƒç”¨ç§»é™¤å­å¼¹å‡½æ•°
+    auto actionDone = CallFuncN::create(CC_CALLBACK_1(GameplayScene::removeBullet, this));
+
+    //å­å¼¹å¼€å§‹è·‘åŠ¨
+    Sequence* sequence = Sequence::create(fire1, actionDone, NULL);
+    Sequence* sequence2 = Sequence::create(fire2, actionDone, NULL);
+
+    spritebullet->runAction(sequence);
+    spritebullet2->runAction(sequence2);
 }
 
-//³õÊ¼»¯¼àÌýÆ÷£¬ÊÖ¶¯Ö¸¶¨ÓÅÏÈ¼¶
-void GameplayScene::initListener()
+//ç§»é™¤å­å¼¹ï¼Œå°†å­å¼¹ä»Žå®¹å™¨ä¸­ç§»é™¤ï¼ŒåŒæ—¶ä¹Ÿä»ŽSpriteBatchNodeä¸­ç§»é™¤
+void
+GameplayScene::removeBullet(Node* pNode)
 {
-	auto dispatcher = Director::getInstance()->getEventDispatcher();
-
-	auto listener = EventListenerPhysicsContact::create();
-	listener->onContactBegin = CC_CALLBACK_1(GameplayScene::onContactGround, this);
-	//dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-	dispatcher->addEventListenerWithFixedPriority(listener, 20);
-
-	auto contactListener = EventListenerPhysicsContact::create();
-	contactListener->onContactBegin = CC_CALLBACK_1(GameplayScene::onContactBullet,this);
-	dispatcher->addEventListenerWithFixedPriority(contactListener, 10);
-
-	//auto e = Enemy::create();
-	//auto contactListener = EventListenerPhysicsContact::create();
-	//contactListener->onContactBegin = std::bind(&Enemy::onContactBullet,e);
-	////dispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
-	//dispatcher->addEventListenerWithFixedPriority(contactListener, 10);
-
+    if (NULL == pNode) {
+        return;
+    }
+    Sprite* bullet = (Sprite*)pNode;
+    this->bulletBatchNode->removeChild(bullet, true);
+    vecBullet.eraseObject(bullet);
 }
 
-
-void GameplayScene::update(float dt)
+void
+GameplayScene::initEnemy()
 {
-	//Player* p = (Player *)this->getChildByName("player");
-	//Vec2 poi = p->getPosition();
-	Vec2 poi = _player->getPosition();
-	camera->setPosition(poi.x + 100, poi.y + 70);//ÒÆ¶¯ÉãÏñ»ú
+    TMXObjectGroup* group = _map->getObjectGroup("enemy");
+    auto objects = group->getObjects();
+    // Value objectsVal = Value(objects);
+    // log("%s", objectsVal.getDescription().c_str());
 
-	//¼òµ¥µÄÁ£×ÓÌØÐ§
-	//ps->setPosition(poi);
+    for (auto v : objects) {
+        auto dict = v.asValueMap();
+        if (dict.size() == 0)
+            continue;
+
+        float x = dict["x"].asFloat();
+        float y = dict["y"].asFloat();
+
+        Enemy* _enemy = Enemy::create();
+        _enemy->setPosition(x, y);
+        mapLayer->addChild(_enemy);
+        _enemy->schedule(CC_SCHEDULE_SELECTOR(Enemy::AI));
+    }
+}
+
+//åˆå§‹åŒ–ç›‘å¬å™¨ï¼Œæ‰‹åŠ¨æŒ‡å®šä¼˜å…ˆçº§
+void
+GameplayScene::initListener()
+{
+    auto dispatcher = Director::getInstance()->getEventDispatcher();
+
+    auto listener = EventListenerPhysicsContact::create();
+    listener->onContactBegin = CC_CALLBACK_1(GameplayScene::onContactGround, this);
+    // dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+    dispatcher->addEventListenerWithFixedPriority(listener, 20);
+
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(GameplayScene::onContactBullet, this);
+    dispatcher->addEventListenerWithFixedPriority(contactListener, 10);
+
+    // auto e = Enemy::create();
+    // auto contactListener = EventListenerPhysicsContact::create();
+    // contactListener->onContactBegin = std::bind(&Enemy::onContactBullet,e);
+    ////dispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+    // dispatcher->addEventListenerWithFixedPriority(contactListener, 10);
+}
+
+void
+GameplayScene::update(float dt)
+{
+    // Player* p = (Player *)this->getChildByName("player");
+    // Vec2 poi = p->getPosition();
+    Vec2 poi = _player->getPosition();
+    camera->setPosition(poi.x + 100, poi.y + 70); //ç§»åŠ¨æ‘„åƒæœº
+
+    //ç®€å•çš„ç²’å­ç‰¹æ•ˆ
+    // ps->setPosition(poi);
 }

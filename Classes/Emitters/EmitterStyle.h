@@ -1,33 +1,32 @@
-#pragma once
-#include "cocos2d.h"
+﻿#pragma once
 #include "Bullet.h"
+#include "cocos2d.h"
 USING_NS_CC;
 
-class EmitterStyle :public Node
+class EmitterStyle : public Node
 {
-public :
-	bool init();
-	//virtual void createBullet();
-	//virtual void shootBullet(float dt);
-	void removeBullet(Node* pNode);
-	void removeAllObject();
-	
+public:
+    bool init();
+    // virtual void createBullet();
+    // virtual void shootBullet(float dt);
+    void removeBullet(Node* pNode);
+    void removeAllObject();
+
 protected:
-	Vector<Sprite*> bullets;  
-	Node* character;   
+    Vector<Sprite*> bullets;
+    Node* character;
 };
 
-#define APP_CREATE_EMITTER(_TYPE_)\
-static _TYPE_* create(Node* character)\
-{\
- _TYPE_ *pRet=new _TYPE_(character);\
-if(pRet&&pRet->init()){\
-pRet->autorelease();\
-return pRet;\
-}\
-else{\
-delete pRet;\
-pRet = NULL;\
-return NULL;\
-}\
-}
+#define APP_CREATE_EMITTER(_TYPE_)                                                                 \
+    static _TYPE_* create(Node* character)                                                         \
+    {                                                                                              \
+        _TYPE_* pRet = new _TYPE_(character);                                                      \
+        if (pRet && pRet->init()) {                                                                \
+            pRet->autorelease();                                                                   \
+            return pRet;                                                                           \
+        } else {                                                                                   \
+            delete pRet;                                                                           \
+            pRet = NULL;                                                                           \
+            return NULL;                                                                           \
+        }                                                                                          \
+    }
