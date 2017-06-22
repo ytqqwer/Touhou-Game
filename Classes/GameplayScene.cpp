@@ -79,7 +79,7 @@ void GameplayScene::initBackGround()
 	Sprite* bg = Sprite::create("gameplayscene/gbg.png");
 	bg->setAnchorPoint(Point::ZERO);
 	bg->setPosition(Point::ZERO);
-	bg->setScale(1.5);
+	bg->setScale(1.8);
 
 	backGroundLayer->addChild(bg);
 
@@ -228,7 +228,7 @@ bool GameplayScene::onContactGround(const PhysicsContact& contact) {
 
 	if (nodeA && nodeB)
 	{
-		if (nodeA->getTag() == 99)
+		if (nodeA->getTag() == 99)	//碰到了折线
 		{
 			return contact.getContactData()->normal.y > 0;
 		}
@@ -236,6 +236,17 @@ bool GameplayScene::onContactGround(const PhysicsContact& contact) {
 		{
 			return contact.getContactData()->normal.y > 0;
 		}
+		else if (nodeA->getTag() == 100)	//碰到了地面
+		{
+			auto enemy = (Enemy*)nodeB;
+			enemy->_canJump = true;
+		}
+		else if (nodeB->getTag() == 100)
+		{
+			auto enemy = (Enemy*)nodeA;
+			enemy->_canJump = true;
+		}
+
 	}
 	return true;
 }
@@ -251,48 +262,34 @@ bool GameplayScene::onContactBullet(const PhysicsContact& contact)
 		{
 			ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
 			ps->setTexture(Director::getInstance()->getTextureCache()->addImage("gameplayscene/smallOrb000.png"));
+			//auto pos = mapLayer->convertToNodeSpace(nodeA->getPosition());//粒子效果添加存在相对坐标问题
+			//ps->setPosition(pos);
 			ps->setPosition(nodeA->getPosition());
 
-			nodeB->getParent()->addChild(ps, 10);//从敌人获取场景，无法从通过BatchNode创建的精灵获取parent
+			//mapLayer->addChild(ps, 10);
+			nodeB->getParent()->addChild(ps, 10);
 
 			nodeA->removeFromParentAndCleanup(true);//移除子弹
 
 			auto enemy = (Enemy*)nodeB;
-			enemy->hp = enemy->hp - 5;
-			if (enemy->hp < 0)
-			{
-				nodeB->removeFromParentAndCleanup(true);
-			}
+			enemy->decreaseHp(nodeB);	//手机端伤害判定存在问题
 		}
 		else if (nodeB->getTag() == 102)
 		{
 
 			ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
 			ps->setTexture(Director::getInstance()->getTextureCache()->addImage("gameplayscene/smallOrb000.png"));
+			//auto pos = mapLayer->convertToNodeSpace(nodeB->getPosition());
+			//ps->setPosition(pos);
 			ps->setPosition(nodeB->getPosition());
 
+			//mapLayer->addChild(ps, 10);
 			nodeA->getParent()->addChild(ps, 10);
 
 			nodeB->removeFromParentAndCleanup(true);//移除子弹
 
 			auto enemy = (Enemy*)nodeA;
-			enemy->hp = enemy->hp - 5;
-			if (enemy->hp < 0)
-			{
-				nodeA->removeFromParentAndCleanup(true);
-			}
-		}
-		else if (nodeA->getTag() == 100)
-		{
-			auto enemy = (Enemy*)nodeB;
-			enemy->hp = enemy->hp - 5;
-			enemy->_canJump = true;
-		}
-		else if (nodeB->getTag() == 100)
-		{
-			auto enemy = (Enemy*)nodeA;
-			enemy->hp = enemy->hp - 5;
-			enemy->_canJump = true;
+			enemy->decreaseHp(nodeA);
 		}
 
 	}
@@ -318,12 +315,6 @@ void GameplayScene::initCtrlPanel()
 	});	
 	controlPanel->addChild(set_button);
 	
-	//auto jumpBtn = Sprite::create("jumpButton.png");
-	//jumpBtn->setScale(0.5);
-	////jumpBtn->setPosition(Point(visibleOrigin.x + visibleSize.width - 100, visibleOrigin.y + 50));
-	//jumpBtn->setPosition(Point(visibleSize.width/2, visibleOrigin.y/2 + 50));
-	//this->addChild(jumpBtn, 1000);
-
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->setSwallowTouches(true);
 	listener->onTouchBegan = CC_CALLBACK_2(GameplayScene::onTouchBegan, this);

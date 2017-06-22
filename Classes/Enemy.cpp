@@ -90,3 +90,13 @@ void Enemy::AI(float dt)
 		}
 	}
 }
+
+void Enemy::decreaseHp(Node *node)
+{
+	auto enemy = (Enemy*)node;
+	enemy->hp = enemy->hp - 5;
+	if (enemy->hp < 0)
+	{
+		enemy->removeFromParentAndCleanup(true);
+	}
+}

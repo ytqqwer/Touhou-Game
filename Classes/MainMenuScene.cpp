@@ -139,7 +139,8 @@ void
 MainMenuScene::onEnter()
 {
     Scene::onEnter();
-
+	
+	//每次进入该场景时都会创建一个背景图片，等待以后改进
 	//auto loc = gamedata->getCurrentLocation();
     /*背景*/
     //auto bg = Sprite::create(loc.backgroundPicture);
@@ -149,7 +150,7 @@ MainMenuScene::onEnter()
     bg->setPosition(_visibleSize / 2);
     addChild(bg, -1);
 	
-	auto move = MoveBy::create(200, Vec2(0 , _visibleSize.height));
+	auto move = MoveBy::create(40, Vec2(0 , _visibleSize.height/4));
 	auto move_back = move->reverse();
 	auto seq = Sequence::create(move, move_back, nullptr);
 	bg->runAction(RepeatForever::create(seq));

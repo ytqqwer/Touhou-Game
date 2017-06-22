@@ -60,7 +60,7 @@ HomeScene::init()
     button_start->setTitleFontName("fonts/dengxian.ttf");
     button_start->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.705));
     button_start->setTitleText("出发");
-    button_start->setTitleFontSize(18);
+    button_start->setTitleFontSize(25);
     button_start->setScale9Enabled(true);
     button_start->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
 
@@ -76,7 +76,7 @@ HomeScene::init()
     button_equip->setTitleFontName("fonts/dengxian.ttf");
     button_equip->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.525));
     button_equip->setTitleText("整备");
-    button_equip->setTitleFontSize(18);
+    button_equip->setTitleFontSize(25);
     button_equip->setScale9Enabled(true);
     button_equip->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     button_equip->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
@@ -90,7 +90,7 @@ HomeScene::init()
     button_inventory->setTitleFontName("fonts/dengxian.ttf");
     button_inventory->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.345));
     button_inventory->setTitleText("道具库");
-    button_inventory->setTitleFontSize(18);
+    button_inventory->setTitleFontSize(25);
     button_inventory->setScale9Enabled(true);
     button_inventory->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     button_inventory->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
@@ -105,7 +105,7 @@ HomeScene::init()
     button_map->setTitleFontName("fonts/dengxian.ttf");
     button_map->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.165));
     button_map->setTitleText("前往其他地图");
-    button_map->setTitleFontSize(18);
+    button_map->setTitleFontSize(25);
     button_map->setScale9Enabled(true);
     button_map->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     button_map->setTitleFontName("fonts/dengxian.ttf");

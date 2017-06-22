@@ -17,8 +17,9 @@ public:
 	void jump(); //µĞÈËÌøÔ¾
 
 	void AI(float dt);
+
+	void decreaseHp(Node *node);
 	
-	int hp = 200;
 	bool _canJump = false;
 
 private:
@@ -27,6 +28,7 @@ private:
 	Animate *enemyAnim;
 	Texture2D *jumpTexture;
 
+	int hp = 200;
 	//bool _isAir = true;
 	//bool _isLand = false;
 
