@@ -3,8 +3,8 @@
 #endif
 
 #include "AppDelegate.h"
-#include "GameData.h"
-#include "LogoAndDisclaimerScene.h"
+#include "GameData/GameData.h"
+#include "NonGameplayScenes/LogoAndDisclaimerScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;

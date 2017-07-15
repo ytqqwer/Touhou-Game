@@ -134,49 +134,50 @@ set(GAME_SRC
   Classes/PlaceHolder.cpp
 
   # GameData
-  Classes/GameData.cpp
+  Classes/GameData/GameData.cpp
 
-  # Scene/Layer
-  Classes/ArmsStoreScene.cpp
-  Classes/BackgroundIntroScene.cpp
-  Classes/ConversationLayer.cpp
-  Classes/EquipScene.cpp
-  Classes/HomeScene.cpp
-  Classes/InventoryScene.cpp
-  Classes/JumpTableScene.cpp
-  Classes/KnowledgeBaseScene.cpp
-  Classes/KoumakanLibraryScene.cpp
-  Classes/KourindouScene.cpp
-  Classes/LogoAndDisclaimerScene.cpp
-  Classes/MainMenuScene.cpp
-  Classes/LocationSelectScene.cpp
-  Classes/RoundSelectScene.cpp
-  Classes/SaveScene.cpp
-  Classes/SettingsLayer.cpp
-  Classes/StaffScene.cpp
+  # NonGameplayScene
+  Classes/NonGameplayScenes/ArmsStoreScene.cpp
+  Classes/NonGameplayScenes/BackgroundIntroScene.cpp
+  Classes/NonGameplayScenes/EquipScene.cpp
+  Classes/NonGameplayScenes/HomeScene.cpp
+  Classes/NonGameplayScenes/InventoryScene.cpp
+  Classes/NonGameplayScenes/KnowledgeBaseScene.cpp
+  Classes/NonGameplayScenes/KoumakanLibraryScene.cpp
+  Classes/NonGameplayScenes/KourindouScene.cpp
+  Classes/NonGameplayScenes/LocationSelectScene.cpp
+  Classes/NonGameplayScenes/LogoAndDisclaimerScene.cpp
+  Classes/NonGameplayScenes/MainMenuScene.cpp
+  Classes/NonGameplayScenes/RoundSelectScene.cpp
+  Classes/NonGameplayScenes/SaveScene.cpp
+  Classes/NonGameplayScenes/StaffScene.cpp
 
-  # Gameplay
-  Classes/Enemy.cpp
-  Classes/GameplayScene.cpp
-  Classes/Player.cpp
+  # Layers
+  Classes/Layers/ConversationLayer.cpp
+  Classes/Layers/SettingsLayer.cpp
+  
+  # GameplayScene
+  Classes/GameplayScene/Enemy.cpp
+  Classes/GameplayScene/GameplayScene.cpp
+  Classes/GameplayScene/Player.cpp
 
-  Classes/Emitters/Bullet.cpp
-  Classes/Emitters/EmitterStyle.cpp
-  Classes/Emitters/Emitters.cpp
-  Classes/Emitters/FirstEmitter.cpp
+  Classes/GameplayScene/Emitters/Bullet.cpp
+  Classes/GameplayScene/Emitters/EmitterStyle.cpp
+  Classes/GameplayScene/Emitters/Emitters.cpp
+  Classes/GameplayScene/Emitters/FirstEmitter.cpp
 
   ${PLATFORM_SPECIFIC_SRC}
 )
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
-  Classes/AppMacros.h
   Classes/JumpTableScene.h
   Classes/NonGameplayScenesCache.h
   Classes/PlaceHolder.h
+  Classes/TouhouGame.h
 
   # GameData
-  Classes/GameData.h
+  Classes/GameData/GameData.h
   Classes/GameData/Character.h
   Classes/GameData/Conversation.h
   Classes/GameData/Item.h
@@ -184,41 +185,45 @@ set(GAME_HEADERS
   Classes/GameData/Round.h
   Classes/GameData/Save.h
   Classes/GameData/SpellCard.h
-  Classes/GameData/impl/json.h
 
   # resources.h.dir
   Classes/resources.h.dir/logo.h
+  Classes/resources.h.dir/settings_layer.h
 
-  # Scene/Layer
-  Classes/ArmsStoreScene.h
-  Classes/BackgroundIntroScene.h
-  Classes/ConversationLayer.h
-  Classes/EquipScene.h
-  Classes/HomeScene.h
-  Classes/InventoryScene.h
-  Classes/JumpTableScene.h
-  Classes/KnowledgeBaseScene.h
-  Classes/KoumakanLibraryScene.h
-  Classes/KourindouScene.h
-  Classes/LogoAndDisclaimerScene.h
-  Classes/MainMenuScene.h
-  Classes/LocationSelectScene.h
-  Classes/RoundSelectScene.h
-  Classes/SaveScene.h
-  Classes/SettingsLayer.h
-  Classes/StaffScene.h
+  # NonGameplayScenes
+  Classes/NonGameplayScenes/ArmsStoreScene.h
+  Classes/NonGameplayScenes/BackgroundIntroScene.h
+  Classes/NonGameplayScenes/EquipScene.h
+  Classes/NonGameplayScenes/HomeScene.h
+  Classes/NonGameplayScenes/InventoryScene.h
+  Classes/NonGameplayScenes/KnowledgeBaseScene.h
+  Classes/NonGameplayScenes/KoumakanLibraryScene.h
+  Classes/NonGameplayScenes/KourindouScene.h
+  Classes/NonGameplayScenes/LocationSelectScene.h
+  Classes/NonGameplayScenes/LogoAndDisclaimerScene.h
+  Classes/NonGameplayScenes/MainMenuScene.h
+  Classes/NonGameplayScenes/RoundSelectScene.h
+  Classes/NonGameplayScenes/SaveScene.h
+  Classes/NonGameplayScenes/StaffScene.h
+  
+  # Layers
+  Classes/Layers/ConversationLayer.h
+  Classes/Layers/SettingsLayer.h
+  
+  # GameplayScene
+  Classes/GameplayScene/Enemy.h
+  Classes/GameplayScene/GameplayScene.h
+  Classes/GameplayScene/Player.h
+  Classes/GameplayScene/common.h
 
-  # Gameplay
-  Classes/Enemy.h
-  Classes/GameplayScene.h
-  Classes/Player.h
-  Classes/resources.h.dir/common.h
+  Classes/GameplayScene/Emitters/Bullet.h
+  Classes/GameplayScene/Emitters/EmitterStyle.h
+  Classes/GameplayScene/Emitters/Emitters.h
+  Classes/GameplayScene/Emitters/FirstEmitter.h
 
-  Classes/Emitters/Bullet.h
-  Classes/Emitters/EmitterStyle.h
-  Classes/Emitters/Emitters.h
-  Classes/Emitters/FirstEmitter.h
-
+  # external
+  Classes/external/json.h
+  
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 
