@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{b31a3fe4-fc17-4933-8925-5dc519ac188e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GameData">
+      <UniqueIdentifier>{b947735d-5671-48b6-aaec-0299f6a4bc0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\NonGameplayScenes">
+      <UniqueIdentifier>{6cd5ff7b-e266-40c1-a124-14240ecd8b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GameplayScene">
+      <UniqueIdentifier>{70959454-265b-47f4-8e66-6e1e83a10943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GameplayScene\Emitters">
+      <UniqueIdentifier>{4e3f5bc7-5be0-4356-bdad-60d302cc49e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Layers">
+      <UniqueIdentifier>{2f1e71b1-979a-4923-aa88-c6931bc59bb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\external">
+      <UniqueIdentifier>{44ebef1d-7ba3-4a5d-b67f-fe080383c4bf}</UniqueIdentifier>
+    </Filter>
+
+  </ItemGroup>
+
+  <!-- 每次添加新 .cpp 文件，都要在下面的 <ItemGroup> 中添加对应项 -->
+
+  <ItemGroup>
+
+    <!-- win32 -->
+
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+
+    <!-- Classes -->
+
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\JumpTableScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScenesCache.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PlaceHolder.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+
+    <!-- Classes\GameData -->
+
+    <ClCompile Include="..\Classes\GameData\GameData.cpp">
+      <Filter>Classes\GameData</Filter>
+    </ClCompile>
+
+    <!-- Classes\NonGameplayScenes -->
+
+    <ClCompile Include="..\Classes\NonGameplayScene\ArmsStoreScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\BackgroundIntroScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\EquipScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\HomeScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\InventoryScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\KnowledgeBaseScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\KoumakanLibraryScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\KourindouScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\LocationSelectScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\LogoAndDisclaimerScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\MainMenuScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\RoundSelectScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\SaveScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScene\StaffScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
+
+    <!-- Classes\Layers -->
+
+    <ClCompile Include="..\Classes\Layers\ConversationLayer.cpp">
+      <Filter>Classes\Layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Layers\SettingsLayer.cpp">
+      <Filter>Classes\Layers</Filter>
+    </ClCompile>
+
+    <!-- Classes\GameplayScene -->
+
+    <ClCompile Include="..\Classes\GameplayScene\Enemy.cpp">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Player.cpp">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClCompile>
+
+    <!-- Classes\GameplayScene\Emitters -->
+
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\EmitterStyle.cpp">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitters.cpp">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\FirstEmitter.cpp">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClCompile>
+
+  </ItemGroup>
+
+  <!-- 每次添加新 .h 文件，都要在下面的 <ItemGroup> 中添加对应项 -->
+
+  <ItemGroup>
+
+    <!-- win32 -->
+
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+
+    <!-- Classes -->
+
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\JumpTableScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScenesCache.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PlaceHolder.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+
+    <!-- Classes\GameData -->
+
+    <ClInclude Include="..\Classes\GameData\GameData.h">
+      <Filter>Classes\GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameData\Character.h">
+      <Filter>Classes\GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameData\Conversation.h">
+      <Filter>Classes\GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameData\Item.h">
+      <Filter>Classes\GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameData\Location.h">
+      <Filter>Classes\GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameData\Round.h">
+      <Filter>Classes\GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameData\Save.h">
+      <Filter>Classes\GameData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameData\SpellCard.h">
+      <Filter>Classes\GameData</Filter>
+    </ClInclude>
+
+    <!-- Classes\NonGameplayScenes -->
+
+    <ClInclude Include="..\Classes\NonGameplayScene\ArmsStoreScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\BackgroundIntroScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\EquipScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\HomeScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\InventoryScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\KnowledgeBaseScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\KoumakanLibraryScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\KourindouScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\LocationSelectScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\LogoAndDisclaimerScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\MainMenuScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\RoundSelectScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\SaveScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScene\StaffScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+
+    <!-- Classes\Layers -->
+
+    <ClInclude Include="..\Classes\Layers\ConversationLayer.h">
+      <Filter>Classes\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Layers\SettingsLayer.h">
+      <Filter>Classes\Layers</Filter>
+    </ClInclude>
+
+    <!-- Classes\GameplayScene -->
+
+    <ClInclude Include="..\Classes\GameplayScene\Enemy.h">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Player.h">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClInclude>
+
+    <!-- Classes\GameplayScene\Emitters -->
+
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Bullet.h">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\EmitterStyle.h">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitters.h">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\FirstEmitter.h">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClInclude>
+
+    <!-- external -->
+
+    <ClInclude Include="..\Classes\external\json.h">
+      <Filter>Classes\external</Filter>
+    </ClInclude>
+
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
