@@ -18,6 +18,7 @@
 #include "NonGameplayScenes/RoundSelectScene.h"
 #include "NonGameplayScenes/SaveScene.h"
 #include "NonGameplayScenes/StaffScene.h"
+#include "GameplayScene/Emitters/test/GameplayScene.h"
 #include "PlaceHolder.h"
 
 #ifdef ADD_MENU_ITEM_SCENE
@@ -103,9 +104,12 @@ JumpTableScene::init()
     ADD_MENU_ITEM_LAYER(SettingsLayer);
     ADD_MENU_ITEM_LAYER(ConversationLayer);
 
+    // Emitters::GameplayScene
+    ADD_MENU_ITEM_SCENE(EmitterTest::GameplayScene);
+
     /*  4 排列这些 MenuItem */
 
-    _jumpTable->alignItemsInColumns(4, 4, 4, 4, NULL);
+    _jumpTable->alignItemsInColumns(4, 4, 4, 4, 1, NULL);
 
     return true;
 }

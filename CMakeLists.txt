@@ -155,7 +155,7 @@ set(GAME_SRC
   # Layers
   Classes/Layers/ConversationLayer.cpp
   Classes/Layers/SettingsLayer.cpp
-  
+
   # GameplayScene
   Classes/GameplayScene/Enemy.cpp
   Classes/GameplayScene/GameplayScene.cpp
@@ -165,6 +165,9 @@ set(GAME_SRC
   Classes/GameplayScene/Emitters/EmitterStyle.cpp
   Classes/GameplayScene/Emitters/Emitters.cpp
   Classes/GameplayScene/Emitters/FirstEmitter.cpp
+  Classes/GameplayScene/Emitters/test/Enemy.cpp
+  Classes/GameplayScene/Emitters/test/GameplayScene.cpp
+  Classes/GameplayScene/Emitters/test/Player.cpp
 
   ${PLATFORM_SPECIFIC_SRC}
 )
@@ -205,11 +208,11 @@ set(GAME_HEADERS
   Classes/NonGameplayScenes/RoundSelectScene.h
   Classes/NonGameplayScenes/SaveScene.h
   Classes/NonGameplayScenes/StaffScene.h
-  
+
   # Layers
   Classes/Layers/ConversationLayer.h
   Classes/Layers/SettingsLayer.h
-  
+
   # GameplayScene
   Classes/GameplayScene/Enemy.h
   Classes/GameplayScene/GameplayScene.h
@@ -220,10 +223,14 @@ set(GAME_HEADERS
   Classes/GameplayScene/Emitters/EmitterStyle.h
   Classes/GameplayScene/Emitters/Emitters.h
   Classes/GameplayScene/Emitters/FirstEmitter.h
+  Classes/GameplayScene/Emitters/test/Enemy.h
+  Classes/GameplayScene/Emitters/test/GameplayScene.h
+  Classes/GameplayScene/Emitters/test/Player.h
+  Classes/GameplayScene/Emitters/test/common.h
 
   # external
   Classes/external/json.h
-  
+
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

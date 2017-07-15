@@ -22,6 +22,9 @@
     <Filter Include="Classes\GameplayScene\Emitters">
       <UniqueIdentifier>{4e3f5bc7-5be0-4356-bdad-60d302cc49e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\GameplayScene\Emitters\test">
+      <UniqueIdentifier>{58c35281-3d98-4e9f-9be8-80bf62017541}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Classes\Layers">
       <UniqueIdentifier>{2f1e71b1-979a-4923-aa88-c6931bc59bb4}</UniqueIdentifier>
     </Filter>
@@ -142,6 +145,16 @@
     <ClCompile Include="..\Classes\GameplayScene\Emitters\FirstEmitter.cpp">
       <Filter>Classes\GameplayScene\Emitters</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\Enemy.cpp">
+      <Filter>Classes\GameplayScene\Emitters\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\GameplayScene.cpp">
+      <Filter>Classes\GameplayScene\Emitters\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\Player.cpp">
+      <Filter>Classes\GameplayScene\Emitters\test</Filter>
+    </ClCompile>
+
 
   </ItemGroup>
 
@@ -276,6 +289,18 @@
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Emitters\FirstEmitter.h">
       <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\Enemy.h">
+      <Filter>Classes\GameplayScene\Emitters\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\GameplayScene.h">
+      <Filter>Classes\GameplayScene\Emitters\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\Player.h">
+      <Filter>Classes\GameplayScene\Emitters\test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\common.h">
+      <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClInclude>
 
     <!-- external -->

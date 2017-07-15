@@ -179,12 +179,15 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\GameplayScene\Emitters\EmitterStyle.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitters.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\FirstEmitter.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\Enemy.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\GameplayScene.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\Player.cpp" />
 
     <ClCompile Include="main.cpp" />
   </ItemGroup>
-  
+
   <!-- 每次添加新 .h 文件，都要在下面的 <ItemGroup> 中添加对应项 -->
-  
+
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\JumpTableScene.h" />
@@ -226,6 +229,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GameplayScene\Emitters\EmitterStyle.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitters.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\FirstEmitter.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\Enemy.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\GameplayScene.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\Player.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\common.h" />
 
     <ClInclude Include="..\Classes\external\json.h" />
 
