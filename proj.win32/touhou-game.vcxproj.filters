@@ -64,46 +64,46 @@
 
     <!-- Classes\NonGameplayScenes -->
 
-    <ClCompile Include="..\Classes\NonGameplayScene\ArmsStoreScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\ArmsStoreScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\BackgroundIntroScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\BackgroundIntroScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\EquipScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\EquipScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\HomeScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\HomeScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\InventoryScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\InventoryScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\KnowledgeBaseScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\KnowledgeBaseScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\KoumakanLibraryScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\KoumakanLibraryScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\KourindouScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\KourindouScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\LocationSelectScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\LocationSelectScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\LogoAndDisclaimerScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\LogoAndDisclaimerScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\MainMenuScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\MainMenuScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\RoundSelectScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\RoundSelectScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\SaveScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\SaveScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\NonGameplayScene\StaffScene.cpp">
+    <ClCompile Include="..\Classes\NonGameplayScenes\StaffScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
 
@@ -199,46 +199,46 @@
 
     <!-- Classes\NonGameplayScenes -->
 
-    <ClInclude Include="..\Classes\NonGameplayScene\ArmsStoreScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\ArmsStoreScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\BackgroundIntroScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\BackgroundIntroScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\EquipScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\EquipScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\HomeScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\HomeScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\InventoryScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\InventoryScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\KnowledgeBaseScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\KnowledgeBaseScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\KoumakanLibraryScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\KoumakanLibraryScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\KourindouScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\KourindouScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\LocationSelectScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\LocationSelectScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\LogoAndDisclaimerScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\LogoAndDisclaimerScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\MainMenuScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\MainMenuScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\RoundSelectScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\RoundSelectScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\SaveScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\SaveScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\NonGameplayScene\StaffScene.h">
+    <ClInclude Include="..\Classes\NonGameplayScenes\StaffScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
 
