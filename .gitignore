@@ -11,6 +11,15 @@ proj.android/libs/
 proj.android/local.properties
 proj.android/obj/
 
+# win32 project
+!proj.win32.github
+proj.win32.github/.vs/
+proj.win32.github/Debug/
+proj.win32.github/Debug.win32/
+proj.win32.github/Release/
+proj.win32.github/Release.win32/
+proj.win32.github/touhou-game.sdf
+
 # general temporaryy files
 *~
 *.swp
