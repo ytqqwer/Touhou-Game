@@ -154,6 +154,17 @@ set(GAME_SRC
   Classes/SaveScene.cpp
   Classes/SettingsLayer.cpp
   Classes/StaffScene.cpp
+
+  # Gameplay
+  Classes/Enemy.cpp
+  Classes/GameplayScene.cpp
+  Classes/Player.cpp
+
+  Classes/Emitters/Bullet.cpp
+  Classes/Emitters/EmitterStyle.cpp
+  Classes/Emitters/Emitters.cpp
+  Classes/Emitters/FirstEmitter.cpp
+
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -196,6 +207,18 @@ set(GAME_HEADERS
   Classes/SaveScene.h
   Classes/SettingsLayer.h
   Classes/StaffScene.h
+
+  # Gameplay
+  Classes/Enemy.h
+  Classes/GameplayScene.h
+  Classes/Player.h
+  Classes/resources.h.dir/common.h
+
+  Classes/Emitters/Bullet.h
+  Classes/Emitters/EmitterStyle.h
+  Classes/Emitters/Emitters.h
+  Classes/Emitters/FirstEmitter.h
+
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

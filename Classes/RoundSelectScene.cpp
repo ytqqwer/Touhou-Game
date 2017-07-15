@@ -12,6 +12,8 @@
 //需要用到的头文件
 #include "GameData.h"
 
+#include "GameplayScene.h"
+
 using namespace ui;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
@@ -41,22 +43,26 @@ RoundSelectScene::onEnter()
 {
     Scene::onEnter();
 
-	/*****************静态不会变化的板块.创建大概模型*****************/
-	//创建返回按钮
-	auto backButton = Button::create("roundselectscene/p1.png", "", "");
-	backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
-	backButton->setTitleText("返回");
-	backButton->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
-	backButton->addTouchEventListener(
-		[](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->popScene(); });
-	this->addChild(backButton);
+    /*****************静态不会变化的板块.创建大概模型*****************/
+    //创建返回按钮
+    auto backButton = Button::create("roundselectscene/p1.png", "", "");
+    backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
+    backButton->setTitleText("返回");
+    backButton->setTitleFontSize(20);
+    backButton->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
+    backButton->addTouchEventListener(
+        [](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->popScene(); });
+    this->addChild(backButton);
 
-	//创建游戏开始按钮,等创建好了gameScene会添加一个事件监听器
-	auto beginButton = Button::create("roundselectscene/p10.png", "", "");
-	beginButton->setTitleText("开始游戏");
-	beginButton->setContentSize(Size(_visibleSize.width * 0.3, _visibleSize.height * 0.3));
-	beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
-	this->addChild(beginButton, 2);
+    //创建游戏开始按钮,等创建好了gameScene会添加一个事件监听器
+    auto beginButton = Button::create("roundselectscene/p10.png", "", "");
+    beginButton->setTitleText("开始游戏");
+    beginButton->setTitleFontSize(20);
+    beginButton->setContentSize(Size(_visibleSize.width * 0.3, _visibleSize.height * 0.3));
+    beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
+    this->addChild(beginButton, 2);
+
+    beginButton->addTouchEventListener(CC_CALLBACK_0(RoundSelectScene::gameSceneCallback, this));
 
     /***********************创建会变化的模块********************/
     //取得当前所在的地点和回合，gameDate，以及角色,以及当前可以使用的所有角色
@@ -95,7 +101,8 @@ RoundSelectScene::onEnter()
     //难度字体
     auto difficultText = Text::create("难度", "Arial", 24);
     difficultText->setPosition(Vec2(Vec2(_visibleSize.width * 0.65, _visibleSize.height * 0.75)));
-    difficultText->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+    difficultText->setFontSize(25);
+    // difficultText->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
     this->addChild(difficultText);
 
     //设置5颗空星，表示难度，然后根据不同的回合难度换成相应的实心
@@ -103,6 +110,7 @@ RoundSelectScene::onEnter()
     for (int i = 0; i < 5; ++i) {
         difficult[i] = Sprite::create("roundselectscene/star_2.png");
         difficult[i]->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+        // difficult[i]->setScale(0.1);
         difficult[i]->setPosition(
             Vec2(_visibleSize.width * (0.7 + 0.05 * i), _visibleSize.height * 0.75));
         this->addChild(difficult[i]);
@@ -112,6 +120,7 @@ RoundSelectScene::onEnter()
     int difficulty(static_cast<int>(round[0].difficulty));
     for (int i = 0; i < difficulty; ++i) {
         difficult[i]->setTexture("roundselectscene/star_1.png");
+        // difficult[i]->setScale(0.1);
         difficult[i]->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
     }
 
@@ -128,6 +137,7 @@ RoundSelectScene::onEnter()
             roundButton->setPosition(
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(round[i].name);
+            roundButton->setTitleFontSize(25);
             roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
                 //根据点击的按钮设置当前的关卡难度，同时将当前选择的关卡保存，接口尚未实现，以后添加
                 int difficulty(static_cast<int>(round[i].difficulty));
@@ -154,6 +164,7 @@ RoundSelectScene::onEnter()
             roundButton->setPosition(
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(round[i].name);
+            roundButton->setTitleFontSize(25);
             roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
                 //根据点击的按钮设置当前的关卡难度，同时将当前选择的关卡保存，接口尚未实现，以后添加
                 int difficulty(static_cast<int>(round[i].difficulty));
@@ -180,6 +191,7 @@ RoundSelectScene::onEnter()
             roundButton->setPosition(
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(round[i].name);
+            roundButton->setTitleFontSize(25);
             roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
                 //根据点击的按钮设置当前的关卡难度
                 int difficulty(static_cast<int>(round[i].difficulty));
@@ -211,36 +223,38 @@ RoundSelectScene::onEnter()
         for (unsigned int j = 0; j < characters.size(); ++j) {
             if (characters.at(j).tag == character[i]) {
                 auto sprite = Sprite::create(characters.at(j).portrait);
-                sprite->setContentSize(Size(_visibleSize.width * 0.1, _visibleSize.height * 0.15));
+                // sprite->setContentSize(Size(_visibleSize.width * 0.1, _visibleSize.height *
+                // 0.15));
+                sprite->setScale(0.2);
                 sprite->setPosition(
                     Vec2(_visibleSize.width * (0.5 + 0.2 * i), _visibleSize.height * 0.4));
                 this->addChild(sprite, 3);
 
                 //设置该角色的符卡
-                vector<SpellCard>  card =
-                GameData::getInstance()->getCharacterSpellCardList(characters.at(j).tag);
-                Sprite *cardSprite[3];
-                for (int k = 0; k < card.size(); ++k)
-                {
-                        cardSprite[k] = Sprite::create(card.at(k).icon);
-                        cardSprite[k]->setPosition(Vec2(_visibleSize.width*(0.45 + 0.2*i),
-                _visibleSize.height*0.25));
-                        cardSprite[k]->setContentSize(Size(_visibleSize.width*0.06,
-                _visibleSize.height*0.06));
-                        this->addChild(cardSprite[k], 3);
+                vector<SpellCard> card =
+                    GameData::getInstance()->getCharacterSpellCardList(characters.at(j).tag);
+                Sprite* cardSprite[3];
+                for (int k = 0; k < card.size(); ++k) {
+                    cardSprite[k] = Sprite::create(card.at(k).icon);
+                    cardSprite[k]->setPosition(
+                        Vec2(_visibleSize.width * (0.45 + 0.2 * i), _visibleSize.height * 0.25));
+                    /*cardSprite[k]->setContentSize(Size(_visibleSize.width*0.06,
+            _visibleSize.height*0.06));*/
+                    cardSprite[k]->setScale(0.8);
+                    this->addChild(cardSprite[k], 3);
                 }
                 //设置角色的道具
                 vector<Item> item =
-                GameData::getInstance()->getCharacterItemList(characters.at(j).tag);
-                Sprite *itemSprite[3];
-                for (int k = 0; k < item.size(); ++k)
-                {
-                        itemSprite[k] = Sprite::create(item.at(k).icon);
-                        itemSprite[k]->setPosition(Vec2(_visibleSize.width*(0.45 + 0.2*i),
-                _visibleSize.height*0.15));
-                        itemSprite[k]->setContentSize(Size(_visibleSize.width*0.06,
-                _visibleSize.height*0.06));
-                        this->addChild(itemSprite[k], 3);
+                    GameData::getInstance()->getCharacterItemList(characters.at(j).tag);
+                Sprite* itemSprite[3];
+                for (int k = 0; k < item.size(); ++k) {
+                    itemSprite[k] = Sprite::create(item.at(k).icon);
+                    itemSprite[k]->setPosition(
+                        Vec2(_visibleSize.width * (0.45 + 0.2 * i), _visibleSize.height * 0.15));
+                    /*itemSprite[k]->setContentSize(Size(_visibleSize.width*0.06,
+            _visibleSize.height*0.06));*/
+                    itemSprite[k]->setScale(0.8);
+                    this->addChild(itemSprite[k], 3);
                 }
 
                 //角色的修改按钮
@@ -253,24 +267,20 @@ RoundSelectScene::onEnter()
                     sprite->setContentSize(
                         Size(_visibleSize.width * 0.1, _visibleSize.height * 0.15));
                     //修改符卡
-                    vector<SpellCard> card =
-                    GameData::getInstance()->getCharacterSpellCardList(characters.at((j + 1) /
-                    characters.size()).tag);
-                    for (int k = 0; k < card.size(); ++k)
-                    {
-                            cardSprite[k]->setTexture(card.at(k).icon);
-                            cardSprite[k]->setContentSize(Size(_visibleSize.width*0.06,
-                    _visibleSize.height*0.06));
+                    vector<SpellCard> card = GameData::getInstance()->getCharacterSpellCardList(
+                        characters.at((j + 1) / characters.size()).tag);
+                    for (int k = 0; k < card.size(); ++k) {
+                        cardSprite[k]->setTexture(card.at(k).icon);
+                        cardSprite[k]->setContentSize(
+                            Size(_visibleSize.width * 0.06, _visibleSize.height * 0.06));
                     }
                     //修改道具
-                    vector<Item> item =
-                    GameData::getInstance()->getCharacterItemList(characters.at((j + 1) /
-                    characters.size()).tag);
-                    for (int k = 0; k < card.size(); ++k)
-                    {
-                            itemSprite[k]->setTexture(item.at(k).icon);
-                            itemSprite[k]->setContentSize(Size(_visibleSize.width*0.06,
-                    _visibleSize.height*0.06));
+                    vector<Item> item = GameData::getInstance()->getCharacterItemList(
+                        characters.at((j + 1) / characters.size()).tag);
+                    for (int k = 0; k < card.size(); ++k) {
+                        itemSprite[k]->setTexture(item.at(k).icon);
+                        itemSprite[k]->setContentSize(
+                            Size(_visibleSize.width * 0.06, _visibleSize.height * 0.06));
                     }
                 });
                 this->addChild(button, 3);
@@ -283,10 +293,19 @@ void
 RoundSelectScene::onExit()
 {
     Scene::onExit();
-	this->removeAllChildren();
+    this->removeAllChildren();
 }
 
 void
 RoundSelectScene::update(float dt)
 {
+}
+
+void
+RoundSelectScene::gameSceneCallback()
+{
+    auto gameplayScene = GameplayScene::create();
+    TransitionScene* transition = TransitionPageTurn::create(0.2f, gameplayScene, false);
+    Director::getInstance()->popToRootScene();
+    Director::getInstance()->replaceScene(transition);
 }
