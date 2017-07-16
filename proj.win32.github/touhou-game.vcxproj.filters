@@ -145,13 +145,13 @@
     <ClCompile Include="..\Classes\GameplayScene\Emitters\FirstEmitter.cpp">
       <Filter>Classes\GameplayScene\Emitters</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\Enemy.cpp">
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.cpp">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\GameplayScene.cpp">
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.cpp">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\Player.cpp">
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.cpp">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClCompile>
 
@@ -290,13 +290,13 @@
     <ClInclude Include="..\Classes\GameplayScene\Emitters\FirstEmitter.h">
       <Filter>Classes\GameplayScene\Emitters</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\Enemy.h">
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.h">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\GameplayScene.h">
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.h">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\Player.h">
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.h">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\common.h">

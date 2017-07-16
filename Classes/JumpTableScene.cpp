@@ -18,7 +18,7 @@
 #include "NonGameplayScenes/RoundSelectScene.h"
 #include "NonGameplayScenes/SaveScene.h"
 #include "NonGameplayScenes/StaffScene.h"
-#include "GameplayScene/Emitters/test/GameplayScene.h"
+#include "GameplayScene/Emitters/test/EmitterTestScene.h"
 #include "PlaceHolder.h"
 
 #ifdef ADD_MENU_ITEM_SCENE

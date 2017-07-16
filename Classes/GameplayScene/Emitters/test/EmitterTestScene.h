@@ -7,7 +7,7 @@
 
 #include "cocos2d.h"
 
-#include "Player.h"
+#include "EmitterTestPlayer.h"
 
 USING_NS_CC;
 

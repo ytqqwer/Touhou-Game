@@ -2,9 +2,9 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "Enemy.h"
-#include "GameplayScene.h"
-#include "Player.h"
+#include "EmitterTestEnemy.h"
+#include "EmitterTestScene.h"
+#include "EmitterTestPlayer.h"
 
 namespace EmitterTest{
 

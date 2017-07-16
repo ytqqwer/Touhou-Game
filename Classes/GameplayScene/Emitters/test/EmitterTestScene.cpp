@@ -2,8 +2,8 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "GameplayScene.h"
-#include "Enemy.h"
+#include "EmitterTestScene.h"
+#include "EmitterTestEnemy.h"
 #include "Layers/SettingsLayer.h"
 
 #include "../FirstEmitter.h"

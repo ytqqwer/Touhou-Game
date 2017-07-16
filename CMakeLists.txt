@@ -165,9 +165,9 @@ set(GAME_SRC
   Classes/GameplayScene/Emitters/EmitterStyle.cpp
   Classes/GameplayScene/Emitters/Emitters.cpp
   Classes/GameplayScene/Emitters/FirstEmitter.cpp
-  Classes/GameplayScene/Emitters/test/Enemy.cpp
-  Classes/GameplayScene/Emitters/test/GameplayScene.cpp
-  Classes/GameplayScene/Emitters/test/Player.cpp
+  Classes/GameplayScene/Emitters/test/EmitterTestEnemy.cpp
+  Classes/GameplayScene/Emitters/test/EmitterTestScene.cpp
+  Classes/GameplayScene/Emitters/test/EmitterTestPlayer.cpp
 
   ${PLATFORM_SPECIFIC_SRC}
 )
@@ -223,9 +223,9 @@ set(GAME_HEADERS
   Classes/GameplayScene/Emitters/EmitterStyle.h
   Classes/GameplayScene/Emitters/Emitters.h
   Classes/GameplayScene/Emitters/FirstEmitter.h
-  Classes/GameplayScene/Emitters/test/Enemy.h
-  Classes/GameplayScene/Emitters/test/GameplayScene.h
-  Classes/GameplayScene/Emitters/test/Player.h
+  Classes/GameplayScene/Emitters/test/EmitterTestEnemy.h
+  Classes/GameplayScene/Emitters/test/EmitterTestScene.h
+  Classes/GameplayScene/Emitters/test/EmitterTestPlayer.h
   Classes/GameplayScene/Emitters/test/common.h
 
   # external
