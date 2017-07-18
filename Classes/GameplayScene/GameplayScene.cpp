@@ -78,7 +78,45 @@ GameplayScene::init()
     // 启动帧定时器
     scheduleUpdate();
 
+    // 用于支持符卡 buf 效果的 EventFilterManager
+    this->_eventFilterMgr = EventFilterManager::create(this);
+
     return true;
+}
+
+void
+GameplayScene::onEnterTransitionDidFinish()
+{
+    Scene::onEnterTransitionDidFinish();
+
+    testEventFilterManager();
+}
+
+void
+GameplayScene::testEventFilterManager()
+{
+    const string filterName = "test_filter";
+    const float lastTime = 2;
+
+    /*  1. 添加一个 filter */
+
+    _eventFilterMgr->addEventFilter(
+        [](EventCustom* event) -> void {
+            log("[EventFilter 1] Filtering event: %s", event->getEventName().c_str());
+        },
+        2, filterName);
+
+    /*  2. 发出事件 & 待 filter 有效期过去再发事件 */
+
+    this->_eventDispatcher->dispatchCustomEvent("test_event_1");
+    this->_eventDispatcher->dispatchCustomEvent("test_event_2");
+
+    scheduleOnce(
+        [this](float unused) {
+            this->_eventDispatcher->dispatchCustomEvent("test_event_1");
+            this->_eventDispatcher->dispatchCustomEvent("test_event_2");
+        },
+        lastTime + 1, "schedule_test_event_2");
 }
 
 void

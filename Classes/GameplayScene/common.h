@@ -18,4 +18,7 @@ static const int groundTag = 100;
 static const int polylineTag = 99;
 static const int polygonTag = 98;
 
+// EventFilterManager 中的 filter 所工作的 priority
+#define EVENT_FILTER_PRIORITY -1024
+
 #endif

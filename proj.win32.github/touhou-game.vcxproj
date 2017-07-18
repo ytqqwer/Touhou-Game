@@ -171,6 +171,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Layers\ConversationLayer.cpp" />
     <ClCompile Include="..\Classes\Layers\SettingsLayer.cpp" />
 
+    <ClCompile Include="..\Classes\GameplayScene\EventFilterManager.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Enemy.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Player.cpp" />
@@ -222,6 +223,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Layers\SettingsLayer.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\common.h" />
+    <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.h" />
+    <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.inc" />
     <ClInclude Include="..\Classes\GameplayScene\Enemy.h" />
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h" />
     <ClInclude Include="..\Classes\GameplayScene\Player.h" />

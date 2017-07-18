@@ -160,6 +160,7 @@ set(GAME_SRC
   Classes/GameplayScene/Enemy.cpp
   Classes/GameplayScene/GameplayScene.cpp
   Classes/GameplayScene/Player.cpp
+  Classes/GameplayScene/EventFilterManager.cpp
 
   Classes/GameplayScene/Emitters/Bullet.cpp
   Classes/GameplayScene/Emitters/EmitterStyle.cpp
@@ -218,6 +219,7 @@ set(GAME_HEADERS
   Classes/GameplayScene/GameplayScene.h
   Classes/GameplayScene/Player.h
   Classes/GameplayScene/common.h
+  Classes/GameplayScene/EventFilterManager.h
 
   Classes/GameplayScene/Emitters/Bullet.h
   Classes/GameplayScene/Emitters/EmitterStyle.h

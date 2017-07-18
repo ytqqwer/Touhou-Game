@@ -5,9 +5,10 @@
 #ifndef GAME_SCENE_H
 #define GAME_SCENE_H
 
-#include "cocos2d.h"
 #include "GameData\GameData.h"
+#include "cocos2d.h"
 
+#include "EventFilterManager.h"
 #include "Player.h"
 
 USING_NS_CC;
@@ -20,6 +21,7 @@ public:
     CREATE_FUNC(GameplayScene);
 
     void onEnter() override;
+    void onEnterTransitionDidFinish() override;
     void onExit() override;
     void cleanup() override;
     virtual bool init() override;
@@ -34,9 +36,12 @@ public:
     void initListener();
 
     void update(float dt);
+
+    void testEventFilterManager();
+
     // void moveCamera(float);
 
-	GameData* gameData;
+    GameData* gameData;
     Player* _player;
 
     ParticleSystem* ps;
@@ -44,7 +49,6 @@ public:
     Sprite* camera;
     TMXTiledMap* _map;
     Layer* mapLayer;
-	
 
     bool onContactGround(const PhysicsContact& contact);
     bool onContactBullet(const PhysicsContact& contact);
@@ -61,6 +65,8 @@ private:
     static const std::string TAG;
 
     bool createPhysical(float scale);
+
+    EventFilterManager* _eventFilterMgr;
 };
 
 #endif

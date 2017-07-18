@@ -121,6 +121,9 @@
 
     <!-- Classes\GameplayScene -->
 
+    <ClCompile Include="..\Classes\GameplayScene\EventFilterManager.cpp">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\Enemy.cpp">
       <Filter>Classes\GameplayScene</Filter>
     </ClCompile>
@@ -267,6 +270,12 @@
     <!-- Classes\GameplayScene -->
 
     <ClInclude Include="..\Classes\GameplayScene\common.h">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.h">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.inc">
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Enemy.h">
