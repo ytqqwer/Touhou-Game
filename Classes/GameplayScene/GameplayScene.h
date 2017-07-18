@@ -5,7 +5,7 @@
 #ifndef GAME_SCENE_H
 #define GAME_SCENE_H
 
-#include "GameData\GameData.h"
+#include "GameData/GameData.h"
 #include "cocos2d.h"
 
 #include "EventFilterManager.h"
