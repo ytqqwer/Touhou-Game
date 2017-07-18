@@ -10,13 +10,9 @@
 using namespace std;
 
 EventFilterManager*
-EventFilterManager::create(Node* target)
+EventFilterManager::create()
 {
     auto mgr = new (nothrow) EventFilterManager;
-
-    mgr->_delegateNode = Node::create();
-    target->addChild(mgr->_delegateNode);
-
     mgr->registerAllCustomEvents();
 
     return mgr;
@@ -25,13 +21,11 @@ EventFilterManager::create(Node* target)
 bool
 EventFilterManager::registerAllCustomEvents()
 {
-    auto eventDispather = _delegateNode->getEventDispatcher();
-
     for (int i = 0; i < sizeof(eventFilterWorkingRange) / sizeof(char*); i++) {
         const char* type = eventFilterWorkingRange[i];
         auto listener = EventListenerCustom::create(
             type, bind(&EventFilterManager::onRecvCustomEvents, this, placeholders::_1));
-        eventDispather->addEventListenerWithFixedPriority(listener, EVENT_FILTER_PRIORITY);
+        _eventDispatcher->addEventListenerWithFixedPriority(listener, EVENT_FILTER_PRIORITY);
     }
 
     return true;
@@ -47,8 +41,8 @@ EventFilterManager::addEventFilter(const function<void(EventCustom*)>& filter, f
 
     /*  2. 定时 */
 
-    _delegateNode->scheduleOnce(
-        bind(&EventFilterManager::removeEventFilter, this, tag, placeholders::_1), lastTime, tag);
+    scheduleOnce(bind(&EventFilterManager::removeEventFilter, this, tag, placeholders::_1),
+                 lastTime, tag);
 }
 
 void
@@ -76,7 +70,7 @@ EventFilterManager::removeAllEventFilters()
 void
 EventFilterManager::pause()
 {
-    _delegateNode->pause();
+    Node::pause();
 }
 
 void

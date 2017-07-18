@@ -79,7 +79,8 @@ GameplayScene::init()
     scheduleUpdate();
 
     // 用于支持符卡 buf 效果的 EventFilterManager
-    this->_eventFilterMgr = EventFilterManager::create(this);
+    this->_eventFilterMgr = EventFilterManager::create();
+    addChild(_eventFilterMgr);
 
     return true;
 }

@@ -12,12 +12,10 @@
 
 USING_NS_CC;
 
-class EventFilterManager
+class EventFilterManager : public Node
 {
 public:
-    // 创建一个 EventFilterManager 并和 target 绑定，
-    // 当 target 生命周期结束时，和其绑定的 EventFilterManager 可以自动销毁
-    static EventFilterManager* create(Node* target);
+    static EventFilterManager* create();
 
     // 添加一个 filter，可定时
     //  + 保证所有 add 的 filter 都能运作，不保证先加入的 filter 早于后加入的 filter 运作
@@ -46,8 +44,6 @@ private:
     bool registerAllCustomEvents();
 
 private:
-    Node* _delegateNode;
-
     // 使用 multimap 以允许外部添加多个相同 tag 的 filter
     std::multimap<std::string, std::function<void(EventCustom*)>> _filters;
 };
