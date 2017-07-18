@@ -6,6 +6,7 @@
 #define GAME_SCENE_H
 
 #include "cocos2d.h"
+#include "GameData\GameData.h"
 
 #include "Player.h"
 
@@ -32,17 +33,18 @@ public:
     void initEnemy();
     void initListener();
 
+    void update(float dt);
     // void moveCamera(float);
 
+	GameData* gameData;
     Player* _player;
 
     ParticleSystem* ps;
 
-    void update(float dt);
-
     Sprite* camera;
     TMXTiledMap* _map;
     Layer* mapLayer;
+	
 
     bool onContactGround(const PhysicsContact& contact);
     bool onContactBullet(const PhysicsContact& contact);

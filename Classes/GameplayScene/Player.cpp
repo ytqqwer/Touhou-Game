@@ -39,7 +39,6 @@ Player::init()
     playerAnimation = p1Animation;
 
     playerAnim = Animate::create(playerAnimation);
-
     playerAnim->setTag(1);
 
     AnimationCache::getInstance()->addAnimation(jumpAnimation, "jumpAnimation");
@@ -57,16 +56,12 @@ Player::init()
     bo->getFirstShape()->setFriction(0.2);
     bo->getFirstShape()->setRestitution(0);
 
-    // bo->setTag(101)
     bo->setCategoryBitmask(playerCategory);
     bo->setCollisionBitmask(groundCategory | enemyCategory);
     bo->setContactTestBitmask(groundCategory | enemyCategory);
 
     this->setPhysicsBody(bo); //替换掉刚体
-
-    // this->setScale(0.8);//设置大小的刻度
-
-    return true;
+	return true;
 }
 
 void
@@ -112,6 +107,9 @@ Player::playerRunLeft(float dt)
 void
 Player::playerJump()
 {
+	if (this->jumpCounts == 0) {
+		return;
+	}
     auto body = this->getPhysicsBody();
     auto curVelocity = body->getVelocity();
     body->setVelocity(Vec2(curVelocity.x, 0)); //再次跳跃时，重置Y轴速度为0
@@ -128,6 +126,8 @@ Player::playerJump()
     auto actionDone = CallFuncN::create(CC_CALLBACK_1(Player::resetAction, this));
     auto sequence = Sequence::create(Repeat::create(playerAnimate, 1), actionDone, NULL);
     playerSprite->runAction(sequence);
+
+	this->jumpCounts--;
 }
 
 void

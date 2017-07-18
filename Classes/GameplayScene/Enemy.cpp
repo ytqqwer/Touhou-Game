@@ -44,7 +44,7 @@ Enemy::init()
     this->setPhysicsBody(enemyBody);
     // enemySprite->setPhysicsBody(enemyBody);//错误示例，应该给实例对象设置刚体，而不是一个用来显示图片的精灵
 
-    this->setTag(103);
+    this->setTag(enemyTag);
 
     return true;
 }

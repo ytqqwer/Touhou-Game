@@ -27,6 +27,7 @@ public:
     void resetAction(Node* pNode);
 
     String attackDirection = "right";
+	int jumpCounts = 2;
 
 private:
     Sprite* playerSprite; //角色精灵
@@ -35,8 +36,6 @@ private:
 
     Animation* p1Animation;
     Animation* jumpAnimation;
-
-    // int hp = 100;
 };
 
 #endif

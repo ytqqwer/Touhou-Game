@@ -5,9 +5,8 @@
 #include "GameplayScene.h"
 #include "Enemy.h"
 #include "Layers/SettingsLayer.h"
-
 #include "Emitters/FirstEmitter.h"
-#include "common.h"
+#include "GameplayScene/common.h"
 
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
@@ -45,6 +44,7 @@ GameplayScene::init()
     if (!Scene::init()) {
         return false;
     }
+	gameData = GameData::getInstance();
 
     this->initWithPhysics();                      //初始化物理世界
     Vect gravity(0, -1000.0f);                    //游戏场景的重力
@@ -137,7 +137,7 @@ GameplayScene::createPhysical(float scale)
             Vec2 points[20];
             int shapeVecAmount = 0; //每个shape的顶点个数
 
-            // 必须将所有读取的定点逆向，因为翻转y之后，三角形定点的顺序已经逆序了，构造b2PolygonShape会crash
+            // 必须将所有读取的定点逆向，因为翻转y之后，三角形定点的顺序已经逆序了，构造PolygonShape会crash
             int c = polygon_points.size();
             polygon_points.resize(c);
             c--;
@@ -163,7 +163,7 @@ GameplayScene::createPhysical(float scale)
             _pBody->setContactTestBitmask(playerCategory);               //默认值为0
 
             auto sprite = Sprite::create();
-            sprite->setTag(98);
+            sprite->setTag(polygonTag);
             sprite->setPhysicsBody(_pBody);
             mapLayer->addChild(sprite);
         } else if (dict.find("polylinePoints") != dict.end()) {
@@ -194,7 +194,7 @@ GameplayScene::createPhysical(float scale)
 
             auto sprite = Sprite::create();
             sprite->setPhysicsBody(_pBody);
-            sprite->setTag(99);
+            sprite->setTag(polylineTag);
 
             mapLayer->addChild(sprite);
         } else {
@@ -209,13 +209,12 @@ GameplayScene::createPhysical(float scale)
             _pBody->getFirstShape()->setRestitution(0);
             _pBody->setDynamic(false);
 
-            //_pBody->setTag(100);
             _pBody->setCategoryBitmask(groundCategory); //给矩形地面设置掩码，默认值为0xFFFFFFFF
             _pBody->setCollisionBitmask(playerCategory | enemyCategory);   //默认值为0xFFFFFFFF
             _pBody->setContactTestBitmask(playerCategory | enemyCategory); //默认值为0
 
             auto sprite = Sprite::create();
-            sprite->setTag(100);
+            sprite->setTag(groundTag);
             sprite->setPosition(x + width / 2.0f, y + height / 2.0f);
             sprite->setPhysicsBody(_pBody);
             mapLayer->addChild(sprite);
@@ -302,16 +301,69 @@ GameplayScene::initCtrlPanel()
     auto controlPanel = Layer::create();
     this->addChild(controlPanel);
 
-    auto set_button = Button::create("CloseNormal.png");
-    set_button->setPosition(Vec2(visibleSize.width * 0.080, visibleSize.height * 0.950));
-    set_button->setScale(1.5);
-    set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+	//血条
+	auto lifeBar = Sprite::create("gameplayscene/1PlifeBar.png");
+	lifeBar->setAnchorPoint(Size(0, 0));
+	lifeBar->setPosition(Vec2(visibleSize.width * 0.090, visibleSize.height * 0.920));
+	controlPanel->addChild(lifeBar);
+
+	//返回按钮
+    auto setButton = Button::create("CloseNormal.png");
+    setButton->setPosition(Vec2(visibleSize.width * 0.060, visibleSize.height * 0.920));
+    setButton->setScale(1.5);
+    setButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             auto layer = SettingsLayer::create("GameplayScene");
             this->addChild(layer, 1000); //最大优先级
         }
     });
-    controlPanel->addChild(set_button);
+    controlPanel->addChild(setButton);
+
+	//dash
+	auto dashButton = Button::create("gameplayscene/dashButton.png");
+	dashButton->setPosition(Vec2(visibleSize.width * 0.920, visibleSize.height * 0.080));
+	dashButton->setScale(0.6);
+	dashButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+		//待定
+	});
+	controlPanel->addChild(dashButton);
+
+	//切换角色
+	auto switchButton = Button::create("gameplayscene/switchCharacter.png");
+	switchButton->setPosition(Vec2(visibleSize.width * 0.060, visibleSize.height * 0.800));
+	switchButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+		//待定
+	});
+	controlPanel->addChild(switchButton);
+
+	//暂时只指定一个人
+	//道具
+	int increment = 100;
+	auto itemList = gameData->getCharacterItemList("Marisa");
+	for (int i = 0; i < itemList.size(); i++) {
+		Button* item = Button::create(itemList[i].icon);
+		item->setScale(1.5);
+		item->setPosition(Vec2(visibleSize.width * 0.300 + increment, visibleSize.height * 0.080));
+		item->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+			//待定
+		});
+		controlPanel->addChild(item);
+		increment = increment + item->getContentSize().width + 50;
+	}
+
+	//符卡
+	increment = 0;
+	auto spellCardList = gameData->getCharacterSpellCardList("Marisa");
+	for (int i = 0; i < spellCardList.size(); i++) {
+		Button* spellCard = Button::create(spellCardList[i].icon);
+		spellCard->setScale(1.5);
+		spellCard->setPosition(Vec2(visibleSize.width * 0.570 + increment, visibleSize.height * 0.080));
+		spellCard->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+			//待定
+		});
+		controlPanel->addChild(spellCard);
+		increment = increment + spellCard->getContentSize().width + 50;
+	}
 
     auto listener = EventListenerTouchOneByOne::create();
     listener->setSwallowTouches(true);
@@ -387,10 +439,9 @@ GameplayScene::initCharacter()
     float b = ts["y"].asFloat();
 
     _player = Player::create();
-    _player->setTag(101);
+    _player->setTag(playerTag);
     _player->setName("player");
     _player->setPosition(a, b);
-
     mapLayer->addChild(_player);
 }
 
@@ -461,10 +512,10 @@ GameplayScene::ShootBullet(float dt)
     // auto playerPos = _launcher->getPosition();//改为发射器发射
     //从缓存中创建子弹
     auto spritebullet = Sprite::createWithTexture(bulletBatchNode->getTexture());
-    spritebullet->setTag(102);
+    spritebullet->setTag(bulletTag);
 
     auto spritebullet2 = Sprite::createWithTexture(bulletBatchNode->getTexture());
-    spritebullet2->setTag(102);
+    spritebullet2->setTag(bulletTag);
 
     //将创建好的子弹添加到BatchNode中进行批次渲染
     bulletBatchNode->addChild(spritebullet);
@@ -475,7 +526,6 @@ GameplayScene::ShootBullet(float dt)
         auto _body = PhysicsBody::createBox(spritebullet->getContentSize());
         _body->setRotationEnable(false);
         _body->setGravityEnable(false);
-        //_body->setTag(102);
 
         _body->setContactTestBitmask(bulletCategory);
         _body->setCollisionBitmask(enemyCategory);
@@ -487,7 +537,6 @@ GameplayScene::ShootBullet(float dt)
         auto _body = PhysicsBody::createBox(spritebullet->getContentSize());
         _body->setRotationEnable(false);
         _body->setGravityEnable(false);
-        //_body->setTag(102);
 
         _body->setCategoryBitmask(bulletCategory);
         _body->setCollisionBitmask(enemyCategory);
@@ -501,11 +550,8 @@ GameplayScene::ShootBullet(float dt)
     vecBullet.pushBack(spritebullet2);
 
     Point bulletPos = (Point(playerPos.x, playerPos.y));
-
-    // spritebullet->setScale(1.3f);
-
+	
     spritebullet->setPosition(bulletPos);
-    // spritebullet2->setPosition(bulletPos);
     spritebullet2->setPosition(Point(playerPos.x, playerPos.y - 30));
 
     float realFlyDuration = 1.0;

@@ -266,6 +266,9 @@
 
     <!-- Classes\GameplayScene -->
 
+    <ClInclude Include="..\Classes\GameplayScene\common.h">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Enemy.h">
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>

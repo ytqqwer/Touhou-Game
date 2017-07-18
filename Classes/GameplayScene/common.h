@@ -11,4 +11,11 @@ static const int playerCategory = 0x1 << 2;
 static const int bulletCategory = 0x1 << 3;
 static const int enemyCategory = 0x1 << 4;
 
+static const int enemyTag = 103;
+static const int bulletTag = 102;
+static const int playerTag = 101;
+static const int groundTag = 100;
+static const int polylineTag = 99;
+static const int polygonTag = 98;
+
 #endif

@@ -221,6 +221,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Layers\ConversationLayer.h" />
     <ClInclude Include="..\Classes\Layers\SettingsLayer.h" />
 
+    <ClInclude Include="..\Classes\GameplayScene\common.h" />
     <ClInclude Include="..\Classes\GameplayScene\Enemy.h" />
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h" />
     <ClInclude Include="..\Classes\GameplayScene\Player.h" />
