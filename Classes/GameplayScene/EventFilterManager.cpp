@@ -13,19 +13,36 @@ EventFilterManager*
 EventFilterManager::create()
 {
     auto mgr = new (nothrow) EventFilterManager;
-    mgr->registerAllCustomEvents();
+    mgr->autorelease();
 
     return mgr;
+}
+
+EventFilterManager::EventFilterManager()
+{
+    _delegateNode = Node::create();
+    _delegateNode->retain();
+    _delegateNode->onEnter(); // Yes, we need this, or Node::_running will be false, all actions and
+                              // schedules will have no effect
+    _useFilters = true;
+    registerAllCustomEvents();
+}
+
+EventFilterManager::~EventFilterManager()
+{
+    _delegateNode->release();
 }
 
 bool
 EventFilterManager::registerAllCustomEvents()
 {
+    auto eventDispatcher = _delegateNode->getEventDispatcher();
+
     for (int i = 0; i < sizeof(eventFilterWorkingRange) / sizeof(char*); i++) {
         const char* type = eventFilterWorkingRange[i];
         auto listener = EventListenerCustom::create(
             type, bind(&EventFilterManager::onRecvCustomEvents, this, placeholders::_1));
-        _eventDispatcher->addEventListenerWithFixedPriority(listener, EVENT_FILTER_PRIORITY);
+        eventDispatcher->addEventListenerWithFixedPriority(listener, EVENT_FILTER_PRIORITY);
     }
 
     return true;
@@ -41,8 +58,8 @@ EventFilterManager::addEventFilter(const function<void(EventCustom*)>& filter, f
 
     /*  2. 定时 */
 
-    scheduleOnce(bind(&EventFilterManager::removeEventFilter, this, tag, placeholders::_1),
-                 lastTime, tag);
+    _delegateNode->scheduleOnce(
+        bind(&EventFilterManager::removeEventFilter, this, tag, placeholders::_1), lastTime, tag);
 }
 
 void
@@ -68,9 +85,25 @@ EventFilterManager::removeAllEventFilters()
 }
 
 void
-EventFilterManager::pause()
+EventFilterManager::pauseAllFiltersTimer()
 {
-    Node::pause();
+    _delegateNode->pause();
+}
+void
+EventFilterManager::resumeAllFiltersTimer()
+{
+    _delegateNode->resume();
+}
+
+void
+EventFilterManager::stopAllFilters()
+{
+    _useFilters = false;
+}
+void
+EventFilterManager::resumeAllFilters()
+{
+    _useFilters = true;
 }
 
 void
@@ -80,8 +113,10 @@ EventFilterManager::onRecvCustomEvents(EventCustom* event)
     log("[EventFilterManager] Recv EventCustom: %s", event->getEventName().c_str());
 #endif
 
-    for_each(_filters.begin(), _filters.end(),
-             [event](const pair<string, function<void(EventCustom*)>>& filter) -> void {
-                 (filter.second)(event);
-             });
+    if (_useFilters) {
+        for_each(_filters.begin(), _filters.end(),
+                 [event](const pair<string, function<void(EventCustom*)>>& filter) -> void {
+                     (filter.second)(event);
+                 });
+    }
 }

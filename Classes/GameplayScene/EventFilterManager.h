@@ -12,10 +12,11 @@
 
 USING_NS_CC;
 
-class EventFilterManager : public Node
+class EventFilterManager : public Ref
 {
 public:
     static EventFilterManager* create();
+    ~EventFilterManager();
 
     // 添加一个 filter，可定时
     //  + 保证所有 add 的 filter 都能运作，不保证先加入的 filter 早于后加入的 filter 运作
@@ -31,21 +32,33 @@ public:
 
     void removeAllEventFilters();
 
-    // 停止现有所有 filter 定时器的计时
-    void pause();
+    // 停止/恢复 现有所有 filter 定时器的计时
+    void pauseAllFiltersTimer();
+    void resumeAllFiltersTimer();
+
+    // 停止/恢复 现有所有 filter 的运作
+    void stopAllFilters();
+    void resumeAllFilters();
 
 public:
     // 不供 GameplayScene 使用。用于给 EventDispatcher 回调
     void onRecvCustomEvents(EventCustom* event);
 
 private:
-    EventFilterManager() = default;
+    EventFilterManager();
+    bool init();
 
     bool registerAllCustomEvents();
 
 private:
     // 使用 multimap 以允许外部添加多个相同 tag 的 filter
     std::multimap<std::string, std::function<void(EventCustom*)>> _filters;
+
+    // cocos 内部几乎所有的设施都要求使用 Node，所以，我们不得不使用一个代理 Node
+    Node* _delegateNode;
+
+    // 设为 false 可暂停所有 filter 的运作（但不暂停所有 filter 的定时）
+    bool _useFilters;
 };
 
 #endif

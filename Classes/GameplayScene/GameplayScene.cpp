@@ -81,7 +81,7 @@ GameplayScene::init()
 
     // 用于支持符卡 buf 效果的 EventFilterManager
     this->_eventFilterMgr = EventFilterManager::create();
-    addChild(_eventFilterMgr);
+    this->_eventFilterMgr->retain();
 
     return true;
 }
