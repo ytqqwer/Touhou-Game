@@ -38,7 +38,7 @@ Enemy::init()
     enemyBody->getFirstShape()->setRestitution(0); //设置刚体回弹力
 
     enemyBody->setCategoryBitmask(enemyCategory);
-    enemyBody->setCollisionBitmask(groundCategory | bulletCategory | playerCategory);
+    enemyBody->setCollisionBitmask(groundCategory | bulletCategory);
     enemyBody->setContactTestBitmask(groundCategory | bulletCategory);
 
     this->setPhysicsBody(enemyBody);

@@ -20,14 +20,17 @@ public:
     CREATE_FUNC(Player);
 
 public:
-    void playerRunLeft(float dt);
-    void playerRunRight(float dt);
+    void playerRun(float dt);
     void playerJump();
+    void playerDash();
 
-    void resetAction(Node* pNode);
+    void resetAction(Node* node);
 
-    String attackDirection = "right";
-	int jumpCounts = 2;
+    void regainDashCounts(float dt);
+
+    String playerDirection = "right";
+    int jumpCounts = 2;
+    int dashCounts = 2;
 
 private:
     Sprite* playerSprite; //角色精灵
@@ -36,6 +39,7 @@ private:
 
     Animation* p1Animation;
     Animation* jumpAnimation;
+    Animation* dashAnimation;
 };
 
 #endif

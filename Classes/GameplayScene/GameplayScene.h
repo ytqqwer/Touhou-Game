@@ -5,8 +5,8 @@
 #ifndef GAME_SCENE_H
 #define GAME_SCENE_H
 
-#include "cocos2d.h"
 #include "GameData\GameData.h"
+#include "cocos2d.h"
 
 #include "Player.h"
 
@@ -36,20 +36,19 @@ public:
     void update(float dt);
     // void moveCamera(float);
 
-	GameData* gameData;
+    GameData* gameData;
     Player* _player;
-
-    ParticleSystem* ps;
+    Size visibleSize;
 
     Sprite* camera;
     TMXTiledMap* _map;
     Layer* mapLayer;
-	
 
     bool onContactGround(const PhysicsContact& contact);
     bool onContactBullet(const PhysicsContact& contact);
 
     bool onTouchBegan(Touch* touch, Event* event);
+    void onTouchMoved(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
 
     Vector<Sprite*> vecBullet;        //子弹容器

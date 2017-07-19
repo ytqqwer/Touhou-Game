@@ -3,10 +3,10 @@
 #endif
 
 #include "GameplayScene.h"
-#include "Enemy.h"
-#include "Layers/SettingsLayer.h"
 #include "Emitters/FirstEmitter.h"
+#include "Enemy.h"
 #include "GameplayScene/common.h"
+#include "Layers/SettingsLayer.h"
 
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
@@ -44,7 +44,8 @@ GameplayScene::init()
     if (!Scene::init()) {
         return false;
     }
-	gameData = GameData::getInstance();
+    gameData = GameData::getInstance();
+    visibleSize = Director::getInstance()->getVisibleSize();
 
     this->initWithPhysics();                      //初始化物理世界
     Vect gravity(0, -1000.0f);                    //游戏场景的重力
@@ -103,6 +104,7 @@ GameplayScene::initMap()
     _map = TMXTiledMap::create("gameplayscene/test.tmx");
     _map->setScale(1.0f);
     mapLayer->addChild(_map);
+    mapLayer->setName("mapLayer");
     this->addChild(mapLayer, 0);
 
     //创建静态刚体墙
@@ -226,23 +228,65 @@ GameplayScene::createPhysical(float scale)
 bool
 GameplayScene::onContactGround(const PhysicsContact& contact)
 {
+    //留空，需要使水平接触墙壁时不做什么处理，暂时不考虑“蹬墙跳”
 
     auto nodeA = contact.getShapeA()->getBody()->getNode();
     auto nodeB = contact.getShapeB()->getBody()->getNode();
-
     if (nodeA && nodeB) {
-        if (nodeA->getTag() == 99) //碰到了折线
-        {
-            return contact.getContactData()->normal.y > 0;
-        } else if (nodeB->getTag() == 99) {
-            return contact.getContactData()->normal.y > 0;
-        } else if (nodeA->getTag() == 100) //碰到了地面
-        {
-            auto enemy = (Enemy*)nodeB;
-            enemy->_canJump = true;
-        } else if (nodeB->getTag() == 100) {
-            auto enemy = (Enemy*)nodeA;
-            enemy->_canJump = true;
+        Node* entityA;
+        Node* entityB;
+        auto tagA = nodeA->getTag();
+        auto tagB = nodeB->getTag();
+
+        // enemy相关
+        if (tagA == enemyTag || tagB == enemyTag) {
+            if (tagA == enemyTag) {
+                entityA = nodeA;
+                entityB = nodeB;
+            } else if (tagB == enemyTag) {
+                entityA = nodeB;
+                entityB = nodeA;
+            }
+
+            if (entityB->getTag() == polylineTag) {
+                if (contact.getContactData()->normal.y > 0) {
+                    auto enemy = (Enemy*)entityA;
+                    enemy->_canJump = true;
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            if (entityB->getTag() == groundTag) {
+                auto enemy = (Enemy*)entityA;
+                enemy->_canJump = true;
+            }
+            //其他
+        }
+        // player相关
+        if (tagA == playerTag || tagB == playerTag) {
+            if (nodeA->getTag() == playerTag) {
+                entityA = nodeA;
+                entityB = nodeB;
+            } else if (nodeB->getTag() == playerTag) {
+                entityA = nodeB;
+                entityB = nodeA;
+            }
+
+            if (entityB->getTag() == polylineTag) {
+                if (contact.getContactData()->normal.y > 0) {
+                    auto player = (Player*)entityA;
+                    player->jumpCounts = 2;
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            if (entityB->getTag() == groundTag) {
+                auto player = (Player*)entityA;
+                player->jumpCounts = 2;
+            }
+            //其他
         }
     }
     return true;
@@ -253,40 +297,41 @@ GameplayScene::onContactBullet(const PhysicsContact& contact)
 {
     auto nodeA = contact.getShapeA()->getBody()->getNode();
     auto nodeB = contact.getShapeB()->getBody()->getNode();
-
     if (nodeA && nodeB) {
-        if (nodeA->getTag() == 102) {
-            ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
-            ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
-                "gameplayscene/smallOrb000.png"));
-            // auto pos =
-            // mapLayer->convertToNodeSpace(nodeA->getPosition());//粒子效果添加存在相对坐标问题
-            // ps->setPosition(pos);
-            ps->setPosition(nodeA->getPosition());
+        Node* entityA;
+        Node* entityB;
+        auto tagA = nodeA->getTag();
+        auto tagB = nodeB->getTag();
 
-            // mapLayer->addChild(ps, 10);
-            nodeB->getParent()->addChild(ps, 10);
+        if (tagA == bulletTag || tagB == bulletTag) {
+            if (tagA == bulletTag) {
+                entityA = nodeA;
+                entityB = nodeB;
+            } else if (tagB == bulletTag) {
+                entityA = nodeB;
+                entityB = nodeA;
+            }
 
-            nodeA->removeFromParentAndCleanup(true); //移除子弹
+            if (entityB->getTag() == enemyTag) {
+                ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
+                ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
+                    "gameplayscene/smallOrb000.png"));
 
-            auto enemy = (Enemy*)nodeB;
-            enemy->decreaseHp(nodeB); //手机端伤害判定存在问题
-        } else if (nodeB->getTag() == 102) {
+                //留空，粒子效果添加存在疑似相对坐标的问题，暂不知道如何解决
 
-            ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
-            ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
-                "gameplayscene/smallOrb000.png"));
-            // auto pos = mapLayer->convertToNodeSpace(nodeB->getPosition());
-            // ps->setPosition(pos);
-            ps->setPosition(nodeB->getPosition());
+                // auto pos = mapLayer->convertToNodeSpace(entityA->getPosition());
+                // auto pos = mapLayer->convertToWorldSpace(entityA->getPosition());
+                // ps->setPosition(pos);
+                ps->setPosition(entityA->getPosition());
+                // this->getChildByName("mapLayer")->addChild(ps);
+                entityB->getParent()->addChild(ps);
+                // this->addChild(ps);
 
-            // mapLayer->addChild(ps, 10);
-            nodeA->getParent()->addChild(ps, 10);
-
-            nodeB->removeFromParentAndCleanup(true); //移除子弹
-
-            auto enemy = (Enemy*)nodeA;
-            enemy->decreaseHp(nodeA);
+                auto enemy = (Enemy*)entityB;
+                enemy->decreaseHp(entityB);
+                entityA->removeFromParentAndCleanup(true); //移除子弹
+            }
+            //其他
         }
     }
     return true;
@@ -295,19 +340,18 @@ GameplayScene::onContactBullet(const PhysicsContact& contact)
 void
 GameplayScene::initCtrlPanel()
 {
-    auto visibleSize = Director::getInstance()->getVisibleSize();
     auto visibleOrigin = Director::getInstance()->getVisibleOrigin();
 
     auto controlPanel = Layer::create();
     this->addChild(controlPanel);
 
-	//血条
-	auto lifeBar = Sprite::create("gameplayscene/1PlifeBar.png");
-	lifeBar->setAnchorPoint(Size(0, 0));
-	lifeBar->setPosition(Vec2(visibleSize.width * 0.090, visibleSize.height * 0.920));
-	controlPanel->addChild(lifeBar);
+    //血条
+    auto lifeBar = Sprite::create("gameplayscene/1PlifeBar.png");
+    lifeBar->setAnchorPoint(Size(0, 0));
+    lifeBar->setPosition(Vec2(visibleSize.width * 0.090, visibleSize.height * 0.920));
+    controlPanel->addChild(lifeBar);
 
-	//返回按钮
+    //返回按钮
     auto setButton = Button::create("CloseNormal.png");
     setButton->setPosition(Vec2(visibleSize.width * 0.060, visibleSize.height * 0.920));
     setButton->setScale(1.5);
@@ -319,95 +363,118 @@ GameplayScene::initCtrlPanel()
     });
     controlPanel->addChild(setButton);
 
-	//dash
-	auto dashButton = Button::create("gameplayscene/dashButton.png");
-	dashButton->setPosition(Vec2(visibleSize.width * 0.920, visibleSize.height * 0.080));
-	dashButton->setScale(0.6);
-	dashButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-		//待定
-	});
-	controlPanel->addChild(dashButton);
+    // dash
+    auto dashButton = Button::create("gameplayscene/dashButton.png");
+    dashButton->setPosition(Vec2(visibleSize.width * 0.920, visibleSize.height * 0.080));
+    dashButton->setScale(0.6);
+    dashButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        switch (type) {
+            case Widget::TouchEventType::BEGAN:
+                _player->playerDash();
+                break;
 
-	//切换角色
-	auto switchButton = Button::create("gameplayscene/switchCharacter.png");
-	switchButton->setPosition(Vec2(visibleSize.width * 0.060, visibleSize.height * 0.800));
-	switchButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-		//待定
-	});
-	controlPanel->addChild(switchButton);
+            case Widget::TouchEventType::MOVED:
+                break;
 
-	//暂时只指定一个人
-	//道具
-	int increment = 100;
-	auto itemList = gameData->getCharacterItemList("Marisa");
-	for (int i = 0; i < itemList.size(); i++) {
-		Button* item = Button::create(itemList[i].icon);
-		item->setScale(1.5);
-		item->setPosition(Vec2(visibleSize.width * 0.300 + increment, visibleSize.height * 0.080));
-		item->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-			//待定
-		});
-		controlPanel->addChild(item);
-		increment = increment + item->getContentSize().width + 50;
-	}
+            case Widget::TouchEventType::ENDED:
+                break;
 
-	//符卡
-	increment = 0;
-	auto spellCardList = gameData->getCharacterSpellCardList("Marisa");
-	for (int i = 0; i < spellCardList.size(); i++) {
-		Button* spellCard = Button::create(spellCardList[i].icon);
-		spellCard->setScale(1.5);
-		spellCard->setPosition(Vec2(visibleSize.width * 0.570 + increment, visibleSize.height * 0.080));
-		spellCard->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-			//待定
-		});
-		controlPanel->addChild(spellCard);
-		increment = increment + spellCard->getContentSize().width + 50;
-	}
+            case Widget::TouchEventType::CANCELED:
+                break;
+            default:
+                break;
+        }
+    });
+    controlPanel->addChild(dashButton);
+
+    //切换角色
+    auto switchButton = Button::create("gameplayscene/switchCharacter.png");
+    switchButton->setPosition(Vec2(visibleSize.width * 0.060, visibleSize.height * 0.800));
+    switchButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        //待定
+    });
+    controlPanel->addChild(switchButton);
+
+    //暂时只指定一个人
+    //道具
+    int increment = 100;
+    auto itemList = gameData->getCharacterItemList("Marisa");
+    for (int i = 0; i < itemList.size(); i++) {
+        Button* item = Button::create(itemList[i].icon);
+        item->setScale(1.5);
+        item->setPosition(Vec2(visibleSize.width * 0.300 + increment, visibleSize.height * 0.080));
+        item->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+            //待定
+        });
+        controlPanel->addChild(item);
+        increment = increment + item->getContentSize().width + 50;
+    }
+
+    //符卡
+    increment = 0;
+    auto spellCardList = gameData->getCharacterSpellCardList("Marisa");
+    for (int i = 0; i < spellCardList.size(); i++) {
+        Button* spellCard = Button::create(spellCardList[i].icon);
+        spellCard->setScale(1.5);
+        spellCard->setPosition(
+            Vec2(visibleSize.width * 0.570 + increment, visibleSize.height * 0.080));
+        spellCard->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+            //待定
+        });
+        controlPanel->addChild(spellCard);
+        increment = increment + spellCard->getContentSize().width + 50;
+    }
 
     auto listener = EventListenerTouchOneByOne::create();
     listener->setSwallowTouches(true);
     listener->onTouchBegan = CC_CALLBACK_2(GameplayScene::onTouchBegan, this);
+    listener->onTouchMoved = CC_CALLBACK_2(GameplayScene::onTouchMoved, this);
     listener->onTouchEnded = CC_CALLBACK_2(GameplayScene::onTouchEnded, this);
 
     auto dispatcher = Director::getInstance()->getEventDispatcher();
     dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-    // this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-    // this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 
 bool
 GameplayScene::onTouchBegan(Touch* touch, Event* event)
 {
     auto location = touch->getLocation();
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-
-    // Player* p = (Player *)this->getParent()->getChildByName("player");
-    // auto body = p->getPhysicsBody();
-
     auto body = _player->getPhysicsBody();
 
     if (location.x > visibleSize.width / 2 && location.y < visibleSize.height / 2) {
         //触碰右下屏
         //_player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
         _player->setScaleX(1); //人物翻转
-        _player->attackDirection = "right";
-        _player->schedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
+        _player->playerDirection = "right";
+        _player->schedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
     }
 
     else if (location.x < visibleSize.width / 2 && location.y < visibleSize.height / 2) {
         //触碰左下屏
         //_player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
         _player->setScaleX(-1); //人物翻转
-        _player->attackDirection = "left";
-        _player->schedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
+        _player->playerDirection = "left";
+        _player->schedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
     }
 
     else if (location.y >= visibleSize.height / 2) {
-        //触碰上屏
+        //触碰上半屏
         _player->playerJump();
     }
     return true;
+}
+
+void
+GameplayScene::onTouchMoved(Touch* touch, Event* event)
+{
+    auto location = touch->getLocation();
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+
+    if (location.y >= visibleSize.height / 2) {
+        if (_player->isScheduled(CC_SCHEDULE_SELECTOR(Player::playerRun))) {
+            _player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
+        }
+    }
 }
 
 void
@@ -415,15 +482,8 @@ GameplayScene::onTouchEnded(Touch* touch, Event* event)
 {
     auto location = touch->getLocation();
     auto visibleSize = Director::getInstance()->getVisibleSize();
-
-    if (location.x > visibleSize.width / 2 && location.y < visibleSize.height / 2) {
-        //触碰右下方结束，解除向右状态
-        _player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
-    } else if (location.x < visibleSize.width / 2 && location.y < visibleSize.height / 2) {
-        //触碰左下方结束，解除向左状态
-        _player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
-    } else if (location.y >= visibleSize.height / 2) {
-        //请不要拖动鼠标
+    if (_player->isScheduled(CC_SCHEDULE_SELECTOR(Player::playerRun))) {
+        _player->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
     }
     //自动减速还没有做
 }
@@ -435,13 +495,11 @@ GameplayScene::initCharacter()
     auto ts = temp->getObject("birthPoint");
     // log("%s", Value(ts).getDescription().c_str());
 
-    float a = ts["x"].asFloat();
-    float b = ts["y"].asFloat();
+    float x = ts["x"].asFloat();
+    float y = ts["y"].asFloat();
 
     _player = Player::create();
-    _player->setTag(playerTag);
-    _player->setName("player");
-    _player->setPosition(a, b);
+    _player->setPosition(x, y);
     mapLayer->addChild(_player);
 }
 
@@ -550,7 +608,7 @@ GameplayScene::ShootBullet(float dt)
     vecBullet.pushBack(spritebullet2);
 
     Point bulletPos = (Point(playerPos.x, playerPos.y));
-	
+
     spritebullet->setPosition(bulletPos);
     spritebullet2->setPosition(Point(playerPos.x, playerPos.y - 30));
 
@@ -563,7 +621,7 @@ GameplayScene::ShootBullet(float dt)
     auto actionMove2 = MoveBy::create(realFlyDuration, Point(winSize.width, 0));
     auto fire2 = actionMove2;
 
-    if (_player->attackDirection.compare("right")) {
+    if (_player->playerDirection.compare("right")) {
         fire1 = actionMove->reverse();
         fire2 = actionMove2->reverse();
     }
@@ -639,11 +697,17 @@ GameplayScene::initListener()
 void
 GameplayScene::update(float dt)
 {
-    // Player* p = (Player *)this->getChildByName("player");
-    // Vec2 poi = p->getPosition();
     Vec2 poi = _player->getPosition();
     camera->setPosition(poi.x + 100, poi.y + 70); //移动摄像机
 
-    //简单的粒子特效
-    // ps->setPosition(poi);
+    //留空，更新角色状态，更新界面状态等
+
+    //回复dash次数
+    if (_player->dashCounts < 2) {
+        if (_player->isScheduled(CC_SCHEDULE_SELECTOR(Player::regainDashCounts))) {
+            ;
+        } else {
+            _player->scheduleOnce(CC_SCHEDULE_SELECTOR(Player::regainDashCounts), 3.0f);
+        }
+    }
 }
