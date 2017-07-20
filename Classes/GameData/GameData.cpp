@@ -118,6 +118,50 @@ from_json(const json& j, ConversationIndicator& i)
     i.name = j.at("name");
 }
 
+// conversationDom[n]["dialogues"][n] -> Dialogue
+static void
+from_json(const json& j, Dialogue& d)
+{
+    /*  1. 『文字内容与特效』型 Dialogue */
+
+    if (j.value("speakerName", "").length() != 0) {
+        d.speakerName = j.at("speakerName");
+        d.speakerColor = Color3B((j.at("speakerColor"))[0], (j.at("speakerColor"))[1],
+                                 (j.at("speakerColor"))[2]);
+        d.text = j.at("text");
+        d.soundEffect = j.at("soundEffect");
+        d.screenEffect = (j.at("screenEffect") == "SHAKE" ? Dialogue::ScreenEffect::SHAKE
+                                                          : Dialogue::ScreenEffect::NONE);
+
+    } else {
+
+        /*  2. 『人物与背景改变』型 Dialogue */
+
+        d.characterName = j.value("characterName", "");
+        d.characterNameWordArt = j.value("characterNameWordArt", "");
+
+        {
+            Dialogue::PicturePosition position;
+            const string positionStr = j.value("picPosition", "");
+            if (positionStr == "LEFT") {
+                position = Dialogue::PicturePosition::LEFT;
+            } else if (positionStr == "RIGHT") {
+                position = Dialogue::PicturePosition::RIGHT;
+            } else if (positionStr == "MID") {
+                position = Dialogue::PicturePosition::MID;
+            } else {
+                position = Dialogue::PicturePosition::NOT_GIVEN;
+            }
+
+            d.picPosition = position;
+        }
+
+        d.picture = j.value("picture", "");
+        d.bgp = j.value("bgp", "");
+        d.bgm = j.value("bgm", "");
+    }
+}
+
 // locationListDom[n] -> Location
 static void
 from_json(const json& j, Location& l)
@@ -350,8 +394,10 @@ GameData::init()
     spell_cards_json.close();
     awards_json.close();
 
-    // 若 GameData 正在开发阶段
+#ifndef NDEBUG
+    // 若使用 DEBUG mode 来生成项目
     inDevelop();
+#endif
 
     return true;
 }
@@ -519,9 +565,28 @@ GameData::getConversationIndicatorList(const string& locationTag)
 vector<Dialogue>
 GameData::getConversation(const string& conversationTag)
 {
-    // TODO
+    vector<Dialogue> dialogues;
+    dialogues.reserve(20);
 
-    return vector<Dialogue>();
+    /*  1. 找到和 conversationTag 匹配的对话 */
+
+    json::const_iterator cDom = find_if(conversationListDom.cbegin(), conversationListDom.cend(),
+                                        [&conversationTag](const json& cToPred) -> bool {
+                                            return cToPred.at("conversationTag") == conversationTag;
+                                        });
+
+    if (cDom == conversationListDom.cend()) {
+        return dialogues;
+    }
+
+    const json& dialoguesDom = cDom->at("dialogues");
+
+    /*  2. 将 JSON 数组转成 vector<Dialogue> */
+
+    for_each(dialoguesDom.cbegin(), dialoguesDom.cend(),
+             [&dialogues](const json& dToAdd) { dialogues.push_back(dToAdd); });
+
+    return dialogues;
 }
 
 Location
@@ -994,7 +1059,7 @@ testSelf()
     ptr->saveConversationSpeed(0.7);
     auto get_saved_conversation_speed = ptr->getSavedConversationSpeed();
     auto get_conversation_indicator_list = ptr->getConversationIndicatorList("Hakurei Jinja");
-    auto get_conversation = ptr->getConversation("1");
+    auto const& get_conversation = ptr->getConversation("C1");
     auto get_current_location = ptr->getCurrentLocation();
     auto get_location_list = ptr->getLocationList();
     auto get_unlocked_location_tag_list = ptr->getUnlockedLocationTagList();
@@ -1044,19 +1109,24 @@ testSelf()
 
     log(">> getConversation:");
     for (auto const& d : get_conversation) {
-        cout << "  characterName: " << d.characterName << endl;
-        cout << "  characterNameWrodArt" << d.characterNameWordArt << endl;
-        cout << "  characterPicPosition"
-             << (d.characterPicPosition == Dialogue::PicturePosition::LEFT
-                     ? "LEFT"
-                     : d.characterPicPosition == Dialogue::PicturePosition::MID ? "MID" : "RIGHT")
-             << endl;
-        cout << "  content: " << d.content << endl;
-        cout << "  backgrouondPicture: " << d.backgroundPicture << endl;
-        cout << "  backgroundMusic: " << d.backgroundMusic << endl;
-        cout << "  soundEffect: " << d.soundEffect << endl;
-        cout << "  screenEffect: "
-             << (d.screenEffect == Dialogue::ScreenEffect::NONE ? "NONE" : "SHAKE");
+        if (d.speakerName.length() == 0) {
+            cout << "  characterName: " << d.characterName << endl;
+            cout << "  characterNameWrodArt" << d.characterNameWordArt << endl;
+
+            cout << "  characterPicPosition"
+                 << (d.picPosition == Dialogue::PicturePosition::LEFT
+                         ? "LEFT"
+                         : d.picPosition == Dialogue::PicturePosition::MID ? "MID" : "RIGHT")
+                 << endl;
+            cout << "  bgp: " << d.bgp << endl;
+            cout << "  bgm: " << d.bgm << endl;
+        } else {
+            cout << "  speakerName: " << d.speakerName << endl;
+            cout << "  text: " << d.text << endl;
+            cout << "  soundEffect: " << d.soundEffect << endl;
+            cout << "  screenEffect: "
+                 << (d.screenEffect == Dialogue::ScreenEffect::SHAKE ? "SHAKE" : "NONE") << endl;
+        }
     }
 
     log(">> getCurrentLocation: ");
