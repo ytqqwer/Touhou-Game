@@ -112,6 +112,9 @@ public:
     // 在 RoundSelectScene 中使用
     bool switchOnStageCharacter(int nth, const string& characterTag);
 
+	// 获得指定角色的信息
+	Character getCharacterByTag(const string & characterTag);
+
     // 获得指定角色使用或装备的道具列表
     vector<Item> getCharacterItemList(const string& characterTag);
 

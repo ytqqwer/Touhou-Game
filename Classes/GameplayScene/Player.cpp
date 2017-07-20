@@ -11,59 +11,125 @@ Player::init()
     if (!Node::init())
         return false;
 
-    //定义两角色的序列帧动画,注意此处要经常切换纹理，所以不能用AnimationCache
-    p1Animation = Animation::create();
-    for (int i = 0; i <= 7; i++)
-        p1Animation->addSpriteFrameWithFile("gameplayscene/walkFront00" + std::to_string(i) +
-                                            ".png");
-    p1Animation->setDelayPerUnit(0.15f);
+	auto characterTagList = GameData::getInstance()->getOnStageCharacterTagList();
 
-    jumpAnimation = Animation::create();
-    for (int i = 0; i <= 9; i++)
-        jumpAnimation->addSpriteFrameWithFile("gameplayscene/jumpFront00" + std::to_string(i) +
-                                              ".png");
-    jumpAnimation->setDelayPerUnit(0.1f);
+	p1RunAnimation = Animation::create();
+	p1JumpAnimation = Animation::create();
+	p1DashAnimation = Animation::create();
 
-    dashAnimation = Animation::create();
-    for (int i = 0; i <= 8; i++)
-        dashAnimation->addSpriteFrameWithFile("gameplayscene/dashFront00" + std::to_string(i) +
-                                              ".png");
-    dashAnimation->setDelayPerUnit(0.07f);
+	p2RunAnimation = Animation::create();
+	p2JumpAnimation = Animation::create();
+	p2DashAnimation = Animation::create();
 
-    std::string playerTextureName = "gameplayscene/walkFront001.png";
+	//定义两角色的序列帧动画。因为此处要经常切换纹理，所以不能用AnimationCache
+	if (characterTagList[0] == "Reimu")
+	{
+		p1PlayerTextureName = "gameplayscene/Reimu/walkFront000.png";
+		for (int i = 0; i <= 7; i++)
+			p1RunAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/walkFront00" + std::to_string(i) +
+				".png");
+		p1RunAnimation->setDelayPerUnit(0.15f);
 
-    playerSprite =
-        Sprite::create(playerTextureName); //此处必须初始化一张角色纹理，否则后面无法切换纹理
-    this->addChild(playerSprite);
+		for (int i = 0; i <= 8; i++)
+			p1JumpAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/jump00" + std::to_string(i) +
+				".png");
+		p1JumpAnimation->setDelayPerUnit(0.11f);
 
-    Animation* playerAnimation;
-    playerAnimation = p1Animation;
+		for (int i = 0; i <= 7; i++)
+			p1DashAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/dashFront00" + std::to_string(i) +
+				".png");
+		p1DashAnimation->setDelayPerUnit(0.07f);
+	}
+	else if (characterTagList[0] == "Marisa")
+	{
+		p1PlayerTextureName = "gameplayscene/Marisa/walkFront000.png";
+		for (int i = 0; i <= 7; i++)
+			p1RunAnimation->addSpriteFrameWithFile("gameplayscene/Marisa/walkFront00" + std::to_string(i) +
+				".png");
+		p1RunAnimation->setDelayPerUnit(0.15f);
 
-    playerAnim = Animate::create(playerAnimation);
+		for (int i = 0; i <= 9; i++)
+			p1JumpAnimation->addSpriteFrameWithFile("gameplayscene/Marisa/jumpFront00" + std::to_string(i) +
+				".png");
+		p1JumpAnimation->setDelayPerUnit(0.1f);
 
-    AnimationCache::getInstance()->addAnimation(p1Animation, "p1Animation");
-    AnimationCache::getInstance()->addAnimation(jumpAnimation, "jumpAnimation");
-    AnimationCache::getInstance()->addAnimation(dashAnimation, "dashAnimation");
+		for (int i = 0; i <= 8; i++)
+			p1DashAnimation->addSpriteFrameWithFile("gameplayscene/Marisa/dashFront00" + std::to_string(i) +
+				".png");
+		p1DashAnimation->setDelayPerUnit(0.07f);
+	}
+	if (characterTagList[1] == "Reimu")
+	{
+		//p2PlayerTextureName = "gameplayscene/Reimu/walkFront000.png";
+		for (int i = 0; i <= 7; i++)
+			p2RunAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/walkFront00" + std::to_string(i) +
+				".png");
+		p2RunAnimation->setDelayPerUnit(0.15f);
 
-    playerSprite->runAction(RepeatForever::create(playerAnim)); //初始时刻角色在奔跑
-    // playerSprite->runAction(RepeatForever::create(Animate::create(AnimationCache::getInstance()->getAnimation("p1Animation"))));//初始时刻角色在奔跑
+		for (int i = 0; i <= 8; i++)
+			p2JumpAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/jump00" + std::to_string(i) +
+				".png");
+		p2JumpAnimation->setDelayPerUnit(0.11f);
 
-    auto body = PhysicsBody::createBox(Size(50, 75));
-    body->setDynamic(true);
-    body->setMass(1);
-    body->setGravityEnable(true);
-    body->setRotationEnable(false);
-    body->getFirstShape()->setDensity(0);
-    body->getFirstShape()->setFriction(0.2);
-    body->getFirstShape()->setRestitution(0);
-    body->setCategoryBitmask(playerCategory);
-    body->setCollisionBitmask(groundCategory | enemyCategory);
-    body->setContactTestBitmask(groundCategory | enemyCategory);
+		for (int i = 0; i <= 7; i++)
+			p2DashAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/dashFront00" + std::to_string(i) +
+				".png");
+		p2DashAnimation->setDelayPerUnit(0.07f);
+	}
+	else if (characterTagList[1] == "Marisa")
+	{
+		//p2PlayerTextureName = "gameplayscene/Marisa/walkFront000.png";
+		for (int i = 0; i <= 7; i++)
+			p2RunAnimation->addSpriteFrameWithFile("gameplayscene/Marisa/walkFront00" + std::to_string(i) +
+				".png");
+		p2RunAnimation->setDelayPerUnit(0.15f);
 
-    this->setTag(playerTag);
-    this->setName("player");
-    this->setPhysicsBody(body);
-    return true;
+		for (int i = 0; i <= 9; i++)
+			p2JumpAnimation->addSpriteFrameWithFile("gameplayscene/Marisa/jumpFront00" + std::to_string(i) +
+				".png");
+		p2JumpAnimation->setDelayPerUnit(0.1f);
+
+		for (int i = 0; i <= 8; i++)
+			p2DashAnimation->addSpriteFrameWithFile("gameplayscene/Marisa/dashFront00" + std::to_string(i) +
+				".png");
+		p2DashAnimation->setDelayPerUnit(0.07f);
+	}
+
+	AnimationCache::getInstance()->addAnimation(p1RunAnimation, "p1RunAnimation");
+	AnimationCache::getInstance()->addAnimation(p1JumpAnimation, "p1JumpAnimation");
+	AnimationCache::getInstance()->addAnimation(p1DashAnimation, "p1DashAnimation");
+
+	AnimationCache::getInstance()->addAnimation(p2RunAnimation, "p2RunAnimation");
+	AnimationCache::getInstance()->addAnimation(p2JumpAnimation, "p2JumpAnimation");
+	AnimationCache::getInstance()->addAnimation(p2DashAnimation, "p2DashAnimation");
+
+	auto body = PhysicsBody::createBox(Size(50, 75));
+	body->setDynamic(true);
+	body->setMass(1);
+	body->setGravityEnable(true);
+	body->setRotationEnable(false);
+	body->getFirstShape()->setDensity(0);
+	body->getFirstShape()->setFriction(0.2);
+	body->getFirstShape()->setRestitution(0);
+	body->setCategoryBitmask(playerCategory);
+	body->setCollisionBitmask(groundCategory | enemyCategory);
+	body->setContactTestBitmask(groundCategory | enemyCategory);
+
+	//留空，需要创建两个刚体
+
+	this->setPhysicsBody(body);
+	this->setTag(playerTag);
+	this->setName("player");
+
+	playerSprite = Sprite::create(p1PlayerTextureName); //此处必须初始化一张角色纹理，否则后面无法切换纹理
+	playerSprite->setName("playerSprite");
+	this->addChild(playerSprite);
+
+	playerAnimation = p1RunAnimation;
+	playerAnim = Animate::create(playerAnimation);
+	playerSprite->runAction(RepeatForever::create(playerAnim)); //初始时刻角色在奔跑
+
+	return true;
 }
 
 void
@@ -116,9 +182,19 @@ Player::playerJump()
     Vec2 impluse = Vec2(0.0f, 500.0f);
     body->applyImpulse(impluse);
 
-    auto animate = Animate::create(AnimationCache::getInstance()->getAnimation("jumpAnimation"));
-    playerSprite->stopAllActions();
+	Animate* animate;
+	if (this->currentPlayer == 0)
+	{
+		animate = Animate::create(AnimationCache::getInstance()->getAnimation("p1JumpAnimation"));
+	}
+	else
+	{
+		animate = Animate::create(AnimationCache::getInstance()->getAnimation("p2JumpAnimation"));
+	}
 
+	//留空，对于不同的角色机制应有不同
+
+	playerSprite->stopAllActions();
     auto actionDone = CallFuncN::create(CC_CALLBACK_1(Player::resetAction, this));
     auto sequence = Sequence::create(Repeat::create(animate, 1), actionDone, NULL);
     playerSprite->runAction(sequence);
@@ -148,8 +224,20 @@ Player::playerDash()
         Vec2 impluse = Vec2(350.0f, 0.0f);
         body->applyImpulse(impluse);
     }
-    auto animate = Animate::create(AnimationCache::getInstance()->getAnimation("dashAnimation"));
-    playerSprite->stopAllActions();
+
+	Animate* animate;
+	if (this->currentPlayer == 0)
+	{
+		animate = Animate::create(AnimationCache::getInstance()->getAnimation("p1DashAnimation"));
+	}
+	else
+	{
+		animate = Animate::create(AnimationCache::getInstance()->getAnimation("p2DashAnimation"));
+	}
+
+	//留空，对于不同的角色机制应有不同
+
+	playerSprite->stopAllActions();
     auto actionDone = CallFuncN::create(CC_CALLBACK_1(Player::resetAction, this));
     auto sequence = Sequence::create(Repeat::create(animate, 1), actionDone, NULL);
     playerSprite->runAction(sequence);
@@ -158,12 +246,43 @@ Player::playerDash()
 }
 
 void
+Player::switchCharacter(int currentPlayer)
+{
+	playerSprite->stopAllActions();
+	if (this->currentPlayer == 0)	//第一个角色
+	{
+		playerAnimation = p2RunAnimation;
+		this->currentPlayer = 1;//切换到第二个角色
+
+								//留空，切换刚体
+	}
+	else
+	{
+		playerAnimation = p1RunAnimation;
+		this->currentPlayer = 0;
+
+		//留空，切换刚体
+	}
+	playerAnim = Animate::create(playerAnimation);
+	playerSprite->runAction(RepeatForever::create(playerAnim)); //初始时刻角色在奔跑
+
+}
+
+void
 Player::resetAction(Node* node)
 {
-    playerSprite->stopAllActions();
+	playerSprite->stopAllActions();
 
-    playerSprite->runAction(RepeatForever::create(
-        Animate::create(AnimationCache::getInstance()->getAnimation("p1Animation"))));
+	if (this->currentPlayer == 0)
+	{
+		playerSprite->runAction(RepeatForever::create(
+			Animate::create(AnimationCache::getInstance()->getAnimation("p1RunAnimation"))));
+	}
+	else
+	{
+		playerSprite->runAction(RepeatForever::create(
+			Animate::create(AnimationCache::getInstance()->getAnimation("p2RunAnimation"))));
+	}
 }
 
 void

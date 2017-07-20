@@ -745,6 +745,22 @@ GameData::switchOnStageCharacter(int nth, const string& characterTag)
     return true;
 }
 
+Character
+GameData::getCharacterByTag(const string& characterTag)
+{
+	const json& listDom = cachedSave["characterList"];
+
+	Character character;
+	for (auto const& c : listDom) {
+		if (c["tag"] == characterTag) {
+			character = c;
+			break;
+		}
+	}
+
+	return character;
+}
+
 vector<Item>
 GameData::getCharacterItemList(const string& characterTag)
 {

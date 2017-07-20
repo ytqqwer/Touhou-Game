@@ -16,30 +16,42 @@ using namespace cocos2d;
 class Player : public Node
 {
 public:
-    virtual bool init() override;
-    CREATE_FUNC(Player);
+	virtual bool init() override;
+	CREATE_FUNC(Player);
 
 public:
-    void playerRun(float dt);
-    void playerJump();
-    void playerDash();
 
-    void resetAction(Node* node);
+	void playerRun(float dt);
+	void playerJump();
+	void playerDash();
 
-    void regainDashCounts(float dt);
+	void switchCharacter(int currentPlayer);
 
-    String playerDirection = "right";
-    int jumpCounts = 2;
-    int dashCounts = 2;
+	void resetAction(Node* node);
+
+	void regainDashCounts(float dt);
+
+	String playerDirection = "right";
+	int jumpCounts = 2;
+	int dashCounts = 2;
+	int currentPlayer = 0;
 
 private:
-    Sprite* playerSprite; //角色精灵
-    Animate* playerAnim;
-    Texture2D* jumpTexture;
+	Sprite* playerSprite; //角色精灵
+	Animate* playerAnim;
+	Animation* playerAnimation;
 
-    Animation* p1Animation;
-    Animation* jumpAnimation;
-    Animation* dashAnimation;
+	std::string p1PlayerTextureName;
+	Animation* p1RunAnimation;
+	Animation* p1JumpAnimation;
+	Animation* p1DashAnimation;
+
+	//std::string p2PlayerTextureName;
+	Animation* p2RunAnimation;
+	Animation* p2JumpAnimation;
+	Animation* p2DashAnimation;
+
+
 };
 
 #endif
