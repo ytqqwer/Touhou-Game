@@ -101,8 +101,10 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <CustomBuildStep>
-      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
-xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
+      <Command>
+        if not exist "$(OutDir)" mkdir "$(OutDir)"
+        del /Q /F $(OutDir)Bullets $(OutDir)InventoryScene $(OutDir)conversation_layer $(OutDir)equipscene $(OutDir)fonts $(OutDir)gamedata $(OutDir)gameplayscene $(OutDir)homescene $(OutDir)kourindouscene $(OutDir)logo $(OutDir)mainmenuscene $(OutDir)roundselectscene $(OutDir)settings_layer
+        xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
       </Command>
       <Outputs>$(TargetName).cab</Outputs>
       <Inputs>$(TargetFileName)</Inputs>
