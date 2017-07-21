@@ -126,8 +126,15 @@ from_json(const json& j, Dialogue& d)
 
     if (j.value("speakerName", "").length() != 0) {
         d.speakerName = j.at("speakerName");
-        d.speakerColor = Color3B((j.at("speakerColor"))[0], (j.at("speakerColor"))[1],
-                                 (j.at("speakerColor"))[2]);
+
+        {
+            string colorStr = j.at("speakerColor");
+
+            d.speakerColor =
+                Color3B(stol(string(colorStr, 1, 2), 0, 16), stol(string(colorStr, 3, 2), 0, 16),
+                        stol(string(colorStr, 5, 2), 0, 16));
+        }
+
         d.text = j.at("text");
         d.soundEffect = j.at("soundEffect");
         d.screenEffect = (j.at("screenEffect") == "SHAKE" ? Dialogue::ScreenEffect::SHAKE
