@@ -20,6 +20,8 @@
 #include "GameData/Save.h"
 #include "GameData/SpellCard.h"
 
+#include "GameData/EnemyData.h"
+
 USING_NS_CC;
 using namespace std;
 
@@ -112,8 +114,8 @@ public:
     // 在 RoundSelectScene 中使用
     bool switchOnStageCharacter(int nth, const string& characterTag);
 
-	// 获得指定角色的信息
-	Character getCharacterByTag(const string & characterTag);
+    // 获得指定角色的信息
+    Character getCharacterByTag(const string& characterTag);
 
     // 获得指定角色使用或装备的道具列表
     vector<Item> getCharacterItemList(const string& characterTag);
@@ -135,6 +137,12 @@ public:
 
     // num 可为正可为负，为正时增加钱币数，为负时减少钱币数
     void increaseMoney(long num);
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // 敌人 Enemy
+
+    // 获得指定敌人的信息
+    EnemyData getEnemyByTag(const string& enemyTag);
 
     ////////////////////////////////////////////////////////////////////////////////
     // 道具与符卡与符咒 Item / Card / Spell

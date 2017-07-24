@@ -21,8 +21,6 @@ public:
     virtual void onExit();
     virtual void update(float dt);
 
-    void gameSceneCallback();
-
 private:
     RoundSelectScene();
 

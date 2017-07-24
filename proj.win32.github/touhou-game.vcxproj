@@ -177,6 +177,7 @@
     <ClCompile Include="..\Classes\GameplayScene\Enemy.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Player.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\AnimateManager.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\EmitterStyle.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="..\Classes\GameData\Round.h" />
     <ClInclude Include="..\Classes\GameData\Save.h" />
     <ClInclude Include="..\Classes\GameData\SpellCard.h" />
+    <ClInclude Include="..\Classes\GameData\EnemyData.h" />
 
     <ClInclude Include="..\Classes\NonGameplayScenes\ArmsStoreScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\BackgroundIntroScene.h" />
@@ -229,6 +231,7 @@
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.inc" />
     <ClInclude Include="..\Classes\GameplayScene\Enemy.h" />
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h" />
+    <ClInclude Include="..\Classes\GameplayScene\AnimateManager.h" />
     <ClInclude Include="..\Classes\GameplayScene\Player.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Bullet.h" />

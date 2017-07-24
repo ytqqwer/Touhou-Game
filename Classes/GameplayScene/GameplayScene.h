@@ -8,16 +8,14 @@
 #include "GameData/GameData.h"
 #include "cocos2d.h"
 
-#include "EventFilterManager.h"
-#include "Player.h"
+#include "GameplayScene/EventFilterManager.h"
+#include "GameplayScene/Player.h"
 
 USING_NS_CC;
 
 class GameplayScene : public cocos2d::Scene
 {
 public:
-    // static Scene* createScene();
-
     CREATE_FUNC(GameplayScene);
 
     void onEnter() override;
@@ -42,12 +40,18 @@ public:
     // void moveCamera(float);
 
     GameData* gameData;
-    Player* _player;
     Size visibleSize;
+    Player* curPlayer;
+    Player* p1Player;
+    Player* p2Player;
 
     Sprite* camera;
     TMXTiledMap* _map;
+
     Layer* mapLayer;
+    Layer* controlPanel;
+    Layer* p1ControlPanel;
+    Layer* p2ControlPanel;
 
     bool onContactGround(const PhysicsContact& contact);
     bool onContactBullet(const PhysicsContact& contact);

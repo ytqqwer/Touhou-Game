@@ -5,8 +5,8 @@
 #ifndef GAMEPLAY_PLAYER_H
 #define GAMEPLAY_PLAYER_H
 
+#include "GameplayScene/AnimateManager.h"
 #include "cocos2d.h"
-#include "common.h"
 
 #define MAX_SPEED 400.0
 #define ACCELERATE_TIME 1.0
@@ -16,42 +16,42 @@ using namespace cocos2d;
 class Player : public Node
 {
 public:
-	virtual bool init() override;
-	CREATE_FUNC(Player);
+    virtual bool init(std::string tag);
+
+    static Player* create(std::string tag)
+    {
+        Player* pRet = new (std::nothrow) Player();
+        if (pRet && pRet->init(tag)) {
+            pRet->autorelease();
+            return pRet;
+        } else {
+            delete pRet;
+            pRet = nullptr;
+            return nullptr;
+        }
+    }
 
 public:
+    void playerRun(float dt);
+    void playerJump();
+    void playerDash();
 
-	void playerRun(float dt);
-	void playerJump();
-	void playerDash();
+    void resetAction(Node* node);
+    void regainDashCounts(float dt);
 
-	void switchCharacter(int currentPlayer);
-
-	void resetAction(Node* node);
-
-	void regainDashCounts(float dt);
-
-	String playerDirection = "right";
-	int jumpCounts = 2;
-	int dashCounts = 2;
-	int currentPlayer = 0;
+public:
+    String playerDirection = "right";
+    int jumpCounts = 2;
+    int dashCounts = 2;
 
 private:
-	Sprite* playerSprite; //角色精灵
-	Animate* playerAnim;
-	Animation* playerAnimation;
+    AnimateManager* animateManager;
+    Sprite* playerSprite;
 
-	std::string p1PlayerTextureName;
-	Animation* p1RunAnimation;
-	Animation* p1JumpAnimation;
-	Animation* p1DashAnimation;
-
-	//std::string p2PlayerTextureName;
-	Animation* p2RunAnimation;
-	Animation* p2JumpAnimation;
-	Animation* p2DashAnimation;
-
-
+    std::string playerTextureName;
+    Animation* runAnimation;
+    Animation* jumpAnimation;
+    Animation* dashAnimation;
 };
 
 #endif

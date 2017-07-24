@@ -2,49 +2,45 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "Enemy.h"
-#include "GameplayScene.h"
-#include "Player.h"
+#include "GameplayScene/Enemy.h"
+#include "GameData/EnemyData.h"
+#include "GameData/GameData.h"
+#include "GameplayScene/common.h"
 
 bool
-Enemy::init()
+Enemy::init(std::string tag)
 {
     if (!Node::init())
         return false;
 
-    Animation* enemyAnimation = Animation::create();
-    for (int i = 1; i <= 6; i++)
-        enemyAnimation->addSpriteFrameWithFile("gameplayscene/opossum-" + std::to_string(i) +
-                                               ".png");
-
-    enemyAnimation->setDelayPerUnit(0.15f);
-
+    animateManager = AnimateManager::getInstance();
     enemySprite = Sprite::create(
-        "gameplayscene/opossum-1.png"); //此处必须初始化一张角色纹理，否则后面无法切换纹理
-
-    enemyAnim = Animate::create(enemyAnimation);
-    enemySprite->runAction(RepeatForever::create(enemyAnim)); //初始时刻在奔跑
+        animateManager->addEnemyTexture(tag)); //此处必须初始化一张角色纹理，否则后面无法切换纹理
     this->addChild(enemySprite);
 
-    auto enemyBody = PhysicsBody::createBox(
+    //设置属性值
+    EnemyData enemyData = GameData::getInstance()->getEnemyByTag(tag);
+    this->hp = enemyData.healthPoint;
+
+    //设置刚体
+    auto body = PhysicsBody::createBox(
         enemySprite->getContentSize()); //这里要用包围盒，如果用圆形的话会导致滚动
-    enemyBody->setDynamic(true);
-    enemyBody->setMass(1);
-    enemyBody->setGravityEnable(true);
-    enemyBody->setRotationEnable(false);
-
-    enemyBody->getFirstShape()->setDensity(0);
-    enemyBody->getFirstShape()->setFriction(0.2);
-    enemyBody->getFirstShape()->setRestitution(0); //设置刚体回弹力
-
-    enemyBody->setCategoryBitmask(enemyCategory);
-    enemyBody->setCollisionBitmask(groundCategory | bulletCategory);
-    enemyBody->setContactTestBitmask(groundCategory | bulletCategory);
-
-    this->setPhysicsBody(enemyBody);
-    // enemySprite->setPhysicsBody(enemyBody);//错误示例，应该给实例对象设置刚体，而不是一个用来显示图片的精灵
-
+    body->setDynamic(true);
+    body->setMass(1);
+    body->setGravityEnable(true);
+    body->setRotationEnable(false);
+    body->getFirstShape()->setDensity(0);
+    body->getFirstShape()->setFriction(0.2);
+    body->getFirstShape()->setRestitution(0); //设置刚体回弹力
+    body->setCategoryBitmask(enemyCategory);
+    body->setCollisionBitmask(groundCategory | bulletCategory);
+    body->setContactTestBitmask(groundCategory | bulletCategory);
+    this->setPhysicsBody(body);
     this->setTag(enemyTag);
+
+    //设置动画
+    enemyAnimation = animateManager->addEnemyCache(tag);
+    enemySprite->runAction(RepeatForever::create(Animate::create(enemyAnimation))); //初始时刻在奔跑
 
     return true;
 }
@@ -53,9 +49,7 @@ void
 Enemy::run()
 {
     //朝玩家移动
-    Player* p = (Player*)this->getParent()->getChildByName("player");
-    Vec2 poi = p->getPosition();
-
+    Vec2 poi = (*curPlayer)->getPosition();
     Point enemyPos = this->getPosition();
 
     if (enemyPos.x - poi.x > 500) {
@@ -74,8 +68,6 @@ void
 Enemy::jump()
 {
     auto body = this->getPhysicsBody();
-    // auto curVelocity = body->getVelocity();
-    // body->setVelocity(Vec2(curVelocity.x, 0));//再次跳跃时，重置Y轴速度为0
     Vec2 impluse = Vec2(0.0f, 400.0f);
     body->applyImpulse(impluse);
 }
@@ -104,4 +96,12 @@ Enemy::decreaseHp(Node* node)
     if (enemy->hp < 0) {
         enemy->removeFromParentAndCleanup(true);
     }
+}
+
+void
+Enemy::startSchedule(Player*& player)
+{
+    curPlayer = &player;
+
+    this->schedule(CC_SCHEDULE_SELECTOR(Enemy::AI));
 }

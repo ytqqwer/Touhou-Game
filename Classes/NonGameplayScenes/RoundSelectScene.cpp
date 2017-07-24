@@ -60,9 +60,15 @@ RoundSelectScene::onEnter()
     beginButton->setTitleFontSize(20);
     beginButton->setContentSize(Size(_visibleSize.width * 0.3, _visibleSize.height * 0.3));
     beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
+    beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::BEGAN) {
+            auto gameplayScene = GameplayScene::create();
+            TransitionScene* transition = TransitionPageTurn::create(0.2f, gameplayScene, false);
+            Director::getInstance()->popToRootScene();
+            Director::getInstance()->replaceScene(transition);
+        }
+    });
     this->addChild(beginButton, 2);
-
-    beginButton->addTouchEventListener(CC_CALLBACK_0(RoundSelectScene::gameSceneCallback, this));
 
     /***********************创建会变化的模块********************/
     //取得当前所在的地点和回合，gameDate，以及角色,以及当前可以使用的所有角色
@@ -299,13 +305,4 @@ RoundSelectScene::onExit()
 void
 RoundSelectScene::update(float dt)
 {
-}
-
-void
-RoundSelectScene::gameSceneCallback()
-{
-    auto gameplayScene = GameplayScene::create();
-    TransitionScene* transition = TransitionPageTurn::create(0.2f, gameplayScene, false);
-    Director::getInstance()->popToRootScene();
-    Director::getInstance()->replaceScene(transition);
 }

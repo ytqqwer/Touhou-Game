@@ -35,6 +35,8 @@
 #include "GameData/Round.h"
 #include "GameData/SpellCard.h"
 
+#include "GameData/EnemyData.h"
+
 #include "external/json.h"
 using json = nlohmann::json;
 
@@ -55,6 +57,8 @@ static json conversationListDom;
 static json itemListDom;
 static json spellCardListDom;
 static json awardListDom;
+
+static json enemyListDom;
 
 // 用于支持玩 A 存档时，想存至 B 存档上
 // 我们需要记录更改到其他地方，而不能直接记录到 A 上
@@ -290,9 +294,9 @@ from_json(const json& j, Item& i)
     i.name = j.at("name");
     i.icon = j.at("icon");
     i.description = j.at("description");
-    i.type = (j.at("type") == "NORMAL") ? Item::Type::NORMAL : (j.at("type") == "STRENGTHEN")
-                                                                   ? Item::Type::STRENGTHEN
-                                                                   : Item::Type::SPECIAL;
+    i.type = (j.at("type") == "NORMAL")
+                 ? Item::Type::NORMAL
+                 : (j.at("type") == "STRENGTHEN") ? Item::Type::STRENGTHEN : Item::Type::SPECIAL;
     i.isCarriable = j.at("isCarriable");
     i.isUseable = j.at("isUseable");
 
@@ -320,6 +324,15 @@ from_json(const json& j, SpellCard& c)
     c.description = j.at("description");
     c.manaCost = j.at("manaCost");
     c.cooldown = j.at("coolDown");
+}
+
+// enemyListDom[n] -> EnemyData
+static void
+from_json(const json& j, EnemyData& c)
+{
+    c.tag = j.at("tag");
+    c.name = j.at("name");
+    c.healthPoint = j.at("healthPoint");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -370,6 +383,8 @@ GameData::init()
     ifstream spell_cards_json(prefix + "gamedata/spell_cards.json");
     ifstream awards_json(prefix + "gamedata/awards.json");
 
+    ifstream enemies_json(prefix + "gamedata/enemies.json");
+
 #else
     ifstream saves_json(fileUtil->fullPathForFilename("gamedata/saves.json"));
     ifstream characters_json(fileUtil->fullPathForFilename("gamedata/characters.json"));
@@ -378,6 +393,8 @@ GameData::init()
     ifstream items_json(fileUtil->fullPathForFilename("gamedata/items.json"));
     ifstream spell_cards_json(fileUtil->fullPathForFilename("gamedata/spell_cards.json"));
     ifstream awards_json(fileUtil->fullPathForFilename("gamedata/awards.json"));
+
+    ifstream enemies_json(fileUtil->fullPathForFilename("gamedata/enemies.json"));
 
 #endif
 
@@ -391,6 +408,8 @@ GameData::init()
     spell_cards_json >> spellCardListDom;
     awards_json >> awardListDom;
 
+    enemies_json >> enemyListDom;
+
     /* 3. 关闭文件流 */
 
     saves_json.close();
@@ -400,6 +419,8 @@ GameData::init()
     items_json.close();
     spell_cards_json.close();
     awards_json.close();
+
+    enemies_json.close();
 
 #ifndef NDEBUG
     // 若使用 DEBUG mode 来生成项目
@@ -755,17 +776,17 @@ GameData::switchOnStageCharacter(int nth, const string& characterTag)
 Character
 GameData::getCharacterByTag(const string& characterTag)
 {
-	const json& listDom = cachedSave["characterList"];
+    const json& listDom = cachedSave["characterList"];
 
-	Character character;
-	for (auto const& c : listDom) {
-		if (c["tag"] == characterTag) {
-			character = c;
-			break;
-		}
-	}
+    Character character;
+    for (auto const& c : listDom) {
+        if (c["tag"] == characterTag) {
+            character = c;
+            break;
+        }
+    }
 
-	return character;
+    return character;
 }
 
 vector<Item>
@@ -973,6 +994,22 @@ void
 GameData::increaseMoney(long num)
 {
     cachedSave["money"] = cachedSave["money"].get<long>() + num;
+}
+
+EnemyData
+GameData::getEnemyByTag(const string& enemyTag)
+{
+    const json& listDom = enemyListDom;
+
+    EnemyData enemy;
+    for (auto const& c : listDom) {
+        if (c["tag"] == enemyTag) {
+            enemy = c;
+            break;
+        }
+    }
+
+    return enemy;
 }
 
 vector<pair<Item, int>>

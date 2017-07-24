@@ -133,6 +133,9 @@
     <ClCompile Include="..\Classes\GameplayScene\Player.cpp">
       <Filter>Classes\GameplayScene</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\AnimateManager.cpp">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClCompile>
 
     <!-- Classes\GameplayScene\Emitters -->
 
@@ -212,6 +215,9 @@
     <ClInclude Include="..\Classes\GameData\SpellCard.h">
       <Filter>Classes\GameData</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\GameData\EnemyData.h">
+      <Filter>Classes\GameData</Filter>
+    </ClInclude>
 
     <!-- Classes\NonGameplayScenes -->
 
@@ -285,6 +291,9 @@
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Player.h">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\AnimateManager.h">
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
 
