@@ -17,6 +17,13 @@ Player::init(std::string tag)
     playerSprite = Sprite::create(animateManager->addTexture(tag));
     this->addChild(playerSprite);
 
+    // 设置攻击方式
+    vector<Character::Attack> selectAttackList =
+        GameData::getInstance()->getSelectedAttackList(tag);
+    type1 = selectAttackList[0];
+    type2 = selectAttackList[1];
+    currentAttackType = type1.tag;
+
     //设置属性值
     //留空
 

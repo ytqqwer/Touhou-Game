@@ -1,135 +1,67 @@
 {
-    "currentSaveTag": 0,
-    "conversationSpeed": 0.6,
-    "bgmVolume": 0.6,
-    "effectsVolume": 0.6,
-    "saveList": [
-        {
-            "tag": 0,
-            "name": "save template",
-            "time": "2017/05/12 11:11",
-            "locationTag": "Hakurei Jinja",
-            "characterList": [
+    "currentSaveTag" : 0, "conversationSpeed" : 0.6, "bgmVolume" : 0.6, "effectsVolume" : 0.6,
+        "saveList" : [ {
+            "tag" : 0,
+            "name" : "save template",
+            "time" : "2017/05/12 11:11",
+            "locationTag" : "Hakurei Jinja",
+            "characterList" : [
                 {
-                    "tag": "Reimu",
-                    "itemSlotNum": 2,
-                    "spellCardSlotNum": 2,
-                    "healthPointInc": 3,
-                    "manaInc": 3,
-                    "walkSpeedInc": 3,
-                    "walkAccelerationInc": 3,
-                    "dashAccelerationInc": 3,
-                    "equipedItemList": [
-                        "I1",
-                        "I2"
-                    ],
-                    "equipedSpellCardList": [
-                        "C1",
-                        "C3",
-                        "C5"
-                    ],
-                    "preferedAttackType": "FOCUS"
+                  "tag" : "Reimu",
+                  "itemSlotNum" : 2,
+                  "spellCardSlotNum" : 2,
+                  "healthPointInc" : 3,
+                  "manaInc" : 3,
+                  "walkSpeedInc" : 3,
+                  "walkAccelerationInc" : 3,
+                  "dashAccelerationInc" : 3,
+                  "equipedItemList" : [ "I1", "I2" ],
+                  "equipedSpellCardList" : [ "C1", "C3", "C5" ],
+                  "preferedAttackType" : "FOCUS",
+                  "selectedAttackType" : [ "reimu focus attack 1", "reimu split attack 1" ]
                 },
                 {
-                    "tag": "Marisa",
-                    "itemSlotNum": 2,
-                    "spellCardSlotNum": 2,
-                    "healthPointInc": 4,
-                    "manaInc": 4,
-                    "walkSpeedInc": 4,
-                    "walkAccelerationInc": 4,
-                    "dashAccelerationInc": 4,
-                    "equipedItemList": [
-                        "I4"
-                    ],
-                    "equipedSpellCardList": [
-                        "C2",
-                        "C4"
-                    ],
-                    "preferedAttackType": "SPLIT"
+                  "tag" : "Marisa",
+                  "itemSlotNum" : 2,
+                  "spellCardSlotNum" : 2,
+                  "healthPointInc" : 4,
+                  "manaInc" : 4,
+                  "walkSpeedInc" : 4,
+                  "walkAccelerationInc" : 4,
+                  "dashAccelerationInc" : 4,
+                  "equipedItemList" : ["I4"],
+                  "equipedSpellCardList" : [ "C2", "C4" ],
+                  "preferedAttackType" : "SPLIT",
+                  "selectedAttackType" : [ "marisa focus attack 2", "marisa split attack 2" ]
                 },
                 {
-                    "tag": "Alice",
-                    "itemSlotNum": 2,
-                    "spellCardSlotNum": 2,
-                    "healthPointInc": 3,
-                    "manaInc": 3,
-                    "walkSpeedInc": 3,
-                    "walkAccelerationInc": 3,
-                    "dashAccelerationInc": 3,
-                    "equipedItemList": [
-                        "I3"
-                    ],
-                    "equipedSpellCardList": [
-                        "C3",
-                        "C5"
-                    ],
-                    "preferedAttackType": "SPLIT"
+                  "tag" : "Alice",
+                  "itemSlotNum" : 2,
+                  "spellCardSlotNum" : 2,
+                  "healthPointInc" : 3,
+                  "manaInc" : 3,
+                  "walkSpeedInc" : 3,
+                  "walkAccelerationInc" : 3,
+                  "dashAccelerationInc" : 3,
+                  "equipedItemList" : ["I3"],
+                  "equipedSpellCardList" : [ "C3", "C5" ],
+                  "preferedAttackType" : "SPLIT",
+                  "selectedAttackType" : [ "alice focus attack 1", "alice split attack 1" ]
                 }
             ],
-            "onStageCharacterList": [
-                "Marisa",
-                "Reimu"
+            "onStageCharacterList" : [ "Marisa", "Reimu" ],
+            "unlockedLocationList" : [ { "tag" : "Hakurei Jinja", "passedRound" : 1 } ],
+            "availableItemList" : [
+                { "tag" : "I1", "amount" : 2 }, { "tag" : "I2", "amount" : 2 },
+                { "tag" : "I3", "amount" : 2 }, { "tag" : "I4", "amount" : 2 },
+                { "tag" : "I5", "amount" : 2 }, { "tag" : "I6", "amount" : 2 },
+                { "tag" : "I7", "amount" : 2 }
             ],
-            "unlockedLocationList": [
-                {
-                    "tag": "Hakurei Jinja",
-                    "passedRound": 1
-                }
+            "availableSpellCardList" : [
+                { "tag" : "C1", "amount" : 1 }, { "tag" : "C2", "amount" : 2 },
+                { "tag" : "C3", "amount" : 3 }, { "tag" : "C4", "amount" : 4 },
+                { "tag" : "C5", "amount" : 5 }, { "tag" : "C6", "amount" : 6 }
             ],
-            "availableItemList": [
-                {
-                    "tag": "I1",
-                    "amount": 2
-                },
-                {
-                    "tag": "I2",
-                    "amount": 2
-                },
-                {
-                    "tag": "I3",
-                    "amount": 2
-                },
-                {
-                    "tag": "I4",
-                    "amount": 2
-                },
-                {
-                    "tag": "I5",
-                    "amount": 2
-                },
-                {
-                    "tag": "I6",
-                    "amount": 2
-                },
-                {
-                    "tag": "I7",
-                    "amount": 2
-                }
-            ],
-            "availableSpellCardList": [
-                {
-                    "tag": "C1",
-                    "amount": 1
-                },
-                {
-                    "tag": "C2",
-                    "amount": 2
-                },
-                {
-                    "tag": "C3",
-                    "amount": 3
-                },
-                {
-                    "tag": "C4",
-                    "amount": 4
-                },
-                {
-                    "tag": "C5",
-                    "amount": 5
-                }
-            ],
-            "money": 512
-        }
-    ]
+            "money" : 512
+        } ]
 }

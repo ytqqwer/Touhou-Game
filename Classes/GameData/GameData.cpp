@@ -965,10 +965,60 @@ GameData::getAttackList(const string& characterTag)
                           }
 
                       });
-
     if (it != characterListDom.end()) {
-        listRet.push_back(it->at("attackList")[0]);
-        listRet.push_back(it->at("attackList")[1]);
+        int size = it->at("attackList").size();
+        for (int i = 0; i < size; i++) {
+            listRet.push_back(it->at("attackList")[i]);
+        }
+    }
+    // if (it != characterListDom.end()) {
+    //    listRet.push_back(it->at("attackList")[0]);
+    //    listRet.push_back(it->at("attackList")[1]);
+    //}
+    return listRet;
+}
+
+vector<Character::Attack>
+GameData::getSelectedAttackList(const string& characterTag)
+{
+    /* 1. 从存档中找到制定角色，并取其已选择的攻击方式的tag列表 */
+
+    const json& listDom1 = cachedSave["characterList"];
+    const json* selectedAttackListPtr;
+    for (auto const& c : listDom1) {
+        if (c["tag"] == characterTag) {
+            selectedAttackListPtr = &c["selectedAttackType"];
+        }
+    }
+    const json& selectAttackList = *selectedAttackListPtr;
+
+    /* 2. 找到指定的角色 */
+
+    const json& listDom2 = characterListDom;
+    const json* attackListPtr;
+    for (auto const& c : listDom2) {
+        if (c["tag"] == characterTag) {
+            attackListPtr = &c["attackList"];
+            break;
+        }
+    }
+    const json& attackList = *attackListPtr;
+
+    /* 3. 先获得攻击方式列表，再从列表中选取 */
+
+    vector<Character::Attack> listRet;
+    listRet.reserve(selectAttackList.size());
+
+    for (auto const& cTagToFind : selectAttackList) {
+        auto it =
+            find_if(attackList.begin(), attackList.end(), [&cTagToFind](const json& c) -> bool {
+                if (c["tag"] == cTagToFind) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        listRet.push_back(*it);
     }
 
     return listRet;

@@ -5,6 +5,7 @@
 #ifndef GAMEPLAY_PLAYER_H
 #define GAMEPLAY_PLAYER_H
 
+#include "GameData/Character.h"
 #include "GameplayScene/AnimateManager.h"
 #include "cocos2d.h"
 
@@ -43,6 +44,10 @@ public:
     String playerDirection = "right";
     int jumpCounts = 2;
     int dashCounts = 2;
+
+    std::string currentAttackType;
+    Character::Attack type1;
+    Character::Attack type2;
 
 private:
     AnimateManager* animateManager;

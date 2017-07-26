@@ -1,83 +1,105 @@
-[
-    {
-        "tag": "Reimu",
-        "name": "Hakurei Reimu",
-        "rectAvatar": "gamedata/characters/reimu_avatar_rect.png",
-        "circularAvatar": "gamedata/characters/reimu_avatar.png",
-        "protrait": "gamedata/characters/reimu_pro.png",
-        "preview": [
-            "place_holder.png"
-        ],
-        "healthPointBase": 100,
-        "manaBase": 100,
-        "walkSppedBase": 20,
-        "walkAccelerationBase": 20,
-        "dashAccelerationBase": 100,
-        "attackList": [
-            {
-                "tag": "attack 1",
-                "description": "This is Reimu's attack 1",
-                "type": "FOCUS"
-            },
-            {
-                "tag": "attack 2",
-                "description": "This is Reimu's attack 2",
-                "type": "SPLIT"
-            }
-        ]
-    },
-    {
-        "tag": "Marisa",
-        "name": "Kirisame Marisa",
-        "rectAvatar": "gamedata/characters/marisa_avatar_rect.png",
-        "circularAvatar": "gamedata/characters/marisa_avatar.png",
-        "protrait": "gamedata/characters/marisa_pro.png",
-        "preview": [
-            "place_holder.png"
-        ],
-        "healthPointBase": 100,
-        "manaBase": 100,
-        "walkSppedBase": 20,
-        "walkAccelerationBase": 20,
-        "dashAccelerationBase": 100,
-        "attackList": [
-            {
-                "tag": "attack 1",
-                "description": "This is Marisa's attack 1",
-                "type": "FOCUS"
-            },
-            {
-                "tag": "attack 2",
-                "description": "This is Marisa's attack 2",
-                "type": "SPLIT"
-            }
-        ]
-    },
-    {
-        "tag": "Alice",
-        "name": "Alice",
-        "rectAvatar": "gamedata/characters/alice_avatar_rect.png",
-        "circularAvatar": "gamedata/characters/alice_avatar.png",
-        "protrait": "gamedata/characters/alice_pro.png",
-        "preview": [
-            "place_holder.png"
-        ],
-        "healthPointBase": 100,
-        "manaBase": 100,
-        "walkSppedBase": 20,
-        "walkAccelerationBase": 20,
-        "dashAccelerationBase": 100,
-        "attackList": [
-            {
-                "tag": "attack 1",
-                "description": "This is Alice's attack 1",
-                "type": "FOCUS"
-            },
-            {
-                "tag": "attack 2",
-                "description": "This is Alice's attack 2",
-                "type": "SPLIT"
-            }
-        ]
-    }
-]
+[{
+   "tag" : "Reimu",
+   "name" : "Hakurei Reimu",
+   "rectAvatar" : "gamedata/characters/reimu_avatar_rect.png",
+   "circularAvatar" : "gamedata/characters/reimu_avatar.png",
+   "protrait" : "gamedata/characters/reimu_pro.png",
+   "preview" : ["place_holder.png"],
+   "healthPointBase" : 100,
+   "manaBase" : 120,
+   "walkSppedBase" : 20,
+   "walkAccelerationBase" : 20,
+   "dashAccelerationBase" : 150,
+   "attackList" : [
+       {
+         "tag" : "reimu focus attack 1",
+         "description" : "This is Reimu's focus attack 1",
+         "type" : "FOCUS"
+       },
+       {
+         "tag" : "reimu focus attack 2",
+         "description" : "This is Reimu's focus attack 2",
+         "type" : "FOCUS"
+       },
+       {
+         "tag" : "reimu split attack 1",
+         "description" : "This is Reimu's split attack 1",
+         "type" : "SPLIT"
+       },
+       {
+         "tag" : "reimu split attack 2",
+         "description" : "This is Reimu's split attack 2",
+         "type" : "SPLIT"
+       }
+   ]
+},
+ {
+   "tag" : "Marisa",
+   "name" : "Kirisame Marisa",
+   "rectAvatar" : "gamedata/characters/marisa_avatar_rect.png",
+   "circularAvatar" : "gamedata/characters/marisa_avatar.png",
+   "protrait" : "gamedata/characters/marisa_pro.png",
+   "preview" : ["place_holder.png"],
+   "healthPointBase" : 120,
+   "manaBase" : 100,
+   "walkSppedBase" : 25,
+   "walkAccelerationBase" : 25,
+   "dashAccelerationBase" : 120,
+   "attackList" : [
+       {
+         "tag" : "marisa focus attack 1",
+         "description" : "This is Marisa's focus attack 1",
+         "type" : "FOCUS"
+       },
+       {
+         "tag" : "marisa focus attack 2",
+         "description" : "This is Marisa's focus attack 2",
+         "type" : "FOCUS"
+       },
+       {
+         "tag" : "marisa split attack 1",
+         "description" : "This is Marisa's split attack 1",
+         "type" : "SPLIT"
+       },
+       {
+         "tag" : "marisa split attack 2",
+         "description" : "This is Marisa's split attack 2",
+         "type" : "SPLIT"
+       }
+   ]
+ },
+ {
+   "tag" : "Alice",
+   "name" : "Alice",
+   "rectAvatar" : "gamedata/characters/alice_avatar_rect.png",
+   "circularAvatar" : "gamedata/characters/alice_avatar.png",
+   "protrait" : "gamedata/characters/alice_pro.png",
+   "preview" : ["place_holder.png"],
+   "healthPointBase" : 100,
+   "manaBase" : 100,
+   "walkSppedBase" : 20,
+   "walkAccelerationBase" : 20,
+   "dashAccelerationBase" : 100,
+   "attackList" : [
+       {
+         "tag" : "alice focus attack 1",
+         "description" : "This is Alice's focus attack 1",
+         "type" : "FOCUS"
+       },
+       {
+         "tag" : "alice focus attack 2",
+         "description" : "This is Alice's focus attack 2",
+         "type" : "FOCUS"
+       },
+       {
+         "tag" : "alice split attack 1",
+         "description" : "This is Alice's split attack 1",
+         "type" : "SPLIT"
+       },
+       {
+         "tag" : "alice split attack 2",
+         "description" : "This is Alice's split attack 2",
+         "type" : "SPLIT"
+       }
+   ]
+ }]

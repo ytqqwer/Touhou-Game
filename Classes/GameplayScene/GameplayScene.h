@@ -60,6 +60,9 @@ public:
     void onTouchMoved(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
 
+    void changeAttackType(const std::string& startType);
+    void stopAttackType(const std::string& stopType);
+
     Vector<Sprite*> vecBullet;        //子弹容器
     SpriteBatchNode* bulletBatchNode; //批次渲染节点
     void ShootBullet(float dt);

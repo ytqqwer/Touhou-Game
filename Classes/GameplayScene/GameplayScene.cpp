@@ -424,6 +424,12 @@ GameplayScene::initCtrlPanel()
     });
     controlPanel->addChild(dashButton);
 
+    //血条
+    auto lifeBar = Sprite::create("gameplayscene/lifeBar.png");
+    lifeBar->setAnchorPoint(Size(0, 0));
+    lifeBar->setPosition(Vec2(visibleSize.width * 0.090, visibleSize.height * 0.920));
+    controlPanel->addChild(lifeBar);
+
     //切换攻击方式
     auto switchAttackTypeButton = Button::create("gameplayscene/switchAttackType.png");
     switchAttackTypeButton->setPosition(
@@ -431,15 +437,16 @@ GameplayScene::initCtrlPanel()
     switchAttackTypeButton->setScale(1.5);
     switchAttackTypeButton->addTouchEventListener(
         [this](Ref* pSender, Widget::TouchEventType type) {
-            //待定
+            if (type == Widget::TouchEventType::BEGAN) {
+                stopAttackType(curPlayer->currentAttackType);
+                if (curPlayer->currentAttackType == curPlayer->type1.tag) {
+                    changeAttackType(curPlayer->type2.tag);
+                } else {
+                    changeAttackType(curPlayer->type1.tag);
+                }
+            }
         });
     controlPanel->addChild(switchAttackTypeButton);
-
-    //血条
-    auto lifeBar = Sprite::create("gameplayscene/lifeBar.png");
-    lifeBar->setAnchorPoint(Size(0, 0));
-    lifeBar->setPosition(Vec2(visibleSize.width * 0.090, visibleSize.height * 0.920));
-    controlPanel->addChild(lifeBar);
 
     //切换角色
     auto p1SwitchCharacterButton = Button::create(p1Character.circularAvatar);
@@ -449,16 +456,18 @@ GameplayScene::initCtrlPanel()
     p1SwitchCharacterButton->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         switch (type) {
             case Widget::TouchEventType::BEGAN:
-                this->p2ControlPanel->setVisible(true);
-                this->p1ControlPanel->setVisible(false);
+                //切换前进行的一些处理
+                p2ControlPanel->setVisible(true);
+                p1ControlPanel->setVisible(false);
+                stopAttackType(p1Player->currentAttackType);
+
+                //将当前角色切换为p2
                 mapLayer->addChild(p2Player);
                 curPlayer = p2Player;
                 p2Player->getPhysicsBody()->setVelocity(p1Player->getPhysicsBody()->getVelocity());
                 p2Player->setPosition(p1Player->getPosition());
+                changeAttackType(p2Player->currentAttackType);
 
-                //留空，后备角色不应再存在于游戏场景中
-                // p1Player->setVisible(false);
-                // p2Player->setVisible(true);
                 mapLayer->removeChild(p1Player, false);
                 break;
             default:
@@ -473,15 +482,18 @@ GameplayScene::initCtrlPanel()
     p2SwitchCharacterButton->setScale(0.2);
     p2SwitchCharacterButton->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::BEGAN) {
+            //切换前进行的一些处理
             p2ControlPanel->setVisible(false);
             p1ControlPanel->setVisible(true);
+            stopAttackType(p2Player->currentAttackType);
+
+            //将当前角色切换为p1
             mapLayer->addChild(p1Player);
             curPlayer = p1Player;
             p1Player->getPhysicsBody()->setVelocity(p2Player->getPhysicsBody()->getVelocity());
             p1Player->setPosition(p2Player->getPosition());
+            changeAttackType(p1Player->currentAttackType);
 
-            // p1Player->setVisible(true);
-            // p2Player->setVisible(false);
             mapLayer->removeChild(p2Player, false);
         }
     });
@@ -621,14 +633,14 @@ GameplayScene::initCharacter()
     p2Player = Player::create(characterTagList[1]);
     p1Player->setPosition(x, y);
     p2Player->setPosition(x, y);
-    // p1Player->setVisible(true);
-    // p2Player->setVisible(false);
     p1Player->retain();
     p2Player->retain();
 
     curPlayer = p1Player;
     curPlayer->setName("curPlayer");
     mapLayer->addChild(p1Player);
+
+    /*changeAttackType(p1Player->currentAttackType);*/
 }
 
 void
@@ -636,11 +648,9 @@ GameplayScene::initCamera()
 {
     auto mapSize = _map->getMapSize();
     auto mapTileSize = _map->getTileSize();
-
     camera = Sprite::create();
     camera->setPosition(curPlayer->getPosition());
     this->addChild(camera);
-
     auto follow = Follow::create(camera, Rect(0, 0, mapSize.width * mapTileSize.width,
                                               mapSize.height * mapTileSize.height - 50));
     mapLayer->runAction(follow);
@@ -674,19 +684,63 @@ GameplayScene::initLauncher()
         auto _launcher = Sprite::create("CloseNormal.png");
         _launcher->setPosition(x, y);
         mapLayer->addChild(_launcher); //不要忘记addChild
-
         auto fe = FirstEmitter::create(_launcher);
         mapLayer->addChild(fe);
-
         fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
     }
 
+    //以后将利用自动批绘制
     //创建BatchNode节点，成批渲染子弹
     bulletBatchNode = SpriteBatchNode::create("gameplayscene/bullet1.png");
     mapLayer->addChild(bulletBatchNode);
+}
 
-    //每隔0.4S调用一次发射子弹函数
-    this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.4f);
+void
+GameplayScene::changeAttackType(const std::string& startType)
+{
+    if (startType == "reimu focus attack 1") {
+        //留空，暂时使用主场景的发射子弹函数
+        this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.5f);
+
+    } else if (startType == "reimu focus attack 2") {
+
+    } else if (startType == "reimu split attack 1") {
+
+    } else if (startType == "reimu split attack 2") {
+
+    } else if (startType == "marisa focus attack 1") {
+
+    } else if (startType == "marisa focus attack 2") {
+
+    } else if (startType == "marisa split attack 1") {
+
+    } else if (startType == "marisa split attack 2") {
+        this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.2f);
+    }
+
+    curPlayer->currentAttackType = startType;
+}
+
+void
+GameplayScene::stopAttackType(const std::string& stopType)
+{
+    if (stopType == "reimu focus attack 1") {
+        this->unschedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet));
+    } else if (stopType == "reimu focus attack 2") {
+
+    } else if (stopType == "reimu split attack 1") {
+
+    } else if (stopType == "reimu split attack 2") {
+
+    } else if (stopType == "marisa focus attack 1") {
+
+    } else if (stopType == "marisa focus attack 2") {
+
+    } else if (stopType == "marisa split attack 1") {
+
+    } else if (stopType == "marisa split attack 2") {
+        this->unschedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet));
+    }
 }
 
 //用缓存的方法创建子弹，并初始化子弹的运动和运动后的事件
