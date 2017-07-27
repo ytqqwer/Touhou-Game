@@ -150,6 +150,10 @@ public:
     ////////////////////////////////////////////////////////////////////////////////
     // 道具与符卡与符咒 Item / Card / Spell
 
+    // 符卡和道具本身并没有数量的概念，全部独一无二，因此数量是没有意义的属性
+    // 换句话说，即使有数量，那么数量的值也只能是1
+    // 暂时没有计划更正这个与设定不符的问题，但也没有多大影响
+
     // pair.first 是符卡， pair.second 是符卡数量
     vector<pair<Item, int>> getAvailableItemList();
     vector<Item> getItemListInStore(const string& storeTag);

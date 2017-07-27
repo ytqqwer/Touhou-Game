@@ -6,6 +6,7 @@
 #define GAMEPLAY_PLAYER_H
 
 #include "GameData/Character.h"
+#include "GameData/Item.h"
 #include "GameplayScene/AnimateManager.h"
 #include "cocos2d.h"
 
@@ -48,6 +49,8 @@ public:
     std::string currentAttackType;
     Character::Attack type1;
     Character::Attack type2;
+
+    vector<Item> itemList;
 
 private:
     AnimateManager* animateManager;

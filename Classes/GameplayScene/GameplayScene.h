@@ -41,6 +41,7 @@ public:
 
     GameData* gameData;
     Size visibleSize;
+
     Player* curPlayer;
     Player* p1Player;
     Player* p2Player;
@@ -53,16 +54,24 @@ public:
     Layer* p1ControlPanel;
     Layer* p2ControlPanel;
 
+    //监听器使用的回掉函数
     bool onContactGround(const PhysicsContact& contact);
     bool onContactBullet(const PhysicsContact& contact);
 
+    //用来接受触摸操作
     bool onTouchBegan(Touch* touch, Event* event);
     void onTouchMoved(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
 
+    //切换攻击方式
     void changeAttackType(const std::string& startType);
     void stopAttackType(const std::string& stopType);
 
+    //使用道具或符卡
+    void useItem(Player*& player, const std::string& itemTag);
+    void useSpellCard(Player*& player, const std::string& cardTag);
+
+    //暂时的发射子弹的函数
     Vector<Sprite*> vecBullet;        //子弹容器
     SpriteBatchNode* bulletBatchNode; //批次渲染节点
     void ShootBullet(float dt);

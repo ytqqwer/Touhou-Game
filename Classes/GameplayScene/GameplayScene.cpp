@@ -499,28 +499,44 @@ GameplayScene::initCtrlPanel()
     });
     p2ControlPanel->addChild(p2SwitchCharacterButton);
 
-    //道具
+    /*
+    每一个道具按钮的name将和一种道具的tag相对应，按钮在初始化时指定唯一的name，
+    在监听器中将传入的ref类型指针转换成button类型指针，然后通过按钮指针取得按钮的name，
+    这样就完成了道具tag标签的传递。
+
+    也可以不使用Button控件，而使用其他控件，例如使用TableView控件，但需要重载大量函数。
+    显式创建按钮可以直接对相应按钮进行管理，比较适合界面元素固定的场合。
+    */
     int increment = 0;
-    auto itemList = gameData->getCharacterItemList(characterTagList[0]);
-    for (int i = 0; i < itemList.size(); i++) {
-        Button* item = Button::create(itemList[i].icon);
+    auto p1ItemList = gameData->getCharacterItemList(characterTagList[0]);
+    for (int i = 0; i < p1ItemList.size(); i++) {
+        Button* item = Button::create(p1ItemList[i].icon);
         item->setScale(1.5);
+        //区分tag和name，在cocos2dx中的tag是int整型的，而我们游戏上的tag则是string类型
+        item->setName(p1ItemList[i].tag);
         item->setPosition(Vec2(visibleSize.width * 0.330 + increment, visibleSize.height * 0.080));
-        item->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-            //待定
+        item->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
+            if (type == Widget::TouchEventType::BEGAN) {
+                auto button = (Button*)pSender;
+                useItem(p1Player, button->getName());
+            }
         });
         p1ControlPanel->addChild(item);
         increment = increment + item->getContentSize().width + 50;
     }
 
     increment = 0;
-    itemList = gameData->getCharacterItemList(characterTagList[1]);
-    for (int i = 0; i < itemList.size(); i++) {
-        Button* item = Button::create(itemList[i].icon);
+    auto p2ItemList = gameData->getCharacterItemList(characterTagList[1]);
+    for (int i = 0; i < p2ItemList.size(); i++) {
+        Button* item = Button::create(p2ItemList[i].icon);
         item->setScale(1.5);
+        item->setName(p2ItemList[i].tag);
         item->setPosition(Vec2(visibleSize.width * 0.330 + increment, visibleSize.height * 0.080));
-        item->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-            //待定
+        item->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
+            if (type == Widget::TouchEventType::BEGAN) {
+                auto button = (Button*)pSender;
+                useItem(p2Player, button->getName());
+            }
         });
         p2ControlPanel->addChild(item);
         increment = increment + item->getContentSize().width + 50;
@@ -528,28 +544,36 @@ GameplayScene::initCtrlPanel()
 
     //符卡
     increment = 0;
-    auto spellCardList = gameData->getCharacterSpellCardList(characterTagList[0]);
-    for (int i = 0; i < spellCardList.size(); i++) {
-        Button* spellCard = Button::create(spellCardList[i].icon);
+    auto p1SpellCardList = gameData->getCharacterSpellCardList(characterTagList[0]);
+    for (int i = 0; i < p1SpellCardList.size(); i++) {
+        Button* spellCard = Button::create(p1SpellCardList[i].icon);
         spellCard->setScale(1.5);
+        spellCard->setName(p1SpellCardList[i].tag);
         spellCard->setPosition(
             Vec2(visibleSize.width * 0.550 + increment, visibleSize.height * 0.080));
         spellCard->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-            //待定
+            if (type == Widget::TouchEventType::BEGAN) {
+                auto button = (Button*)pSender;
+                useSpellCard(p1Player, button->getName());
+            }
         });
         p1ControlPanel->addChild(spellCard);
         increment = increment + spellCard->getContentSize().width + 50;
     }
 
     increment = 0;
-    spellCardList = gameData->getCharacterSpellCardList(characterTagList[1]);
-    for (int i = 0; i < spellCardList.size(); i++) {
-        Button* spellCard = Button::create(spellCardList[i].icon);
+    auto p2SpellCardList = gameData->getCharacterSpellCardList(characterTagList[1]);
+    for (int i = 0; i < p2SpellCardList.size(); i++) {
+        Button* spellCard = Button::create(p2SpellCardList[i].icon);
         spellCard->setScale(1.5);
+        spellCard->setName(p2SpellCardList[i].tag);
         spellCard->setPosition(
             Vec2(visibleSize.width * 0.550 + increment, visibleSize.height * 0.080));
         spellCard->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-            //待定
+            if (type == Widget::TouchEventType::BEGAN) {
+                auto button = (Button*)pSender;
+                useSpellCard(p2Player, button->getName());
+            }
         });
         p2ControlPanel->addChild(spellCard);
         increment = increment + spellCard->getContentSize().width + 50;
@@ -901,5 +925,50 @@ GameplayScene::update(float dt)
         } else {
             p2Player->scheduleOnce(CC_SCHEDULE_SELECTOR(Player::regainDashCounts), 3.0f);
         }
+    }
+}
+
+void
+GameplayScene::useItem(Player*& player, const std::string& itemTag)
+{
+    if (itemTag == "I1") {
+        curPlayer->playerJump();
+    } else if (itemTag == "I2") {
+        curPlayer->playerJump();
+    } else if (itemTag == "I3") {
+
+    } else if (itemTag == "I4") {
+        curPlayer->playerJump();
+    } else if (itemTag == "I5") {
+
+    } else if (itemTag == "I6") {
+
+    } else if (itemTag == "I7") {
+
+    } else if (itemTag == "I8") {
+
+    } else if (itemTag == "I9") {
+
+    } else if (itemTag == "I10") {
+
+    } else if (itemTag == "I11") {
+
+    } else if (itemTag == "I12") {
+    }
+}
+
+void
+GameplayScene::useSpellCard(Player*& player, const std::string& cardTag)
+{
+    if (cardTag == "C1") {
+        curPlayer->playerJump();
+    } else if (cardTag == "C2") {
+        curPlayer->playerDash();
+    } else if (cardTag == "C3") {
+        curPlayer->playerJump();
+    } else if (cardTag == "C4") {
+        curPlayer->playerDash();
+    } else if (cardTag == "C5") {
+        curPlayer->playerJump();
     }
 }

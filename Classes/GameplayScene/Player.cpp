@@ -24,6 +24,9 @@ Player::init(std::string tag)
     type2 = selectAttackList[1];
     currentAttackType = type1.tag;
 
+    // 设置道具
+    itemList = GameData::getInstance()->getCharacterItemList(tag);
+
     //设置属性值
     //留空
 

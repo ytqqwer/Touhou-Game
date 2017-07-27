@@ -52,15 +52,15 @@
             "onStageCharacterList" : [ "Marisa", "Reimu" ],
             "unlockedLocationList" : [ { "tag" : "Hakurei Jinja", "passedRound" : 1 } ],
             "availableItemList" : [
-                { "tag" : "I1", "amount" : 2 }, { "tag" : "I2", "amount" : 2 },
-                { "tag" : "I3", "amount" : 2 }, { "tag" : "I4", "amount" : 2 },
-                { "tag" : "I5", "amount" : 2 }, { "tag" : "I6", "amount" : 2 },
-                { "tag" : "I7", "amount" : 2 }
+                { "tag" : "I1", "amount" : 1 }, { "tag" : "I2", "amount" : 1 },
+                { "tag" : "I3", "amount" : 1 }, { "tag" : "I4", "amount" : 1 },
+                { "tag" : "I5", "amount" : 1 }, { "tag" : "I6", "amount" : 1 },
+                { "tag" : "I7", "amount" : 1 }
             ],
             "availableSpellCardList" : [
-                { "tag" : "C1", "amount" : 1 }, { "tag" : "C2", "amount" : 2 },
-                { "tag" : "C3", "amount" : 3 }, { "tag" : "C4", "amount" : 4 },
-                { "tag" : "C5", "amount" : 5 }, { "tag" : "C6", "amount" : 6 }
+                { "tag" : "C1", "amount" : 1 }, { "tag" : "C2", "amount" : 1 },
+                { "tag" : "C3", "amount" : 1 }, { "tag" : "C4", "amount" : 1 },
+                { "tag" : "C5", "amount" : 1 }, { "tag" : "C6", "amount" : 1 }
             ],
             "money" : 512
         } ]
