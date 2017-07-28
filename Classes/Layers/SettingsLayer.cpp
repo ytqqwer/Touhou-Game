@@ -2,7 +2,7 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "SettingsLayer.h"
+#include "Layers/SettingsLayer.h"
 #include "GameData/GameData.h"
 #include "NonGameplayScenes/MainMenuScene.h"
 #include "NonGameplayScenes/RoundSelectScene.h"
@@ -30,10 +30,10 @@ SettingsLayer::createDebugScene()
     };
 }
 
-Layer*
+SettingsLayer*
 SettingsLayer::create(const string& TAG)
 {
-    Layer* pRet = new (std::nothrow) SettingsLayer(TAG);
+    SettingsLayer* pRet = new (std::nothrow) SettingsLayer(TAG);
     if (pRet && pRet->init()) {
         pRet->autorelease();
         return pRet;
@@ -51,10 +51,6 @@ SettingsLayer::init()
 
     if (!Layer::init()) {
         return false;
-    }
-
-    if (currentScene == "GameplaySence") {
-        Director::getInstance()->pause();
     }
 
     //触摸截断
@@ -279,7 +275,7 @@ SettingsLayer::sliderEvent(Ref* pSender, Slider::EventType type)
 }
 
 void
-SettingsLayer::touchEvent(Object* pSender, TouchEventType type)
+SettingsLayer::touchEvent(Ref* pSender, TouchEventType type)
 {
     Button* button = (Button*)pSender;
     int tag = button->getTag();
@@ -312,8 +308,8 @@ SettingsLayer::touchEvent(Object* pSender, TouchEventType type)
                 break;
             }
             case 11: {
-                if (currentScene == "GameplaySence") {
-                    Director::getInstance()->resume();
+                if (currentScene == "GameplayScene") {
+                    this->pauseNode->onEnter();
                 }
                 this->removeFromParent();
                 break;
@@ -322,4 +318,10 @@ SettingsLayer::touchEvent(Object* pSender, TouchEventType type)
                 break;
         }
     }
+}
+
+void
+SettingsLayer::setPauseNode(Node* node)
+{
+    this->pauseNode = node;
 }

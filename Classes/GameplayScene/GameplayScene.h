@@ -18,12 +18,14 @@ class GameplayScene : public cocos2d::Scene
 public:
     CREATE_FUNC(GameplayScene);
 
+    virtual bool init() override;
+    //重载场景生命周期中的几个函数
     void onEnter() override;
     void onEnterTransitionDidFinish() override;
     void onExit() override;
     void cleanup() override;
-    virtual bool init() override;
 
+    //初始化工作
     void initBackGround();
     void initMap();
     void initCtrlPanel();
@@ -39,22 +41,29 @@ public:
 
     // void moveCamera(float);
 
+public:
+    //实用的全局量
     GameData* gameData;
     Size visibleSize;
 
+    //对curPlayer的操作就是对当前制定角色的操作
     Player* curPlayer;
     Player* p1Player;
     Player* p2Player;
 
+    //摄像机节点
     Sprite* camera;
+
+    //瓦片地图对象，需要从中读取数据
     TMXTiledMap* _map;
 
+    //游戏场景的几个重要层
     Layer* mapLayer;
     Layer* controlPanel;
     Layer* p1ControlPanel;
     Layer* p2ControlPanel;
 
-    //监听器使用的回掉函数
+    //对碰撞进行处理
     bool onContactGround(const PhysicsContact& contact);
     bool onContactBullet(const PhysicsContact& contact);
 
@@ -63,23 +72,10 @@ public:
     void onTouchMoved(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
 
-    //切换攻击方式
-    void changeAttackType(const std::string& startType);
-    void stopAttackType(const std::string& stopType);
-
-    //使用道具或符卡
-    void useItem(Player*& player, const std::string& itemTag);
-    void useSpellCard(Player*& player, const std::string& cardTag);
-
-    //暂时的发射子弹的函数
-    Vector<Sprite*> vecBullet;        //子弹容器
-    SpriteBatchNode* bulletBatchNode; //批次渲染节点
-    void ShootBullet(float dt);
-    void removeBullet(Node* pNode);
-
 private:
     static const std::string TAG;
 
+    //在地图中生成静态刚体
     bool createPhysical(float scale);
 
     EventFilterManager* _eventFilterMgr;

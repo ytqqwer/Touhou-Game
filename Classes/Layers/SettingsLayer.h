@@ -19,10 +19,11 @@ class SettingsLayer : public Layer
 {
 public:
     static Scene* createDebugScene();
-    static Layer* create(const string& TAG);
+    static SettingsLayer* create(const string& TAG);
     virtual bool init();
     void sliderEvent(Ref* pSender, Slider::EventType type);
-    void touchEvent(Object* pSender, TouchEventType type);
+    void touchEvent(Ref* pSender, TouchEventType type);
+    void setPauseNode(Node* node);
 
 private:
     SettingsLayer(const string& TAG); // for autorelease consideration, make ctor private
@@ -32,5 +33,7 @@ private:
     Size _visibleSize;
     string currentScene;
     SimpleAudioEngine* audioEngine;
+
+    Node* pauseNode;
 };
 #endif // SETTINGS_LAYER_H

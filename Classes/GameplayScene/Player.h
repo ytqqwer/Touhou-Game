@@ -41,6 +41,20 @@ public:
     void resetAction(Node* node);
     void regainDashCounts(float dt);
 
+    //切换攻击方式
+    void changeAttackType(const std::string& startType);
+    void stopAttackType(const std::string& stopType);
+
+    //使用道具或符卡
+    void useItem(const std::string& itemTag);
+    void useSpellCard(const std::string& cardTag);
+
+    //暂时的发射子弹的函数
+    Vector<Sprite*> vecBullet;        //子弹容器
+    SpriteBatchNode* bulletBatchNode; //批次渲染节点
+    void ShootBullet(float dt);
+    void removeBullet(Node* pNode);
+
 public:
     String playerDirection = "right";
     int jumpCounts = 2;
@@ -52,10 +66,10 @@ public:
 
     vector<Item> itemList;
 
-private:
-    AnimateManager* animateManager;
     Sprite* playerSprite;
 
+private:
+    AnimateManager* animateManager;
     std::string playerTextureName;
     Animation* runAnimation;
     Animation* jumpAnimation;

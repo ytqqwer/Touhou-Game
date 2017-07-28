@@ -18,6 +18,9 @@ static const int groundTag = 100;
 static const int polylineTag = 99;
 static const int polygonTag = 98;
 
+//游戏场景的重力
+static const int gameGravity = 1000.0f;
+
 // EventFilterManager 中的 filter 所工作的 priority
 #define EVENT_FILTER_PRIORITY -1024
 

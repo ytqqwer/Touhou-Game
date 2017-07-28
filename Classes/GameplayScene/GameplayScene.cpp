@@ -19,23 +19,28 @@ void
 GameplayScene::onEnter()
 {
     Scene::onEnter();
-    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-    SimpleAudioEngine::getInstance()->playBackgroundMusic("gameplayscene/bgm001.mp3",
-                                                          true); //开启循环
+}
+
+void
+GameplayScene::onEnterTransitionDidFinish()
+{
+    Scene::onEnterTransitionDidFinish();
+
+    testEventFilterManager();
 }
 
 void
 GameplayScene::onExit()
 {
-    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     Scene::onExit();
 }
 
 void
 GameplayScene::cleanup()
 {
+    Scene::cleanup();
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     Director::getInstance()->getEventDispatcher()->removeEventListenersForTarget(this);
-    // this->removeAllChildren();
 }
 
 bool
@@ -44,18 +49,24 @@ GameplayScene::init()
     if (!Scene::init()) {
         return false;
     }
+
+    //设置背景音乐
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+    SimpleAudioEngine::getInstance()->playBackgroundMusic("gameplayscene/bgm001.mp3",
+                                                          true); //开启循环
+
     gameData = GameData::getInstance();
     visibleSize = Director::getInstance()->getVisibleSize();
 
     this->initWithPhysics();                      //初始化物理世界
-    Vect gravity(0, -1000.0f);                    //游戏场景的重力
+    Vect gravity(0, -gameGravity);                //游戏场景的重力
     this->getPhysicsWorld()->setGravity(gravity); //设置重力
     // this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL); //调试模式看包围盒
 
-    //初始化地图背景
+    // 初始化地图背景层
     initBackGround();
 
-    // 初始化地图
+    // 初始化地图层
     initMap();
 
     // 初始化控制面板
@@ -76,7 +87,7 @@ GameplayScene::init()
     // 加载监听器
     initListener();
 
-    // 启动帧定时器
+    // 启动帧调度器
     scheduleUpdate();
 
     // 用于支持符卡 buf 效果的 EventFilterManager
@@ -84,14 +95,6 @@ GameplayScene::init()
     this->_eventFilterMgr->retain();
 
     return true;
-}
-
-void
-GameplayScene::onEnterTransitionDidFinish()
-{
-    Scene::onEnterTransitionDidFinish();
-
-    testEventFilterManager();
 }
 
 void
@@ -141,7 +144,7 @@ GameplayScene::initMap()
 {
     mapLayer = Layer::create();
     _map = TMXTiledMap::create("gameplayscene/test.tmx");
-
+    //设置地图大小的倍率
     _map->setScale(1.0f);
     mapLayer->addChild(_map);
     mapLayer->setName("mapLayer");
@@ -158,6 +161,7 @@ GameplayScene::createPhysical(float scale)
     // 找出阻挡区域所在的层
     TMXObjectGroup* group = _map->getObjectGroup("physics");
     auto objects = group->getObjects();
+    // 在控制台输出对象信息
     // Value objectsVal = Value(objects);
     // log("%s", objectsVal.getDescription().c_str());
 
@@ -180,17 +184,17 @@ GameplayScene::createPhysical(float scale)
             int shapeVecAmount = 0; //每个shape的顶点个数
 
             // 必须将所有读取的定点逆向，因为翻转y之后，三角形定点的顺序已经逆序了，构造PolygonShape会crash
-            int c = polygon_points.size();
-            polygon_points.resize(c);
-            c--;
+            int polygonSize = polygon_points.size();
+            polygon_points.resize(polygonSize);
+            polygonSize--;
 
             for (auto obj : polygon_points) {
                 // 相对于起始点的偏移
                 float offx = obj.asValueMap()["x"].asFloat() * scale;
                 float offy = obj.asValueMap()["y"].asFloat() * scale;
 
-                points[c] = Vec2((x + offx) / PTM_RATIO, (y - offy) / PTM_RATIO);
-                c--;
+                points[polygonSize] = Vec2((x + offx) / PTM_RATIO, (y - offy) / PTM_RATIO);
+                polygonSize--;
                 shapeVecAmount++;
             }
 
@@ -235,7 +239,6 @@ GameplayScene::createPhysical(float scale)
             auto sprite = Sprite::create();
             sprite->setPhysicsBody(_pBody);
             sprite->setTag(polylineTag);
-
             mapLayer->addChild(sprite);
         } else {
             PhysicsBody* _pBody;
@@ -262,6 +265,7 @@ GameplayScene::createPhysical(float scale)
     return true;
 }
 
+//处理和地形之间的碰撞
 bool
 GameplayScene::onContactGround(const PhysicsContact& contact)
 {
@@ -270,10 +274,11 @@ GameplayScene::onContactGround(const PhysicsContact& contact)
     auto nodeA = contact.getShapeA()->getBody()->getNode();
     auto nodeB = contact.getShapeB()->getBody()->getNode();
     if (nodeA && nodeB) {
-        Node* entityA;
-        Node* entityB;
         auto tagA = nodeA->getTag();
         auto tagB = nodeB->getTag();
+        // entityA和entityB对nodeA和nodeB进行映射
+        Node* entityA;
+        Node* entityB;
 
         // enemy相关
         if (tagA == enemyTag || tagB == enemyTag) {
@@ -285,7 +290,9 @@ GameplayScene::onContactGround(const PhysicsContact& contact)
                 entityB = nodeA;
             }
 
+            // 当enemy碰到了折线刚体
             if (entityB->getTag() == polylineTag) {
+                //当冲量方向向上时可以穿过折现刚体
                 if (contact.getContactData()->normal.y > 0) {
                     auto enemy = (Enemy*)entityA;
                     enemy->_canJump = true;
@@ -294,6 +301,7 @@ GameplayScene::onContactGround(const PhysicsContact& contact)
                     return false;
                 }
             }
+            // 当enemy碰到了地面刚体
             if (entityB->getTag() == groundTag) {
                 auto enemy = (Enemy*)entityA;
                 enemy->_canJump = true;
@@ -310,6 +318,7 @@ GameplayScene::onContactGround(const PhysicsContact& contact)
                 entityB = nodeA;
             }
 
+            //当player碰到了折线刚体
             if (entityB->getTag() == polylineTag) {
                 if (contact.getContactData()->normal.y > 0) {
                     auto player = (Player*)entityA;
@@ -319,6 +328,7 @@ GameplayScene::onContactGround(const PhysicsContact& contact)
                     return false;
                 }
             }
+            // 当player碰到了地面刚体
             if (entityB->getTag() == groundTag) {
                 auto player = (Player*)entityA;
                 player->jumpCounts = 2;
@@ -329,16 +339,17 @@ GameplayScene::onContactGround(const PhysicsContact& contact)
     return true;
 }
 
+//处理和子弹的碰撞
 bool
 GameplayScene::onContactBullet(const PhysicsContact& contact)
 {
     auto nodeA = contact.getShapeA()->getBody()->getNode();
     auto nodeB = contact.getShapeB()->getBody()->getNode();
     if (nodeA && nodeB) {
-        Node* entityA;
-        Node* entityB;
         auto tagA = nodeA->getTag();
         auto tagB = nodeB->getTag();
+        Node* entityA;
+        Node* entityB;
 
         if (tagA == bulletTag || tagB == bulletTag) {
             if (tagA == bulletTag) {
@@ -356,13 +367,8 @@ GameplayScene::onContactBullet(const PhysicsContact& contact)
 
                 //留空，粒子效果添加存在疑似相对坐标的问题，暂不知道如何解决
 
-                // auto pos = mapLayer->convertToNodeSpace(entityA->getPosition());
-                // auto pos = mapLayer->convertToWorldSpace(entityA->getPosition());
-                // ps->setPosition(pos);
                 ps->setPosition(entityA->getPosition());
-                // this->getChildByName("mapLayer")->addChild(ps);
                 entityB->getParent()->addChild(ps);
-                // this->addChild(ps);
 
                 auto enemy = (Enemy*)entityB;
                 enemy->decreaseHp(entityB);
@@ -387,6 +393,7 @@ GameplayScene::initCtrlPanel()
     p1ControlPanel->setVisible(true);
     p2ControlPanel->setVisible(false);
 
+    //从gamedata中获得两名出战角色的数据
     auto characterTagList = gameData->getOnStageCharacterTagList();
     auto p1Character = gameData->getCharacterByTag(characterTagList[0]);
     auto p2Character = gameData->getCharacterByTag(characterTagList[1]);
@@ -398,7 +405,9 @@ GameplayScene::initCtrlPanel()
     setButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             auto layer = SettingsLayer::create("GameplayScene");
-            this->addChild(layer, 1000); //最大优先级
+            layer->setPauseNode(mapLayer);
+            mapLayer->onExit();
+            Director::getInstance()->getRunningScene()->addChild(layer, 1000);
         }
     });
     controlPanel->addChild(setButton);
@@ -438,11 +447,11 @@ GameplayScene::initCtrlPanel()
     switchAttackTypeButton->addTouchEventListener(
         [this](Ref* pSender, Widget::TouchEventType type) {
             if (type == Widget::TouchEventType::BEGAN) {
-                stopAttackType(curPlayer->currentAttackType);
+                curPlayer->stopAttackType(curPlayer->currentAttackType);
                 if (curPlayer->currentAttackType == curPlayer->type1.tag) {
-                    changeAttackType(curPlayer->type2.tag);
+                    curPlayer->changeAttackType(curPlayer->type2.tag);
                 } else {
-                    changeAttackType(curPlayer->type1.tag);
+                    curPlayer->changeAttackType(curPlayer->type1.tag);
                 }
             }
         });
@@ -459,14 +468,14 @@ GameplayScene::initCtrlPanel()
                 //切换前进行的一些处理
                 p2ControlPanel->setVisible(true);
                 p1ControlPanel->setVisible(false);
-                stopAttackType(p1Player->currentAttackType);
+                curPlayer->stopAttackType(p1Player->currentAttackType);
 
                 //将当前角色切换为p2
                 mapLayer->addChild(p2Player);
                 curPlayer = p2Player;
                 p2Player->getPhysicsBody()->setVelocity(p1Player->getPhysicsBody()->getVelocity());
                 p2Player->setPosition(p1Player->getPosition());
-                changeAttackType(p2Player->currentAttackType);
+                curPlayer->changeAttackType(p2Player->currentAttackType);
 
                 mapLayer->removeChild(p1Player, false);
                 break;
@@ -485,14 +494,14 @@ GameplayScene::initCtrlPanel()
             //切换前进行的一些处理
             p2ControlPanel->setVisible(false);
             p1ControlPanel->setVisible(true);
-            stopAttackType(p2Player->currentAttackType);
+            curPlayer->stopAttackType(p2Player->currentAttackType);
 
             //将当前角色切换为p1
             mapLayer->addChild(p1Player);
             curPlayer = p1Player;
             p1Player->getPhysicsBody()->setVelocity(p2Player->getPhysicsBody()->getVelocity());
             p1Player->setPosition(p2Player->getPosition());
-            changeAttackType(p1Player->currentAttackType);
+            curPlayer->changeAttackType(p1Player->currentAttackType);
 
             mapLayer->removeChild(p2Player, false);
         }
@@ -518,7 +527,7 @@ GameplayScene::initCtrlPanel()
         item->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
             if (type == Widget::TouchEventType::BEGAN) {
                 auto button = (Button*)pSender;
-                useItem(p1Player, button->getName());
+                curPlayer->useItem(button->getName());
             }
         });
         p1ControlPanel->addChild(item);
@@ -535,7 +544,7 @@ GameplayScene::initCtrlPanel()
         item->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
             if (type == Widget::TouchEventType::BEGAN) {
                 auto button = (Button*)pSender;
-                useItem(p2Player, button->getName());
+                curPlayer->useItem(button->getName());
             }
         });
         p2ControlPanel->addChild(item);
@@ -554,7 +563,7 @@ GameplayScene::initCtrlPanel()
         spellCard->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
             if (type == Widget::TouchEventType::BEGAN) {
                 auto button = (Button*)pSender;
-                useSpellCard(p1Player, button->getName());
+                curPlayer->useSpellCard(button->getName());
             }
         });
         p1ControlPanel->addChild(spellCard);
@@ -572,7 +581,7 @@ GameplayScene::initCtrlPanel()
         spellCard->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
             if (type == Widget::TouchEventType::BEGAN) {
                 auto button = (Button*)pSender;
-                useSpellCard(p2Player, button->getName());
+                curPlayer->useSpellCard(button->getName());
             }
         });
         p2ControlPanel->addChild(spellCard);
@@ -598,7 +607,7 @@ GameplayScene::onTouchBegan(Touch* touch, Event* event)
     if (location.x > visibleSize.width / 2 && location.y < visibleSize.height / 2) {
         //触碰右下屏
         // curPlayer->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
-        curPlayer->setScaleX(1); //人物翻转
+        curPlayer->playerSprite->setScaleX(1); //人物翻转
         curPlayer->playerDirection = "right";
         curPlayer->schedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
     }
@@ -606,7 +615,7 @@ GameplayScene::onTouchBegan(Touch* touch, Event* event)
     else if (location.x < visibleSize.width / 2 && location.y < visibleSize.height / 2) {
         //触碰左下屏
         // curPlayer->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
-        curPlayer->setScaleX(-1); //人物翻转
+        curPlayer->playerSprite->setScaleX(-1); //人物翻转
         curPlayer->playerDirection = "left";
         curPlayer->schedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
     }
@@ -664,7 +673,7 @@ GameplayScene::initCharacter()
     curPlayer->setName("curPlayer");
     mapLayer->addChild(p1Player);
 
-    /*changeAttackType(p1Player->currentAttackType);*/
+    curPlayer->changeAttackType(p1Player->currentAttackType);
 }
 
 void
@@ -712,147 +721,6 @@ GameplayScene::initLauncher()
         mapLayer->addChild(fe);
         fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
     }
-
-    //以后将利用自动批绘制
-    //创建BatchNode节点，成批渲染子弹
-    bulletBatchNode = SpriteBatchNode::create("gameplayscene/bullet1.png");
-    mapLayer->addChild(bulletBatchNode);
-}
-
-void
-GameplayScene::changeAttackType(const std::string& startType)
-{
-    if (startType == "reimu focus attack 1") {
-        //留空，暂时使用主场景的发射子弹函数
-        this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.5f);
-
-    } else if (startType == "reimu focus attack 2") {
-
-    } else if (startType == "reimu split attack 1") {
-
-    } else if (startType == "reimu split attack 2") {
-
-    } else if (startType == "marisa focus attack 1") {
-
-    } else if (startType == "marisa focus attack 2") {
-
-    } else if (startType == "marisa split attack 1") {
-
-    } else if (startType == "marisa split attack 2") {
-        this->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet), 0.2f);
-    }
-
-    curPlayer->currentAttackType = startType;
-}
-
-void
-GameplayScene::stopAttackType(const std::string& stopType)
-{
-    if (stopType == "reimu focus attack 1") {
-        this->unschedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet));
-    } else if (stopType == "reimu focus attack 2") {
-
-    } else if (stopType == "reimu split attack 1") {
-
-    } else if (stopType == "reimu split attack 2") {
-
-    } else if (stopType == "marisa focus attack 1") {
-
-    } else if (stopType == "marisa focus attack 2") {
-
-    } else if (stopType == "marisa split attack 1") {
-
-    } else if (stopType == "marisa split attack 2") {
-        this->unschedule(CC_SCHEDULE_SELECTOR(GameplayScene::ShootBullet));
-    }
-}
-
-//用缓存的方法创建子弹，并初始化子弹的运动和运动后的事件
-void
-GameplayScene::ShootBullet(float dt)
-{
-    Size winSize = Director::getInstance()->getWinSize();
-    auto playerPos = curPlayer->getPosition();
-    // auto playerPos = _launcher->getPosition();//改为发射器发射
-    //从缓存中创建子弹
-    auto spritebullet = Sprite::createWithTexture(bulletBatchNode->getTexture());
-    spritebullet->setTag(bulletTag);
-
-    auto spritebullet2 = Sprite::createWithTexture(bulletBatchNode->getTexture());
-    spritebullet2->setTag(bulletTag);
-
-    //将创建好的子弹添加到BatchNode中进行批次渲染
-    bulletBatchNode->addChild(spritebullet);
-    bulletBatchNode->addChild(spritebullet2);
-
-    //给创建好的子弹添加刚体
-    do {
-        auto _body = PhysicsBody::createBox(spritebullet->getContentSize());
-        _body->setRotationEnable(false);
-        _body->setGravityEnable(false);
-
-        _body->setContactTestBitmask(bulletCategory);
-        _body->setCollisionBitmask(enemyCategory);
-        _body->setContactTestBitmask(enemyCategory);
-        spritebullet->setPhysicsBody(_body);
-    } while (0);
-
-    do {
-        auto _body = PhysicsBody::createBox(spritebullet->getContentSize());
-        _body->setRotationEnable(false);
-        _body->setGravityEnable(false);
-
-        _body->setCategoryBitmask(bulletCategory);
-        _body->setCollisionBitmask(enemyCategory);
-        _body->setContactTestBitmask(enemyCategory);
-
-        spritebullet2->setPhysicsBody(_body);
-    } while (0);
-
-    //将创建好的子弹添加到容器
-    vecBullet.pushBack(spritebullet);
-    vecBullet.pushBack(spritebullet2);
-
-    Point bulletPos = (Point(playerPos.x, playerPos.y));
-
-    spritebullet->setPosition(bulletPos);
-    spritebullet2->setPosition(Point(playerPos.x, playerPos.y - 30));
-
-    float realFlyDuration = 1.0;
-    //子弹运行的距离和时间
-    // auto actionMove = MoveBy::create(realFlyDuration, Point(0,winSize.height));
-    // auto actionMove2 = MoveBy::create(realFlyDuration, Point(0,-winSize.height));
-    auto actionMove = MoveBy::create(realFlyDuration, Point(winSize.width, 0));
-    auto fire1 = actionMove;
-    auto actionMove2 = MoveBy::create(realFlyDuration, Point(winSize.width, 0));
-    auto fire2 = actionMove2;
-
-    if (curPlayer->playerDirection.compare("right")) {
-        fire1 = actionMove->reverse();
-        fire2 = actionMove2->reverse();
-    }
-
-    //子弹执行完动作后进行函数回调，调用移除子弹函数
-    auto actionDone = CallFuncN::create(CC_CALLBACK_1(GameplayScene::removeBullet, this));
-
-    //子弹开始跑动
-    Sequence* sequence = Sequence::create(fire1, actionDone, NULL);
-    Sequence* sequence2 = Sequence::create(fire2, actionDone, NULL);
-
-    spritebullet->runAction(sequence);
-    spritebullet2->runAction(sequence2);
-}
-
-//移除子弹，将子弹从容器中移除，同时也从SpriteBatchNode中移除
-void
-GameplayScene::removeBullet(Node* pNode)
-{
-    if (NULL == pNode) {
-        return;
-    }
-    Sprite* bullet = (Sprite*)pNode;
-    this->bulletBatchNode->removeChild(bullet, true);
-    vecBullet.eraseObject(bullet);
 }
 
 void
@@ -887,18 +755,11 @@ GameplayScene::initListener()
 
     auto listener = EventListenerPhysicsContact::create();
     listener->onContactBegin = CC_CALLBACK_1(GameplayScene::onContactGround, this);
-    // dispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     dispatcher->addEventListenerWithFixedPriority(listener, 20);
 
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(GameplayScene::onContactBullet, this);
     dispatcher->addEventListenerWithFixedPriority(contactListener, 10);
-
-    // auto e = Enemy::create();
-    // auto contactListener = EventListenerPhysicsContact::create();
-    // contactListener->onContactBegin = std::bind(&Enemy::onContactBullet,e);
-    ////dispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
-    // dispatcher->addEventListenerWithFixedPriority(contactListener, 10);
 }
 
 void
@@ -925,50 +786,5 @@ GameplayScene::update(float dt)
         } else {
             p2Player->scheduleOnce(CC_SCHEDULE_SELECTOR(Player::regainDashCounts), 3.0f);
         }
-    }
-}
-
-void
-GameplayScene::useItem(Player*& player, const std::string& itemTag)
-{
-    if (itemTag == "I1") {
-        curPlayer->playerJump();
-    } else if (itemTag == "I2") {
-        curPlayer->playerJump();
-    } else if (itemTag == "I3") {
-
-    } else if (itemTag == "I4") {
-        curPlayer->playerJump();
-    } else if (itemTag == "I5") {
-
-    } else if (itemTag == "I6") {
-
-    } else if (itemTag == "I7") {
-
-    } else if (itemTag == "I8") {
-
-    } else if (itemTag == "I9") {
-
-    } else if (itemTag == "I10") {
-
-    } else if (itemTag == "I11") {
-
-    } else if (itemTag == "I12") {
-    }
-}
-
-void
-GameplayScene::useSpellCard(Player*& player, const std::string& cardTag)
-{
-    if (cardTag == "C1") {
-        curPlayer->playerJump();
-    } else if (cardTag == "C2") {
-        curPlayer->playerDash();
-    } else if (cardTag == "C3") {
-        curPlayer->playerJump();
-    } else if (cardTag == "C4") {
-        curPlayer->playerDash();
-    } else if (cardTag == "C5") {
-        curPlayer->playerJump();
     }
 }
