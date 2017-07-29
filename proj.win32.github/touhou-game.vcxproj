@@ -148,13 +148,11 @@
   <!-- 每次添加新 .cpp 文件，都要在下面的 <ItemGroup> 中添加对应项 -->
 
   <ItemGroup>
-    <ClCompile Include="..\Classes\AppDelegate.cpp" />
+<ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\JumpTableScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenesCache.cpp" />
     <ClCompile Include="..\Classes\PlaceHolder.cpp" />
-
     <ClCompile Include="..\Classes\GameData\GameData.cpp" />
-
     <ClCompile Include="..\Classes\NonGameplayScenes\ArmsStoreScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\BackgroundIntroScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\EquipScene.cpp" />
@@ -169,24 +167,20 @@
     <ClCompile Include="..\Classes\NonGameplayScenes\RoundSelectScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\SaveScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\StaffScene.cpp" />
-
     <ClCompile Include="..\Classes\Layers\ConversationLayer.cpp" />
     <ClCompile Include="..\Classes\Layers\SettingsLayer.cpp" />
-
     <ClCompile Include="..\Classes\GameplayScene\EventFilterManager.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Enemy.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\AnimateManager.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Enemy.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Player.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\AnimateManager.cpp" />
-
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\EmitterStyle.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitters.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\FirstEmitter.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.cpp" />
-
     <ClCompile Include="main.cpp" />
   </ItemGroup>
 
@@ -197,7 +191,6 @@
     <ClInclude Include="..\Classes\JumpTableScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenesCache.h" />
     <ClInclude Include="..\Classes\PlaceHolder.h" />
-
     <ClInclude Include="..\Classes\GameData\GameData.h" />
     <ClInclude Include="..\Classes\GameData\Character.h" />
     <ClInclude Include="..\Classes\GameData\Conversation.h" />
@@ -207,7 +200,6 @@
     <ClInclude Include="..\Classes\GameData\Save.h" />
     <ClInclude Include="..\Classes\GameData\SpellCard.h" />
     <ClInclude Include="..\Classes\GameData\EnemyData.h" />
-
     <ClInclude Include="..\Classes\NonGameplayScenes\ArmsStoreScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\BackgroundIntroScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\EquipScene.h" />
@@ -222,10 +214,8 @@
     <ClInclude Include="..\Classes\NonGameplayScenes\RoundSelectScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\SaveScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\StaffScene.h" />
-
     <ClInclude Include="..\Classes\Layers\ConversationLayer.h" />
     <ClInclude Include="..\Classes\Layers\SettingsLayer.h" />
-
     <ClInclude Include="..\Classes\GameplayScene\common.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.inc" />
@@ -233,18 +223,16 @@
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h" />
     <ClInclude Include="..\Classes\GameplayScene\AnimateManager.h" />
     <ClInclude Include="..\Classes\GameplayScene\Player.h" />
-
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Bullet.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\EmitterStyle.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitters.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\FirstEmitter.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitter.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\StyleConfig.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\EmitterStyle.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\common.h" />
-
     <ClInclude Include="..\Classes\external\json.h" />
-
     <ClInclude Include="main.h" />
   </ItemGroup>
 

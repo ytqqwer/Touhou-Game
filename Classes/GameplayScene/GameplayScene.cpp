@@ -2,10 +2,9 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "GameplayScene/GameplayScene.h"
-#include "Emitters/FirstEmitter.h"
-#include "GameplayScene/Enemy.h"
 #include "GameplayScene/common.h"
+#include "GameplayScene/GameplayScene.h"
+#include "GameplayScene/Enemy.h"
 #include "Layers/SettingsLayer.h"
 
 #include "SimpleAudioEngine.h"
@@ -717,9 +716,10 @@ GameplayScene::initLauncher()
         auto _launcher = Sprite::create("CloseNormal.png");
         _launcher->setPosition(x, y);
         mapLayer->addChild(_launcher); //不要忘记addChild
-        auto fe = FirstEmitter::create(_launcher);
-        mapLayer->addChild(fe);
-        fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
+
+        // auto fe = FirstEmitter::create(_launcher);
+        // mapLayer->addChild(fe);
+        // fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
     }
 }
 

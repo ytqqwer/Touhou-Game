@@ -6,13 +6,13 @@
 #include "EmitterTestEnemy.h"
 #include "Layers/SettingsLayer.h"
 
-#include "../FirstEmitter.h"
+#include "../Emitter.h"
 #include "common.h"
 
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
 
-namespace EmitterTest{
+namespace EmitterTest {
 
 #define PTM_RATIO 1
 
@@ -440,10 +440,10 @@ GameplayScene::initLauncher()
         _launcher->setPosition(x, y);
         mapLayer->addChild(_launcher); //不要忘记addChild
 
-        auto fe = FirstEmitter::create(_launcher);
-        mapLayer->addChild(fe);
+        //        auto fe = FirstEmitter::create(_launcher);
+        //        mapLayer->addChild(fe);
 
-        fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
+        // fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
     }
 
     //创建BatchNode节点，成批渲染子弹

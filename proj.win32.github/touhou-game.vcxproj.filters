@@ -31,7 +31,8 @@
     <Filter Include="Classes\external">
       <UniqueIdentifier>{44ebef1d-7ba3-4a5d-b67f-fe080383c4bf}</UniqueIdentifier>
     </Filter>
-
+    <Filter Include="Classes\GameplayScene\Emitters\Style">
+    </Filter>
   </ItemGroup>
 
   <!-- 每次添加新 .cpp 文件，都要在下面的 <ItemGroup> 中添加对应项 -->
@@ -142,15 +143,6 @@
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp">
       <Filter>Classes\GameplayScene\Emitters</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\EmitterStyle.cpp">
-      <Filter>Classes\GameplayScene\Emitters</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitters.cpp">
-      <Filter>Classes\GameplayScene\Emitters</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\FirstEmitter.cpp">
-      <Filter>Classes\GameplayScene\Emitters</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.cpp">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClCompile>
@@ -159,6 +151,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.cpp">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
 
 
@@ -302,15 +300,6 @@
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Bullet.h">
       <Filter>Classes\GameplayScene\Emitters</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\EmitterStyle.h">
-      <Filter>Classes\GameplayScene\Emitters</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitters.h">
-      <Filter>Classes\GameplayScene\Emitters</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\FirstEmitter.h">
-      <Filter>Classes\GameplayScene\Emitters</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.h">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClInclude>
@@ -322,6 +311,18 @@
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\common.h">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
+    </ClInclude>
+	<ClInclude Include="..\Classes\GameplayScene\Emitters\Emitter.h">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\StyleConfig.h">
+      <Filter>Classes\GameplayScene\Emitters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\EmitterStyle.h">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
 
     <!-- external -->
