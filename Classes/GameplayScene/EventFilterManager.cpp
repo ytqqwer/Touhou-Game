@@ -58,8 +58,11 @@ EventFilterManager::addEventFilter(const function<void(EventCustom*)>& filter, f
 
     /*  2. 定时 */
 
-    _delegateNode->scheduleOnce(
-        bind(&EventFilterManager::removeEventFilter, this, tag, placeholders::_1), lastTime, tag);
+    if (lastTime != 0) {
+        _delegateNode->scheduleOnce(
+            bind(&EventFilterManager::removeEventFilter, this, tag, placeholders::_1), lastTime,
+            tag);
+    }
 }
 
 void

@@ -16,9 +16,9 @@ class EventFilterManager : public Ref
 {
 public:
     static EventFilterManager* create();
-    ~EventFilterManager();
 
     // 添加一个 filter，可定时
+    //  + lastTime 若指定为 0，意味着 filter 不会被自动删除
     //  + 保证所有 add 的 filter 都能运作，不保证先加入的 filter 早于后加入的 filter 运作
     //  + 可在一个 filter 不过期之前指定同 tag 的 filter，新加入的 filter 会立即运作
     void addEventFilter(const std::function<void(EventCustom*)>& filter, float lastTime,
@@ -41,6 +41,10 @@ public:
     void resumeAllFilters();
 
 public:
+    // 不供 GameplayScene 使用。
+    // EventFilterManager 使用 autorelease 机制，destructor 供 AutoReleasePool 使用
+    ~EventFilterManager();
+
     // 不供 GameplayScene 使用。用于给 EventDispatcher 回调
     void onRecvCustomEvents(EventCustom* event);
 

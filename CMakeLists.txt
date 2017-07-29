@@ -161,6 +161,7 @@ set(GAME_SRC
   Classes/GameplayScene/GameplayScene.cpp
   Classes/GameplayScene/Player.cpp
   Classes/GameplayScene/EventFilterManager.cpp
+  Classes/GameplayScene/AnimateManager.cpp
 
   Classes/GameplayScene/Emitters/Bullet.cpp
   Classes/GameplayScene/Emitters/EmitterStyle.cpp
@@ -184,6 +185,7 @@ set(GAME_HEADERS
   Classes/GameData/GameData.h
   Classes/GameData/Character.h
   Classes/GameData/Conversation.h
+  Classes/GameData/EnemyData.h
   Classes/GameData/Item.h
   Classes/GameData/Location.h
   Classes/GameData/Round.h
@@ -220,6 +222,7 @@ set(GAME_HEADERS
   Classes/GameplayScene/Player.h
   Classes/GameplayScene/common.h
   Classes/GameplayScene/EventFilterManager.h
+  Classes/GameplayScene/AnimateManager.h
 
   Classes/GameplayScene/Emitters/Bullet.h
   Classes/GameplayScene/Emitters/EmitterStyle.h
