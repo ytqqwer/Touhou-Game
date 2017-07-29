@@ -21,6 +21,8 @@ public:
     virtual void onEnterTransitionDidFinish() override;
     // virtual void update(float dt);
 
+    void setPauseNode(Node* node);
+
 private:
     ConversationLayer() = default; // for autorelease consideration, make ctor private
 
@@ -44,6 +46,7 @@ private:
     // intorspection
     Size _visibleSize;
 
+    Node* _pausedNode;
     string _conversationTag;
     vector<Dialogue> _dialogues;
     int _currIdx;

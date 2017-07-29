@@ -14,6 +14,7 @@ ConversationLayer*
 ConversationLayer::create(const string& cTag)
 {
     ConversationLayer* cLayer = new (std::nothrow) ConversationLayer();
+    cLayer->_pausedNode = nullptr;
     cLayer->_conversationTag = cTag;
 
     if (cLayer && cLayer->init()) {
@@ -130,6 +131,12 @@ ConversationLayer::onEnterTransitionDidFinish()
 }
 
 void
+ConversationLayer::setPauseNode(cocos2d::Node* node)
+{
+    _pausedNode = node;
+}
+
+void
 ConversationLayer::nextDialogue()
 {
     unscheduleAllCallbacks();
@@ -180,8 +187,9 @@ ConversationLayer::nextDialogue()
 void
 ConversationLayer::quitConversation()
 {
-    // TODO
-    // 发送一个『对话已结束』的事件
+    if (_pausedNode != nullptr) {
+        _pausedNode->onEnter();
+    }
 
     this->removeFromParent();
 }
