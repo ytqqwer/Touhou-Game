@@ -144,7 +144,7 @@ RoundSelectScene::onEnter()
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(round[i].name);
             roundButton->setTitleFontSize(25);
-            roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
+            roundButton->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
                 //根据点击的按钮设置当前的关卡难度，同时将当前选择的关卡保存，接口尚未实现，以后添加
                 int difficulty(static_cast<int>(round[i].difficulty));
                 for (int i = 0; i < difficulty; ++i) {
@@ -171,7 +171,7 @@ RoundSelectScene::onEnter()
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(round[i].name);
             roundButton->setTitleFontSize(25);
-            roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
+            roundButton->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
                 //根据点击的按钮设置当前的关卡难度，同时将当前选择的关卡保存，接口尚未实现，以后添加
                 int difficulty(static_cast<int>(round[i].difficulty));
                 for (int i = 0; i < difficulty; ++i) {
@@ -198,7 +198,7 @@ RoundSelectScene::onEnter()
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(round[i].name);
             roundButton->setTitleFontSize(25);
-            roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
+            roundButton->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
                 //根据点击的按钮设置当前的关卡难度
                 int difficulty(static_cast<int>(round[i].difficulty));
                 for (int i = 0; i < difficulty; ++i) {
@@ -267,7 +267,7 @@ RoundSelectScene::onEnter()
                 auto button = Button::create("roundselectscene/right.png");
                 button->setPosition(
                     Vec2(_visibleSize.width * (0.43 + 0.2 * i), _visibleSize.height * 0.4));
-                button->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
+                button->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
                     GameData::getInstance()->switchOnStageCharacter(j, character[i]);
                     sprite->setTexture(characters.at((j + 1) / characters.size()).portrait);
                     sprite->setContentSize(
