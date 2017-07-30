@@ -3,10 +3,10 @@
 #endif
 
 #include "EmitterTestEnemy.h"
-#include "EmitterTestScene.h"
 #include "EmitterTestPlayer.h"
+#include "EmitterTestScene.h"
 
-namespace EmitterTest{
+namespace EmitterTest {
 
 bool
 Enemy::init()
@@ -16,13 +16,13 @@ Enemy::init()
 
     Animation* enemyAnimation = Animation::create();
     for (int i = 1; i <= 6; i++)
-        enemyAnimation->addSpriteFrameWithFile("gameplayscene/opossum-" + std::to_string(i) +
-                                               ".png");
+        enemyAnimation->addSpriteFrameWithFile("gameplayscene_for_emitter_test/opossum-" +
+                                               std::to_string(i) + ".png");
 
     enemyAnimation->setDelayPerUnit(0.15f);
 
     enemySprite = Sprite::create(
-        "gameplayscene/opossum-1.png"); //此处必须初始化一张角色纹理，否则后面无法切换纹理
+        "gameplayscene_for_emitter_test/opossum-1.png"); //此处必须初始化一张角色纹理，否则后面无法切换纹理
 
     enemyAnim = Animate::create(enemyAnimation);
     enemySprite->runAction(RepeatForever::create(enemyAnim)); //初始时刻在奔跑

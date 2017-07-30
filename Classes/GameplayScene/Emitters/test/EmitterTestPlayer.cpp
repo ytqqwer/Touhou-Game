@@ -5,7 +5,7 @@
 #include "EmitterTestPlayer.h"
 #include "EmitterTestScene.h"
 
-namespace EmitterTest{
+namespace EmitterTest {
 
 bool
 Player::init()
@@ -16,14 +16,14 @@ Player::init()
     //定义两角色的序列帧动画,注意此处要经常切换纹理，所以不能用AnimationCache
     p1Animation = Animation::create();
     for (int i = 0; i <= 7; i++)
-        p1Animation->addSpriteFrameWithFile("gameplayscene/walkFront00" + std::to_string(i) +
-                                            ".png");
+        p1Animation->addSpriteFrameWithFile("gameplayscene_for_emitter_test/walkFront00" +
+                                            std::to_string(i) + ".png");
     p1Animation->setDelayPerUnit(0.15f);
 
     jumpAnimation = Animation::create();
     for (int i = 0; i <= 9; i++)
-        jumpAnimation->addSpriteFrameWithFile("gameplayscene/jumpFront00" + std::to_string(i) +
-                                              ".png");
+        jumpAnimation->addSpriteFrameWithFile("gameplayscene_for_emitter_test/jumpFront00" +
+                                              std::to_string(i) + ".png");
     jumpAnimation->setDelayPerUnit(0.1f);
 
     // Animation *p2Animation = Animation::create();
@@ -31,7 +31,7 @@ Player::init()
     //	p2Animation->addSpriteFrameWithFile("");
     // p2Animation->setDelayPerUnit(0.1f);
 
-    std::string playerTextureName = "gameplayscene/walkFront001.png";
+    std::string playerTextureName = "gameplayscene_for_emitter_test/walkFront001.png";
 
     playerSprite =
         Sprite::create(playerTextureName); //此处必须初始化一张角色纹理，否则后面无法切换纹理
