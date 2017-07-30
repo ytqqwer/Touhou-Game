@@ -5,6 +5,8 @@
 #ifndef STYLE_CONFIG_H
 #define STYLE_CONFIG_H
 
+#include <string>
+
 using namespace std;
 
 enum class StyleType
@@ -27,11 +29,11 @@ struct StyleConfig
     StyleType style;
 
     /* 公共参数 */
-    bool default;  //默认style
-    int duration;  //持续时间
-    int frequency; //频率
-    int count;     //子弹连发数
-    int number;    //条数
+    bool defaultStyle; //默认style
+    int duration;      //持续时间
+    int frequency;     //频率
+    int count;         //子弹连发数
+    int number;        //条数
 
     /* 子弹参数 */
     BulletConfig* bc;

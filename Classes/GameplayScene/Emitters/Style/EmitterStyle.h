@@ -34,7 +34,7 @@ protected:
     static __TYPE__* create(const StyleConfig& sc, Node* character)                                \
     {                                                                                              \
         __TYPE__* pRet;                                                                            \
-        if (sc.default == true) {                                                                  \
+        if (sc.defaultStyle == true) {                                                             \
             pRet = new __TYPE__(character);                                                        \
         } else {                                                                                   \
             pRet = new __TYPE__(sc, character);                                                    \
@@ -53,7 +53,7 @@ protected:
     static __TYPE__* create(const StyleConfig& sc, Node* character, Node* target)                  \
     {                                                                                              \
         __TYPE__* pRet;                                                                            \
-        if (sc.default == true) {                                                                  \
+        if (sc.defaultStyle == true) {                                                             \
             pRet = new __TYPE__(character, target);                                                \
         } else {                                                                                   \
             pRet = new __TYPE__(sc, character, target);                                            \

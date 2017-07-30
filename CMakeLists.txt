@@ -164,9 +164,8 @@ set(GAME_SRC
   Classes/GameplayScene/AnimateManager.cpp
 
   Classes/GameplayScene/Emitters/Bullet.cpp
-  Classes/GameplayScene/Emitters/EmitterStyle.cpp
-  Classes/GameplayScene/Emitters/Emitters.cpp
-  Classes/GameplayScene/Emitters/FirstEmitter.cpp
+  Classes/GameplayScene/Emitters/Emitter.cpp
+  Classes/GameplayScene/Emitters/Style/Scatter.cpp
   Classes/GameplayScene/Emitters/test/EmitterTestEnemy.cpp
   Classes/GameplayScene/Emitters/test/EmitterTestScene.cpp
   Classes/GameplayScene/Emitters/test/EmitterTestPlayer.cpp
@@ -224,10 +223,12 @@ set(GAME_HEADERS
   Classes/GameplayScene/EventFilterManager.h
   Classes/GameplayScene/AnimateManager.h
 
+  # Emitter
   Classes/GameplayScene/Emitters/Bullet.h
-  Classes/GameplayScene/Emitters/EmitterStyle.h
-  Classes/GameplayScene/Emitters/Emitters.h
-  Classes/GameplayScene/Emitters/FirstEmitter.h
+  Classes/GameplayScene/Emitters/Emitter.h
+  Classes/GameplayScene/Emitters/StyleConfig.h
+  Classes/GameplayScene/Emitters/Style/EmitterStyle.h
+  Classes/GameplayScene/Emitters/Style/Scatter.h
   Classes/GameplayScene/Emitters/test/EmitterTestEnemy.h
   Classes/GameplayScene/Emitters/test/EmitterTestScene.h
   Classes/GameplayScene/Emitters/test/EmitterTestPlayer.h

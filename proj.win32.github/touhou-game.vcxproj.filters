@@ -312,7 +312,7 @@
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\common.h">
       <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClInclude>
-	<ClInclude Include="..\Classes\GameplayScene\Emitters\Emitter.h">
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitter.h">
       <Filter>Classes\GameplayScene\Emitters</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Emitters\StyleConfig.h">
