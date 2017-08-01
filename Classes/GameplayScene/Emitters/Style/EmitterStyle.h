@@ -30,15 +30,13 @@ protected:
     Vector<Node*> bullets;
 };
 
+/* 无自机默认发射器 */
+
+/* 自机默认发射器 */
 #define APP_CREATE_STYLE1(__TYPE__)                                                                \
-    static __TYPE__* create(const StyleConfig& sc, Node* character)                                \
+    static __TYPE__* create(Node* target)                                                          \
     {                                                                                              \
-        __TYPE__* pRet;                                                                            \
-        if (sc.defaultStyle == true) {                                                             \
-            pRet = new __TYPE__(character);                                                        \
-        } else {                                                                                   \
-            pRet = new __TYPE__(sc, character);                                                    \
-        }                                                                                          \
+        __TYPE__* pRet = new __TYPE__(target);                                                     \
         if (pRet && pRet->init()) {                                                                \
             pRet->autorelease();                                                                   \
             return pRet;                                                                           \
@@ -49,16 +47,26 @@ protected:
         }                                                                                          \
     }
 
+/* 无自机发射器 */
 #define APP_CREATE_STYLE2(__TYPE__)                                                                \
-    static __TYPE__* create(const StyleConfig& sc, Node* character, Node* target)                  \
+    static __TYPE__* create(const StyleConfig& sc)                                                 \
     {                                                                                              \
-        __TYPE__* pRet;                                                                            \
-        if (sc.defaultStyle == true) {                                                             \
-            pRet = new __TYPE__(character, target);                                                \
+        __TYPE__* pRet = new __TYPE__(sc);                                                         \
+        if (pRet && pRet->init()) {                                                                \
+            pRet->autorelease();                                                                   \
+            return pRet;                                                                           \
         } else {                                                                                   \
-            pRet = new __TYPE__(sc, character, target);                                            \
+            delete pRet;                                                                           \
+            pRet = NULL;                                                                           \
+            return NULL;                                                                           \
         }                                                                                          \
-                                                                                                   \
+    }
+
+/* 自机发射器 */
+#define APP_CREATE_STYLE3(__TYPE__)                                                                \
+    static __TYPE__* create(const StyleConfig& sc, Node* target)                                   \
+    {                                                                                              \
+        __TYPE__* pRet = new __TYPE__(sc, target);                                                 \
         if (pRet && pRet->init()) {                                                                \
             pRet->autorelease();                                                                   \
             return pRet;                                                                           \

@@ -17,15 +17,16 @@ class Emitter : public Node
 
 public:
     /* 无自机发射器 */
-    static Emitter* create(Node* character);
-    Emitter(Node* character);
+    CREATE_FUNC(Emitter);
+    Emitter();
 
     /* 自机发射器 */
-    static Emitter* create(Node* character, Node* target);
-    Emitter(Node* character, Node* target);
+    static Emitter* create(Node* target);
+    Emitter(Node* target);
 
     /* 创建弹幕 */
     int playStyle(const StyleConfig& sc);
+    int playStyle(StyleType st);
 
     /* 暂停弹幕 */
     void pauseStyle(int tag);
@@ -40,10 +41,9 @@ public:
     void stopAllStyle();
 
 private:
-    Node* character;        //绑定角色
     Node* target;           //自机目标
     Map<int, Node*> styles; //弹幕容器
-    int tag;
+    int styleTag;
 };
 
 #endif

@@ -4,10 +4,15 @@
 
 #include "Emitter.h"
 
-Emitter*
-Emitter::create(Node* character)
+Emitter::Emitter()
 {
-    Emitter* pRet = new Emitter(character);
+   this->styleTag = 1;
+}
+
+Emitter*
+Emitter::create(Node* target)
+{
+    Emitter* pRet = new Emitter(target);
     if (pRet && pRet->init()) {
         pRet->autorelease();
         return pRet;
@@ -18,31 +23,10 @@ Emitter::create(Node* character)
     }
 }
 
-Emitter::Emitter(Node* character)
+Emitter::Emitter(Node* target)
 {
-    this->character = character;
-    this->tag = 1;
-}
-
-Emitter*
-Emitter::create(Node* character, Node* target)
-{
-    Emitter* pRet = new Emitter(character, target);
-    if (pRet && pRet->init()) {
-        pRet->autorelease();
-        return pRet;
-    } else {
-        delete pRet;
-        pRet = NULL;
-        return NULL;
-    }
-}
-
-Emitter::Emitter(Node* character, Node* target)
-{
-    this->character = character;
     this->target = target;
-    this->tag = 1;
+    this->styleTag = 1;
 }
 
 int
@@ -52,7 +36,7 @@ Emitter::playStyle(const StyleConfig& sc)
 
     switch (sc.style) {
         case StyleType::SCATTER:
-            style = Scatter::create(sc, character);
+            style = Scatter::create(sc);
             dynamic_cast<Scatter*>(style)->createBullet();
             break;
         case StyleType::ODDEVEN:
@@ -62,26 +46,49 @@ Emitter::playStyle(const StyleConfig& sc)
             break;
     }
 
-    int tag = tag++;
-    style->setTag(tag);
+    style->setTag(styleTag);
     this->addChild(style);
-    styles.insert(tag++, style);
+    styles.insert(styleTag++, style);
 
-    return tag;
+    return styleTag;
+}
+
+int 
+Emitter::playStyle(StyleType st)
+{
+	EmitterStyle* style;
+
+	switch (st) {
+	case StyleType::SCATTER:
+		style = Scatter::create();
+		dynamic_cast<Scatter*>(style)->createBullet();
+		break;
+	case StyleType::ODDEVEN:
+		break;
+	default:
+		return false;
+		break;
+	}
+
+	style->setTag(styleTag);
+	this->addChild(style);
+	styles.insert(styleTag++, style);
+
+	return styleTag;
 }
 
 void
 Emitter::pauseStyle(int tag)
 {
     auto style = styles.at(tag);
-    style->pauseSchedulerAndActions();
+	style->pause();
 }
 
 void
 Emitter::pauseAllStyle()
 {
     for (auto s = styles.begin(); s != styles.end(); s++) {
-        s->second->pauseSchedulerAndActions();
+        s->second->pause();
     }
 }
 
@@ -89,14 +96,14 @@ void
 Emitter::resumeStyle(int tag)
 {
     auto style = styles.at(tag);
-    style->resumeSchedulerAndActions();
+    style->resume();
 }
 
 void
 Emitter::resumeAllStyle()
 {
     for (auto s = styles.begin(); s != styles.end(); s++) {
-        s->second->resumeSchedulerAndActions();
+        s->second->resume();
     }
 }
 

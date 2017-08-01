@@ -49,6 +49,8 @@ GameplayScene::init()
         return false;
     }
 
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("bullets/plist/bullet2.plist");
+
     this->initWithPhysics();                      //初始化物理世界
     Vect gravity(0, -1000.0f);                    //游戏场景的重力
     this->getPhysicsWorld()->setGravity(gravity); //设置重力
@@ -441,11 +443,14 @@ GameplayScene::initLauncher()
         _launcher->setPosition(x, y);
         mapLayer->addChild(_launcher); //不要忘记addChild
 
-        //        auto fe = FirstEmitter::create(_launcher);
-        //        mapLayer->addChild(fe);
-
-        // fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
+        auto emitter = Emitter::create();
+        _launcher->addChild(emitter);
+        emitter->playStyle(StyleType::SCATTER);
     }
+
+    // auto middle = Sprite::create("CloseNormal.png");
+    // middle->setPosition(Vec2(0.5, 0.5));
+    // mapLayer->addChild(middle);
 
     //创建BatchNode节点，成批渲染子弹
     bulletBatchNode = SpriteBatchNode::create("gameplayscene_for_emitter_test/bullet1.png");

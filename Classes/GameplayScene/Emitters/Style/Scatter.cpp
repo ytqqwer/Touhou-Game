@@ -4,55 +4,59 @@
 
 #include "Scatter.h"
 
-Scatter::Scatter(const StyleConfig& sc, Node* character)
+Scatter::Scatter(const StyleConfig& sc)
 {
     this->sc = sc;
-    this->character = character;
+    this->counter = 0;
 }
 
-Scatter::Scatter(Node* character)
+Scatter::Scatter()
 {
     //默认参数
-    this->character = character;
-    this->count = 0;
+    this->sc.style = StyleType::SCATTER;
+    this->sc.frequency = 1.0f;
+    this->sc.duration = -1.0;
+    this->sc.count = 3;
+    this->sc.number = 20;
+    this->sc.bc.name = "b2_2_1.png";
+    this->sc.startAngle = 90;
+    this->sc.endAngle = 180;
+
+    this->counter = 0;
 }
 
 void
 Scatter::createBullet()
 {
-    this->schedule(schedule_selector(Scatter::shootBullet));
+    this->schedule(schedule_selector(Scatter::shootBullet), 0.5f);
 }
 
 void
 Scatter::shootBullet(float dt)
 {
-    if (this->count == sc.count) {
-        return;
+    if (this->counter == sc.count) {
+        this->counter = 0;
+    } else {
+        this->counter++;
     }
 
     Size winSize = Director::getInstance()->getWinSize();
-    auto characterPos = character->getPosition();
-    float angle = (sc.endAngle - sc.startAngle) * Pi / (sc.number - 1);
+    float angle = CC_DEGREES_TO_RADIANS(sc.endAngle - sc.startAngle) / (sc.number - 1);
     float s = sqrt(winSize.width * winSize.width + winSize.height * winSize.height);
 
     for (int i = 0; i < sc.number; i++) {
 
-        Sprite* spriteBullet;
+        Sprite* spriteBullet = Bullet::create(sc.bc);
 
         bullets.pushBack(spriteBullet);
         spriteBullet->setAnchorPoint(Vec2(0.5, 0.0));
         spriteBullet->setRotation(-sc.startAngle - i * angle);
-        spriteBullet->setPosition(characterPos);
-        addChild(spriteBullet);
+        this->addChild(spriteBullet);
 
-        Vec2 deltaP = Vec2(s * cos((sc.startAngle + 0.5) * Pi + i * angle),
-                           s * sin((sc.startAngle + 0.5) * Pi + i * angle));
+        Vec2 deltaP = Vec2(s * cos(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle),
+                           s * sin(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle));
         auto actionMoveBy = MoveBy::create(6, deltaP);
         auto actionInOut = EaseInOut::create(actionMoveBy, 1);
-        // auto actionInOut = EaseExponentialInOut::create(actionMoveBy);
-        // auto actionInOut = EaseElasticInOut::create(actionMoveBy,0.8);
-        // auto actionInOut = EaseBounceInOut::create(actionMoveBy);
-        // auto actionInOut = EaseBackInOut::create(actionMoveBy);
         auto actionDone = CallFuncN::create(CC_CALLBACK_1(Scatter::removeBullet, this));
         Sequence* sequence = Sequence::create(actionInOut, actionDone, NULL);
         spriteBullet->runAction(sequence);

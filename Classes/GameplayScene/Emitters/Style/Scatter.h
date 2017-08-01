@@ -13,21 +13,21 @@ class Scatter : public EmitterStyle
 {
 
 public:
-    APP_CREATE_STYLE1(Scatter)
+    CREATE_FUNC(Scatter);
+    APP_CREATE_STYLE2(Scatter);
 
     /* 定制弹幕 */
-    Scatter(const StyleConfig& sc, Node* character);
+    Scatter(const StyleConfig& sc);
 
     /* 默认弹幕 */
-    Scatter(Node* character);
+    Scatter();
 
     /* 调度器 */
     void createBullet();
     void shootBullet(float dt);
 
 private:
-    Node* character;
-    int count;
+    int counter;
 };
 
 #endif

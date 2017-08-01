@@ -17,7 +17,6 @@ enum class StyleType
 
 struct BulletConfig
 {
-
     string name;
     int harm;
 };
@@ -29,18 +28,17 @@ struct StyleConfig
     StyleType style;
 
     /* 公共参数 */
-    bool defaultStyle; //默认style
-    int duration;      //持续时间
-    int frequency;     //频率
-    int count;         //子弹连发数
-    int number;        //条数
+    float duration;  //持续时间
+    float frequency; //频率
+    int count;       //子弹连发数
+    int number;      //条数
 
     /* 子弹参数 */
-    BulletConfig* bc;
+    BulletConfig bc;
 
     /* Scatter参数 */
-    int startAngle;
-    int endAngle;
+    int startAngle; //起始角度
+    int endAngle;   //终止角度
 };
 
 #endif

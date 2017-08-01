@@ -2,11 +2,11 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "GameplayScene/common.h"
 #include "GameplayScene/GameplayScene.h"
+#include "Emitters/Emitter.h"
 #include "GameplayScene/Enemy.h"
+#include "GameplayScene/common.h"
 #include "Layers/SettingsLayer.h"
-
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
 
@@ -48,6 +48,8 @@ GameplayScene::init()
     if (!Scene::init()) {
         return false;
     }
+    //初始化子弹素材
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("bullets/plist/bullet2.plist");
 
     //设置背景音乐
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
@@ -717,9 +719,9 @@ GameplayScene::initLauncher()
         _launcher->setPosition(x, y);
         mapLayer->addChild(_launcher); //不要忘记addChild
 
-        // auto fe = FirstEmitter::create(_launcher);
-        // mapLayer->addChild(fe);
-        // fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
+        // auto fe = Emitter::create(_launcher);
+        //_launcher->addChild(fe);
+        // fe->playStyle(StyleType::SCATTER);
     }
 }
 
