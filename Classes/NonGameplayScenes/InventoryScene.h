@@ -5,11 +5,21 @@
 #ifndef INVENTORY_SCENE_H
 #define INVENTORY_SCENE_H
 
+#include "GameData/Character.h"
+#include "GameData/Conversation.h"
+#include "GameData/GameData.h"
+#include "GameData/Item.h"
+#include "GameData/Location.h"
+#include "GameData/Round.h"
+#include "GameData/SpellCard.h"
 #include "TouhouGame.h"
 #include "cocos2d.h"
+#include "ui/CocosGUI.h"
 #include <string>
+#include <vector>
 
 USING_NS_CC;
+using namespace ui;
 
 class InventoryScene : public Scene
 {
@@ -18,6 +28,10 @@ public:
 
     virtual bool init();
     virtual void update(float dt);
+    void getNoramlitem(Ref*, Widget::TouchEventType);
+    void getStrengitem(Ref*, Widget::TouchEventType);
+    void getSpecialitem(Ref*, Widget::TouchEventType);
+    Sprite* getRect(double, double, double, double);
 
 private:
     InventoryScene();
@@ -27,6 +41,11 @@ private:
 
     // intorspection
     Size _visibleSize;
+    GameData* gamedata;
+    int sum;
+    int ceng = 1;
+    int userflag[100] = { 0 };
+    int typeflag[100] = { 0 };
 };
 
 #endif // INVENTORY_SCENE_H
