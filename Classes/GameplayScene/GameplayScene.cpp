@@ -3,7 +3,6 @@
 #endif
 
 #include "GameplayScene/GameplayScene.h"
-#include "Emitters/FirstEmitter.h"
 #include "GameplayScene/Enemy.h"
 #include "GameplayScene/common.h"
 #include "Layers/SettingsLayer.h"
@@ -330,8 +329,8 @@ GameplayScene::onContactGround(const PhysicsContact& contact)
             }
             // 当player碰到了地面刚体
             if (entityB->getTag() == groundTag) {
-                auto player = (Player*)entityA;
-                player->jumpCounts = 2;
+                // auto player = (Player*)entityA;
+                // player->jumpCounts = 2;
             }
             //其他
         }
@@ -717,9 +716,9 @@ GameplayScene::initLauncher()
         auto _launcher = Sprite::create("CloseNormal.png");
         _launcher->setPosition(x, y);
         mapLayer->addChild(_launcher); //不要忘记addChild
-        auto fe = FirstEmitter::create(_launcher);
-        mapLayer->addChild(fe);
-        fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
+        // auto fe = FirstEmitter::create(_launcher);
+        // mapLayer->addChild(fe);
+        // fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
     }
 }
 
@@ -739,8 +738,8 @@ GameplayScene::initEnemy()
         float x = dict["x"].asFloat();
         float y = dict["y"].asFloat();
 
-        //留空，创建敌人时，需要从地图中的对象上读出tag
-        Enemy* _enemy = Enemy::create("Enemy");
+        std::string tag = dict["tag"].asString();
+        Enemy* _enemy = Enemy::create(tag);
         _enemy->setPosition(x, y);
         mapLayer->addChild(_enemy);
         _enemy->startSchedule(curPlayer);
@@ -768,23 +767,5 @@ GameplayScene::update(float dt)
     Vec2 poi = curPlayer->getPosition();
     camera->setPosition(poi.x + 100, poi.y + 70); //移动摄像机
 
-    //留空，应该在主界面里更新角色状态，例如自动切换下落动画，而不应使用预设的动画播放顺序
-
     //留空，更新界面状态
-
-    //回复dash次数
-    if (p1Player->dashCounts < 2) {
-        if (p1Player->isScheduled(CC_SCHEDULE_SELECTOR(Player::regainDashCounts))) {
-            ;
-        } else {
-            p1Player->scheduleOnce(CC_SCHEDULE_SELECTOR(Player::regainDashCounts), 3.0f);
-        }
-    }
-    if (p2Player->dashCounts < 2) {
-        if (p2Player->isScheduled(CC_SCHEDULE_SELECTOR(Player::regainDashCounts))) {
-            ;
-        } else {
-            p2Player->scheduleOnce(CC_SCHEDULE_SELECTOR(Player::regainDashCounts), 3.0f);
-        }
-    }
 }

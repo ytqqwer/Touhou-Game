@@ -100,8 +100,11 @@ AnimateManager::addDashCache(const std::string& tag)
 std::string
 AnimateManager::addEnemyTexture(const std::string& tag)
 {
-    if (tag == "Enemy") {
+    if (tag == "opossum") {
         return "gameplayscene/Enemy/opossum-1.png";
+    }
+    if (tag == "frog") {
+        return "gameplayscene/Enemy/frog-idle-1.png";
     }
 }
 
@@ -110,12 +113,19 @@ AnimateManager::addEnemyCache(const std::string& tag)
 {
     Animation* enemyAnimation = Animation::create();
 
-    if (tag == "Enemy") {
+    if (tag == "opossum") {
         for (int i = 1; i <= 6; i++)
             enemyAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/opossum-" +
                                                    std::to_string(i) + ".png");
         enemyAnimation->setDelayPerUnit(0.15f);
-        AnimationCache::getInstance()->addAnimation(enemyAnimation, "EnemyAnimation");
+        AnimationCache::getInstance()->addAnimation(enemyAnimation, "OpossumAnimation");
+    }
+    if (tag == "frog") {
+        for (int i = 1; i <= 4; i++)
+            enemyAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/frog-idle-" +
+                                                   std::to_string(i) + ".png");
+        enemyAnimation->setDelayPerUnit(0.15f);
+        AnimationCache::getInstance()->addAnimation(enemyAnimation, "FrogAnimation");
     }
 
     return enemyAnimation;

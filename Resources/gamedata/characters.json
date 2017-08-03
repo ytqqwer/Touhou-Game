@@ -6,10 +6,12 @@
    "protrait" : "gamedata/characters/reimu_pro.png",
    "preview" : ["place_holder.png"],
    "healthPointBase" : 100,
-   "manaBase" : 120,
+   "manaBase" : 140,
+   "walkMaxSpeed" : 400,
    "walkSppedBase" : 20,
-   "walkAccelerationBase" : 20,
-   "dashAccelerationBase" : 150,
+   "walkAccelerationTimeBase" : 1,
+   "walkAccelerationBase" : 30,
+   "dashAccelerationBase" : 120,
    "attackList" : [
        {
          "tag" : "reimu focus attack 1",
@@ -41,10 +43,12 @@
    "protrait" : "gamedata/characters/marisa_pro.png",
    "preview" : ["place_holder.png"],
    "healthPointBase" : 120,
-   "manaBase" : 100,
-   "walkSppedBase" : 25,
-   "walkAccelerationBase" : 25,
-   "dashAccelerationBase" : 120,
+   "manaBase" : 120,
+   "walkMaxSpeed" : 500,
+   "walkSppedBase" : 30,
+   "walkAccelerationTimeBase" : 1,
+   "walkAccelerationBase" : 20,
+   "dashAccelerationBase" : 200,
    "attackList" : [
        {
          "tag" : "marisa focus attack 1",
@@ -77,9 +81,11 @@
    "preview" : ["place_holder.png"],
    "healthPointBase" : 100,
    "manaBase" : 100,
+   "walkMaxSpeed" : 400,
    "walkSppedBase" : 20,
+   "walkAccelerationTimeBase" : 1,
    "walkAccelerationBase" : 20,
-   "dashAccelerationBase" : 100,
+   "dashAccelerationBase" : 150,
    "attackList" : [
        {
          "tag" : "alice focus attack 1",

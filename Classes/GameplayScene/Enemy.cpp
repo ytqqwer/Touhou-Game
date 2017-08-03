@@ -103,5 +103,5 @@ Enemy::startSchedule(Player*& player)
 {
     curPlayer = &player;
 
-    this->schedule(CC_SCHEDULE_SELECTOR(Enemy::AI));
+    this->schedule(CC_SCHEDULE_SELECTOR(Enemy::AI), 0.05);
 }

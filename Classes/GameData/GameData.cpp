@@ -256,11 +256,16 @@ from_json(const json& j, Character& c)
 
     c.healthPointBase = it->at("healthPointBase");
     c.manaBase = it->at("manaBase");
+
     c.walkSpeedBase = it->at("walkSppedBase");
+    c.walkMaxSpeed = it->at("walkMaxSpeed");
+    c.walkAccelerationTimeBase = it->at("walkAccelerationTimeBase");
     c.walkAccelerationBase = it->at("walkAccelerationBase");
+
     c.dashAccelerationBase = it->at("dashAccelerationBase");
 
     /* 2. savesDom 中的信息 */
+    //属性增量没有必要存在存档中
 
     for (it = cachedSave.at("characterList").begin(); it != cachedSave.at("characterList").end();
          ++it) {

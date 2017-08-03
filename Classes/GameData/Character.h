@@ -46,12 +46,14 @@ struct Character
     int manaInc;
 
     int walkSpeedBase;
-    int walkSpeedInc;
-
+    int walkMaxSpeed;
+    float walkAccelerationTimeBase;
     float walkAccelerationBase;
-    float walkAccelerationInc;
 
     float dashAccelerationBase;
+
+    int walkSpeedInc;
+    float walkAccelerationInc;
     float dashAccelerationInc;
 };
 

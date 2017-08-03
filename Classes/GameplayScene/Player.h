@@ -7,11 +7,9 @@
 
 #include "GameData/Character.h"
 #include "GameData/Item.h"
+#include "GameData/SpellCard.h"
 #include "GameplayScene/AnimateManager.h"
 #include "cocos2d.h"
-
-#define MAX_SPEED 400.0
-#define ACCELERATE_TIME 1.0
 
 using namespace cocos2d;
 
@@ -55,8 +53,20 @@ public:
     void ShootBullet(float dt);
     void removeBullet(Node* pNode);
 
+    void updateStatus(float dt);
+
 public:
-    String playerDirection = "right";
+    std::string playerDirection = "right";
+    int healthPointBase;
+    int manaBase;
+
+    int walkSpeedBase;
+    int walkMaxSpeed;
+    float walkAccelerationTimeBase;
+    float walkAccelerationBase;
+
+    float dashAccelerationBase;
+
     int jumpCounts = 2;
     int dashCounts = 2;
 
@@ -65,6 +75,7 @@ public:
     Character::Attack type2;
 
     vector<Item> itemList;
+    vector<SpellCard> spellCardList;
 
     Sprite* playerSprite;
 

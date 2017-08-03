@@ -1,8 +1,12 @@
 [
     {
-        "tag": "Enemy",
+        "tag": "opossum",
         "name": "opossum",
         "healthPoint": 200
+    },
+    {
+        "tag": "frog",
+        "name": "frog",
+        "healthPoint": 100
     }
-    
 ]

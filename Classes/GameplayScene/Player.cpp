@@ -27,8 +27,18 @@ Player::init(std::string tag)
     // 设置道具
     itemList = GameData::getInstance()->getCharacterItemList(tag);
 
+    // 设置符卡
+    spellCardList = GameData::getInstance()->getCharacterSpellCardList(tag);
+
     //设置属性值
-    //留空
+    Character character = GameData::getInstance()->getCharacterByTag(tag);
+    this->healthPointBase = character.healthPointBase;
+    this->manaBase = character.manaBase;
+    this->walkSpeedBase = character.walkSpeedBase;
+    this->walkMaxSpeed = character.walkMaxSpeed;
+    this->walkAccelerationTimeBase = character.walkAccelerationTimeBase;
+    this->walkAccelerationBase = character.walkAccelerationBase;
+    this->dashAccelerationBase = character.dashAccelerationBase;
 
     //设置刚体
     auto body = PhysicsBody::createBox(Size(50, 75));
@@ -57,6 +67,8 @@ Player::init(std::string tag)
         SpriteBatchNode::create("gameplayscene/bullet1.png"); //创建BatchNode节点，成批渲染子弹
     this->addChild(bulletBatchNode);
 
+    this->schedule(CC_SCHEDULE_SELECTOR(Player::updateStatus));
+
     return true;
 }
 
@@ -66,20 +78,7 @@ Player::playerRun(float dt)
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
 
-    if (this->playerDirection.compare("right")) {
-        Vec2 impluse = Vec2(0, 0);
-        // Vec2 impluse = Vec2(-20.0f, 0.0f);
-        // body->applyForce(Vec2(-100.0f, 0.0f));
-
-        if (velocity.x > 10) {
-            body->setVelocity(Vec2(-100, velocity.y));
-        }
-
-        if (velocity.x > -MAX_SPEED) {
-            impluse.x = -std::min(MAX_SPEED / ACCELERATE_TIME * dt, MAX_SPEED + velocity.x);
-        }
-        body->applyImpulse(impluse);
-    } else {
+    if (this->playerDirection == "right") {
         Vec2 impluse = Vec2(0, 0);
         // Vec2 impluse = Vec2(20.0f, 0.0f);
         // body->applyForce(Vec2(100.0f,0.0f));
@@ -88,8 +87,23 @@ Player::playerRun(float dt)
             body->setVelocity(Vec2(100, velocity.y));
         }
 
-        if (velocity.x < MAX_SPEED) {
-            impluse.x = std::min(MAX_SPEED / ACCELERATE_TIME * dt, MAX_SPEED - velocity.x);
+        if (velocity.x < walkMaxSpeed) {
+            impluse.x =
+                std::min(walkMaxSpeed / walkAccelerationTimeBase * dt, walkMaxSpeed - velocity.x);
+        }
+        body->applyImpulse(impluse);
+    } else {
+        Vec2 impluse = Vec2(0, 0);
+        // Vec2 impluse = Vec2(-20.0f, 0.0f);
+        // body->applyForce(Vec2(-100.0f, 0.0f));
+
+        if (velocity.x > 10) {
+            body->setVelocity(Vec2(-100, velocity.y));
+        }
+
+        if (velocity.x > -walkMaxSpeed) {
+            impluse.x =
+                -std::min(walkMaxSpeed / walkAccelerationTimeBase * dt, walkMaxSpeed + velocity.x);
         }
         body->applyImpulse(impluse);
     }
@@ -135,12 +149,11 @@ Player::playerDash()
     //留空，将y轴速度短暂锁定为0，可以使角色不受重力
     //留空，对于不同的角色机制应有不同
 
-    if (this->playerDirection.compare("right")) //当比对相等时返回false,wtf???
-    {
-        Vec2 impluse = Vec2(-350.0f, 0.0f);
+    if (this->playerDirection == "right") {
+        Vec2 impluse = Vec2(dashAccelerationBase, 0.0f);
         body->applyImpulse(impluse);
     } else {
-        Vec2 impluse = Vec2(350.0f, 0.0f);
+        Vec2 impluse = Vec2(-dashAccelerationBase, 0.0f);
         body->applyImpulse(impluse);
     }
 
@@ -289,7 +302,7 @@ Player::ShootBullet(float dt)
     auto actionMove = MoveBy::create(realFlyDuration, Point(winSize.width, 0));
     auto fire1 = actionMove;
 
-    if (this->playerDirection.compare("right")) {
+    if (this->playerDirection == "left") {
         fire1 = actionMove->reverse();
     }
 
@@ -312,4 +325,20 @@ Player::removeBullet(Node* pNode)
     Sprite* bullet = (Sprite*)pNode;
     this->bulletBatchNode->removeChild(bullet, true);
     vecBullet.eraseObject(bullet);
+}
+
+void
+Player::updateStatus(float dt)
+{
+
+    //留空，应该在主界面里更新角色状态，例如自动切换下落动画，而不应使用预设的动画播放顺序
+
+    //回复dash次数
+    if (this->dashCounts < 2) {
+        if (this->isScheduled(CC_SCHEDULE_SELECTOR(Player::regainDashCounts))) {
+            ;
+        } else {
+            this->scheduleOnce(CC_SCHEDULE_SELECTOR(Player::regainDashCounts), 3.0f);
+        }
+    }
 }

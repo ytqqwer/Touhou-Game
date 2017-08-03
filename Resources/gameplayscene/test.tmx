@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="70" tilewidth="16" tileheight="16" nextobjectid="108">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="70" tilewidth="16" tileheight="16" nextobjectid="129">
  <tileset firstgid="1" name="jungle tileset" tilewidth="16" tileheight="16" tilecount="741" columns="39">
   <image source="jungle tileset.png" trans="000000" width="624" height="304"/>
  </tileset>
@@ -10,10 +10,6 @@
   <image source="props.png" trans="00788c" width="416" height="224"/>
  </tileset>
  <objectgroup name="physics">
-  <object id="71" x="32" y="864" width="528" height="256"/>
-  <object id="72" x="560" y="896" width="544" height="224"/>
-  <object id="73" x="864" y="784" width="240" height="112"/>
-  <object id="75" x="1104" y="992" width="1296" height="132"/>
   <object id="76" x="1828" y="1404"/>
   <object id="77" x="688" y="496">
    <polyline points="0,0 128,0"/>
@@ -21,41 +17,78 @@
   <object id="78" x="864" y="608">
    <polyline points="0,0 128,0"/>
   </object>
-  <object id="82" x="368" y="368" width="80" height="176"/>
-  <object id="83" x="448" y="432" width="176" height="112"/>
-  <object id="84" x="0" y="368" width="132" height="32"/>
-  <object id="85" x="128" y="368">
-   <polyline points="0,0 112,0"/>
-  </object>
-  <object id="86" x="272" y="368">
-   <polyline points="0,0 96,0"/>
-  </object>
-  <object id="87" x="128" y="404">
-   <polygon points="0,0 -100,96 -128,8"/>
-  </object>
   <object id="93" x="0" y="496" width="32" height="624"/>
-  <object id="97" x="2348" y="4" width="52" height="984"/>
   <object id="98" x="4" y="0" width="20" height="368"/>
   <object id="99" x="24" y="0" width="2320" height="48"/>
   <object id="105" x="1456" y="672">
    <polyline points="0,0 160,0"/>
   </object>
-  <object id="106" x="364" y="368" width="4" height="16"/>
+  <object id="112" x="28" y="368">
+   <polyline points="0,0 180,0"/>
+  </object>
+  <object id="113" x="276" y="368">
+   <polyline points="0,0 172,0"/>
+  </object>
+  <object id="115" x="44" y="488">
+   <polygon points="0,0 84,-96 -24,-108"/>
+  </object>
+  <object id="116" x="448" y="432">
+   <polyline points="0,0 176,0"/>
+  </object>
+  <object id="118" x="32" y="864">
+   <polyline points="0,0 528,0"/>
+  </object>
+  <object id="119" x="560" y="896">
+   <polyline points="0,0 304,0"/>
+  </object>
+  <object id="120" x="864" y="784">
+   <polyline points="0,0 240,0"/>
+  </object>
+  <object id="121" x="1104" y="992">
+   <polyline points="0,0 1296,0"/>
+  </object>
+  <object id="124" x="864" y="784" width="240" height="212"/>
+  <object id="125" x="548" y="868" width="12" height="28"/>
+  <object id="126" x="368" y="372" width="76" height="172"/>
+  <object id="127" x="444" y="436" width="180" height="108"/>
+  <object id="128" x="2348" y="0" width="52" height="992"/>
  </objectgroup>
  <objectgroup name="launcher">
   <object id="104" x="1632" y="396" width="24" height="24"/>
  </objectgroup>
  <objectgroup name="enemy">
-  <object id="64" x="1576" y="884" width="48" height="44"/>
-  <object id="65" x="1796" y="888" width="52" height="40"/>
-  <object id="66" x="1388" y="884" width="48" height="44"/>
+  <object id="64" x="1576" y="884" width="48" height="44">
+   <properties>
+    <property name="tag" value="opossum"/>
+   </properties>
+  </object>
+  <object id="65" x="1796" y="888" width="52" height="40">
+   <properties>
+    <property name="tag" value="opossum"/>
+   </properties>
+  </object>
+  <object id="66" x="1388" y="884" width="48" height="44">
+   <properties>
+    <property name="tag" value="frog"/>
+   </properties>
+  </object>
+  <object id="109" x="2012" y="884" width="40" height="32">
+   <properties>
+    <property name="tag" value="opossum"/>
+   </properties>
+  </object>
+  <object id="110" x="2172" y="884" width="40" height="36">
+   <properties>
+    <property name="tag" value="frog"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="player">
   <object id="25" name="birthPoint" x="224" y="732" width="24" height="24"/>
  </objectgroup>
  <layer name="ground" width="150" height="70">
   <data encoding="base64" compression="zlib">
-   eJzt3Gtu00AUhuGJN1FgBbQg2AJ/odByESyFm8pSKK0AqQtpy30vQFkAZ4StDFM79chzfGbS95E+RUmsUSJ/mkyc2M4BAAAAAAAAAAAAAAAAAADUa29h/QoAAAAAYLpNyZbkRpvw/k3JXfnuc0+yLbkveSDZkewG34mGtrkejfdt3rcGQ48G8lhyOHHsXcnDYLzfE8dDPV4O5I7MN58njv1c8qId75X716vvkh8Tx70Ix5fsaXXKe+vO9+pM8ifD2CibVqc8/zkY9uqqjH1tsVzLxYnXdqiXVqe8sFfvm+G1XN/a7knG14H5aXXKC9dXKfFz2+vMrwXzOnA6nfLC+Sq1V1O/i8LWLfl8ut3ojM18dXlp9sp/H9yXvEvMgWO+qp1mr44lJ5LT9vainLb55HQ+lzEfzV7h8qJX0ECvoIFeQQO9ggZ6BQ30ChroFTTQK2iovVf8N7RMNfWKDtWjpl6hHvQKGugVNNAraFjXXn11y/N7NqN05/yEz3MeUF7r2qtfbnmuNecBzW+de5X633r+V58Pvfq/V8xXeexJp57RK3qVme/Vm2a5jvXprjkU34bXIOpu4zVx37Zx/HY77fn03W3O9fIXR6+s+fPbPzTpa9yc6a5hdJbpPf109Mpa6jmjGumuCdI31/U9Fs+R8TGEDdnmyoJeWbLulE/KNUFSctTQKyvWnSopKb3ivxWrWe/LksJ8lY/1viwp9Cof631ZUuhVPtb7sqQ8bY/lDf1everxsc+PyVaQ8BqZ8W/mffeHfl8fs/2Y1zV2O+t9WVK6Y3mr8nHgcatjf6XGel8SQgghhBBCCLHJX326d+c=
+   eJzt3Gtu00AUhuGJN8FlBb0g2AJ/aWkpIFgKUFSWAi2iSCwEyn0vQFkAZ4StDIOdeuQ5PjPp+0ifoiTWKJE/TSZObOcAAAAAAAAAAAAAAAAAAADqdbSwfgUAAAAAMN2mZEuy3Sa8f0NyR7777Eh2JXclez3fhfq22ZdsRON9nectoQD3B/JA8nri2PckB8F4vyaOh3o8G8htmW8+TRz7ieRpO96h+9urb5LvE8e9CMeX7Gl1ynvp/u/VueR3hrFRNq1Oef5zMOzVNRn7+mK5losTr+1QL61OeWGv3jTDa7m+td3DjK8D89PqlBeur1Li57bnmV8L5nXidDrlhfNVaq+mfheFrZvy+XSr0Rmb+ery0uyV/z74SnKcmBPHfFU7zV69l3yQnLW3F+WszUen87mM+Wj2CpcXvYIGegUN9Aoa6BU00CtooFfQQK+ggV5BQ+294r+hZaqpV3SoHjX1CvWgV9BAr6CBXkHDuvbqi1ue37MZpTvnJ3ye84DyWtde/XTLc605D2h+69yr1P/W87/6fOjVv71ivsrjSDr1mF7Rq8x8r140y3WsT3fNofg2vAZRdxuvifu2jeO322/Pp+9uc66XPzt6Zc2f337apK9xc6a7htF5pvf0w9Era6nnjGqkuyZI31zX91g8R8bHEK7INlcX9MqSdad8Uq4JkpJ3Db2yYt2pkpLSK/5bsZr1viwpzFf5WO/LkkKv8rHelyWFXuVjvS9LyqP2WN7Q79WrHh/7/JhsBQmvkRn/Zt53f+j39THbj3ldY7ez3pclpTuWtypvBx63OvZXaqz3JSGEEEIIIYQQm/wBMHR3SA==
   </data>
  </layer>
  <layer name="props-1" width="150" height="70">
