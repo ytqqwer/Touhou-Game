@@ -159,6 +159,7 @@ public:
     vector<Item> getItemListInStore(const string& storeTag);
     vector<pair<SpellCard, int>> getAvailableSpellCardList();
     void buyItem(const string& itemTag);
+    void buySpellCard(const string& cardTag);
 
     ////////////////////////////////////////////////////////////////////////////////
     // 对话/通关奖励 Award

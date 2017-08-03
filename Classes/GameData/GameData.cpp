@@ -1137,7 +1137,26 @@ GameData::getAvailableSpellCardList()
 void
 GameData::buyItem(const string& itemTag)
 {
-    // TODO
+    json& availItemListDom = cachedSave["availableItemList"];
+
+    /* 注意：GameData.h 文件中注释说 `符卡和道具本身并没有数量的概念，
+     *  全部独一无二，因此数量是没有意义的属性'，
+     *  所以，此处也假定游戏逻辑不会将已经拥有的道具再购买一次
+     *
+     * 若修正 GameData.h 文件中注释所说的那个 `与设定不符的地方'，
+     *  不要忘记修改此处并删除此注释
+     */
+    json newItemRecord = { { "tag", itemTag }, { "amount", 1 } };
+    availItemListDom.push_back(newItemRecord);
+}
+
+void
+GameData::buySpellCard(const string& cardTag)
+{
+    json& availSpellCardListDom = cachedSave["availableSpellCardList"];
+
+    json newCardRecord = { { "tag", cardTag }, { "amount", 1 } };
+    availSpellCardListDom.push_back(newCardRecord);
 }
 
 void
