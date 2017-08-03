@@ -3,10 +3,10 @@
 #endif
 
 #include "GameplayScene/GameplayScene.h"
+#include "GameplayScene/Emitters/Emitter.h"
 #include "GameplayScene/Enemy.h"
 #include "GameplayScene/common.h"
 #include "Layers/SettingsLayer.h"
-
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
 
@@ -48,6 +48,8 @@ GameplayScene::init()
     if (!Scene::init()) {
         return false;
     }
+    //初始化子弹素材
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("bullets/plist/bullet2.plist");
 
     //设置背景音乐
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();

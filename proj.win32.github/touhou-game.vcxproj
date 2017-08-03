@@ -103,7 +103,7 @@
     <CustomBuildStep>
       <Command>
         if not exist "$(OutDir)" mkdir "$(OutDir)"
-        del /Q /F $(OutDir)Bullets $(OutDir)InventoryScene $(OutDir)conversation_layer $(OutDir)equipscene $(OutDir)fonts $(OutDir)gamedata $(OutDir)gameplayscene $(OutDir)homescene $(OutDir)kourindouscene $(OutDir)logo $(OutDir)mainmenuscene $(OutDir)roundselectscene $(OutDir)settings_layer
+        del /Q /F $(OutDir)Bullets $(OutDir)InventoryScene $(OutDir)conversation_layer $(OutDir)equipscene $(OutDir)fonts $(OutDir)gamedata $(OutDir)gameplayscene $(OutDir)gameplayscene_for_emitter_test $(OutDir)homescene $(OutDir)kourindouscene $(OutDir)logo $(OutDir)mainmenuscene $(OutDir)roundselectscene $(OutDir)settings_layer
         xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
       </Command>
       <Outputs>$(TargetName).cab</Outputs>
@@ -180,9 +180,8 @@
     <ClCompile Include="..\Classes\GameplayScene\AnimateManager.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\EmitterStyle.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitters.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\FirstEmitter.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.cpp" />
@@ -235,9 +234,10 @@
     <ClInclude Include="..\Classes\GameplayScene\Player.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Bullet.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\EmitterStyle.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitters.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\FirstEmitter.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitter.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\StyleConfig.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\EmitterStyle.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.h" />

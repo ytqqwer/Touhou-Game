@@ -6,25 +6,26 @@
 #include "EmitterTestEnemy.h"
 #include "Layers/SettingsLayer.h"
 
-#include "../FirstEmitter.h"
+#include "../Emitter.h"
 #include "common.h"
 
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
 
-namespace EmitterTest{
+namespace EmitterTest {
 
 #define PTM_RATIO 1
 
-const std::string GameplayScene::TAG{ "GameplayScene" };
+const std::string GameplayScene::TAG{ "gameplayscene_for_emitter_test" };
 
 void
 GameplayScene::onEnter()
 {
     Scene::onEnter();
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-    SimpleAudioEngine::getInstance()->playBackgroundMusic("gameplayscene/bgm001.mp3",
-                                                          true); //开启循环
+    SimpleAudioEngine::getInstance()->playBackgroundMusic(
+        "gameplayscene_for_emitter_test/bgm001.mp3",
+        true); //开启循环
 }
 
 void
@@ -47,6 +48,8 @@ GameplayScene::init()
     if (!Scene::init()) {
         return false;
     }
+
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("bullets/plist/bullet2.plist");
 
     this->initWithPhysics();                      //初始化物理世界
     Vect gravity(0, -1000.0f);                    //游戏场景的重力
@@ -88,7 +91,7 @@ GameplayScene::initBackGround()
 {
     auto backGroundLayer = Layer::create();
 
-    Sprite* bg = Sprite::create("gameplayscene/gbg.png");
+    Sprite* bg = Sprite::create("gameplayscene_for_emitter_test/gbg.png");
     bg->setAnchorPoint(Point::ZERO);
     bg->setPosition(Point::ZERO);
     bg->setScale(1.8);
@@ -102,7 +105,7 @@ void
 GameplayScene::initMap()
 {
     mapLayer = Layer::create();
-    _map = TMXTiledMap::create("gameplayscene/test.tmx");
+    _map = TMXTiledMap::create("gameplayscene_for_emitter_test/test.tmx");
     _map->setScale(1.0f);
     mapLayer->addChild(_map);
     this->addChild(mapLayer, 0);
@@ -261,7 +264,7 @@ GameplayScene::onContactBullet(const PhysicsContact& contact)
         if (nodeA->getTag() == 102) {
             ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
             ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
-                "gameplayscene/smallOrb000.png"));
+                "gameplayscene_for_emitter_test/smallOrb000.png"));
             // auto pos =
             // mapLayer->convertToNodeSpace(nodeA->getPosition());//粒子效果添加存在相对坐标问题
             // ps->setPosition(pos);
@@ -278,7 +281,7 @@ GameplayScene::onContactBullet(const PhysicsContact& contact)
 
             ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
             ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
-                "gameplayscene/smallOrb000.png"));
+                "gameplayscene_for_emitter_test/smallOrb000.png"));
             // auto pos = mapLayer->convertToNodeSpace(nodeB->getPosition());
             // ps->setPosition(pos);
             ps->setPosition(nodeB->getPosition());
@@ -309,7 +312,7 @@ GameplayScene::initCtrlPanel()
     set_button->setScale(1.5);
     set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            auto layer = SettingsLayer::create("GameplayScene");
+            auto layer = SettingsLayer::create("gameplayscene_for_emitter_test");
             this->addChild(layer, 1000); //最大优先级
         }
     });
@@ -440,14 +443,17 @@ GameplayScene::initLauncher()
         _launcher->setPosition(x, y);
         mapLayer->addChild(_launcher); //不要忘记addChild
 
-        auto fe = FirstEmitter::create(_launcher);
-        mapLayer->addChild(fe);
-
-        fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
+        auto emitter = Emitter::create();
+        _launcher->addChild(emitter);
+        emitter->playStyle(StyleType::SCATTER);
     }
 
+    // auto middle = Sprite::create("CloseNormal.png");
+    // middle->setPosition(Vec2(0.5, 0.5));
+    // mapLayer->addChild(middle);
+
     //创建BatchNode节点，成批渲染子弹
-    bulletBatchNode = SpriteBatchNode::create("gameplayscene/bullet1.png");
+    bulletBatchNode = SpriteBatchNode::create("gameplayscene_for_emitter_test/bullet1.png");
     mapLayer->addChild(bulletBatchNode);
 
     //每隔0.4S调用一次发射子弹函数
