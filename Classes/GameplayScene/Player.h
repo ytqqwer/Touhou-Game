@@ -13,6 +13,8 @@
 
 using namespace cocos2d;
 
+typedef enum { Stand = 1, Run = 2, Jump = 3, Fall = 4, Dash = 5, Default = 6 } PlayerActionState;
+
 class Player : public Node
 {
 public:
@@ -37,6 +39,7 @@ public:
     void playerDash();
 
     void resetAction(Node* node);
+    void autoSwitchAction();
     void regainDashCounts(float dt);
 
     //切换攻击方式
@@ -79,11 +82,19 @@ public:
 
     Sprite* playerSprite;
 
+    PhysicsBody* body;
+
+    PlayerActionState curAction = PlayerActionState::Default;
+
 private:
     AnimateManager* animateManager;
     std::string playerTextureName;
+    Animation* standAnimation;
     Animation* runAnimation;
+    Animation* preJumpAnimation;
     Animation* jumpAnimation;
+    Animation* preFallAnimation;
+    Animation* fallAnimation;
     Animation* dashAnimation;
 };
 
