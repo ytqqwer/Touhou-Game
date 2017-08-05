@@ -1,9 +1,9 @@
-﻿#ifdef WIN32
+#ifdef WIN32
 #pragma execution_character_set("utf-8")
 #endif
 
-#ifndef INVENTORY_SCENE_H
-#define INVENTORY_SCENE_H
+#ifndef ARMS_STORE_SCENE_H
+#define ARMS_STORE_SCENE_H
 
 #include "GameData/Character.h"
 #include "GameData/Conversation.h"
@@ -17,33 +17,26 @@
 #include "ui/CocosGUI.h"
 #include <string>
 #include <vector>
-
-USING_NS_CC;
 using namespace ui;
 
-class InventoryScene : public Scene
+USING_NS_CC;
+
+class ArmsStorePurchaseScene : public Scene
 {
 public:
-    APP_SCENE_CREATE_FUNC(InventoryScene, TAG);
+    APP_SCENE_CREATE_FUNC(ArmsStorePurchaseScene, TAG);
 
     virtual bool init();
     virtual void update(float dt);
-    void getitems(Ref*, Widget::TouchEventType, int n, float arrow_y);
-    Sprite* getRect(double, double, double, double);
 
 private:
-    InventoryScene();
+    ArmsStorePurchaseScene();
 
 private:
     static const std::string TAG;
 
     // intorspection
     Size _visibleSize;
-    GameData* gamedata;
-    int sum;
-    string userflag[100];
-    int typeflag[100] = { 0 };
-    float arrow_y;
 };
 
-#endif // INVENTORY_SCENE_H
+#endif
