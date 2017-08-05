@@ -26,8 +26,9 @@ public:
 
 private:
     Node* target;
-    Vec2 targetPos;
-    int counter;
+    Vec2 targetPos; //角色位置
+    float angle;    //夹角
+    int counter;    //计数器
 };
 
 #endif // !ODDEVEN_H

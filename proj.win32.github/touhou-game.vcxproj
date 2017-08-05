@@ -182,7 +182,7 @@
 
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp" />
-	<ClCompile Include="..\Classes\GameplayScene\Emitters\OddEven.cpp" />
+	<ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.cpp" />
