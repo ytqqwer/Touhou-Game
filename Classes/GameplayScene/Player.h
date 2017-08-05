@@ -13,6 +13,8 @@
 
 using namespace cocos2d;
 
+typedef enum { RIGHT = 1, LEFT = 2 } PlayerDirection;
+
 typedef enum { Stand = 1, Run = 2, Jump = 3, Fall = 4, Dash = 5, Default = 6 } PlayerActionState;
 
 class Player : public Node
@@ -38,8 +40,11 @@ public:
     void playerJump();
     void playerDash();
 
+    //动作切换
     void resetAction(Node* node);
     void autoSwitchAction();
+
+    //状态回复
     void regainDashCounts(float dt);
 
     //切换攻击方式
@@ -50,40 +55,50 @@ public:
     void useItem(const std::string& itemTag);
     void useSpellCard(const std::string& cardTag);
 
+    //更新角色状态
+    void updateStatus(float dt);
+
     //暂时的发射子弹的函数
     Vector<Sprite*> vecBullet;        //子弹容器
     SpriteBatchNode* bulletBatchNode; //批次渲染节点
     void ShootBullet(float dt);
     void removeBullet(Node* pNode);
 
-    void updateStatus(float dt);
-
 public:
-    std::string playerDirection = "right";
+    Sprite* playerSprite;
+    PhysicsBody* body;
+    PlayerDirection playerDirection = PlayerDirection::RIGHT;
+
+    //生命值
     int healthPointBase;
+    //灵力值
     int manaBase;
 
+    //行走相关
     int walkSpeedBase;
     int walkMaxSpeed;
     float walkAccelerationTimeBase;
     float walkAccelerationBase;
 
+    // dash相关
     float dashAccelerationBase;
 
+    //动作次数上限
     int jumpCounts = 2;
     int dashCounts = 2;
 
+    //攻击方式
     std::string currentAttackType;
     Character::Attack type1;
     Character::Attack type2;
 
+    //道具列表
     vector<Item> itemList;
+
+    //符卡列表
     vector<SpellCard> spellCardList;
 
-    Sprite* playerSprite;
-
-    PhysicsBody* body;
-
+    //当前动作状态
     PlayerActionState curAction = PlayerActionState::Default;
 
 private:

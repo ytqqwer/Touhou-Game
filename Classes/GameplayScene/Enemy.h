@@ -11,6 +11,8 @@
 
 using namespace cocos2d;
 
+typedef enum { Patrol = 1, Alert = 2 } EnemyState;
+
 class Enemy : public Node
 {
 public:
@@ -37,12 +39,14 @@ public:
     void decreaseHp(Node* node);
     void startSchedule(Player*& player);
 
+public:
     Player** curPlayer;
 
     int hp;
     bool _canJump = false;
-    // bool _isAir = true;
-    // bool _isLand = false;
+
+    PhysicsBody* body;
+    EnemyState curState = EnemyState::Patrol;
 
 private:
     AnimateManager* animateManager;

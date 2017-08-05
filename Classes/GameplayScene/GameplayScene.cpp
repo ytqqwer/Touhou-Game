@@ -59,10 +59,10 @@ GameplayScene::init()
     gameData = GameData::getInstance();
     visibleSize = Director::getInstance()->getVisibleSize();
 
-    this->initWithPhysics();                      //初始化物理世界
-    Vect gravity(0, -gameGravity);                //游戏场景的重力
-    this->getPhysicsWorld()->setGravity(gravity); //设置重力
-    // this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL); //调试模式看包围盒
+    this->initWithPhysics();                                                //初始化物理世界
+    Vect gravity(0, -gameGravity);                                          //游戏场景的重力
+    this->getPhysicsWorld()->setGravity(gravity);                           //设置重力
+    this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL); //调试模式看包围盒
 
     // 初始化地图背景层
     initBackGround();
@@ -261,122 +261,6 @@ GameplayScene::createPhysical(float scale)
             sprite->setPosition(x + width / 2.0f, y + height / 2.0f);
             sprite->setPhysicsBody(_pBody);
             mapLayer->addChild(sprite);
-        }
-    }
-    return true;
-}
-
-//处理和地形之间的碰撞
-bool
-GameplayScene::onContactGround(const PhysicsContact& contact)
-{
-    //留空，需要使水平接触墙壁时不做什么处理，暂时不考虑“蹬墙跳”
-
-    auto nodeA = contact.getShapeA()->getBody()->getNode();
-    auto nodeB = contact.getShapeB()->getBody()->getNode();
-    if (nodeA && nodeB) {
-        auto tagA = nodeA->getTag();
-        auto tagB = nodeB->getTag();
-        // entityA和entityB对nodeA和nodeB进行映射
-        Node* entityA;
-        Node* entityB;
-
-        // enemy相关
-        if (tagA == enemyTag || tagB == enemyTag) {
-            if (tagA == enemyTag) {
-                entityA = nodeA;
-                entityB = nodeB;
-            } else if (tagB == enemyTag) {
-                entityA = nodeB;
-                entityB = nodeA;
-            }
-
-            // 当enemy碰到了折线刚体
-            if (entityB->getTag() == polylineTag) {
-                //当冲量方向向上时可以穿过折现刚体
-                if (contact.getContactData()->normal.y > 0) {
-                    auto enemy = (Enemy*)entityA;
-                    enemy->_canJump = true;
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            // 当enemy碰到了地面刚体
-            if (entityB->getTag() == groundTag) {
-                auto enemy = (Enemy*)entityA;
-                enemy->_canJump = true;
-            }
-            //其他
-        }
-        // player相关
-        if (tagA == playerTag || tagB == playerTag) {
-            if (nodeA->getTag() == playerTag) {
-                entityA = nodeA;
-                entityB = nodeB;
-            } else if (nodeB->getTag() == playerTag) {
-                entityA = nodeB;
-                entityB = nodeA;
-            }
-
-            //当player碰到了折线刚体
-            if (entityB->getTag() == polylineTag) {
-                if (contact.getContactData()->normal.y > 0) {
-                    auto player = (Player*)entityA;
-                    player->jumpCounts = 2;
-                    player->curAction = PlayerActionState::Default;
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            // 当player碰到了地面刚体
-            if (entityB->getTag() == groundTag) {
-                // auto player = (Player*)entityA;
-                // player->jumpCounts = 2;
-            }
-            //其他
-        }
-    }
-    return true;
-}
-
-//处理和子弹的碰撞
-bool
-GameplayScene::onContactBullet(const PhysicsContact& contact)
-{
-    auto nodeA = contact.getShapeA()->getBody()->getNode();
-    auto nodeB = contact.getShapeB()->getBody()->getNode();
-    if (nodeA && nodeB) {
-        auto tagA = nodeA->getTag();
-        auto tagB = nodeB->getTag();
-        Node* entityA;
-        Node* entityB;
-
-        if (tagA == bulletTag || tagB == bulletTag) {
-            if (tagA == bulletTag) {
-                entityA = nodeA;
-                entityB = nodeB;
-            } else if (tagB == bulletTag) {
-                entityA = nodeB;
-                entityB = nodeA;
-            }
-
-            if (entityB->getTag() == enemyTag) {
-                ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
-                ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
-                    "gameplayscene/smallOrb000.png"));
-
-				//cocos2dx的粒子系统有三种位置类型
-				mapLayer->addChild(ps);
-				ps->setPositionType(ParticleSystem::PositionType::RELATIVE);
-				ps->setPosition(entityB->getPosition());
-
-                auto enemy = (Enemy*)entityB;
-                enemy->decreaseHp(entityB);
-                entityA->removeFromParentAndCleanup(true); //移除子弹
-            }
-            //其他
         }
     }
     return true;
@@ -610,7 +494,7 @@ GameplayScene::onTouchBegan(Touch* touch, Event* event)
         //触碰右下屏
         // curPlayer->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunRight));
         curPlayer->playerSprite->setScaleX(1); //人物翻转
-        curPlayer->playerDirection = "right";
+        curPlayer->playerDirection = PlayerDirection::RIGHT;
         curPlayer->schedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
     }
 
@@ -618,7 +502,7 @@ GameplayScene::onTouchBegan(Touch* touch, Event* event)
         //触碰左下屏
         // curPlayer->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRunLeft));
         curPlayer->playerSprite->setScaleX(-1); //人物翻转
-        curPlayer->playerDirection = "left";
+        curPlayer->playerDirection = PlayerDirection::LEFT;
         curPlayer->schedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
     }
 
@@ -749,19 +633,105 @@ GameplayScene::initEnemy()
     }
 }
 
+bool
+GameplayScene::contactFilter(const PhysicsContact& contact)
+{
+    auto nodeA = contact.getShapeA()->getBody()->getNode();
+    auto nodeB = contact.getShapeB()->getBody()->getNode();
+    if (nodeA && nodeB) {
+        auto tagA = nodeA->getTag();
+        auto tagB = nodeB->getTag();
+        // entityA和entityB对nodeA和nodeB进行映射
+        Node* entityA;
+        Node* entityB;
+
+        // enemy相关
+        if (tagA == enemyTag || tagB == enemyTag) {
+            if (tagA == enemyTag) {
+                entityA = nodeA;
+                entityB = nodeB;
+            } else if (tagB == enemyTag) {
+                entityA = nodeB;
+                entityB = nodeA;
+            }
+
+            // 当enemy碰到了折线刚体
+            if (entityB->getTag() == polylineTag) {
+                //当冲量方向向上时可以穿过折现刚体
+                if (contact.getContactData()->normal.y > 0) {
+                    auto enemy = (Enemy*)entityA;
+                    enemy->_canJump = true;
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            // 当enemy碰到了地面刚体
+            else if (entityB->getTag() == groundTag) {
+                //什么也不做
+            } else if (entityB->getTag() == bulletTag) {
+                ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
+                ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
+                    "gameplayscene/smallOrb000.png"));
+
+                // cocos2dx的粒子系统有三种位置类型
+                mapLayer->addChild(ps);
+                ps->setPositionType(ParticleSystem::PositionType::RELATIVE);
+                ps->setPosition(entityA->getPosition());
+
+                auto enemy = (Enemy*)entityA;
+                enemy->decreaseHp(entityA);
+                entityB->removeFromParentAndCleanup(true); //移除子弹
+            }
+            //其他
+        }
+        // player相关
+        if (tagA == playerTag || tagB == playerTag) {
+            if (nodeA->getTag() == playerTag) {
+                entityA = nodeA;
+                entityB = nodeB;
+            } else if (nodeB->getTag() == playerTag) {
+                entityA = nodeB;
+                entityB = nodeA;
+            }
+
+            //当player碰到了折线刚体
+            if (entityB->getTag() == polylineTag) {
+                if (contact.getContactData()->normal.y > 0) {
+                    auto player = (Player*)entityA;
+                    player->jumpCounts = 2;
+                    player->curAction = PlayerActionState::Default;
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            // 当player碰到了地面刚体
+            else if (entityB->getTag() == groundTag) {
+                // do nothing
+            }
+            // 当player碰到了敌人的索敌框，但getTag得到的是node的tag
+            else if (entityB->getTag() == enemyTag) {
+                auto enemy = (Enemy*)entityB;
+                enemy->curState = EnemyState::Alert;
+            }
+            //其他
+        }
+    }
+    return true;
+}
+
 //初始化监听器，手动指定优先级
 void
 GameplayScene::initListener()
 {
     auto dispatcher = Director::getInstance()->getEventDispatcher();
 
-    auto listener = EventListenerPhysicsContact::create();
-    listener->onContactBegin = CC_CALLBACK_1(GameplayScene::onContactGround, this);
-    dispatcher->addEventListenerWithFixedPriority(listener, 20);
-
-    auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(GameplayScene::onContactBullet, this);
-    dispatcher->addEventListenerWithFixedPriority(contactListener, 10);
+    auto filter = EventListenerPhysicsContact::create();
+    filter->onContactBegin = CC_CALLBACK_1(GameplayScene::contactFilter, this);
+    //留空，当玩家脱离索敌区域后恢复敌人状态
+    // filter->onContactSeparate = ;
+    dispatcher->addEventListenerWithFixedPriority(filter, 50);
 }
 
 void

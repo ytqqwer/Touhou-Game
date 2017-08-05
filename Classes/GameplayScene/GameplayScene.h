@@ -64,8 +64,7 @@ public:
     Layer* p2ControlPanel;
 
     //对碰撞进行处理
-    bool onContactGround(const PhysicsContact& contact);
-    bool onContactBullet(const PhysicsContact& contact);
+    bool contactFilter(const PhysicsContact& contact);
 
     //用来接受触摸操作
     bool onTouchBegan(Touch* touch, Event* event);

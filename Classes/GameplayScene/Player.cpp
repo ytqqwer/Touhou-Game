@@ -12,6 +12,9 @@ Player::init(std::string tag)
     if (!Node::init())
         return false;
 
+    this->setTag(playerTag);
+    this->setName(tag);
+
     animateManager = AnimateManager::getInstance();
     //此处必须初始化一张角色纹理，否则后面无法切换纹理
     playerSprite = Sprite::create(animateManager->addPlayerTexture(tag));
@@ -50,14 +53,11 @@ Player::init(std::string tag)
     body->getFirstShape()->setFriction(0.2);
     body->getFirstShape()->setRestitution(0);
     body->setCategoryBitmask(playerCategory);
-    body->setCollisionBitmask(groundCategory | enemyCategory);
-    body->setContactTestBitmask(groundCategory | enemyCategory);
+    body->setCollisionBitmask(groundCategory);
+    body->setContactTestBitmask(groundCategory | enemyCategory | lockCategory);
     this->setPhysicsBody(body);
-    this->setTag(playerTag);
-    this->setName(tag);
 
-    //设置动画
-    // Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
+    //设置动画，Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
     standAnimation = animateManager->addStandCache(tag);
     runAnimation = animateManager->addRunCache(tag);
     preJumpAnimation = animateManager->addPreJumpCache(tag);
@@ -71,10 +71,11 @@ Player::init(std::string tag)
     curAction = PlayerActionState::Default;
     playerSprite->runAction(RepeatForever::create(Animate::create(standAnimation)));
 
-    bulletBatchNode =
-        SpriteBatchNode::create("gameplayscene/bullet1.png"); //创建BatchNode节点，成批渲染子弹
+    //创建BatchNode节点，成批渲染子弹
+    bulletBatchNode = SpriteBatchNode::create("gameplayscene/bullet1.png");
     this->addChild(bulletBatchNode);
 
+    //启动状态更新
     this->schedule(CC_SCHEDULE_SELECTOR(Player::updateStatus));
 
     return true;
@@ -86,7 +87,7 @@ Player::playerRun(float dt)
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
 
-    if (this->playerDirection == "right") {
+    if (this->playerDirection == PlayerDirection::RIGHT) {
         Vec2 impluse = Vec2(0, 0);
 
         if (velocity.x < -10) {
@@ -136,7 +137,7 @@ Player::playerJump()
 void
 Player::playerDash()
 {
-    //留空，阻止连续dash，可增加角色状态标志
+    //留空，阻止连续dash
 
     if (this->dashCounts == 0) {
         return;
@@ -148,7 +149,7 @@ Player::playerDash()
     //留空，将y轴速度短暂锁定为0，可以使角色不受重力
     //留空，对于不同的角色机制应有不同
 
-    if (this->playerDirection == "right") {
+    if (this->playerDirection == PlayerDirection::RIGHT) {
         Vec2 impluse = Vec2(dashAccelerationBase, 0.0f);
         body->applyImpulse(impluse);
     } else {
@@ -302,7 +303,7 @@ Player::ShootBullet(float dt)
     auto actionMove = MoveBy::create(realFlyDuration, Point(winSize.width, 0));
     auto fire1 = actionMove;
 
-    if (this->playerDirection == "left") {
+    if (this->playerDirection == PlayerDirection::LEFT) {
         fire1 = actionMove->reverse();
     }
 

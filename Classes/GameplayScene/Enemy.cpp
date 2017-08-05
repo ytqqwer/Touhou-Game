@@ -23,7 +23,7 @@ Enemy::init(std::string tag)
     this->hp = enemyData.healthPoint;
 
     //设置刚体
-    auto body = PhysicsBody::createBox(
+    body = PhysicsBody::createBox(
         enemySprite->getContentSize()); //这里要用包围盒，如果用圆形的话会导致滚动
     body->setDynamic(true);
     body->setMass(1);
@@ -35,6 +35,17 @@ Enemy::init(std::string tag)
     body->setCategoryBitmask(enemyCategory);
     body->setCollisionBitmask(groundCategory | bulletCategory);
     body->setContactTestBitmask(groundCategory | bulletCategory);
+
+    //索敌检测框
+    auto rect = PhysicsShapeBox::create(Size(200, 150));
+    rect->setCategoryBitmask(lockCategory);
+    rect->setCollisionBitmask(0);
+    rect->setContactTestBitmask(playerCategory);
+    body->addShape(rect);
+
+    //设置速度上限
+    body->setVelocityLimit(400);
+
     this->setPhysicsBody(body);
     this->setTag(enemyTag);
 
@@ -52,15 +63,10 @@ Enemy::run()
     Vec2 poi = (*curPlayer)->getPosition();
     Point enemyPos = this->getPosition();
 
-    if (enemyPos.x - poi.x > 500) {
-        return;
-    }
-    if (enemyPos.x - poi.x > 0) {
-        this->getPhysicsBody()->applyImpulse(Vec2(-3.0f, 0.0f));
-        // this->getPhysicsBody()->setVelocity(Vec2(-200.f, 0.0f));
+    if (enemyPos.x > poi.x) {
+        this->getPhysicsBody()->applyImpulse(Vec2(-20.0f, 0.0f));
     } else {
-        this->getPhysicsBody()->applyImpulse(Vec2(3.0f, 0.0f));
-        // this->getPhysicsBody()->setVelocity(Vec2(200.f, 0.0f));
+        this->getPhysicsBody()->applyImpulse(Vec2(20.0f, 0.0f));
     }
 }
 
@@ -75,16 +81,24 @@ Enemy::jump()
 void
 Enemy::AI(float dt)
 {
-    int weight = random(0, 1000); //权重
-    if (weight >= 20) {
-        run();
-    } else if (weight < 20) {
-        if (_canJump == false)
-            return; //当敌人在空中的时候不可以再跳跃
-        if (_canJump) {
-            jump();
-            this->_canJump = false;
+    //警戒状态
+    if (curState == EnemyState::Alert) {
+        int weight = random(0, 1000); //权重
+        if (weight >= 50) {
+            run();
+        } else if (weight < 50) {
+            if (_canJump == false)
+                return; //当敌人在空中的时候不可以再跳跃
+            if (_canJump) {
+                jump();
+                this->_canJump = false;
+            }
         }
+
+    }
+    //巡逻状态
+    else if (curState == EnemyState::Patrol) {
+        ; //留空，随机寻路
     }
 }
 
