@@ -367,10 +367,10 @@ GameplayScene::onContactBullet(const PhysicsContact& contact)
                 ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
                     "gameplayscene/smallOrb000.png"));
 
-                //留空，粒子效果添加存在疑似相对坐标的问题，暂不知道如何解决
-
-                ps->setPosition(entityA->getPosition());
-                entityB->getParent()->addChild(ps);
+				//cocos2dx的粒子系统有三种位置类型
+				mapLayer->addChild(ps);
+				ps->setPositionType(ParticleSystem::PositionType::RELATIVE);
+				ps->setPosition(entityB->getPosition());
 
                 auto enemy = (Enemy*)entityB;
                 enemy->decreaseHp(entityB);

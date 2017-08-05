@@ -71,6 +71,9 @@
     <ClCompile Include="..\Classes\NonGameplayScenes\ArmsStoreScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\NonGameplayScenes\ArmsStorePurchaseScene.cpp">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\NonGameplayScenes\BackgroundIntroScene.cpp">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClCompile>
@@ -220,6 +223,9 @@
     <!-- Classes\NonGameplayScenes -->
 
     <ClInclude Include="..\Classes\NonGameplayScenes\ArmsStoreScene.h">
+      <Filter>Classes\NonGameplayScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\NonGameplayScenes\ArmsStorePurchaseScene.h">
       <Filter>Classes\NonGameplayScenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\NonGameplayScenes\BackgroundIntroScene.h">

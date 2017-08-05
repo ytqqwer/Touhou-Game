@@ -156,6 +156,7 @@
     <ClCompile Include="..\Classes\GameData\GameData.cpp" />
 
     <ClCompile Include="..\Classes\NonGameplayScenes\ArmsStoreScene.cpp" />
+    <ClCompile Include="..\Classes\NonGameplayScenes\ArmsStorePurchaseScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\BackgroundIntroScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\EquipScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\HomeScene.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="..\Classes\GameData\EnemyData.h" />
 
     <ClInclude Include="..\Classes\NonGameplayScenes\ArmsStoreScene.h" />
+    <ClInclude Include="..\Classes\NonGameplayScenes\ArmsStorePurchaseScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\BackgroundIntroScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\EquipScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\HomeScene.h" />
