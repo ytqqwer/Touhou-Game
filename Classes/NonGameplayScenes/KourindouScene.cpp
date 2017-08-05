@@ -11,13 +11,13 @@
 #include "RoundSelectScene.h"
 #include "ui/CocosGUI.h"
 // #include "resources.h.dir/kourindou.h"
+#include "ArmsStorePurchaseScene.h"
 #include "HomeScene.h"
 #include "KoumakanLibraryScene.h"
 #include "RoundSelectScene.h"
 #include "SimpleAudioEngine.h"
 #include <string>
 #include <vector>
-#include "ArmsStorePurchaseScene.h"
 using namespace ui;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
@@ -89,11 +89,11 @@ KourindouScene::init()
     button_start->setScale9Enabled(true);
     button_start->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     addChild(button_start);
-	button_start->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
-		if (type == Widget::TouchEventType::ENDED) {
-			Director::getInstance()->pushScene(ArmsStorePurchaseScene::create());
-		}
-	});
+    button_start->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            Director::getInstance()->pushScene(ArmsStorePurchaseScene::create());
+        }
+    });
 
     /*整备按钮*/
     auto button_equip = Button::create("kourindouscene/p1.png");

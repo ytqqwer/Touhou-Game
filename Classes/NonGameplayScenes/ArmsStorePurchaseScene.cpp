@@ -1,4 +1,4 @@
-#ifdef WIN32
+ï»¿#ifdef WIN32
 #pragma execution_character_set("utf-8")
 #endif
 
@@ -8,10 +8,10 @@
 #include "ui/CocosGUI.h"
 #include <string>
 
-// ¾²Ì¬Êý¾Ý³ÉÔ±±ØÐëÔÚÀà¶¨Òå *Íâ* ½øÐÐ³õÊ¼»¯
-// Îª±£Ö¤±àÒëÊ±¾²Ì¬Êý¾Ý³ÉÔ±×îºóÖ»´æÔÚÓÚÒ»¸öÄ¿±êÎÄ¼þÖÐ
-// Õâ¸ö¶¨ÒåÒ²²»ÄÜÐ´Èë .h ÎÄ¼þÖÐ£¬·ÅÔÚ¶ÔÓ¦µÄ .cpp ÎÄ¼þµÄ¿ªÍ·ÊÇ×îºÃÑ¡Ôñ
-const std::string ArmsStorePurchaseScene::TAG{ "ArmsStoreScene" };
+// é™æ€æ•°æ®æˆå‘˜å¿…é¡»åœ¨ç±»å®šä¹‰ *å¤–* è¿›è¡Œåˆå§‹åŒ–
+// ä¸ºä¿è¯ç¼–è¯‘æ—¶é™æ€æ•°æ®æˆå‘˜æœ€åŽåªå­˜åœ¨äºŽä¸€ä¸ªç›®æ ‡æ–‡ä»¶ä¸­
+// è¿™ä¸ªå®šä¹‰ä¹Ÿä¸èƒ½å†™å…¥ .h æ–‡ä»¶ä¸­ï¼Œæ”¾åœ¨å¯¹åº”çš„ .cpp æ–‡ä»¶çš„å¼€å¤´æ˜¯æœ€å¥½é€‰æ‹©
+const std::string ArmsStorePurchaseScene::TAG{ "ArmsStorePurchaseScene" };
 
 ArmsStorePurchaseScene::ArmsStorePurchaseScene()
 {
@@ -40,15 +40,13 @@ ArmsStorePurchaseScene::init()
 
     ///*  3. PlaceHolder */
 
-    // auto p = PlaceHolder::createCircle(100, "ArmsStorePurchaseScene");
-    // p->setPosition(_visibleSize / 2);
-    // this->addChild(p);
+    //// auto p = PlaceHolder::createCircle(100, "ArmsStorePurchaseScene");
+    //// p->setPosition(_visibleSize / 2);
+    //// this->addChild(p);
 
     /*  4. schedule */
 
     this->scheduleUpdate();
-
-    return true;
 
     /*background*/
     auto bg = Sprite::create("InventoryScene/bg.png");
@@ -71,7 +69,7 @@ ArmsStorePurchaseScene::init()
     /*backButton*/
     auto backButton = Button::create("InventoryScene/p1.png", "", "");
     backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
-    backButton->setTitleText("·µ»Ø");
+    backButton->setTitleText("è¿”å›ž");
     backButton->setTitleColor(Color3B::WHITE);
     backButton->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.15));
     backButton->addTouchEventListener(
@@ -80,8 +78,8 @@ ArmsStorePurchaseScene::init()
 
     /*normalProps*/
     auto normalProps = Button::create("InventoryScene/p2.png", "", "");
-    normalProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.45));
-    normalProps->setTitleText("ÆÕÍ¨µÀ¾ß");
+    normalProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.75));
+    normalProps->setTitleText("æ™®é€šé“å…·");
     normalProps->setTitleFontSize(15);
     normalProps->setTitleColor(Color3B(91, 155, 213));
     normalProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.25));
@@ -91,22 +89,22 @@ ArmsStorePurchaseScene::init()
     /*strongProps*/
     auto strongProps = Button::create("InventoryScene/p2.png", "", "");
     strongProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.6));
-    strongProps->setTitleText("Ç¿»¯µÀ¾ß");
+    strongProps->setTitleText("å¼ºåŒ–é“å…·");
     strongProps->setTitleFontSize(15);
     strongProps->setTitleColor(Color3B(91, 155, 213));
     strongProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     addChild(strongProps, 0, 6);
     strongProps->setTouchEnabled(true);
 
-    /*specialProps*/
-    auto specialProps = Button::create("InventoryScene/p2.png", "", "");
-    specialProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.75));
-    specialProps->setTitleText("ÌØÊâµÀ¾ß");
-    specialProps->setTitleFontSize(15);
-    specialProps->setTitleColor(Color3B(91, 155, 213));
-    specialProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
-    addChild(specialProps, 0, 7);
-    specialProps->setTouchEnabled(true);
+    /*unlockColumn*/
+    auto unlockColumn = Button::create("InventoryScene/p2.png", "", "");
+    unlockColumn->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.45));
+    unlockColumn->setTitleText("è§£é”æ ä½");
+    unlockColumn->setTitleFontSize(15);
+    unlockColumn->setTitleColor(Color3B(91, 155, 213));
+    unlockColumn->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
+    addChild(unlockColumn, 0, 7);
+    unlockColumn->setTouchEnabled(true);
     return true;
 }
 
