@@ -11,16 +11,14 @@
 
 class Scatter : public EmitterStyle
 {
-
 public:
+    /* 默认弹幕 */
     CREATE_FUNC(Scatter);
-    APP_CREATE_STYLE2(Scatter);
+    Scatter();
 
     /* 定制弹幕 */
+    APP_CREATE_STYLE2(Scatter);
     Scatter(const StyleConfig& sc);
-
-    /* 默认弹幕 */
-    Scatter();
 
     /* 调度器 */
     void createBullet();

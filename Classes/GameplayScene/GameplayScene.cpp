@@ -49,7 +49,10 @@ GameplayScene::init()
         return false;
     }
     //初始化子弹素材
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("bullets/plist/bullet2.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet1.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet2.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet3.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/laser1.plist");
 
     //设置背景音乐
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
@@ -603,9 +606,11 @@ GameplayScene::initLauncher()
         auto _launcher = Sprite::create("CloseNormal.png");
         _launcher->setPosition(x, y);
         mapLayer->addChild(_launcher); //不要忘记addChild
-        // auto fe = FirstEmitter::create(_launcher);
-        // mapLayer->addChild(fe);
-        // fe->schedule(CC_SCHEDULE_SELECTOR(FirstEmitter::createBullet), 6);
+        auto fe = Emitter::create(curPlayer);
+        _launcher->addChild(fe);
+        // fe->playStyle(StyleType::SCATTER);
+
+        fe->playStyle(StyleType::ODDEVEN);
     }
 }
 

@@ -6,7 +6,7 @@
 
 Emitter::Emitter()
 {
-   this->styleTag = 1;
+    this->styleTag = 1;
 }
 
 Emitter*
@@ -40,6 +40,8 @@ Emitter::playStyle(const StyleConfig& sc)
             dynamic_cast<Scatter*>(style)->createBullet();
             break;
         case StyleType::ODDEVEN:
+            style = OddEven::create(sc, target);
+            dynamic_cast<OddEven*>(style)->createBullet();
             break;
         default:
             return false;
@@ -53,35 +55,38 @@ Emitter::playStyle(const StyleConfig& sc)
     return styleTag;
 }
 
-int 
+int
 Emitter::playStyle(StyleType st)
 {
-	EmitterStyle* style;
+    EmitterStyle* style;
 
-	switch (st) {
-	case StyleType::SCATTER:
-		style = Scatter::create();
-		dynamic_cast<Scatter*>(style)->createBullet();
-		break;
-	case StyleType::ODDEVEN:
-		break;
-	default:
-		return false;
-		break;
-	}
+    switch (st) {
+        case StyleType::SCATTER:
+            style = Scatter::create();
+            dynamic_cast<Scatter*>(style)->createBullet();
+            break;
+        case StyleType::ODDEVEN:
+            style = OddEven::create(target);
+            dynamic_cast<OddEven*>(style)->createBullet();
+            break;
+            break;
+        default:
+            return false;
+            break;
+    }
 
-	style->setTag(styleTag);
-	this->addChild(style);
-	styles.insert(styleTag++, style);
+    style->setTag(styleTag);
+    this->addChild(style);
+    styles.insert(styleTag++, style);
 
-	return styleTag;
+    return styleTag;
 }
 
 void
 Emitter::pauseStyle(int tag)
 {
     auto style = styles.at(tag);
-	style->pause();
+    style->pause();
 }
 
 void

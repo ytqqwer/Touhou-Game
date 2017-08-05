@@ -6,6 +6,7 @@
 #define EMITTER_H
 
 #include "Style/EmitterStyle.h"
+#include "Style/OddEven.h"
 #include "Style/Scatter.h"
 #include "StyleConfig.h"
 #include "cocos2d.h"

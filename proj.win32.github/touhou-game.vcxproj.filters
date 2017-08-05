@@ -161,7 +161,9 @@
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
-
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClCompile>
 
   </ItemGroup>
 
@@ -328,6 +330,9 @@
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\EmitterStyle.h">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
 
