@@ -18,6 +18,7 @@ InventoryScene::InventoryScene()
 {
     _visibleSize = _director->getVisibleSize();
     int sum = 0;
+	arrow_y = 0.75;
 }
 
 bool
@@ -82,9 +83,9 @@ InventoryScene::init()
     normalProps->setTitleText("普通道具");
     normalProps->setTitleFontSize(15);
     normalProps->setTitleColor(Color3B(91, 155, 213));
-    normalProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
+    normalProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.25));
     addChild(normalProps, 0,5);
-    normalProps->addTouchEventListener(CC_CALLBACK_2(InventoryScene::getitems, this,1));
+    normalProps->addTouchEventListener(CC_CALLBACK_2(InventoryScene::getitems, this,1,0.244));
     normalProps->setTouchEnabled(true);
 
     /*strongProps*/
@@ -95,7 +96,7 @@ InventoryScene::init()
     strongProps->setTitleColor(Color3B(91, 155, 213));
     strongProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     addChild(strongProps, 0,6);
-    strongProps->addTouchEventListener(CC_CALLBACK_2(InventoryScene::getitems, this,2));
+    strongProps->addTouchEventListener(CC_CALLBACK_2(InventoryScene::getitems, this,2,0.330));
     strongProps->setTouchEnabled(true);
 
     /*specialProps*/
@@ -106,7 +107,7 @@ InventoryScene::init()
     specialProps->setTitleColor(Color3B(91, 155, 213));
     specialProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     addChild(specialProps,0,7);
-    specialProps->addTouchEventListener(CC_CALLBACK_2(InventoryScene::getitems, this,3));
+    specialProps->addTouchEventListener(CC_CALLBACK_2(InventoryScene::getitems, this,3,0.417));
     specialProps->setTouchEnabled(true);
     return true;
 }
@@ -121,17 +122,21 @@ InventoryScene::update(float dt)
 
 
 void 
-InventoryScene::getitems(Ref* ref, Widget::TouchEventType type, int n)
-{
-	if (type != Widget::TouchEventType::ENDED)
-		return;
+InventoryScene::getitems(Ref* ref, Widget::TouchEventType type, int n,float arrow_y)
+{	
 	if (type != Widget::TouchEventType::ENDED)
 		return;
 	for (int i = 8; i <= sum; i++) {
 		removeChildByTag(i);
 	}
 	sum = 8;
-
+	//点击标志箭头
+	auto arrow = Sprite::create("InventoryScene/arrow.png");
+	arrow->setAnchorPoint(Vec2(0, 0));
+	arrow->setPosition(Vec2(_visibleSize.width * 0.125, _visibleSize.width* arrow_y));
+	arrow->setContentSize(Size(_visibleSize.width*0.025, _visibleSize.height*0.025));
+	addChild(arrow, 0, sum++);
+	
 	auto bg_3 = PlaceHolder::createRect(
 		Size(_visibleSize.width * 0.595, _visibleSize.height * 0.707), "", 16, Color3B::WHITE);
 	bg_3->setAnchorPoint(Vec2(0, 0));

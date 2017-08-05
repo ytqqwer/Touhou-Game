@@ -28,10 +28,7 @@ public:
 
     virtual bool init();
     virtual void update(float dt);
-    void getNoramlitem(Ref*, Widget::TouchEventType);
-    void getStrengitem(Ref*, Widget::TouchEventType);
-    void getSpecialitem(Ref*, Widget::TouchEventType);
-	void getitems(Ref*, Widget::TouchEventType,int n);
+	void getitems(Ref*, Widget::TouchEventType,int n,float arrow_y);
     Sprite* getRect(double, double, double, double);
 
 private:
@@ -46,6 +43,7 @@ private:
     int sum;
 	string userflag[100];
     int typeflag[100] = { 0 };
+	float arrow_y;
 };
 
 #endif // INVENTORY_SCENE_H
