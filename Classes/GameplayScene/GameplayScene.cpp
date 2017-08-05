@@ -324,6 +324,7 @@ GameplayScene::onContactGround(const PhysicsContact& contact)
                 if (contact.getContactData()->normal.y > 0) {
                     auto player = (Player*)entityA;
                     player->jumpCounts = 2;
+                    player->curAction = PlayerActionState::Default;
                     return true;
                 } else {
                     return false;

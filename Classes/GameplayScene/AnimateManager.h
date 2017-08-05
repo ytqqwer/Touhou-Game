@@ -14,9 +14,14 @@ public:
     AnimateManager();
 
     static AnimateManager* getInstance();
-    std::string addTexture(const std::string& tag);
+
+    std::string addPlayerTexture(const std::string& tag);
+    Animation* addStandCache(const std::string& tag);
     Animation* addRunCache(const std::string& tag);
+    Animation* addPreJumpCache(const std::string& tag);
     Animation* addJumpCache(const std::string& tag);
+    Animation* addPreFallCache(const std::string& tag);
+    Animation* addFallCache(const std::string& tag);
     Animation* addDashCache(const std::string& tag);
 
     std::string addEnemyTexture(const std::string& tag);

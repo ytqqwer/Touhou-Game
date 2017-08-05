@@ -14,7 +14,7 @@ Player::init(std::string tag)
 
     animateManager = AnimateManager::getInstance();
     //此处必须初始化一张角色纹理，否则后面无法切换纹理
-    playerSprite = Sprite::create(animateManager->addTexture(tag));
+    playerSprite = Sprite::create(animateManager->addPlayerTexture(tag));
     this->addChild(playerSprite);
 
     // 设置攻击方式
@@ -41,7 +41,7 @@ Player::init(std::string tag)
     this->dashAccelerationBase = character.dashAccelerationBase;
 
     //设置刚体
-    auto body = PhysicsBody::createBox(Size(50, 75));
+    body = PhysicsBody::createBox(Size(50, 75));
     body->setDynamic(true);
     body->setMass(1);
     body->setGravityEnable(true);
@@ -57,11 +57,19 @@ Player::init(std::string tag)
     this->setName(tag);
 
     //设置动画
+    // Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
+    standAnimation = animateManager->addStandCache(tag);
     runAnimation = animateManager->addRunCache(tag);
+    preJumpAnimation = animateManager->addPreJumpCache(tag);
     jumpAnimation = animateManager->addJumpCache(tag);
+    jumpAnimation->setLoops(-1);
+    preFallAnimation = animateManager->addPreFallCache(tag);
+    fallAnimation = animateManager->addFallCache(tag);
+    fallAnimation->setLoops(-1);
     dashAnimation = animateManager->addDashCache(tag);
-    playerSprite->runAction(
-        RepeatForever::create(Animate::create(runAnimation))); //初始时刻角色在奔跑
+
+    curAction = PlayerActionState::Default;
+    playerSprite->runAction(RepeatForever::create(Animate::create(standAnimation)));
 
     bulletBatchNode =
         SpriteBatchNode::create("gameplayscene/bullet1.png"); //创建BatchNode节点，成批渲染子弹
@@ -80,13 +88,10 @@ Player::playerRun(float dt)
 
     if (this->playerDirection == "right") {
         Vec2 impluse = Vec2(0, 0);
-        // Vec2 impluse = Vec2(20.0f, 0.0f);
-        // body->applyForce(Vec2(100.0f,0.0f));
 
         if (velocity.x < -10) {
             body->setVelocity(Vec2(100, velocity.y));
         }
-
         if (velocity.x < walkMaxSpeed) {
             impluse.x =
                 std::min(walkMaxSpeed / walkAccelerationTimeBase * dt, walkMaxSpeed - velocity.x);
@@ -94,13 +99,10 @@ Player::playerRun(float dt)
         body->applyImpulse(impluse);
     } else {
         Vec2 impluse = Vec2(0, 0);
-        // Vec2 impluse = Vec2(-20.0f, 0.0f);
-        // body->applyForce(Vec2(-100.0f, 0.0f));
 
         if (velocity.x > 10) {
             body->setVelocity(Vec2(-100, velocity.y));
         }
-
         if (velocity.x > -walkMaxSpeed) {
             impluse.x =
                 -std::min(walkMaxSpeed / walkAccelerationTimeBase * dt, walkMaxSpeed + velocity.x);
@@ -125,13 +127,10 @@ Player::playerJump()
     Vec2 impluse = Vec2(0.0f, 500.0f);
     body->applyImpulse(impluse);
 
-    playerSprite->stopAllActions();
-    Animate* animate = Animate::create(jumpAnimation);
-    auto actionDone = CallFuncN::create(CC_CALLBACK_1(Player::resetAction, this));
-    auto sequence = Sequence::create(Repeat::create(animate, 1), actionDone, NULL);
-    playerSprite->runAction(sequence);
-
     this->jumpCounts--;
+
+    playerSprite->stopAllActions();
+    curAction = PlayerActionState::Default;
 }
 
 void
@@ -157,20 +156,21 @@ Player::playerDash()
         body->applyImpulse(impluse);
     }
 
+    this->dashCounts--;
+    curAction = PlayerActionState::Dash;
+
     playerSprite->stopAllActions();
-    Animate* animate = Animate::create(dashAnimation);
+    auto animate = Animate::create(dashAnimation);
     auto actionDone = CallFuncN::create(CC_CALLBACK_1(Player::resetAction, this));
     auto sequence = Sequence::create(Repeat::create(animate, 1), actionDone, NULL);
     playerSprite->runAction(sequence);
-
-    this->dashCounts--;
 }
 
 void
 Player::resetAction(Node* node)
 {
     playerSprite->stopAllActions();
-    playerSprite->runAction(RepeatForever::create(Animate::create(runAnimation)));
+    curAction = PlayerActionState::Default;
 }
 
 void
@@ -328,10 +328,59 @@ Player::removeBullet(Node* pNode)
 }
 
 void
+Player::autoSwitchAction()
+{
+    if (curAction != PlayerActionState::Dash) {
+        Vec2 velocity = body->getVelocity();
+        if (-15 < velocity.y && velocity.y < 15) {
+            if (-15 < velocity.x && velocity.x < 15) { //站立
+                if (curAction != PlayerActionState::Stand) {
+                    if (curAction != PlayerActionState::Jump) {
+                        if (curAction != PlayerActionState::Fall) {
+                            curAction = PlayerActionState::Stand;
+                            playerSprite->stopAllActions();
+                            playerSprite->runAction(
+                                RepeatForever::create(Animate::create(standAnimation)));
+                        }
+                    }
+                }
+            } else if (-15 > velocity.x || velocity.x > 15) { //行走
+                if (-15 < velocity.y || velocity.y < 15) {
+                    if (curAction != PlayerActionState::Run) {
+                        curAction = PlayerActionState::Run;
+                        playerSprite->stopAllActions();
+                        playerSprite->runAction(
+                            RepeatForever::create(Animate::create(runAnimation)));
+                    }
+                }
+            }
+        }
+        if (-15 > velocity.y || velocity.y > 15) {
+            if (velocity.y > 15) { //向上跳跃
+                if (curAction != PlayerActionState::Jump) {
+                    curAction = PlayerActionState::Jump;
+                    playerSprite->stopAllActions();
+                    auto sequence = Sequence::create(Animate::create(preJumpAnimation),
+                                                     Animate::create(jumpAnimation), NULL);
+                    playerSprite->runAction(sequence);
+                }
+            } else if (-15 > velocity.y) { //下降
+                if (curAction != PlayerActionState::Fall) {
+                    curAction = PlayerActionState::Fall;
+                    playerSprite->stopAllActions();
+                    auto sequence = Sequence::create(Animate::create(preFallAnimation),
+                                                     Animate::create(fallAnimation), NULL);
+                    playerSprite->runAction(sequence);
+                }
+            }
+        }
+    }
+}
+
+void
 Player::updateStatus(float dt)
 {
-
-    //留空，应该在主界面里更新角色状态，例如自动切换下落动画，而不应使用预设的动画播放顺序
+    this->autoSwitchAction();
 
     //回复dash次数
     if (this->dashCounts < 2) {
