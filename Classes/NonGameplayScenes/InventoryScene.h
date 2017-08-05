@@ -31,6 +31,7 @@ public:
     void getNoramlitem(Ref*, Widget::TouchEventType);
     void getStrengitem(Ref*, Widget::TouchEventType);
     void getSpecialitem(Ref*, Widget::TouchEventType);
+	void getitems(Ref*, Widget::TouchEventType,int n);
     Sprite* getRect(double, double, double, double);
 
 private:
@@ -43,8 +44,7 @@ private:
     Size _visibleSize;
     GameData* gamedata;
     int sum;
-    int ceng = 1;
-    int userflag[100] = { 0 };
+	string userflag[100];
     int typeflag[100] = { 0 };
 };
 
