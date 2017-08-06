@@ -65,6 +65,7 @@ public:
     void removeBullet(Node* pNode);
 
 public:
+	std::string playerTag;
     Sprite* playerSprite;
     PhysicsBody* body;
     PlayerDirection playerDirection = PlayerDirection::RIGHT;

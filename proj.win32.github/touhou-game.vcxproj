@@ -175,14 +175,17 @@
     <ClCompile Include="..\Classes\Layers\SettingsLayer.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\EventFilterManager.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Enemy.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Player.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\AnimateManager.cpp" />
 
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Enemy.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Frog.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Opossum.cpp" />
+
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp" />
-	<ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.cpp" />
@@ -231,16 +234,19 @@
     <ClInclude Include="..\Classes\GameplayScene\common.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.inc" />
-    <ClInclude Include="..\Classes\GameplayScene\Enemy.h" />
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h" />
     <ClInclude Include="..\Classes\GameplayScene\AnimateManager.h" />
     <ClInclude Include="..\Classes\GameplayScene\Player.h" />
+
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Enemy.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Frog.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Opossum.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Bullet.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitter.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\StyleConfig.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\EmitterStyle.h" />
-	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.h" />

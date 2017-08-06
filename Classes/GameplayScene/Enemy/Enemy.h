@@ -7,6 +7,12 @@
 
 #include "GameplayScene/AnimateManager.h"
 #include "GameplayScene/Player.h"
+
+#include "GameData/EnemyData.h"
+#include "GameData/GameData.h"
+#include "GameplayScene/Enemy/Enemy.h"
+#include "GameplayScene/common.h"
+
 #include "cocos2d.h"
 
 using namespace cocos2d;
@@ -16,30 +22,18 @@ typedef enum { Patrol = 1, Alert = 2 } EnemyState;
 class Enemy : public Node
 {
 public:
-    virtual bool init(std::string tag);
-
-    static Enemy* create(std::string tag)
-    {
-        Enemy* pRet = new (std::nothrow) Enemy();
-        if (pRet && pRet->init(tag)) {
-            pRet->autorelease();
-            return pRet;
-        } else {
-            delete pRet;
-            pRet = nullptr;
-            return nullptr;
-        }
-    }
+    virtual bool init(std::string tag) = 0;
+    static Enemy* create(std::string tag);
 
 public:
-    void run();  //敌人移动
-    void jump(); //敌人跳跃
-
-    void AI(float dt);
-    void decreaseHp(Node* node);
-    void startSchedule(Player*& player);
+    virtual void run() = 0;  //敌人移动
+    virtual void jump() = 0; //敌人跳跃
+    virtual void AI(float dt) = 0;
+    virtual void decreaseHp(Node* node) = 0;
+    virtual void startSchedule(Player*& player) = 0;
 
 public:
+    std::string enemyTag;
     Player** curPlayer;
 
     int hp;
@@ -48,7 +42,7 @@ public:
     PhysicsBody* body;
     EnemyState curState = EnemyState::Patrol;
 
-private:
+protected:
     AnimateManager* animateManager;
     Sprite* enemySprite; //敌人精灵
 

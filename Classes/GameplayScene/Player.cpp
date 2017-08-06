@@ -12,7 +12,8 @@ Player::init(std::string tag)
     if (!Node::init())
         return false;
 
-    this->setTag(playerTag);
+	this->playerTag = tag;
+    this->setTag(playerCategoryTag);
     this->setName(tag);
 
     animateManager = AnimateManager::getInstance();
@@ -278,7 +279,7 @@ Player::ShootBullet(float dt)
     Size winSize = Director::getInstance()->getWinSize();
     //从缓存中创建子弹
     auto spritebullet = Sprite::createWithTexture(bulletBatchNode->getTexture());
-    spritebullet->setTag(bulletTag);
+    spritebullet->setTag(bulletCategoryTag);
 
     //将创建好的子弹添加到BatchNode中进行批次渲染
     bulletBatchNode->addChild(spritebullet);

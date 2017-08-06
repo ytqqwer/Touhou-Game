@@ -19,6 +19,9 @@
     <Filter Include="Classes\GameplayScene">
       <UniqueIdentifier>{70959454-265b-47f4-8e66-6e1e83a10943}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\GameplayScene\Enemy">
+
+    </Filter>
     <Filter Include="Classes\GameplayScene\Emitters">
       <UniqueIdentifier>{4e3f5bc7-5be0-4356-bdad-60d302cc49e7}</UniqueIdentifier>
     </Filter>
@@ -128,9 +131,6 @@
     <ClCompile Include="..\Classes\GameplayScene\EventFilterManager.cpp">
       <Filter>Classes\GameplayScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Enemy.cpp">
-      <Filter>Classes\GameplayScene</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp">
       <Filter>Classes\GameplayScene</Filter>
     </ClCompile>
@@ -139,6 +139,17 @@
     </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\AnimateManager.cpp">
       <Filter>Classes\GameplayScene</Filter>
+    </ClCompile>
+
+    <!-- Classes\GameplayScene\Enemy -->
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Enemy.cpp">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Frog.cpp">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Opossum.cpp">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClCompile>
 
     <!-- Classes\GameplayScene\Emitters -->
@@ -290,9 +301,7 @@
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.inc">
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Enemy.h">
-      <Filter>Classes\GameplayScene</Filter>
-    </ClInclude>
+
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h">
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
@@ -302,7 +311,17 @@
     <ClInclude Include="..\Classes\GameplayScene\AnimateManager.h">
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
-
+    
+    <!-- Classes\GameplayScene\Enemy -->
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Enemy.h">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Frog.h">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Opossum.h">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClInclude>
     <!-- Classes\GameplayScene\Emitters -->
 
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Bullet.h">

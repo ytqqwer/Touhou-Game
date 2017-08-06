@@ -2,16 +2,17 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "GameplayScene/Enemy.h"
-#include "GameData/EnemyData.h"
-#include "GameData/GameData.h"
-#include "GameplayScene/common.h"
+#include "GameplayScene/Enemy/Opossum.h"
 
 bool
-Enemy::init(std::string tag)
+Opossum::init(std::string tag)
 {
     if (!Node::init())
         return false;
+
+    this->enemyTag = tag;
+    this->setTag(enemyCategoryTag);
+    this->setName(tag);
 
     animateManager = AnimateManager::getInstance();
     enemySprite = Sprite::create(
@@ -35,19 +36,17 @@ Enemy::init(std::string tag)
     body->setCategoryBitmask(enemyCategory);
     body->setCollisionBitmask(groundCategory | bulletCategory);
     body->setContactTestBitmask(groundCategory | bulletCategory);
+    this->setPhysicsBody(body);
 
     //索敌检测框
-    auto rect = PhysicsShapeBox::create(Size(200, 150));
+    auto rect = PhysicsShapeBox::create(Size(150, 200));
     rect->setCategoryBitmask(lockCategory);
     rect->setCollisionBitmask(0);
     rect->setContactTestBitmask(playerCategory);
     body->addShape(rect);
 
     //设置速度上限
-    body->setVelocityLimit(400);
-
-    this->setPhysicsBody(body);
-    this->setTag(enemyTag);
+    body->setVelocityLimit(500);
 
     //设置动画
     enemyAnimation = animateManager->addEnemyCache(tag);
@@ -57,7 +56,7 @@ Enemy::init(std::string tag)
 }
 
 void
-Enemy::run()
+Opossum::run()
 {
     //朝玩家移动
     Vec2 poi = (*curPlayer)->getPosition();
@@ -71,7 +70,7 @@ Enemy::run()
 }
 
 void
-Enemy::jump()
+Opossum::jump()
 {
     auto body = this->getPhysicsBody();
     Vec2 impluse = Vec2(0.0f, 400.0f);
@@ -79,7 +78,7 @@ Enemy::jump()
 }
 
 void
-Enemy::AI(float dt)
+Opossum::AI(float dt)
 {
     //警戒状态
     if (curState == EnemyState::Alert) {
@@ -103,17 +102,17 @@ Enemy::AI(float dt)
 }
 
 void
-Enemy::decreaseHp(Node* node)
+Opossum::decreaseHp(Node* node)
 {
     auto enemy = (Enemy*)node;
-    enemy->hp = enemy->hp - 5;
+    enemy->hp = enemy->hp - 10;
     if (enemy->hp < 0) {
         enemy->removeFromParentAndCleanup(true);
     }
 }
 
 void
-Enemy::startSchedule(Player*& player)
+Opossum::startSchedule(Player*& player)
 {
     curPlayer = &player;
 

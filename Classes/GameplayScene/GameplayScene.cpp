@@ -4,7 +4,7 @@
 
 #include "GameplayScene/GameplayScene.h"
 #include "GameplayScene/Emitters/Emitter.h"
-#include "GameplayScene/Enemy.h"
+#include "GameplayScene/Enemy/Enemy.h"
 #include "GameplayScene/common.h"
 #include "Layers/SettingsLayer.h"
 #include "SimpleAudioEngine.h"
@@ -212,7 +212,7 @@ GameplayScene::createPhysical(float scale)
             _pBody->setContactTestBitmask(playerCategory);               //默认值为0
 
             auto sprite = Sprite::create();
-            sprite->setTag(polygonTag);
+            sprite->setTag(polygonCategoryTag);
             sprite->setPhysicsBody(_pBody);
             mapLayer->addChild(sprite);
         } else if (dict.find("polylinePoints") != dict.end()) {
@@ -242,7 +242,7 @@ GameplayScene::createPhysical(float scale)
 
             auto sprite = Sprite::create();
             sprite->setPhysicsBody(_pBody);
-            sprite->setTag(polylineTag);
+            sprite->setTag(polylineCategoryTag);
             mapLayer->addChild(sprite);
         } else {
             PhysicsBody* _pBody;
@@ -260,7 +260,7 @@ GameplayScene::createPhysical(float scale)
             _pBody->setContactTestBitmask(playerCategory | enemyCategory); //默认值为0
 
             auto sprite = Sprite::create();
-            sprite->setTag(groundTag);
+            sprite->setTag(groundCategoryTag);
             sprite->setPosition(x + width / 2.0f, y + height / 2.0f);
             sprite->setPhysicsBody(_pBody);
             mapLayer->addChild(sprite);
@@ -606,11 +606,10 @@ GameplayScene::initLauncher()
         auto _launcher = Sprite::create("CloseNormal.png");
         _launcher->setPosition(x, y);
         mapLayer->addChild(_launcher); //不要忘记addChild
-        auto fe = Emitter::create(curPlayer);
-        _launcher->addChild(fe);
-        // fe->playStyle(StyleType::SCATTER);
-
-        fe->playStyle(StyleType::ODDEVEN);
+        // auto fe = Emitter::create(curPlayer);
+        //_launcher->addChild(fe);
+        //// fe->playStyle(StyleType::SCATTER);
+        // fe->playStyle(StyleType::ODDEVEN);
     }
 }
 
@@ -651,17 +650,17 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
         Node* entityB;
 
         // enemy相关
-        if (tagA == enemyTag || tagB == enemyTag) {
-            if (tagA == enemyTag) {
+        if (tagA == enemyCategoryTag || tagB == enemyCategoryTag) {
+            if (tagA == enemyCategoryTag) {
                 entityA = nodeA;
                 entityB = nodeB;
-            } else if (tagB == enemyTag) {
+            } else if (tagB == enemyCategoryTag) {
                 entityA = nodeB;
                 entityB = nodeA;
             }
 
             // 当enemy碰到了折线刚体
-            if (entityB->getTag() == polylineTag) {
+            if (entityB->getTag() == polylineCategoryTag) {
                 //当冲量方向向上时可以穿过折现刚体
                 if (contact.getContactData()->normal.y > 0) {
                     auto enemy = (Enemy*)entityA;
@@ -672,9 +671,11 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
                 }
             }
             // 当enemy碰到了地面刚体
-            else if (entityB->getTag() == groundTag) {
+            else if (entityB->getTag() == groundCategoryTag) {
                 //什么也不做
-            } else if (entityB->getTag() == bulletTag) {
+            }
+            // 当enemy碰到了子弹
+            else if (entityB->getTag() == bulletCategoryTag) {
                 ParticleSystem* ps = ParticleExplosion::createWithTotalParticles(5);
                 ps->setTexture(Director::getInstance()->getTextureCache()->addImage(
                     "gameplayscene/smallOrb000.png"));
@@ -691,17 +692,17 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
             //其他
         }
         // player相关
-        if (tagA == playerTag || tagB == playerTag) {
-            if (nodeA->getTag() == playerTag) {
+        if (tagA == playerCategoryTag || tagB == playerCategoryTag) {
+            if (nodeA->getTag() == playerCategoryTag) {
                 entityA = nodeA;
                 entityB = nodeB;
-            } else if (nodeB->getTag() == playerTag) {
+            } else if (nodeB->getTag() == playerCategoryTag) {
                 entityA = nodeB;
                 entityB = nodeA;
             }
 
             //当player碰到了折线刚体
-            if (entityB->getTag() == polylineTag) {
+            if (entityB->getTag() == polylineCategoryTag) {
                 if (contact.getContactData()->normal.y > 0) {
                     auto player = (Player*)entityA;
                     player->jumpCounts = 2;
@@ -712,11 +713,11 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
                 }
             }
             // 当player碰到了地面刚体
-            else if (entityB->getTag() == groundTag) {
+            else if (entityB->getTag() == groundCategoryTag) {
                 // do nothing
             }
             // 当player碰到了敌人的索敌框，但getTag得到的是node的tag
-            else if (entityB->getTag() == enemyTag) {
+            else if (entityB->getTag() == enemyCategoryTag) {
                 auto enemy = (Enemy*)entityB;
                 enemy->curState = EnemyState::Alert;
             }

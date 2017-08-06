@@ -46,7 +46,7 @@ public:
     GameData* gameData;
     Size visibleSize;
 
-    //对curPlayer的操作就是对当前制定角色的操作
+    //对curPlayer的操作就是对当前指定角色的操作
     Player* curPlayer;
     Player* p1Player;
     Player* p2Player;
