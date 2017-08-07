@@ -14,18 +14,18 @@ class OddEven : public EmitterStyle
 public:
     /* 默认弹幕 */
     APP_CREATE_STYLE1(OddEven);
-    OddEven(Node* target);
+    OddEven(Node** target);
 
     /* 定制弹幕 */
     APP_CREATE_STYLE3(OddEven);
-    OddEven(const StyleConfig& sc, Node* target);
+    OddEven(const StyleConfig& sc, Node** target);
 
     /* 调度器 */
     void createBullet();
     void shootBullet(float dt);
 
 private:
-    Node* target;
+    Node** target;
     Vec2 targetPos; //角色位置
     float angle;    //夹角
     int counter;    //计数器

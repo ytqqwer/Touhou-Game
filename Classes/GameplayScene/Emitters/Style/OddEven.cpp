@@ -4,7 +4,7 @@
 
 #include "OddEven.h"
 
-OddEven::OddEven(Node* target)
+OddEven::OddEven(Node** target)
 {
     this->sc.style = StyleType::ODDEVEN;
     this->sc.frequency = 0.5f;
@@ -18,7 +18,7 @@ OddEven::OddEven(Node* target)
     this->counter = 0;
 }
 
-OddEven::OddEven(const StyleConfig& sc, Node* target)
+OddEven::OddEven(const StyleConfig& sc, Node** target)
 {
     this->sc = sc;
     this->target = target;
@@ -28,7 +28,7 @@ OddEven::OddEven(const StyleConfig& sc, Node* target)
 void
 OddEven::createBullet()
 {
-    this->targetPos = target->getParent()->convertToWorldSpace(target->getPosition());
+    this->targetPos = (*target)->getParent()->convertToWorldSpace((*target)->getPosition());
     this->schedule(schedule_selector(OddEven::shootBullet), sc.frequency);
 }
 
@@ -41,7 +41,7 @@ OddEven::shootBullet(float dt)
     if (this->counter == sc.count) {
         this->counter = 0;
         this->targetPos =
-            target->getParent()->convertToWorldSpace(target->getPosition()); //更新目标位置
+            (*target)->getParent()->convertToWorldSpace((*target)->getPosition()); //更新目标位置
         return;
     } else {
 

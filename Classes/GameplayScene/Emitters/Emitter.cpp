@@ -10,7 +10,7 @@ Emitter::Emitter()
 }
 
 Emitter*
-Emitter::create(Node* target)
+Emitter::create(Node** target)
 {
     Emitter* pRet = new Emitter(target);
     if (pRet && pRet->init()) {
@@ -23,7 +23,7 @@ Emitter::create(Node* target)
     }
 }
 
-Emitter::Emitter(Node* target)
+Emitter::Emitter(Node** target)
 {
     this->target = target;
     this->styleTag = 1;

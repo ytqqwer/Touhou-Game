@@ -606,10 +606,11 @@ GameplayScene::initLauncher()
         auto _launcher = Sprite::create("CloseNormal.png");
         _launcher->setPosition(x, y);
         mapLayer->addChild(_launcher); //不要忘记addChild
-        // auto fe = Emitter::create(curPlayer);
-        //_launcher->addChild(fe);
-        //// fe->playStyle(StyleType::SCATTER);
-        // fe->playStyle(StyleType::ODDEVEN);
+
+        auto fe = Emitter::create((Node**)(&curPlayer));
+        _launcher->addChild(fe);
+        // fe->playStyle(StyleType::SCATTER);
+        fe->playStyle(StyleType::ODDEVEN);
     }
 }
 

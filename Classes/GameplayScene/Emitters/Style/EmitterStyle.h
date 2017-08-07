@@ -34,7 +34,7 @@ protected:
 
 /* 自机默认发射器 */
 #define APP_CREATE_STYLE1(__TYPE__)                                                                \
-    static __TYPE__* create(Node* target)                                                          \
+    static __TYPE__* create(Node** target)                                                         \
     {                                                                                              \
         __TYPE__* pRet = new __TYPE__(target);                                                     \
         if (pRet && pRet->init()) {                                                                \
@@ -64,7 +64,7 @@ protected:
 
 /* 自机发射器 */
 #define APP_CREATE_STYLE3(__TYPE__)                                                                \
-    static __TYPE__* create(const StyleConfig& sc, Node* target)                                   \
+    static __TYPE__* create(const StyleConfig& sc, Node** target)                                  \
     {                                                                                              \
         __TYPE__* pRet = new __TYPE__(sc, target);                                                 \
         if (pRet && pRet->init()) {                                                                \

@@ -22,8 +22,8 @@ public:
     Emitter();
 
     /* 自机发射器 */
-    static Emitter* create(Node* target);
-    Emitter(Node* target);
+    static Emitter* create(Node** target);
+    Emitter(Node** target);
 
     /* 创建弹幕 */
     int playStyle(const StyleConfig& sc);
@@ -42,7 +42,7 @@ public:
     void stopAllStyle();
 
 private:
-    Node* target;           //自机目标
+    Node** target;          //自机目标
     Map<int, Node*> styles; //弹幕容器
     int styleTag;
 };
