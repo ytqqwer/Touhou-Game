@@ -138,6 +138,7 @@ set(GAME_SRC
 
   # NonGameplayScene
   Classes/NonGameplayScenes/ArmsStoreScene.cpp
+  Classes/NonGameplayScenes/ArmsStorePurchaseScene.cpp
   Classes/NonGameplayScenes/BackgroundIntroScene.cpp
   Classes/NonGameplayScenes/EquipScene.cpp
   Classes/NonGameplayScenes/HomeScene.cpp
@@ -157,15 +158,19 @@ set(GAME_SRC
   Classes/Layers/SettingsLayer.cpp
 
   # GameplayScene
-  Classes/GameplayScene/Enemy.cpp
   Classes/GameplayScene/GameplayScene.cpp
   Classes/GameplayScene/Player.cpp
   Classes/GameplayScene/EventFilterManager.cpp
   Classes/GameplayScene/AnimateManager.cpp
 
+  Classes/GameplayScene/Enemy/Enemy.cpp
+  Classes/GameplayScene/Enemy/Frog.cpp
+  Classes/GameplayScene/Enemy/Opossum.cpp
+
   Classes/GameplayScene/Emitters/Bullet.cpp
   Classes/GameplayScene/Emitters/Emitter.cpp
   Classes/GameplayScene/Emitters/Style/Scatter.cpp
+  Classes/GameplayScene/Emitters/Style/OddEven.cpp
   Classes/GameplayScene/Emitters/test/EmitterTestEnemy.cpp
   Classes/GameplayScene/Emitters/test/EmitterTestScene.cpp
   Classes/GameplayScene/Emitters/test/EmitterTestPlayer.cpp
@@ -197,6 +202,7 @@ set(GAME_HEADERS
 
   # NonGameplayScenes
   Classes/NonGameplayScenes/ArmsStoreScene.h
+  Classes/NonGameplayScenes/ArmsStorePurchaseScene.h
   Classes/NonGameplayScenes/BackgroundIntroScene.h
   Classes/NonGameplayScenes/EquipScene.h
   Classes/NonGameplayScenes/HomeScene.h
@@ -216,12 +222,15 @@ set(GAME_HEADERS
   Classes/Layers/SettingsLayer.h
 
   # GameplayScene
-  Classes/GameplayScene/Enemy.h
   Classes/GameplayScene/GameplayScene.h
   Classes/GameplayScene/Player.h
   Classes/GameplayScene/common.h
   Classes/GameplayScene/EventFilterManager.h
   Classes/GameplayScene/AnimateManager.h
+
+  Classes/GameplayScene/Enemy/Enemy.h
+  Classes/GameplayScene/Enemy/Frog.h
+  Classes/GameplayScene/Enemy/Opossum.h
 
   # Emitter
   Classes/GameplayScene/Emitters/Bullet.h
@@ -229,6 +238,7 @@ set(GAME_HEADERS
   Classes/GameplayScene/Emitters/StyleConfig.h
   Classes/GameplayScene/Emitters/Style/EmitterStyle.h
   Classes/GameplayScene/Emitters/Style/Scatter.h
+  Classes/GameplayScene/Emitters/Style/OddEven.h
   Classes/GameplayScene/Emitters/test/EmitterTestEnemy.h
   Classes/GameplayScene/Emitters/test/EmitterTestScene.h
   Classes/GameplayScene/Emitters/test/EmitterTestPlayer.h
