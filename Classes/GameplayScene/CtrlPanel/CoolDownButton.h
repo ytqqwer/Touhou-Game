@@ -21,9 +21,13 @@ public:
     virtual void coolDownBySecondSchedule(float remaining);
 
 protected:
-    virtual void initUseCountAndCoolDownTime() = 0;
-    virtual void initRemainingUseCountLabel();
-    virtual void initRemainingTimeLabel();
+    /*  子类必须在 subClassPreInit 中做如下操作：
+     *    - 初始化 _remainingUseCount, _coolDownTime
+     *    - 设置 Button 的纹理和大小
+     */
+    virtual void subClassPreInit() = 0;
+    virtual void initRemainingUseLabel();
+    virtual void initRemainingCoolDownTimeLabel();
     virtual void initTouchListener() = 0;
 
     virtual void freeze();
@@ -32,13 +36,12 @@ protected:
     virtual void useOnce();
 
 protected:
-    // 子类需覆盖 initUseCountAndCoolDownTime 正确的赋值以下数据成员
     int _remainingUseCount; // -1 表示没有使用次数限制
     float _coolDownTime;
     float _remainingCoolDownTime = 0;
 
     Label* _remainingUseLabel;
-    Label* _remainingTimeLabel;
+    Label* _remainingCoolDownTimeLabel;
 };
 
 #endif // COOL_DOWN_BUTTON_H

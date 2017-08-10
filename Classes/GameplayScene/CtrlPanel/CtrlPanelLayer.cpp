@@ -198,14 +198,10 @@ CtrlPanelLayer::initTouchListener()
     };
 
     listener->onTouchMoved = [this](Touch* touch, Event* e) -> void {
-        // TODO
-
-        // auto location = touch->getLocation();
-        // if (location.y >= visibleSize.height / 2) {
-        //     if (curPlayer->isScheduled(CC_SCHEDULE_SELECTOR(Player::playerRun))) {
-        //         curPlayer->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
-        //     }
-        // }
+        auto location = touch->getLocation();
+        if (location.y >= _visibleSize.height / 2) {
+            _eventDispatcher->dispatchCustomEvent("motion_key_released");
+        }
     };
 
     listener->onTouchEnded = [this](Touch* touch, Event* e) -> void {

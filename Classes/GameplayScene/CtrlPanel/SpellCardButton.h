@@ -13,9 +13,7 @@ class SpellCardButton : public CoolDownButton
 public:
     static CoolDownButton* create(const SpellCard& i);
 
-    virtual bool init() override;
-
-    virtual void initUseCountAndCoolDownTime() override;
+    virtual void subClassPreInit() override;
     virtual void initTouchListener() override;
 
 private:

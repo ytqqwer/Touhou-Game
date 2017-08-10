@@ -15,16 +15,17 @@ CoolDownButton::init()
     if (!Button::init())
         return false;
 
-    initUseCountAndCoolDownTime();
-    initRemainingUseCountLabel();
-    initRemainingTimeLabel();
+    subClassPreInit();
+
+    initRemainingUseLabel();
+    initRemainingCoolDownTimeLabel();
     initTouchListener();
 
     return true;
 }
 
 void
-CoolDownButton::initRemainingUseCountLabel()
+CoolDownButton::initRemainingUseLabel()
 {
     // 如果没有使用次数的限制 (_remainingUseCount == -1), 什么都不做
 
@@ -37,28 +38,30 @@ CoolDownButton::initRemainingUseCountLabel()
 
     this->addChild(_remainingUseLabel);
     Size btnSize = this->getContentSize();
-    _remainingUseLabel->setPosition(Vec2(btnSize.width * 0.1, btnSize.height * 0.9));
+    _remainingUseLabel->setPosition(Vec2(btnSize.width * 0.1, btnSize.height * 0.1));
 }
 
 void
-CoolDownButton::initRemainingTimeLabel()
+CoolDownButton::initRemainingCoolDownTimeLabel()
 {
-    _remainingTimeLabel = Label::createWithTTF("0", "fonts/dengxian.ttf", 36);
-    _remainingTimeLabel->setVisible(false);
-    this->addChild(_remainingTimeLabel);
+    _remainingCoolDownTimeLabel = Label::createWithTTF("0", "fonts/dengxian.ttf", 28);
+    _remainingCoolDownTimeLabel->setVisible(false);
+
+    this->addChild(_remainingCoolDownTimeLabel);
+    _remainingCoolDownTimeLabel->setPosition(this->getContentSize() / 2);
 }
 
 void
 CoolDownButton::freeze()
 {
-    // TODO, 界面显示
+    this->setColor(Color3B(64, 64, 64));
     this->setTouchEnabled(false);
 }
 
 void
 CoolDownButton::unFreeze()
 {
-    // TODO, 界面显示
+    this->setColor(Color3B(0xff, 0xff, 0xff));
     this->setTouchEnabled(true);
 }
 
@@ -67,18 +70,23 @@ CoolDownButton::coolDown()
 {
     _remainingCoolDownTime = _coolDownTime;
 
-    _remainingTimeLabel->setString(to_string(_remainingCoolDownTime));
+    _remainingCoolDownTimeLabel->setString(to_string((int)_remainingCoolDownTime));
+    _remainingCoolDownTimeLabel->setVisible(true);
     this->scheduleOnce(SEL_SCHEDULE(&CoolDownButton::coolDownBySecondSchedule), 1);
 }
 
 void
 CoolDownButton::coolDownBySecondSchedule(float unused)
 {
+    --_remainingCoolDownTime;
+
     // 类似于递归
-    if (--_remainingCoolDownTime == 0) {
+    if (_remainingCoolDownTime == 0) {
         unFreeze();
+        _remainingCoolDownTimeLabel->setVisible(false);
     } else {
-        _remainingTimeLabel->setString(to_string(_remainingCoolDownTime));
+        // 转型为 `int' 以截断小数点以后的部分
+        _remainingCoolDownTimeLabel->setString(to_string((int)_remainingCoolDownTime));
 
         // 下面的注释掉的 selector 形式的 schedule 不能使用
         //   : 同一时间 scheduler 中只能有一个 selector 被 schedule,
@@ -88,20 +96,24 @@ CoolDownButton::coolDownBySecondSchedule(float unused)
 
         // scheduleOnce(SEL_SCHEDULE(&CoolDownButton::coolDownBySecondSchedule), 1);
         scheduleOnce([this](float unused) { this->coolDownBySecondSchedule(unused); }, 1,
-                     "coolDown_" + to_string((long)this) + "_" + to_string(_remainingCoolDownTime));
+                     "coolDown_" + to_string((long)this) + "_" +
+                         to_string((int)_remainingCoolDownTime));
     }
 }
 
 void
 CoolDownButton::useOnce()
 {
-    --_remainingUseCount;
-    _remainingUseLabel->setString(to_string(_remainingUseCount));
-
-    if (_remainingUseCount == 0) {
-        freeze();
-    } else {
+    // -1 表示没有使用次数限制
+    if (_remainingUseCount == -1) {
         freeze();
         coolDown();
+    } else {
+        --_remainingUseCount;
+        _remainingUseLabel->setString(to_string(_remainingUseCount));
+        freeze();
+
+        if (_remainingUseCount != 0)
+            coolDown();
     }
 }

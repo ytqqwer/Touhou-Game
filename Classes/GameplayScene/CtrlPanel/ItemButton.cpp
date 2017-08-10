@@ -23,24 +23,15 @@ ItemButton::ItemButton(const Item& i)
     _item = i;
 }
 
-bool
-ItemButton::init()
+void
+ItemButton::subClassPreInit()
 {
-    if (!CoolDownButton::init())
-        return false;
+    _remainingUseCount = _item.maxUseCount;
+    _coolDownTime = _item.cooldown;
 
     loadTextureNormal(_item.icon);
     setScale(1.5);
     setName(_item.tag);
-
-    return true;
-}
-
-void
-ItemButton::initUseCountAndCoolDownTime()
-{
-    _remainingUseCount = _item.maxUseCount;
-    _coolDownTime = _item.cooldown;
 }
 
 void

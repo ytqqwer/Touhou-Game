@@ -12,7 +12,6 @@ SpellCardButton::create(const SpellCard& c)
 
     if (button && button->init()) {
         button->autorelease();
-
         return button;
     } else {
         delete button;
@@ -26,24 +25,15 @@ SpellCardButton::SpellCardButton(const SpellCard& c)
     _spellCard = c;
 }
 
-bool
-SpellCardButton::init()
+void
+SpellCardButton::subClassPreInit()
 {
-    if (!CoolDownButton::init())
-        return false;
+    _remainingUseCount = -1; // -1 表示没有使用次数限制
+    _coolDownTime = _spellCard.cooldown;
 
     loadTextureNormal(_spellCard.icon);
     setScale(1.5);
     setName(_spellCard.tag);
-
-    return true;
-}
-
-void
-SpellCardButton::initUseCountAndCoolDownTime()
-{
-    _remainingUseCount = -1; // -1 表示没有使用次数限制
-    _coolDownTime = _spellCard.cooldown;
 }
 
 void
@@ -53,6 +43,7 @@ SpellCardButton::initTouchListener()
         if (type == Widget::TouchEventType::ENDED) {
             this->_eventDispatcher->dispatchCustomEvent("use_spell_card",
                                                         (void*)this->_spellCard.tag.c_str());
+            this->useOnce();
         }
     });
 }
