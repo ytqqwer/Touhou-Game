@@ -163,6 +163,12 @@ set(GAME_SRC
   Classes/GameplayScene/EventFilterManager.cpp
   Classes/GameplayScene/AnimateManager.cpp
 
+  Classes/GameplayScene/CtrlPanel/CtrlPanelLayer.cpp
+  Classes/GameplayScene/CtrlPanel/CoolDownButton.cpp
+  Classes/GameplayScene/CtrlPanel/ItemButton.cpp
+  Classes/GameplayScene/CtrlPanel/SpellCardButton.cpp
+  Classes/GameplayScene/CtrlPanel/LifeManaBar.cpp
+
   Classes/GameplayScene/Enemy/Enemy.cpp
   Classes/GameplayScene/Enemy/Frog.cpp
   Classes/GameplayScene/Enemy/Opossum.cpp
@@ -227,6 +233,12 @@ set(GAME_HEADERS
   Classes/GameplayScene/common.h
   Classes/GameplayScene/EventFilterManager.h
   Classes/GameplayScene/AnimateManager.h
+
+  Classes/GameplayScene/CtrlPanel/CtrlPanelLayer.h
+  Classes/GameplayScene/CtrlPanel/CoolDownButton.h
+  Classes/GameplayScene/CtrlPanel/ItemButton.h
+  Classes/GameplayScene/CtrlPanel/SpellCardButton.h
+  Classes/GameplayScene/CtrlPanel/LifeManaBar.h
 
   Classes/GameplayScene/Enemy/Enemy.h
   Classes/GameplayScene/Enemy/Frog.h

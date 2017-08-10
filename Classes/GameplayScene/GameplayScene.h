@@ -33,18 +33,35 @@ public:
     void initCamera();
     void initLauncher();
     void initEnemy();
-    void initListener();
+    void initPhysicsContactListener();
+    void initCustomEventListener();
 
     void update(float dt);
-
     void testEventFilterManager();
-
     // void moveCamera(float);
 
+    //对碰撞进行处理
+    bool contactFilter(const PhysicsContact& contact);
+
 public:
+    void onEventLeftKeyPressed(EventCustom*);
+    void onEventRightKeyPressed(EventCustom*);
+    void onEventMotionKeyReleased(EventCustom*);
+    void onEventJumpKeyPressed(EventCustom*);
+    void onEventDashKeyPressed(EventCustom*);
+    void onEventSwitchCharacter(EventCustom*);
+    void onEventSwitchAttackType(EventCustom*);
+    void onEventSettingsKeyPressed(EventCustom*);
+
+private:
+    // 在地图中生成静态刚体
+    bool createPhysical(float scale);
+
+private:
     //实用的全局量
     GameData* gameData;
     Size visibleSize;
+    EventFilterManager* _eventFilterMgr;
 
     //对curPlayer的操作就是对当前指定角色的操作
     Player* curPlayer;
@@ -60,24 +77,8 @@ public:
     //游戏场景的几个重要层
     Layer* mapLayer;
     Layer* controlPanel;
-    Layer* p1ControlPanel;
-    Layer* p2ControlPanel;
 
-    //对碰撞进行处理
-    bool contactFilter(const PhysicsContact& contact);
-
-    //用来接受触摸操作
-    bool onTouchBegan(Touch* touch, Event* event);
-    void onTouchMoved(Touch* touch, Event* event);
-    void onTouchEnded(Touch* touch, Event* event);
-
-private:
     static const std::string TAG;
-
-    //在地图中生成静态刚体
-    bool createPhysical(float scale);
-
-    EventFilterManager* _eventFilterMgr;
 };
 
 #endif

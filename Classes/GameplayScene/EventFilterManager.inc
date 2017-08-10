@@ -9,6 +9,19 @@ static const char* eventFilterWorkingRange[] = {
     "test_event_2",
 #endif
     // 在这添加事件类型
+    "left_key_pressed",
+    "right_key_pressed",
+    "motion_key_released",
+    "jump_key_pressed",
+    "dash_key_pressed",
+    "switch_character",
+    "switch_attack_type",
+
+    "use_item",
+    "use_spell_card",
+
+    "settings_key_pressed",
+
     "bullet_hit_boss",
     "bullet_hit_player"
 };
