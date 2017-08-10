@@ -80,14 +80,11 @@ GameplayScene::init()
     // 加载角色
     initCharacter();
 
+    // 加载首个区域
+    initArea();
+
     // 加载摄像机
     initCamera();
-
-    // 加载发射器
-    initLauncher();
-
-    // 加载敌人
-    initEnemy();
 
     // 加载监听器
     initPhysicsContactListener();
@@ -307,6 +304,31 @@ GameplayScene::initCharacter()
 }
 
 void
+GameplayScene::initArea()
+{
+    auto playerPos = curPlayer->getPosition();
+    auto areas = _map->getObjectGroup("area")->getObjects();
+    ;
+    for (auto& v : areas) {
+        auto dict = v.asValueMap();
+        if (dict.size() == 0)
+            continue;
+        float x = dict["x"].asFloat();
+        float y = dict["y"].asFloat();
+        float width = dict["width"].asFloat();
+        float height = dict["height"].asFloat();
+        curArea.setRect(x, y, width, height);
+        if (curArea.containsPoint(playerPos)) {
+            // 加载发射器
+            initLauncher();
+            // 加载敌人
+            initEnemy();
+            break;
+        }
+    }
+}
+
+void
 GameplayScene::initCamera()
 {
     auto mapSize = _map->getMapSize();
@@ -314,22 +336,11 @@ GameplayScene::initCamera()
     camera = Sprite::create();
     camera->setPosition(curPlayer->getPosition());
     this->addChild(camera);
-    auto follow = Follow::create(camera, Rect(0, 0, mapSize.width * mapTileSize.width,
-                                              mapSize.height * mapTileSize.height - 50));
-    mapLayer->runAction(follow);
 
-    // camera->schedule(CC_SCHEDULE_SELECTOR(GameplayScene::moveCamera));
-    // this->scheduleUpdate();
+    auto cameraFollow = Follow::create(camera, curArea);
+    cameraFollow->setTag(cameraTag);
+    mapLayer->runAction(cameraFollow);
 }
-
-// void GameplayScene::moveCamera(float dt)
-//{
-//	//	Player* p = (Player *)this->getChildByName("curPlayer");
-//
-//	Vec2 poi = curPlayer->getPosition();
-//	//Vec2 poi = p->getPosition();
-//	camera->setPosition(poi.x + 100, poi.y + 70);
-//}
 
 void
 GameplayScene::initLauncher()
@@ -344,14 +355,18 @@ GameplayScene::initLauncher()
         float x = dict["x"].asFloat();
         float y = dict["y"].asFloat();
 
-        auto _launcher = Sprite::create("CloseNormal.png");
-        _launcher->setPosition(x, y);
-        mapLayer->addChild(_launcher); //不要忘记addChild
+        if (curArea.containsPoint(Vec2(x, y))) {
+            auto _launcher = Sprite::create("CloseNormal.png");
+            _launcher->setPosition(x, y);
+            mapLayer->addChild(_launcher); //不要忘记addChild
 
-        auto fe = Emitter::create((Node**)(&curPlayer));
-        _launcher->addChild(fe);
-        // fe->playStyle(StyleType::SCATTER);
-        fe->playStyle(StyleType::ODDEVEN);
+            auto fe = Emitter::create((Node**)(&curPlayer));
+            _launcher->addChild(fe);
+            // fe->playStyle(StyleType::SCATTER);
+            fe->playStyle(StyleType::ODDEVEN);
+
+            launcherList.pushBack(_launcher);
+        }
     }
 }
 
@@ -371,11 +386,15 @@ GameplayScene::initEnemy()
         float x = dict["x"].asFloat();
         float y = dict["y"].asFloat();
 
-        std::string tag = dict["tag"].asString();
-        Enemy* _enemy = Enemy::create(tag);
-        _enemy->setPosition(x, y);
-        mapLayer->addChild(_enemy);
-        _enemy->startSchedule(curPlayer);
+        if (curArea.containsPoint(Vec2(x, y))) {
+            std::string tag = dict["tag"].asString();
+            Enemy* _enemy = Enemy::create(tag);
+            _enemy->setPosition(x, y);
+            mapLayer->addChild(_enemy);
+            _enemy->startSchedule(curPlayer);
+
+            enemyList.pushBack(_enemy);
+        }
     }
 }
 
@@ -595,6 +614,26 @@ GameplayScene::update(float dt)
 {
     Vec2 poi = curPlayer->getPosition();
     camera->setPosition(poi.x + 100, poi.y + 70); //移动摄像机
+
+    if (curArea.containsPoint(curPlayer->getPosition())) {
+        ;
+    } else {
+
+        //移除前一个区域的物件
+        for (auto v : enemyList) {
+            mapLayer->removeChild(v);
+        }
+        for (auto v : launcherList) {
+            mapLayer->removeChild(v);
+        }
+
+        initArea();
+
+        mapLayer->stopActionByTag(cameraTag);
+        auto cameraFollow = Follow::create(camera, curArea);
+        cameraFollow->setTag(cameraTag);
+        mapLayer->runAction(cameraFollow);
+    }
 
     //留空，更新界面状态
 }

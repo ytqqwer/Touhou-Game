@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="70" tilewidth="16" tileheight="16" nextobjectid="129">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="70" tilewidth="16" tileheight="16" nextobjectid="141">
  <tileset firstgid="1" name="jungle tileset" tilewidth="16" tileheight="16" tilecount="741" columns="39">
   <image source="jungle tileset.png" trans="000000" width="624" height="304"/>
  </tileset>
@@ -9,6 +9,10 @@
  <tileset firstgid="1162" name="props" tilewidth="16" tileheight="16" tilecount="364" columns="26">
   <image source="props.png" trans="00788c" width="416" height="224"/>
  </tileset>
+ <objectgroup name="area">
+  <object id="132" x="0" y="0" width="1732" height="1120"/>
+  <object id="134" x="1732" y="0" width="1464" height="1120"/>
+ </objectgroup>
  <objectgroup name="physics">
   <object id="76" x="1828" y="1404"/>
   <object id="77" x="688" y="496">
@@ -18,8 +22,8 @@
    <polyline points="0,0 128,0"/>
   </object>
   <object id="93" x="0" y="496" width="32" height="624"/>
-  <object id="98" x="4" y="0" width="20" height="368"/>
-  <object id="99" x="24" y="0" width="2320" height="48"/>
+  <object id="98" x="0" y="0" width="24" height="368"/>
+  <object id="99" x="24" y="0" width="3108" height="48"/>
   <object id="105" x="1456" y="672">
    <polyline points="0,0 160,0"/>
   </object>
@@ -45,60 +49,60 @@
    <polyline points="0,0 240,0"/>
   </object>
   <object id="121" x="1104" y="992">
-   <polyline points="0,0 1296,0"/>
+   <polyline points="0,0 2032,0"/>
   </object>
   <object id="124" x="864" y="784" width="240" height="212"/>
   <object id="125" x="548" y="868" width="12" height="28"/>
   <object id="126" x="368" y="372" width="76" height="172"/>
   <object id="127" x="444" y="436" width="180" height="108"/>
-  <object id="128" x="2348" y="0" width="52" height="992"/>
+  <object id="128" x="3140" y="4" width="52" height="992"/>
  </objectgroup>
  <objectgroup name="launcher">
-  <object id="104" x="1632" y="396" width="24" height="24"/>
+  <object id="104" x="2272" y="368" width="24" height="24"/>
  </objectgroup>
  <objectgroup name="enemy">
-  <object id="64" x="1576" y="884" width="48" height="44">
+  <object id="64" x="2192" y="884" width="48" height="44">
    <properties>
     <property name="tag" value="opossum"/>
    </properties>
   </object>
-  <object id="65" x="1796" y="888" width="52" height="40">
+  <object id="65" x="2344" y="880" width="52" height="40">
    <properties>
     <property name="tag" value="opossum"/>
    </properties>
   </object>
-  <object id="66" x="1388" y="884" width="48" height="44">
+  <object id="66" x="2024" y="884" width="48" height="44">
    <properties>
     <property name="tag" value="frog"/>
    </properties>
   </object>
-  <object id="109" x="2012" y="884" width="40" height="32">
+  <object id="109" x="2488" y="884" width="40" height="32">
    <properties>
     <property name="tag" value="opossum"/>
    </properties>
   </object>
-  <object id="110" x="2172" y="884" width="40" height="36">
+  <object id="110" x="2616" y="880" width="40" height="36">
    <properties>
     <property name="tag" value="frog"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="25" name="birthPoint" x="224" y="732" width="24" height="24"/>
+  <object id="25" name="birthPoint" x="100" y="820" width="24" height="24"/>
  </objectgroup>
- <layer name="ground" width="150" height="70">
+ <layer name="ground" width="200" height="70">
   <data encoding="base64" compression="zlib">
-   eJzt3G1u00AUheFJNkFhBU1bwRb420JLPwRLgbYqSwGCaKUuBPrdvQBhAdxRbcWYOPHIc31n0veRjqqk0ciRjya244lzAAAAAAAAAAAAAAAAAAAA+ToZWG8BAAAAAHQ3kqxJ1otUH29INuXcZ0vySvJasj3jXGjWa3Ykq7Xxbvt5S0jAXkP2JV87jv1GslsZ73fH8ZCPw4a8lPnmquPY7yUfivGO3EOv7iT3HcddhOtL9rQ65X1y//dqIvkTYWykTatTnv8crPbqqYz9bDA9lqunfmyHfGl1yqv26tuw+Vhu1rHdQcTtQP+0OuVVj69C4ue248jbgn6NnU6nvOp8FdqrrueisPVcPp9eDHXGZr56vDR75c8HP0u+BGbsmK9yp9mr75Ifkovi76JcFLl0Op/L6I9mr/B40StooFfQQK+ggV5BA72CBnoFDfQKGugVNOTeK+4NTVNOvaJD+cipV8gHvYIGegUN9AoalrVXN266vmdUS7nmp/p/1gHFtay9+uWma61ZB9S/Ze5V6L313FcfD736t1fMV3GcSKfe0St6FZnv1cfh9Di2PIbtM7GPl68dvbLm17efBqxx10j5G0aTSO/pp6NX1kLXjGqk/E2QkDmufu2gOtc+kbFWBvTKknWnfEJ+EyQk50N6ZcW6UyklpFfcWzGf9b5MKcxX8Vjvy5RCr+Kx3pcphV7FY70vU8rb4lpe0/fV855v+/82qV/bq19bnPe46fv1Nq9vs11tX2e9L1NKeS1vXs4anre8/pdirPclIYQQQgghhBCb/AW42XLl
+   eJzt3Wlu00AABtBJLsFyAgoIrsBf9k1wFKCoHAUoAiQOAmW/C1AOwFgkijGZNI49XpL3pE9VkmrkSP46mTiZhgAAAAAAAAAAAAAAAADArjiY9H0EAAAAALtjL+Z8zIVZyrcvxlydhHAt5nrMjZibS967WfY7t2LOVcb72s1TgtbcTeRezKuGY9+OuVMa71fD8aBrTxK5Ev/+f2o49qOYx7Px9sPffnyL+d5w3JO4PkFbcnWj8Dz834/jmN8tjA1dyNWNQvH6qtyPM3Hss5PFWqea6toH+parG4VyP15P02udZWuf+y0eB2wqVzcK5fVHnRRzzdOWjwU2cRjydKNQnj/q9qPpe2fQhkvxdc/laZ6xzR+MXc5+FO9fvYh5WTOHwfzBMOTsx/uYDzFHs58n5WiWjyHP6z2oK2c/YOz0A9L0A9L0A9L0A9L0A9L0A9L0A9L0A9LG3g/fFSSnMfVDF+jamPoBXdMPSNMPSNMPSNvWfnwJi/1Q9iqZ75FSfty+KSyzrf34GRZ7N9o3hU1tcz/qfvfd996p0o9/+2H+oOwgduOhfugHSxX9eDZdrFfna9Uu0/a6+HPQD9pR7Pv5psbenzky/98Hxy09px9BP2hH3b3bcmS+d3WdOaf6nm157jsVxzo90Q+a67sbRersXV0n76b6QTN9d2NIqdMPnyXeDX2fk0OK+YOqvs/JIUU/qOr7nBxS9IOqvs/JIeXB7FpQ6nONq+5f9/F1Ur02VL02tep26nOY6/z+OsdV9/jHnr7PySFlfi1oVd4m7u/z+pHkS9/npIiIiIiIiIiIyKr8AV/6F5o=
   </data>
  </layer>
- <layer name="props-1" width="150" height="70">
+ <layer name="props-1" width="200" height="70">
   <data encoding="base64" compression="zlib">
-   eJzt2zEKwzAMBVAtPlLaORm8tj1Xco3knFGhQwiluEMILe+BMAgPHv4gBI4AAAAAAAAAAAAAAAAAAADgqS8RQzn7FQAAAAAAAAAAAAAAAL+hKxGXrGv53IMW9ZWZW573rMcmQ/telS8A4E+MOddMZhsatf6Hn/POIlecwE6AI7zbEwAAAAAAAAAAwDdW/xcJNw==
+   eJzt3DEKwzAMAEAtflLauRm8tn1X+o3kndHQoYS0NFkC8R0Ig/DgwQKhQREAAAAAAAAAAAAAAAAAAAAAAAAAAGxxKxF9OfoVAAAAAAAAAAAAAAAAAAAAAG3pSsQl41p+56Al9f3373k+Mp4ftbDMVXUCAACnN2Tf/9L705h/94SOeWdSH7CbWSx8tzafBQAAAAAAAAAAAADgXGaIiQk3
   </data>
  </layer>
- <layer name="2-1" width="150" height="70">
+ <layer name="2-1" width="200" height="70">
   <data encoding="base64" compression="zlib">
-   eJzt2zkKAkEUBNBBR72CmruexPUkrvePrLARB0VBRd+D4jPZBD+obuiqAgAAAAAAAAAAAAAAAL5Bv66qQTKsP/0nAAD/QwcDAIDfski3XyarZF3MTbLV+3nSLruzTw7JsZin5GyvAAAAiFbOh+2kTjrF7CY9Z0eeNMrujJNJMi3mLJnbKwB4u6bOp/vxiqbOp/sBAPCvync+129+7n0DAAAAv6HpfuDWXYD7AQAAAAAAAAAAHnUB0IwNDw==
+   eJzt3DtuAkEQBNARDOYKQA4GTsL3JBjw/SNXOEKsLCJgeU8qtTbbpIPqYEoBAAAAAAAAAAAAAAAAAAAAAHg9k1rKNJnVZ/8JAACAjgIAAADvZpMOv012yb6Zh+So3/PhTtmBn+ScXJp5TX7tBwAAAABvZFBLGSY1GTXzKxm7dfHh5tmBRfKdLJu5Stb2AwCgF7o6kW4E3Z1INwIAAKCv2ndRbt9I+e8bAAAAAIDHdd1l791g3WUBAAAAAAAAAAAAAPrjD4jNDQ8=
   </data>
  </layer>
 </map>

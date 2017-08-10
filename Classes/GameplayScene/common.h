@@ -19,6 +19,9 @@ static const int groundCategoryTag = 100;
 static const int polylineCategoryTag = 99;
 static const int polygonCategoryTag = 98;
 
+//摄像机
+static const int cameraTag = 50;
+
 //游戏场景的重力
 static const int gameGravity = 1000.0f;
 

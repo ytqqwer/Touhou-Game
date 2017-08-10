@@ -30,6 +30,7 @@ public:
     void initMap();
     void initCtrlPanel();
     void initCharacter();
+    void initArea();
     void initCamera();
     void initLauncher();
     void initEnemy();
@@ -38,7 +39,6 @@ public:
 
     void update(float dt);
     void testEventFilterManager();
-    // void moveCamera(float);
 
     //对碰撞进行处理
     bool contactFilter(const PhysicsContact& contact);
@@ -73,6 +73,10 @@ private:
 
     //瓦片地图对象，需要从中读取数据
     TMXTiledMap* _map;
+    Rect curArea;
+
+    Vector<Node*> enemyList;
+    Vector<Node*> launcherList;
 
     //游戏场景的几个重要层
     Layer* mapLayer;
