@@ -18,20 +18,12 @@ public:
 
     bool init() override;
 
-public:
-    // `onEventXXX' 的前缀表明这个组件会接收和处理哪些事件
-    void onEventIncreasePlayerHP(EventCustom*);
-    void onEventDecreasePlayerHP(EventCustom*);
-    void onEventIncreasePlayerMana(EventCustom*);
-    void onEventDecreasePlayerMana(EventCustom*);
-
 private:
     CtrlPanelLayer() = default;
 
     void initCharacterPanelUIAndListener();
     void initTouchListener();
     void initKeyboardListener();
-    void initCustomEventListener();
 
 private:
     GameData* _gamedata;

@@ -5,6 +5,7 @@
 #include "GameplayScene/CtrlPanel/CtrlPanelLayer.h"
 #include "GameData/GameData.h"
 #include "GameplayScene/CtrlPanel/CoolDownButton.h"
+#include "GameplayScene/CtrlPanel/HPManaBar.h"
 #include "GameplayScene/CtrlPanel/ItemButton.h"
 #include "GameplayScene/CtrlPanel/SpellCardButton.h"
 
@@ -77,7 +78,6 @@ CtrlPanelLayer::init()
 
     initTouchListener();
     initKeyboardListener();
-    initCustomEventListener();
 
     return true;
 }
@@ -123,21 +123,16 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
             increment = increment + btn->getContentSize().width + 50;
         }
 
-        /*  3. 血条 */
+        /*  3. 血条, 蓝条 */
 
-        auto lifeBar = Sprite::create("gameplayscene/lifeBar.png");
-        lifeBar->setAnchorPoint(Size(0, 0));
-        lifeBar->setPosition(Vec2(_visibleSize.width * 0.090, _visibleSize.height * 0.920));
-        panel->addChild(lifeBar);
+        auto hpManaBar = HpManaBar::create();
+        hpManaBar->setAnchorPoint(Vec2(0, 1));
+        hpManaBar->setPosition(Vec2(_visibleSize.width * 0.090, _visibleSize.height * 0.930));
+        // TODO, 追踪 Player
+        // hpManaBar->setPlayer(Player *);
+        panel->addChild(hpManaBar);
 
-        /*  4. 蓝条 */
-
-        auto manaBar = Sprite::create("gameplayscene/lifeBar.png");
-        manaBar->setAnchorPoint(Size(0, 0));
-        manaBar->setPosition(Vec2(_visibleSize.width * 0.090, _visibleSize.height * 0.900));
-        panel->addChild(manaBar);
-
-        /*  5. 切换攻击方式按钮 */
+        /*  4. 切换攻击方式按钮 */
 
         auto switchAttackTypeBtn = Button::create("gameplayscene/switchAttackType.png");
         switchAttackTypeBtn->setPosition(
@@ -152,7 +147,7 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
             });
         panel->addChild(switchAttackTypeBtn);
 
-        /*  6. 切换角色按钮 */
+        /*  5. 切换角色按钮 */
 
         // i 不是 0 就是 1, 所以此处用了 [1-i] 来表示非当前角色
         auto switchCharacterBtn = Button::create(characterList[i].circularAvatar);
@@ -242,37 +237,4 @@ CtrlPanelLayer::initKeyboardListener()
     };
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-}
-
-void
-CtrlPanelLayer::initCustomEventListener()
-{
-    _eventDispatcher->addCustomEventListener(
-        "increase_player_hp", [this](EventCustom* e) { this->onEventIncreasePlayerHP(e); });
-
-    _eventDispatcher->addCustomEventListener(
-        "decrease_player_hp", [this](EventCustom* e) { this->onEventDecreasePlayerHP(e); });
-
-    _eventDispatcher->addCustomEventListener(
-        "increase_player_mana", [this](EventCustom* e) { this->onEventIncreasePlayerMana(e); });
-
-    _eventDispatcher->addCustomEventListener(
-        "decrease_player_mana", [this](EventCustom* e) { this->onEventDecreasePlayerMana(e); });
-}
-
-void
-CtrlPanelLayer::onEventIncreasePlayerHP(EventCustom* e)
-{
-}
-void
-CtrlPanelLayer::onEventDecreasePlayerHP(EventCustom* e)
-{
-}
-void
-CtrlPanelLayer::onEventIncreasePlayerMana(EventCustom* e)
-{
-}
-void
-CtrlPanelLayer::onEventDecreasePlayerMana(EventCustom* e)
-{
 }

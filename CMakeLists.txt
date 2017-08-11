@@ -167,7 +167,7 @@ set(GAME_SRC
   Classes/GameplayScene/CtrlPanel/CoolDownButton.cpp
   Classes/GameplayScene/CtrlPanel/ItemButton.cpp
   Classes/GameplayScene/CtrlPanel/SpellCardButton.cpp
-  Classes/GameplayScene/CtrlPanel/LifeManaBar.cpp
+  Classes/GameplayScene/CtrlPanel/HPManaBar.cpp
 
   Classes/GameplayScene/Enemy/Enemy.cpp
   Classes/GameplayScene/Enemy/Frog.cpp
@@ -238,7 +238,7 @@ set(GAME_HEADERS
   Classes/GameplayScene/CtrlPanel/CoolDownButton.h
   Classes/GameplayScene/CtrlPanel/ItemButton.h
   Classes/GameplayScene/CtrlPanel/SpellCardButton.h
-  Classes/GameplayScene/CtrlPanel/LifeManaBar.h
+  Classes/GameplayScene/CtrlPanel/HPManaBar.h
 
   Classes/GameplayScene/Enemy/Enemy.h
   Classes/GameplayScene/Enemy/Frog.h

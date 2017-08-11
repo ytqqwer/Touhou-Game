@@ -183,7 +183,7 @@
     <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\CoolDownButton.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\ItemButton.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\SpellCardButton.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\LifeManaBar.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\HpManaBar.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Enemy.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Frog.cpp" />
@@ -248,7 +248,7 @@
     <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\CoolDownButton.h" />
     <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\ItemButton.h" />
     <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\SpellCardButton.h" />
-    <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\LifeManaBar.h" />
+    <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\HpManaBar.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Enemy.h" />
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Frog.h" />
