@@ -36,6 +36,7 @@
 #include "GameData/SpellCard.h"
 
 #include "GameData/EnemyData.h"
+#include "GameData/EventData.h"
 
 #include "external/json.h"
 using json = nlohmann::json;
@@ -59,6 +60,7 @@ static json spellCardListDom;
 static json awardListDom;
 
 static json enemyListDom;
+static json eventListDom;
 
 // 用于支持玩 A 存档时，想存至 B 存档上
 // 我们需要记录更改到其他地方，而不能直接记录到 A 上
@@ -340,6 +342,20 @@ from_json(const json& j, EnemyData& c)
     c.healthPoint = j.at("healthPoint");
 }
 
+// eventListDom[n] -> EventData
+static void
+from_json(const json& j, EventData& c)
+{
+    if (j.value("eventType", "") == "conversation") {
+        c.eventType = j.at("eventType");
+        c.conversationTag = j.at("conversationTag");
+
+    } else if (j.value("eventType", "") == "action") {
+        c.eventType = j.at("eventType");
+        c.jump = (j.at("jump") == "true") ? true : false;
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // 第二部分：GameData 接口的实现
 
@@ -389,6 +405,7 @@ GameData::init()
     ifstream awards_json(prefix + "gamedata/awards.json");
 
     ifstream enemies_json(prefix + "gamedata/enemies.json");
+    ifstream events_json(prefix + "gamedata/events.json");
 
 #else
     ifstream saves_json(fileUtil->fullPathForFilename("gamedata/saves.json"));
@@ -400,6 +417,7 @@ GameData::init()
     ifstream awards_json(fileUtil->fullPathForFilename("gamedata/awards.json"));
 
     ifstream enemies_json(fileUtil->fullPathForFilename("gamedata/enemies.json"));
+    ifstream events_json(fileUtil->fullPathForFilename("gamedata/events.json"));
 
 #endif
 
@@ -414,6 +432,7 @@ GameData::init()
     awards_json >> awardListDom;
 
     enemies_json >> enemyListDom;
+    events_json >> eventListDom;
 
     /* 3. 关闭文件流 */
 
@@ -426,6 +445,7 @@ GameData::init()
     awards_json.close();
 
     enemies_json.close();
+    events_json.close();
 
 #ifndef NDEBUG
     // 若使用 DEBUG mode 来生成项目
@@ -723,6 +743,26 @@ GameData::setRoundToPlay(const string& roundTag)
     return true;
 }
 
+vector<EventData>
+GameData::getEventListByTag(const string& eventTag)
+{
+    vector<EventData> eventList;
+
+    /*  1. 找到和 eventTag 匹配的事件列表 */
+
+    json::const_iterator eListDom = find_if(
+        eventListDom.cbegin(), eventListDom.cend(),
+        [&eventTag](const json& cToPred) -> bool { return cToPred.at("eventTag") == eventTag; });
+    const json& listDom = eListDom->at("eventList");
+
+    /*  2. 将 JSON 数组转成 vector<EventData> */
+
+    for_each(listDom.cbegin(), listDom.cend(),
+             [&eventList](const json& dToAdd) { eventList.push_back(dToAdd); });
+
+    return eventList;
+}
+
 Round
 GameData::getRoundToPlay()
 {
@@ -986,7 +1026,7 @@ GameData::getAttackList(const string& characterTag)
 vector<Character::Attack>
 GameData::getSelectedAttackList(const string& characterTag)
 {
-    /* 1. 从存档中找到制定角色，并取其已选择的攻击方式的tag列表 */
+    /* 1. 从存档中找到指定角色，并取其已选择的攻击方式的tag列表 */
 
     const json& listDom1 = cachedSave["characterList"];
     const json* selectedAttackListPtr;

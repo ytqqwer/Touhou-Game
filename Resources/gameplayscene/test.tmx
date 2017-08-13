@@ -9,13 +9,6 @@
  <tileset firstgid="1162" name="props" tilewidth="16" tileheight="16" tilecount="364" columns="26">
   <image source="props.png" trans="00788c" width="416" height="224"/>
  </tileset>
- <objectgroup name="event">
-  <object id="141" x="1524" y="604" width="32" height="32">
-   <properties>
-    <property name="tag" value="E1"/>
-   </properties>
-  </object>
- </objectgroup>
  <objectgroup name="area">
   <object id="132" x="0" y="0" width="1732" height="1120"/>
   <object id="134" x="1732" y="0" width="1464" height="1120"/>
@@ -63,6 +56,13 @@
   <object id="126" x="368" y="372" width="76" height="172"/>
   <object id="127" x="444" y="436" width="180" height="108"/>
   <object id="128" x="3140" y="4" width="52" height="992"/>
+ </objectgroup>
+ <objectgroup name="event">
+  <object id="141" x="676" y="812" width="32" height="32">
+   <properties>
+    <property name="tag" value="E1"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="launcher">
   <object id="104" x="2272" y="368" width="24" height="24"/>

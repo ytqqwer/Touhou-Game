@@ -1,22 +1,23 @@
 [
     {
         "eventTag": "E1",
-        "events": [
+        "eventList": [
             {
-                "eventType": "对话",
+                "eventType": "conversation",
                 "conversationTag" : "C1"
             },
             {
-                "eventType": "刷怪"
+                "eventType": "action",
+                "jump" : "true"
             }
         ]
     },
     {
         "eventTag": "E2",
-        "events": [
+        "eventList": [
             {
-                "eventType": "获得道具",
-                "itemTag" : ""
+                "eventType": "action",
+                "jump" : "true"
             }
         ]
     }

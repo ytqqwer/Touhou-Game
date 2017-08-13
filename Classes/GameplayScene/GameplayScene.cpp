@@ -524,9 +524,6 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
                 EventCustom event("trigger_event");
                 event.setUserData((void*)entityB->getName().c_str());
                 _eventDispatcher->dispatchEvent(&event);
-
-                //_eventDispatcher->dispatchCustomEvent("trigger_event",(void
-                //*)entityB->getName().c_str());
             }
             //其他
         }
@@ -579,9 +576,14 @@ GameplayScene::initCustomEventListener()
 void
 GameplayScene::eventHandling(EventCustom* e)
 {
-    auto eventTag = static_cast<string*>(e->getUserData());
+
+    auto eventTag = (char*)e->getUserData();
     // log("eventTag : %s", eventTag);
-    curPlayer->playerJump();
+    vector<EventData> eventList = gameData->getEventListByTag(eventTag);
+
+    for (auto v : eventList) {
+        log("eventType : %s", v.eventType.c_str());
+    }
 }
 
 void

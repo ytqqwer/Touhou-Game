@@ -21,6 +21,7 @@
 #include "GameData/SpellCard.h"
 
 #include "GameData/EnemyData.h"
+#include "GameData/EventData.h"
 
 USING_NS_CC;
 using namespace std;
@@ -171,6 +172,10 @@ public:
     // 资料库
 
     // 待定
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // 事件 EventData
+    vector<EventData> getEventListByTag(const string& eventTag);
 
     ////////////////////////////////////////////////////////////////////////////////
     // Gameplay 场景专用
