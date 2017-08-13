@@ -1,11 +1,11 @@
 [
     {
-        "tag": "opossum",
+        "tag": "Opossum",
         "name": "opossum",
         "healthPoint": 200
     },
     {
-        "tag": "frog",
+        "tag": "Frog",
         "name": "frog",
         "healthPoint": 100
     }

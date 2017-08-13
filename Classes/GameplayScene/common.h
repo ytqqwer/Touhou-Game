@@ -10,14 +10,16 @@ static const int groundCategory = 0x1 << 1;
 static const int playerCategory = 0x1 << 2;
 static const int bulletCategory = 0x1 << 3;
 static const int enemyCategory = 0x1 << 4;
-static const int lockCategory = 0x1 << 5;
+static const int eventCategory = 0x1 << 5;
+static const int lockCategory = 0x1 << 6;
 
-static const int enemyCategoryTag = 103;
-static const int bulletCategoryTag = 102;
-static const int playerCategoryTag = 101;
-static const int groundCategoryTag = 100;
-static const int polylineCategoryTag = 99;
-static const int polygonCategoryTag = 98;
+static const int eventCategoryTag = 1004;
+static const int enemyCategoryTag = 1003;
+static const int bulletCategoryTag = 1002;
+static const int playerCategoryTag = 1001;
+static const int groundCategoryTag = 1000;
+static const int polylineCategoryTag = 999;
+static const int polygonCategoryTag = 998;
 
 //摄像机
 static const int cameraTag = 50;

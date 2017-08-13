@@ -30,7 +30,6 @@ public:
     void jump();
     void AI(float dt);
     void decreaseHp(Node* node);
-    void startSchedule(Player*& player);
 };
 
 #endif

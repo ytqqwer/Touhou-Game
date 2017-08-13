@@ -323,6 +323,8 @@ GameplayScene::initArea()
             initLauncher();
             // 加载敌人
             initEnemy();
+            // 加载事件
+            initEvent();
             break;
         }
     }
@@ -394,6 +396,40 @@ GameplayScene::initEnemy()
             _enemy->startSchedule(curPlayer);
 
             enemyList.pushBack(_enemy);
+        }
+    }
+}
+
+void
+GameplayScene::initEvent()
+{
+    TMXObjectGroup* group = _map->getObjectGroup("event");
+    auto objects = group->getObjects();
+    for (auto v : objects) {
+        auto dict = v.asValueMap();
+        if (dict.size() == 0)
+            continue;
+
+        float x = dict["x"].asFloat();
+        float y = dict["y"].asFloat();
+
+        if (curArea.containsPoint(Vec2(x, y))) {
+            std::string tag = dict["tag"].asString();
+            auto _event = Sprite::create("gameplayscene/unknownEvent.png");
+            _event->setPosition(x, y);
+            _event->setName(tag);
+            _event->setTag(eventCategoryTag);
+
+            auto body = PhysicsBody::createBox(Size(15, 25));
+            body->setGravityEnable(false);
+            body->setRotationEnable(false);
+            body->setCategoryBitmask(eventCategory);
+            body->setCollisionBitmask(0);
+            body->setContactTestBitmask(playerCategory);
+            _event->setPhysicsBody(body);
+            mapLayer->addChild(_event);
+
+            eventList.pushBack(_event);
         }
     }
 }
@@ -482,6 +518,16 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
                 auto enemy = (Enemy*)entityB;
                 enemy->curState = EnemyState::Alert;
             }
+            // 当player碰到了事件点或者宝箱
+            else if (entityB->getTag() == eventCategoryTag) {
+                //抛出event的tag
+                EventCustom event("trigger_event");
+                event.setUserData((void*)entityB->getName().c_str());
+                _eventDispatcher->dispatchEvent(&event);
+
+                //_eventDispatcher->dispatchCustomEvent("trigger_event",(void
+                //*)entityB->getName().c_str());
+            }
             //其他
         }
     }
@@ -492,13 +538,11 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
 void
 GameplayScene::initPhysicsContactListener()
 {
-    auto dispatcher = Director::getInstance()->getEventDispatcher();
-
     auto filter = EventListenerPhysicsContact::create();
     filter->onContactBegin = CC_CALLBACK_1(GameplayScene::contactFilter, this);
     //留空，当玩家脱离索敌区域后恢复敌人状态
     // filter->onContactSeparate = ;
-    dispatcher->addEventListenerWithFixedPriority(filter, 50);
+    _eventDispatcher->addEventListenerWithFixedPriority(filter, 50);
 }
 
 void
@@ -527,6 +571,17 @@ GameplayScene::initCustomEventListener()
 
     _eventDispatcher->addCustomEventListener(
         "settings_key_pressed", [this](EventCustom* e) { this->onEventSettingsKeyPressed(e); });
+
+    _eventDispatcher->addCustomEventListener("trigger_event",
+                                             [this](EventCustom* e) { this->eventHandling(e); });
+}
+
+void
+GameplayScene::eventHandling(EventCustom* e)
+{
+    auto eventTag = static_cast<string*>(e->getUserData());
+    // log("eventTag : %s", eventTag);
+    curPlayer->playerJump();
 }
 
 void
@@ -581,7 +636,15 @@ GameplayScene::onEventSwitchCharacter(EventCustom*)
     curPlayer->stopAttackType(curPlayer->currentAttackType);
     mapLayer->removeChild(curPlayer, false);
 
-    theOther->getPhysicsBody()->setVelocity(theOther->getPhysicsBody()->getVelocity());
+    if (curPlayer->playerDirection == PlayerDirection::RIGHT) {
+        theOther->playerDirection = PlayerDirection::RIGHT;
+        theOther->playerSprite->setScaleX(1);
+    } else {
+        theOther->playerDirection = PlayerDirection::LEFT;
+        theOther->playerSprite->setScaleX(-1);
+    }
+
+    theOther->getPhysicsBody()->setVelocity(curPlayer->getPhysicsBody()->getVelocity());
     theOther->setPosition(curPlayer->getPosition());
     theOther->changeAttackType(theOther->currentAttackType);
 
@@ -624,6 +687,9 @@ GameplayScene::update(float dt)
             mapLayer->removeChild(v);
         }
         for (auto v : launcherList) {
+            mapLayer->removeChild(v);
+        }
+        for (auto v : eventList) {
             mapLayer->removeChild(v);
         }
 

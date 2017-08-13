@@ -14,9 +14,8 @@ Opossum::init(std::string tag)
     this->setTag(enemyCategoryTag);
     this->setName(tag);
 
-    animateManager = AnimateManager::getInstance();
     enemySprite = Sprite::create(
-        animateManager->addEnemyTexture(tag)); //此处必须初始化一张角色纹理，否则后面无法切换纹理
+        "gameplayscene/Enemy/opossum-1.png"); //此处必须初始化一张纹理，否则后面无法切换纹理
     this->addChild(enemySprite);
 
     //设置属性值
@@ -49,7 +48,13 @@ Opossum::init(std::string tag)
     body->setVelocityLimit(500);
 
     //设置动画
-    enemyAnimation = animateManager->addEnemyCache(tag);
+    enemyAnimation = Animation::create();
+    for (int i = 1; i <= 6; i++)
+        enemyAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/opossum-" + std::to_string(i) +
+                                               ".png");
+    enemyAnimation->setDelayPerUnit(0.15f);
+    AnimationCache::getInstance()->addAnimation(enemyAnimation, "OpossumAnimation");
+
     enemySprite->runAction(RepeatForever::create(Animate::create(enemyAnimation))); //初始时刻在奔跑
 
     return true;
@@ -63,9 +68,9 @@ Opossum::run()
     Point enemyPos = this->getPosition();
 
     if (enemyPos.x > poi.x) {
-        this->getPhysicsBody()->applyImpulse(Vec2(-20.0f, 0.0f));
+        this->getPhysicsBody()->applyImpulse(Vec2(-30.0f, 0.0f));
     } else {
-        this->getPhysicsBody()->applyImpulse(Vec2(20.0f, 0.0f));
+        this->getPhysicsBody()->applyImpulse(Vec2(30.0f, 0.0f));
     }
 }
 
@@ -73,7 +78,7 @@ void
 Opossum::jump()
 {
     auto body = this->getPhysicsBody();
-    Vec2 impluse = Vec2(0.0f, 400.0f);
+    Vec2 impluse = Vec2(0.0f, 300.0f);
     body->applyImpulse(impluse);
 }
 
@@ -109,12 +114,4 @@ Opossum::decreaseHp(Node* node)
     if (enemy->hp < 0) {
         enemy->removeFromParentAndCleanup(true);
     }
-}
-
-void
-Opossum::startSchedule(Player*& player)
-{
-    curPlayer = &player;
-
-    this->schedule(CC_SCHEDULE_SELECTOR(Enemy::AI), 0.05);
 }

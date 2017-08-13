@@ -3,7 +3,6 @@
 #endif
 
 #include "GameplayScene/Enemy/Enemy.h"
-
 #include "GameplayScene/Enemy/Frog.h"
 #include "GameplayScene/Enemy/Opossum.h"
 
@@ -11,9 +10,9 @@ Enemy*
 Enemy::create(std::string tag)
 {
     Enemy* pRet;
-    if (tag == "frog") {
+    if (tag == "Frog") {
         pRet = new (std::nothrow) Frog();
-    } else if (tag == "opossum") {
+    } else if (tag == "Opossum") {
         pRet = new (std::nothrow) Opossum();
     }
 
@@ -25,4 +24,12 @@ Enemy::create(std::string tag)
         pRet = nullptr;
         return nullptr;
     }
+}
+
+void
+Enemy::startSchedule(Player*& player)
+{
+    curPlayer = &player;
+
+    this->schedule(CC_SCHEDULE_SELECTOR(Enemy::AI), 0.05);
 }

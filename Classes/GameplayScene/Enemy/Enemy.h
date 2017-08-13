@@ -5,8 +5,7 @@
 #ifndef GAMEPLAY_ENEMY_H
 #define GAMEPLAY_ENEMY_H
 
-#include "GameplayScene/AnimateManager.h"
-#include "GameplayScene/Player.h"
+#include "GameplayScene/Player/Player.h"
 
 #include "GameData/EnemyData.h"
 #include "GameData/GameData.h"
@@ -30,7 +29,8 @@ public:
     virtual void jump() = 0; //敌人跳跃
     virtual void AI(float dt) = 0;
     virtual void decreaseHp(Node* node) = 0;
-    virtual void startSchedule(Player*& player) = 0;
+
+    void startSchedule(Player*& player);
 
 public:
     std::string enemyTag;
@@ -43,7 +43,6 @@ public:
     EnemyState curState = EnemyState::Patrol;
 
 protected:
-    AnimateManager* animateManager;
     Sprite* enemySprite; //敌人精灵
 
     std::string enemyTextureName;

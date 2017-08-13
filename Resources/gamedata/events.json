@@ -1,0 +1,23 @@
+[
+    {
+        "eventTag": "E1",
+        "events": [
+            {
+                "eventType": "对话",
+                "conversationTag" : "C1"
+            },
+            {
+                "eventType": "刷怪"
+            }
+        ]
+    },
+    {
+        "eventTag": "E2",
+        "events": [
+            {
+                "eventType": "获得道具",
+                "itemTag" : ""
+            }
+        ]
+    }
+]

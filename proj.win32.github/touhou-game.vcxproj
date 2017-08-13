@@ -176,8 +176,10 @@
 
     <ClCompile Include="..\Classes\GameplayScene\EventFilterManager.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Player.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\AnimateManager.cpp" />
+
+    <ClCompile Include="..\Classes\GameplayScene\Player\Player.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Player\Reimu.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Player\Marisa.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\CtrlPanelLayer.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\CoolDownButton.cpp" />
@@ -241,8 +243,10 @@
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.inc" />
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h" />
-    <ClInclude Include="..\Classes\GameplayScene\AnimateManager.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Player.h" />
+
+    <ClInclude Include="..\Classes\GameplayScene\Player\Player.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Player\Reimu.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Player\Marisa.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\CtrlPanelLayer.h" />
     <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\CoolDownButton.h" />

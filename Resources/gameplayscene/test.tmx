@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="200" height="70" tilewidth="16" tileheight="16" nextobjectid="141">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="200" height="70" tilewidth="16" tileheight="16" nextobjectid="142">
  <tileset firstgid="1" name="jungle tileset" tilewidth="16" tileheight="16" tilecount="741" columns="39">
   <image source="jungle tileset.png" trans="000000" width="624" height="304"/>
  </tileset>
@@ -9,6 +9,13 @@
  <tileset firstgid="1162" name="props" tilewidth="16" tileheight="16" tilecount="364" columns="26">
   <image source="props.png" trans="00788c" width="416" height="224"/>
  </tileset>
+ <objectgroup name="event">
+  <object id="141" x="1524" y="604" width="32" height="32">
+   <properties>
+    <property name="tag" value="E1"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup name="area">
   <object id="132" x="0" y="0" width="1732" height="1120"/>
   <object id="134" x="1732" y="0" width="1464" height="1120"/>
@@ -63,27 +70,27 @@
  <objectgroup name="enemy">
   <object id="64" x="2192" y="884" width="48" height="44">
    <properties>
-    <property name="tag" value="opossum"/>
+    <property name="tag" value="Opossum"/>
    </properties>
   </object>
   <object id="65" x="2344" y="880" width="52" height="40">
    <properties>
-    <property name="tag" value="opossum"/>
+    <property name="tag" value="Opossum"/>
    </properties>
   </object>
   <object id="66" x="2024" y="884" width="48" height="44">
    <properties>
-    <property name="tag" value="frog"/>
+    <property name="tag" value="Frog"/>
    </properties>
   </object>
   <object id="109" x="2488" y="884" width="40" height="32">
    <properties>
-    <property name="tag" value="opossum"/>
+    <property name="tag" value="Opossum"/>
    </properties>
   </object>
   <object id="110" x="2616" y="880" width="40" height="36">
    <properties>
-    <property name="tag" value="frog"/>
+    <property name="tag" value="Frog"/>
    </properties>
   </object>
  </objectgroup>

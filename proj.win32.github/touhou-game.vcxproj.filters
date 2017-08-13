@@ -21,6 +21,8 @@
     </Filter>
     <Filter Include="Classes\GameplayScene\Enemy">
     </Filter>
+    <Filter Include="Classes\GameplayScene\Player">
+    </Filter>
     <Filter Include="Classes\GameplayScene\CtrlPanel">
     </Filter>
     <Filter Include="Classes\GameplayScene\Emitters">
@@ -135,11 +137,16 @@
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp">
       <Filter>Classes\GameplayScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Player.cpp">
-      <Filter>Classes\GameplayScene</Filter>
+
+    <!-- Classes\GameplayScene\Player -->
+    <ClCompile Include="..\Classes\GameplayScene\Player\Player.cpp">
+      <Filter>Classes\GameplayScene\Player</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\AnimateManager.cpp">
-      <Filter>Classes\GameplayScene</Filter>
+    <ClCompile Include="..\Classes\GameplayScene\Player\Reimu.cpp">
+      <Filter>Classes\GameplayScene\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Player\Marisa.cpp">
+      <Filter>Classes\GameplayScene\Player</Filter>
     </ClCompile>
 
     <!-- Classes\GameplayScene\Enemy -->
@@ -320,15 +327,19 @@
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.inc">
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
-
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h">
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Player.h">
-      <Filter>Classes\GameplayScene</Filter>
+
+    <!-- Classes\GameplayScene\Player -->
+    <ClInclude Include="..\Classes\GameplayScene\Player\Player.h">
+      <Filter>Classes\GameplayScene\Player</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\AnimateManager.h">
-      <Filter>Classes\GameplayScene</Filter>
+    <ClInclude Include="..\Classes\GameplayScene\Player\Reimu.h">
+      <Filter>Classes\GameplayScene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Player\Marisa.h">
+      <Filter>Classes\GameplayScene\Player</Filter>
     </ClInclude>
 
     <!-- Classes\GameplayScene\Enemy -->

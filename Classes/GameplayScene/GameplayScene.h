@@ -9,7 +9,7 @@
 #include "cocos2d.h"
 
 #include "GameplayScene/EventFilterManager.h"
-#include "GameplayScene/Player.h"
+#include "GameplayScene/Player/Player.h"
 
 USING_NS_CC;
 
@@ -34,11 +34,14 @@ public:
     void initCamera();
     void initLauncher();
     void initEnemy();
+    void initEvent();
     void initPhysicsContactListener();
     void initCustomEventListener();
 
     void update(float dt);
     void testEventFilterManager();
+
+    void eventHandling(EventCustom*);
 
     //对碰撞进行处理
     bool contactFilter(const PhysicsContact& contact);
@@ -75,6 +78,7 @@ private:
     TMXTiledMap* _map;
     Rect curArea;
 
+    Vector<Node*> eventList;
     Vector<Node*> enemyList;
     Vector<Node*> launcherList;
 
