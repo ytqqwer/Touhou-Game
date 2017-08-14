@@ -18,6 +18,9 @@ struct EventData
     string conversationTag;
 
     bool jump = false;
+
+    float delay;
+    float duration;
 };
 
 #endif

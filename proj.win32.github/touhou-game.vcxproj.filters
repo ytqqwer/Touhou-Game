@@ -258,6 +258,9 @@
     <ClInclude Include="..\Classes\GameData\EnemyData.h">
       <Filter>Classes\GameData</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\GameData\EventData.h">
+      <Filter>Classes\GameData</Filter>
+    </ClInclude>
 
     <!-- Classes\NonGameplayScenes -->
 

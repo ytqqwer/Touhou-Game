@@ -7,6 +7,7 @@
 #include "GameplayScene/Emitters/Emitter.h"
 #include "GameplayScene/Enemy/Enemy.h"
 #include "GameplayScene/common.h"
+#include "Layers/ConversationLayer.h"
 #include "Layers/SettingsLayer.h"
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
@@ -429,7 +430,7 @@ GameplayScene::initEvent()
             _event->setPhysicsBody(body);
             mapLayer->addChild(_event);
 
-            eventList.pushBack(_event);
+            eventPoint.pushBack(_event);
         }
     }
 }
@@ -524,6 +525,7 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
                 EventCustom event("trigger_event");
                 event.setUserData((void*)entityB->getName().c_str());
                 _eventDispatcher->dispatchEvent(&event);
+                entityB->removeFromParent();
             }
             //其他
         }
@@ -571,19 +573,86 @@ GameplayScene::initCustomEventListener()
 
     _eventDispatcher->addCustomEventListener("trigger_event",
                                              [this](EventCustom* e) { this->eventHandling(e); });
+
+    _eventDispatcher->addCustomEventListener("conversation_end",
+                                             [this](EventCustom* e) { this->nextEvent(); });
 }
 
 void
 GameplayScene::eventHandling(EventCustom* e)
 {
-
     auto eventTag = (char*)e->getUserData();
+    eventList = gameData->getEventListByTag(eventTag);
+    _curEventIndex = 0;
     // log("eventTag : %s", eventTag);
-    vector<EventData> eventList = gameData->getEventListByTag(eventTag);
+    // log("eventType : %s", eventList[0].eventType.c_str());
 
-    for (auto v : eventList) {
-        log("eventType : %s", v.eventType.c_str());
+    // if (eventList[0].eventType == "conversation") {
+    //	auto layer = ConversationLayer::create(eventList[0].conversationTag);
+    //	layer->setPauseNode(mapLayer);
+    //	mapLayer->onExit();
+    //	this->addChild(layer, 1000);
+    //}
+    // else if (eventList[0].eventType == "action") {
+
+    //	curPlayer->playerJump();
+    //}
+
+    nextEvent();
+}
+
+void
+GameplayScene::nextEvent()
+{
+    if (_curEventIndex == eventList.size()) {
+        return;
     }
+
+    if (eventList[_curEventIndex].eventType == "conversation") {
+        auto layer = ConversationLayer::create(eventList[_curEventIndex].conversationTag);
+        layer->setPauseNode(mapLayer);
+        mapLayer->onExit();
+        this->addChild(layer, 1000);
+        _curEventIndex++;
+        return;
+    } else if (eventList[_curEventIndex].eventType == "action") {
+        float totalTime = 0;
+        while (_curEventIndex < eventList.size()) {
+            if (eventList[_curEventIndex].eventType == "action") {
+                float delay = eventList[_curEventIndex].delay;
+                float duration = eventList[_curEventIndex].duration;
+                if (totalTime < delay + duration) {
+                    totalTime = delay + duration;
+                }
+                eventActionHandling(delay, duration);
+
+                _curEventIndex++;
+            } else {
+                break;
+            }
+        }
+        auto done = CallFuncN::create(CC_CALLBACK_0(GameplayScene::nextEvent, this));
+        Sequence* sequence = Sequence::create(DelayTime::create(totalTime), done, NULL);
+        this->runAction(sequence);
+        // this->scheduleOnce(CC_SCHEDULE_SELECTOR(curPlayer->playerJump), delay);
+        return;
+    }
+}
+
+void
+GameplayScene::eventActionHandling(float delay, float duration)
+{
+    Sequence* sequence;
+    if (eventList[_curEventIndex].jump) {
+        auto moveBy = MoveBy::create(duration, Point(-200, 0));
+        auto jump = CallFuncN::create(CC_CALLBACK_0(Player::playerJump, curPlayer));
+        // this->scheduleOnce(CC_SCHEDULE_SELECTOR(curPlayer->playerJump), delay);
+        sequence = Sequence::create(DelayTime::create(delay), jump, moveBy, NULL);
+    } else {
+        auto moveBy = MoveBy::create(duration, Point(300, 0));
+        sequence = Sequence::create(DelayTime::create(delay), moveBy, NULL);
+    }
+    curPlayer->runAction(sequence);
 }
 
 void
@@ -686,13 +755,13 @@ GameplayScene::update(float dt)
 
         //移除前一个区域的物件
         for (auto v : enemyList) {
-            mapLayer->removeChild(v);
+            v->removeFromParent();
         }
         for (auto v : launcherList) {
-            mapLayer->removeChild(v);
+            v->removeFromParent();
         }
-        for (auto v : eventList) {
-            mapLayer->removeChild(v);
+        for (auto v : eventPoint) {
+            v->removeFromParent();
         }
 
         initArea();

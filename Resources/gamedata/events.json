@@ -8,7 +8,19 @@
             },
             {
                 "eventType": "action",
+                "delay" : 2.0,
+                "duration" : 2.0,
                 "jump" : "true"
+            },
+            {
+                "eventType": "action",
+                "delay" : 4.0,
+                "duration" : 2.0,
+                "jump" : "false"
+            },
+            {
+                "eventType": "conversation",
+                "conversationTag" : "C1"
             }
         ]
     },

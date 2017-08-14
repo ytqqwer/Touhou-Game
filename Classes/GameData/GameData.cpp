@@ -353,6 +353,8 @@ from_json(const json& j, EventData& c)
     } else if (j.value("eventType", "") == "action") {
         c.eventType = j.at("eventType");
         c.jump = (j.at("jump") == "true") ? true : false;
+        c.delay = j.at("delay");
+        c.duration = j.at("duration");
     }
 }
 

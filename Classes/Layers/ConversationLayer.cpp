@@ -191,6 +191,8 @@ ConversationLayer::quitConversation()
         _pausedNode->onEnter();
     }
 
+    _eventDispatcher->dispatchCustomEvent("conversation_end");
+
     this->removeFromParent();
 }
 

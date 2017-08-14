@@ -219,6 +219,7 @@
     <ClInclude Include="..\Classes\GameData\Save.h" />
     <ClInclude Include="..\Classes\GameData\SpellCard.h" />
     <ClInclude Include="..\Classes\GameData\EnemyData.h" />
+    <ClInclude Include="..\Classes\GameData\EventData.h" />
 
     <ClInclude Include="..\Classes\NonGameplayScenes\ArmsStoreScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\ArmsStorePurchaseScene.h" />

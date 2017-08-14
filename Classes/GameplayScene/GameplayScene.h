@@ -42,6 +42,8 @@ public:
     void testEventFilterManager();
 
     void eventHandling(EventCustom*);
+    void eventActionHandling(float delay, float duration);
+    void nextEvent();
 
     //对碰撞进行处理
     bool contactFilter(const PhysicsContact& contact);
@@ -78,9 +80,12 @@ private:
     TMXTiledMap* _map;
     Rect curArea;
 
-    Vector<Node*> eventList;
+    Vector<Node*> eventPoint;
     Vector<Node*> enemyList;
     Vector<Node*> launcherList;
+
+    vector<EventData> eventList;
+    int _curEventIndex;
 
     //游戏场景的几个重要层
     Layer* mapLayer;
