@@ -45,64 +45,51 @@ Frog::init(std::string tag)
     body->addShape(rect);
 
     //设置速度上限
-    body->setVelocityLimit(400);
+    body->setVelocityLimit(300);
 
     //设置动画
-    enemyAnimation = Animation::create();
+    this->idleAnimation = Animation::create();
+    idleAnimation->retain(); //如果不手动增加引用计数，会被释放掉，未知原因
     for (int i = 1; i <= 4; i++)
-        enemyAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/frog-idle-" +
-                                               std::to_string(i) + ".png");
-    enemyAnimation->setDelayPerUnit(0.15f);
-    AnimationCache::getInstance()->addAnimation(enemyAnimation, "FrogAnimation");
+        idleAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/frog-idle-" + std::to_string(i) +
+                                              ".png");
+    this->idleAnimation->setDelayPerUnit(0.25f);
+    // this->idleAnimation->setLoops(-1);
+    AnimationCache::getInstance()->addAnimation(idleAnimation, "FrogIdleAnimation");
 
-    enemySprite->runAction(RepeatForever::create(Animate::create(enemyAnimation))); //初始时刻在奔跑
+    this->jumpAnimation = Animation::create();
+    jumpAnimation->retain();
+    this->jumpAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/frog-jump-1.png");
+    this->jumpAnimation->setDelayPerUnit(0.15f);
+    AnimationCache::getInstance()->addAnimation(jumpAnimation, "FrogJumpAnimation");
+
+    this->fallAnimation = Animation::create();
+    fallAnimation->retain();
+    this->fallAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/frog-jump-2.png");
+    this->fallAnimation->setDelayPerUnit(0.15f);
+    AnimationCache::getInstance()->addAnimation(fallAnimation, "FrogFallAnimation");
+
+    enemySprite->runAction(Animate::create(this->idleAnimation));
+
+    //启动状态更新
+    this->schedule(CC_SCHEDULE_SELECTOR(Frog::autoSwitchAnimation), 0.1);
 
     return true;
 }
 
 void
-Frog::run()
+Frog::run(float dt)
 {
-    //朝玩家移动
-    Vec2 poi = (*curPlayer)->getPosition();
-    Point enemyPos = this->getPosition();
-
-    if (enemyPos.x > poi.x) {
-        this->getPhysicsBody()->applyImpulse(Vec2(-15.0f, 0.0f));
-    } else {
-        this->getPhysicsBody()->applyImpulse(Vec2(15.0f, 0.0f));
-    }
+    return;
 }
 
 void
 Frog::jump()
 {
-    auto body = this->getPhysicsBody();
-    Vec2 impluse = Vec2(0.0f, 500.0f);
-    body->applyImpulse(impluse);
-}
-
-void
-Frog::AI(float dt)
-{
-    //警戒状态
-    if (curState == EnemyState::Alert) {
-        int weight = random(0, 1000); //权重
-        if (weight >= 200) {
-            run();
-        } else if (weight < 200) {
-            if (_canJump == false)
-                return; //当敌人在空中的时候不可以再跳跃
-            if (_canJump) {
-                jump();
-                this->_canJump = false;
-            }
-        }
-
-    }
-    //巡逻状态
-    else if (curState == EnemyState::Patrol) {
-        ; //留空，随机寻路
+    if (this->enemyDirection == Direction::LEFT) {
+        body->applyImpulse(Vec2(-250.0f, 600.0f));
+    } else {
+        body->applyImpulse(Vec2(250.0f, 600.0f));
     }
 }
 
@@ -113,5 +100,96 @@ Frog::decreaseHp(Node* node)
     enemy->hp = enemy->hp - 5;
     if (enemy->hp < 0) {
         enemy->removeFromParentAndCleanup(true);
+    }
+}
+
+void
+Frog::switchMode()
+{
+    if (this->isScheduled(CC_SCHEDULE_SELECTOR(Frog::alertMode))) {
+        this->unschedule(CC_SCHEDULE_SELECTOR(Frog::alertMode));
+    }
+    if (this->isScheduled(CC_SCHEDULE_SELECTOR(Frog::patrolMode))) {
+        this->unschedule(CC_SCHEDULE_SELECTOR(Frog::patrolMode));
+    }
+
+    if (this->curState == EnemyActionMode::Patrol) {
+        this->schedule(CC_SCHEDULE_SELECTOR(Frog::patrolMode), 1.0);
+    } else if (this->curState == EnemyActionMode::Alert) {
+        this->schedule(CC_SCHEDULE_SELECTOR(Frog::alertMode), 0.30);
+        this->schedule(CC_SCHEDULE_SELECTOR(Frog::autoChangeDirection), 0.50);
+    }
+}
+
+void
+Frog::alertMode(float dt)
+{
+    int weight = random(0, 100);
+    if (weight >= 80) {
+        if (_canJump) {
+            jump();
+            this->_canJump = false;
+        }
+    }
+}
+
+void
+Frog::patrolMode(float dt)
+{
+    int scale;
+    int weight = random(0, 100);
+    if (weight >= 50) {
+        scale = 1;
+        this->enemyDirection = Direction::LEFT;
+    } else {
+        scale = -1;
+        this->enemyDirection = Direction::RIGHT;
+    }
+    enemySprite->setScaleX(scale);
+}
+
+void
+Frog::autoChangeDirection(float dt)
+{
+    Point enemyPos = this->getPosition();
+    Vec2 playerPos = (*curPlayer)->getPosition();
+    if (enemyPos.x > playerPos.x) {
+        this->enemyDirection = Direction::LEFT;
+        enemySprite->setScaleX(1);
+    } else {
+        this->enemyDirection = Direction::RIGHT;
+        enemySprite->setScaleX(-1);
+    }
+}
+
+void
+Frog::autoSwitchAnimation(float dt)
+{
+    Vec2 velocity = body->getVelocity();
+    if (-15 < velocity.y && velocity.y < 15) {
+        if (curAction != ActionState::Stand) { //站立
+            if (curAction != ActionState::Jump) {
+                if (curAction != ActionState::Fall) {
+                    curAction = ActionState::Stand;
+                    enemySprite->stopAllActions();
+                    enemySprite->runAction(Animate::create(this->idleAnimation));
+                }
+            }
+        }
+    }
+    if (-15 > velocity.y || velocity.y > 15) {
+        if (velocity.y > 15) { //跳跃
+            if (curAction != ActionState::Jump) {
+                curAction = ActionState::Jump;
+                enemySprite->stopAllActions();
+                enemySprite->runAction(Animate::create(this->jumpAnimation));
+            }
+        } else if (-15 > velocity.y) { //下降
+            if (curAction != ActionState::Fall) {
+                curAction = ActionState::Fall;
+                enemySprite->stopAllActions();
+                enemySprite->runAction(Animate::create(this->fallAnimation));
+            }
+        }
     }
 }

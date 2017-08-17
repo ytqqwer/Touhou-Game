@@ -26,10 +26,21 @@ public:
     }
 
 public:
-    void run();
+    void run(float dt);
     void jump();
-    void AI(float dt);
     void decreaseHp(Node* node);
+
+    void switchMode();
+    void alertMode(float dt);
+    void patrolMode(float dt);
+
+    void autoChangeDirection(float dt);
+    void autoSwitchAnimation(float dt);
+
+protected:
+    Animation* idleAnimation;
+    Animation* jumpAnimation;
+    Animation* fallAnimation;
 };
 
 #endif

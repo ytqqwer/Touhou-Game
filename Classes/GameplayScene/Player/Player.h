@@ -14,10 +14,6 @@
 
 using namespace cocos2d;
 
-typedef enum { RIGHT = 1, LEFT = 2 } PlayerDirection;
-
-typedef enum { Stand = 1, Run = 2, Jump = 3, Fall = 4, Dash = 5, Default = 6 } PlayerActionState;
-
 class Player : public Node
 {
 public:
@@ -34,14 +30,14 @@ public:
     virtual void stopAttackType(const std::string& stopType) = 0;
 
     //更新角色状态
-    virtual void updateStatus(float dt) = 0;
+    virtual void updatePlayerStatus(float dt) = 0;
 
     //状态回复
     void regainDashCounts(float dt);
 
     //动作切换
     void resetAction(Node* node);
-    void autoSwitchAction();
+    void autoSwitchAnimation(float dt);
 
     //发射子弹
     Vector<Sprite*> vecBullet;        //子弹容器
@@ -53,7 +49,7 @@ public:
     std::string playerTag;
     Sprite* playerSprite;
     PhysicsBody* body;
-    PlayerDirection playerDirection = PlayerDirection::RIGHT;
+    Direction playerDirection = Direction::RIGHT;
 
     //生命值
     int healthPointBase;
@@ -85,7 +81,7 @@ public:
     vector<SpellCard> spellCardList;
 
     //当前动作状态
-    PlayerActionState curAction = PlayerActionState::Default;
+    ActionState curAction = ActionState::Default;
 
 protected:
     std::string playerTextureName;

@@ -394,8 +394,8 @@ GameplayScene::initEnemy()
             Enemy* _enemy = Enemy::create(tag);
             _enemy->setPosition(x, y);
             mapLayer->addChild(_enemy);
-            _enemy->startSchedule(curPlayer);
-
+            _enemy->setTarget(curPlayer);
+            _enemy->switchMode();
             enemyList.pushBack(_enemy);
         }
     }
@@ -463,6 +463,7 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
                 if (contact.getContactData()->normal.y > 0) {
                     auto enemy = (Enemy*)entityA;
                     enemy->_canJump = true;
+                    enemy->curAction = ActionState::Default;
                     return true;
                 } else {
                     return false;
@@ -504,7 +505,7 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
                 if (contact.getContactData()->normal.y > 0) {
                     auto player = (Player*)entityA;
                     player->jumpCounts = 2;
-                    player->curAction = PlayerActionState::Default;
+                    player->curAction = ActionState::Default;
                     return true;
                 } else {
                     return false;
@@ -517,7 +518,8 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
             // 当player碰到了敌人的索敌框，但getTag得到的是node的tag
             else if (entityB->getTag() == enemyCategoryTag) {
                 auto enemy = (Enemy*)entityB;
-                enemy->curState = EnemyState::Alert;
+                enemy->curState = EnemyActionMode::Alert;
+                enemy->switchMode();
             }
             // 当player碰到了事件点或者宝箱
             else if (entityB->getTag() == eventCategoryTag) {
@@ -584,20 +586,6 @@ GameplayScene::eventHandling(EventCustom* e)
     auto eventTag = (char*)e->getUserData();
     eventList = gameData->getEventListByTag(eventTag);
     _curEventIndex = 0;
-    // log("eventTag : %s", eventTag);
-    // log("eventType : %s", eventList[0].eventType.c_str());
-
-    // if (eventList[0].eventType == "conversation") {
-    //	auto layer = ConversationLayer::create(eventList[0].conversationTag);
-    //	layer->setPauseNode(mapLayer);
-    //	mapLayer->onExit();
-    //	this->addChild(layer, 1000);
-    //}
-    // else if (eventList[0].eventType == "action") {
-
-    //	curPlayer->playerJump();
-    //}
-
     nextEvent();
 }
 
@@ -634,7 +622,6 @@ GameplayScene::nextEvent()
         auto done = CallFuncN::create(CC_CALLBACK_0(GameplayScene::nextEvent, this));
         Sequence* sequence = Sequence::create(DelayTime::create(totalTime), done, NULL);
         this->runAction(sequence);
-        // this->scheduleOnce(CC_SCHEDULE_SELECTOR(curPlayer->playerJump), delay);
         return;
     }
 }
@@ -646,7 +633,6 @@ GameplayScene::eventActionHandling(float delay, float duration)
     if (eventList[_curEventIndex].jump) {
         auto moveBy = MoveBy::create(duration, Point(-200, 0));
         auto jump = CallFuncN::create(CC_CALLBACK_0(Player::playerJump, curPlayer));
-        // this->scheduleOnce(CC_SCHEDULE_SELECTOR(curPlayer->playerJump), delay);
         sequence = Sequence::create(DelayTime::create(delay), jump, moveBy, NULL);
     } else {
         auto moveBy = MoveBy::create(duration, Point(300, 0));
@@ -659,7 +645,7 @@ void
 GameplayScene::onEventLeftKeyPressed(EventCustom*)
 {
     curPlayer->playerSprite->setScaleX(-1); //人物翻转
-    curPlayer->playerDirection = PlayerDirection::LEFT;
+    curPlayer->playerDirection = Direction::LEFT;
     curPlayer->schedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
 }
 
@@ -667,7 +653,7 @@ void
 GameplayScene::onEventRightKeyPressed(EventCustom*)
 {
     curPlayer->playerSprite->setScaleX(1); //人物翻转
-    curPlayer->playerDirection = PlayerDirection::RIGHT;
+    curPlayer->playerDirection = Direction::RIGHT;
     curPlayer->schedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
 }
 
@@ -707,11 +693,11 @@ GameplayScene::onEventSwitchCharacter(EventCustom*)
     curPlayer->stopAttackType(curPlayer->currentAttackType);
     mapLayer->removeChild(curPlayer, false);
 
-    if (curPlayer->playerDirection == PlayerDirection::RIGHT) {
-        theOther->playerDirection = PlayerDirection::RIGHT;
+    if (curPlayer->playerDirection == Direction::RIGHT) {
+        theOther->playerDirection = Direction::RIGHT;
         theOther->playerSprite->setScaleX(1);
     } else {
-        theOther->playerDirection = PlayerDirection::LEFT;
+        theOther->playerDirection = Direction::LEFT;
         theOther->playerSprite->setScaleX(-1);
     }
 

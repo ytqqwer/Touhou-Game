@@ -109,7 +109,7 @@ Marisa::init(std::string tag)
     dashAnimation->setDelayPerUnit(0.07f);
     AnimationCache::getInstance()->addAnimation(dashAnimation, "MarisaDashAnimation");
 
-    curAction = PlayerActionState::Default;
+    curAction = ActionState::Default;
     playerSprite->runAction(RepeatForever::create(Animate::create(standAnimation)));
 
     //创建BatchNode节点，成批渲染子弹
@@ -117,7 +117,8 @@ Marisa::init(std::string tag)
     this->addChild(bulletBatchNode);
 
     //启动状态更新
-    this->schedule(CC_SCHEDULE_SELECTOR(Marisa::updateStatus));
+    this->schedule(CC_SCHEDULE_SELECTOR(Marisa::updatePlayerStatus));
+    this->schedule(CC_SCHEDULE_SELECTOR(Marisa::autoSwitchAnimation), 0.1);
 
     return true;
 }
@@ -128,7 +129,7 @@ Marisa::playerRun(float dt)
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
 
-    if (this->playerDirection == PlayerDirection::RIGHT) {
+    if (this->playerDirection == Direction::RIGHT) {
         Vec2 impluse = Vec2(0, 0);
 
         if (velocity.x < -10) {
@@ -172,7 +173,7 @@ Marisa::playerJump()
     this->jumpCounts--;
 
     playerSprite->stopAllActions();
-    curAction = PlayerActionState::Default;
+    curAction = ActionState::Default;
 }
 
 void
@@ -189,7 +190,7 @@ Marisa::playerDash()
 
     //留空，将y轴速度短暂锁定为0，可以使角色不受重力
 
-    if (this->playerDirection == PlayerDirection::RIGHT) {
+    if (this->playerDirection == Direction::RIGHT) {
         Vec2 impluse = Vec2(dashAccelerationBase + 200, 0.0f);
         body->applyImpulse(impluse);
     } else {
@@ -198,7 +199,7 @@ Marisa::playerDash()
     }
 
     this->dashCounts--;
-    curAction = PlayerActionState::Dash;
+    curAction = ActionState::Dash;
 
     playerSprite->stopAllActions();
     auto animate = Animate::create(dashAnimation);
@@ -238,10 +239,8 @@ Marisa::stopAttackType(const std::string& stopType)
 }
 
 void
-Marisa::updateStatus(float dt)
+Marisa::updatePlayerStatus(float dt)
 {
-    this->autoSwitchAction();
-
     //回复dash次数
     if (this->dashCounts < 2) {
         if (this->isScheduled(CC_SCHEDULE_SELECTOR(Player::regainDashCounts))) {

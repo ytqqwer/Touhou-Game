@@ -27,9 +27,14 @@ Enemy::create(std::string tag)
 }
 
 void
-Enemy::startSchedule(Player*& player)
+Enemy::resetAction(Node* node)
+{
+    enemySprite->stopAllActions();
+    curAction = ActionState::Default;
+}
+
+void
+Enemy::setTarget(Player*& player)
 {
     curPlayer = &player;
-
-    this->schedule(CC_SCHEDULE_SELECTOR(Enemy::AI), 0.05);
 }

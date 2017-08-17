@@ -110,7 +110,7 @@ Reimu::init(std::string tag)
     dashAnimation->setDelayPerUnit(0.07f);
     AnimationCache::getInstance()->addAnimation(dashAnimation, "ReimuDashAnimation");
 
-    curAction = PlayerActionState::Default;
+    curAction = ActionState::Default;
     playerSprite->runAction(RepeatForever::create(Animate::create(standAnimation)));
 
     //创建BatchNode节点，成批渲染子弹
@@ -118,7 +118,8 @@ Reimu::init(std::string tag)
     this->addChild(bulletBatchNode);
 
     //启动状态更新
-    this->schedule(CC_SCHEDULE_SELECTOR(Reimu::updateStatus));
+    this->schedule(CC_SCHEDULE_SELECTOR(Reimu::updatePlayerStatus));
+    this->schedule(CC_SCHEDULE_SELECTOR(Reimu::autoSwitchAnimation), 0.1);
 
     return true;
 }
@@ -129,7 +130,7 @@ Reimu::playerRun(float dt)
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
 
-    if (this->playerDirection == PlayerDirection::RIGHT) {
+    if (this->playerDirection == Direction::RIGHT) {
         Vec2 impluse = Vec2(0, 0);
 
         if (velocity.x < -10) {
@@ -173,7 +174,7 @@ Reimu::playerJump()
     this->jumpCounts--;
 
     playerSprite->stopAllActions();
-    curAction = PlayerActionState::Default;
+    curAction = ActionState::Default;
 }
 
 void
@@ -190,7 +191,7 @@ Reimu::playerDash()
 
     //留空，将y轴速度短暂锁定为0，可以使角色不受重力
 
-    if (this->playerDirection == PlayerDirection::RIGHT) {
+    if (this->playerDirection == Direction::RIGHT) {
         Vec2 impluse = Vec2(dashAccelerationBase + 100, 0.0f);
         body->applyImpulse(impluse);
     } else {
@@ -199,7 +200,7 @@ Reimu::playerDash()
     }
 
     this->dashCounts--;
-    curAction = PlayerActionState::Dash;
+    curAction = ActionState::Dash;
 
     playerSprite->stopAllActions();
     auto animate = Animate::create(dashAnimation);
@@ -237,10 +238,8 @@ Reimu::stopAttackType(const std::string& stopType)
 }
 
 void
-Reimu::updateStatus(float dt)
+Reimu::updatePlayerStatus(float dt)
 {
-    this->autoSwitchAction();
-
     //回复dash次数
     if (this->dashCounts < 2) {
         if (this->isScheduled(CC_SCHEDULE_SELECTOR(Player::regainDashCounts))) {

@@ -35,7 +35,7 @@ public:
     void stopAttackType(const std::string& stopType);
 
     //更新角色状态
-    void updateStatus(float dt);
+    void updatePlayerStatus(float dt);
 };
 
 #endif

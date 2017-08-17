@@ -36,20 +36,20 @@ void
 Player::resetAction(Node* node)
 {
     playerSprite->stopAllActions();
-    curAction = PlayerActionState::Default;
+    curAction = ActionState::Default;
 }
 
 void
-Player::autoSwitchAction()
+Player::autoSwitchAnimation(float dt)
 {
-    if (curAction != PlayerActionState::Dash) {
+    if (curAction != ActionState::Dash) {
         Vec2 velocity = body->getVelocity();
         if (-15 < velocity.y && velocity.y < 15) {
             if (-15 < velocity.x && velocity.x < 15) { //站立
-                if (curAction != PlayerActionState::Stand) {
-                    if (curAction != PlayerActionState::Jump) {
-                        if (curAction != PlayerActionState::Fall) {
-                            curAction = PlayerActionState::Stand;
+                if (curAction != ActionState::Stand) {
+                    if (curAction != ActionState::Jump) {
+                        if (curAction != ActionState::Fall) {
+                            curAction = ActionState::Stand;
                             playerSprite->stopAllActions();
                             playerSprite->runAction(
                                 RepeatForever::create(Animate::create(standAnimation)));
@@ -58,8 +58,8 @@ Player::autoSwitchAction()
                 }
             } else if (-15 > velocity.x || velocity.x > 15) { //行走
                 if (-15 < velocity.y || velocity.y < 15) {
-                    if (curAction != PlayerActionState::Run) {
-                        curAction = PlayerActionState::Run;
+                    if (curAction != ActionState::Run) {
+                        curAction = ActionState::Run;
                         playerSprite->stopAllActions();
                         playerSprite->runAction(
                             RepeatForever::create(Animate::create(runAnimation)));
@@ -69,16 +69,16 @@ Player::autoSwitchAction()
         }
         if (-15 > velocity.y || velocity.y > 15) {
             if (velocity.y > 15) { //向上跳跃
-                if (curAction != PlayerActionState::Jump) {
-                    curAction = PlayerActionState::Jump;
+                if (curAction != ActionState::Jump) {
+                    curAction = ActionState::Jump;
                     playerSprite->stopAllActions();
                     auto sequence = Sequence::create(Animate::create(preJumpAnimation),
                                                      Animate::create(jumpAnimation), NULL);
                     playerSprite->runAction(sequence);
                 }
             } else if (-15 > velocity.y) { //下降
-                if (curAction != PlayerActionState::Fall) {
-                    curAction = PlayerActionState::Fall;
+                if (curAction != ActionState::Fall) {
+                    curAction = ActionState::Fall;
                     playerSprite->stopAllActions();
                     auto sequence = Sequence::create(Animate::create(preFallAnimation),
                                                      Animate::create(fallAnimation), NULL);
@@ -121,7 +121,7 @@ Player::ShootBullet(float dt)
     auto actionMove = MoveBy::create(realFlyDuration, Point(winSize.width, 0));
     auto fire1 = actionMove;
 
-    if (this->playerDirection == PlayerDirection::LEFT) {
+    if (this->playerDirection == Direction::LEFT) {
         fire1 = actionMove->reverse();
     }
 
