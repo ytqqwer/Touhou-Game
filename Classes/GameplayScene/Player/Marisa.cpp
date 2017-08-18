@@ -3,6 +3,7 @@
 #endif
 
 #include "GameplayScene/Player/Marisa.h"
+#include "GameplayScene/Emitters/Emitter.h"
 
 bool
 Marisa::init(std::string tag)

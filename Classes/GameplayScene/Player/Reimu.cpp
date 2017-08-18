@@ -3,6 +3,7 @@
 #endif
 
 #include "GameplayScene/Player/Reimu.h"
+#include "GameplayScene/Emitters/Emitter.h"
 
 bool
 Reimu::init(std::string tag)

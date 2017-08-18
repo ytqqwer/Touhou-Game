@@ -6,6 +6,8 @@
 #include "GameplayScene/CtrlPanel/CtrlPanelLayer.h"
 #include "GameplayScene/Emitters/Emitter.h"
 #include "GameplayScene/Enemy/Enemy.h"
+#include "GameplayScene/EventFilterManager.h"
+#include "GameplayScene/Player/Player.h"
 #include "GameplayScene/common.h"
 #include "Layers/ConversationLayer.h"
 #include "Layers/SettingsLayer.h"

@@ -12,6 +12,8 @@
 #include "GameplayScene/common.h"
 #include "cocos2d.h"
 
+class Emitter;
+
 using namespace cocos2d;
 
 class Player : public Node

@@ -8,8 +8,8 @@
 #include "GameData/GameData.h"
 #include "cocos2d.h"
 
-#include "GameplayScene/EventFilterManager.h"
-#include "GameplayScene/Player/Player.h"
+class Player;
+class EventFilterManager;
 
 USING_NS_CC;
 
