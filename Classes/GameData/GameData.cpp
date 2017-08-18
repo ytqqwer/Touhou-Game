@@ -256,6 +256,38 @@ from_json(const json& j, Character& c)
         c.preview.push_back(p);
     }
 
+    c.defaultTexture = it->at("defaultTexture");
+
+    for (auto const& p : it->at("standFrame")) {
+        c.standFrame.push_back(p);
+    }
+    for (auto const& p : it->at("runFrame")) {
+        c.runFrame.push_back(p);
+    }
+    for (auto const& p : it->at("preJumpFrame")) {
+        c.preJumpFrame.push_back(p);
+    }
+    for (auto const& p : it->at("jumpFrame")) {
+        c.jumpFrame.push_back(p);
+    }
+    for (auto const& p : it->at("preFallFrame")) {
+        c.preFallFrame.push_back(p);
+    }
+    for (auto const& p : it->at("fallFrame")) {
+        c.fallFrame.push_back(p);
+    }
+    for (auto const& p : it->at("dashFrame")) {
+        c.dashFrame.push_back(p);
+    }
+
+    c.standFrameDelay = it->at("standFrameDelay");
+    c.runFrameDelay = it->at("runFrameDelay");
+    c.preJumpFrameDelay = it->at("preJumpFrameDelay");
+    c.jumpFrameDelay = it->at("jumpFrameDelay");
+    c.preFallFrameDelay = it->at("preFallFrameDelay");
+    c.fallFrameDelay = it->at("fallFrameDelay");
+    c.dashFrameDelay = it->at("dashFrameDelay");
+
     c.healthPointBase = it->at("healthPointBase");
     c.manaBase = it->at("manaBase");
 
@@ -339,6 +371,35 @@ from_json(const json& j, EnemyData& c)
 {
     c.tag = j.at("tag");
     c.name = j.at("name");
+
+    c.defaultTexture = j.at("defaultTexture");
+
+    for (auto const& p : j.at("standFrame")) {
+        c.standFrame.push_back(p);
+    }
+    for (auto const& p : j.at("runFrame")) {
+        c.runFrame.push_back(p);
+    }
+    for (auto const& p : j.at("preJumpFrame")) {
+        c.preJumpFrame.push_back(p);
+    }
+    for (auto const& p : j.at("jumpFrame")) {
+        c.jumpFrame.push_back(p);
+    }
+    for (auto const& p : j.at("preFallFrame")) {
+        c.preFallFrame.push_back(p);
+    }
+    for (auto const& p : j.at("fallFrame")) {
+        c.fallFrame.push_back(p);
+    }
+
+    c.standFrameDelay = j.at("standFrameDelay");
+    c.runFrameDelay = j.at("runFrameDelay");
+    c.preJumpFrameDelay = j.at("preJumpFrameDelay");
+    c.jumpFrameDelay = j.at("jumpFrameDelay");
+    c.preFallFrameDelay = j.at("preFallFrameDelay");
+    c.fallFrameDelay = j.at("fallFrameDelay");
+
     c.healthPoint = j.at("healthPoint");
 }
 

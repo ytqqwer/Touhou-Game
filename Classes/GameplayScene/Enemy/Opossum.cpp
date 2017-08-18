@@ -3,6 +3,8 @@
 #endif
 
 #include "GameplayScene/Enemy/Opossum.h"
+#include "GameData/EnemyData.h"
+#include "GameData/GameData.h"
 
 bool
 Opossum::init(std::string tag)
@@ -14,13 +16,12 @@ Opossum::init(std::string tag)
     this->setTag(enemyCategoryTag);
     this->setName(tag);
 
-    enemySprite = Sprite::create(
-        "gameplayscene/Enemy/opossum-1.png"); //此处必须初始化一张纹理，否则后面无法切换纹理
+    EnemyData _enemyData = GameData::getInstance()->getEnemyByTag(tag);
+    enemySprite = Sprite::create(_enemyData.defaultTexture);
     this->addChild(enemySprite);
 
     //设置属性值
-    EnemyData enemyData = GameData::getInstance()->getEnemyByTag(tag);
-    this->hp = enemyData.healthPoint;
+    this->hp = _enemyData.healthPoint;
 
     //设置刚体
     body = PhysicsBody::createBox(
@@ -50,10 +51,10 @@ Opossum::init(std::string tag)
     //设置动画
     runAnimation = Animation::create();
     runAnimation->retain();
-    for (int i = 1; i <= 6; i++)
-        runAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/opossum-" + std::to_string(i) +
-                                             ".png");
-    runAnimation->setDelayPerUnit(0.15f);
+    for (auto v : _enemyData.runFrame) {
+        runAnimation->addSpriteFrameWithFile(v);
+    }
+    runAnimation->setDelayPerUnit(_enemyData.runFrameDelay);
     AnimationCache::getInstance()->addAnimation(runAnimation, "OpossumRunAnimation");
 
     enemySprite->runAction(RepeatForever::create(Animate::create(runAnimation))); //初始时刻在奔跑

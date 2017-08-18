@@ -3,6 +3,8 @@
 #endif
 
 #include "GameplayScene/Enemy/Frog.h"
+#include "GameData/EnemyData.h"
+#include "GameData/GameData.h"
 
 bool
 Frog::init(std::string tag)
@@ -14,13 +16,12 @@ Frog::init(std::string tag)
     this->setTag(enemyCategoryTag);
     this->setName(tag);
 
-    enemySprite = Sprite::create(
-        "gameplayscene/Enemy/frog-idle-1.png"); //此处必须初始化一张纹理，否则后面无法切换纹理
+    EnemyData _enemyData = GameData::getInstance()->getEnemyByTag(tag);
+    enemySprite = Sprite::create(_enemyData.defaultTexture);
     this->addChild(enemySprite);
 
     //设置属性值
-    EnemyData enemyData = GameData::getInstance()->getEnemyByTag(tag);
-    this->hp = enemyData.healthPoint;
+    this->hp = _enemyData.healthPoint;
 
     //设置刚体
     body = PhysicsBody::createBox(
@@ -48,28 +49,32 @@ Frog::init(std::string tag)
     body->setVelocityLimit(300);
 
     //设置动画
-    this->idleAnimation = Animation::create();
+    idleAnimation = Animation::create();
     idleAnimation->retain(); //如果不手动增加引用计数，会被释放掉，未知原因
-    for (int i = 1; i <= 4; i++)
-        idleAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/frog-idle-" + std::to_string(i) +
-                                              ".png");
-    this->idleAnimation->setDelayPerUnit(0.25f);
-    // this->idleAnimation->setLoops(-1);
+    for (auto v : _enemyData.standFrame) {
+        idleAnimation->addSpriteFrameWithFile(v);
+    }
+    idleAnimation->setDelayPerUnit(_enemyData.standFrameDelay);
+    idleAnimation->setLoops(-1);
     AnimationCache::getInstance()->addAnimation(idleAnimation, "FrogIdleAnimation");
 
-    this->jumpAnimation = Animation::create();
+    jumpAnimation = Animation::create();
     jumpAnimation->retain();
-    this->jumpAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/frog-jump-1.png");
-    this->jumpAnimation->setDelayPerUnit(0.15f);
+    for (auto v : _enemyData.jumpFrame) {
+        jumpAnimation->addSpriteFrameWithFile(v);
+    }
+    jumpAnimation->setDelayPerUnit(_enemyData.jumpFrameDelay);
     AnimationCache::getInstance()->addAnimation(jumpAnimation, "FrogJumpAnimation");
 
-    this->fallAnimation = Animation::create();
+    fallAnimation = Animation::create();
     fallAnimation->retain();
-    this->fallAnimation->addSpriteFrameWithFile("gameplayscene/Enemy/frog-jump-2.png");
-    this->fallAnimation->setDelayPerUnit(0.15f);
+    for (auto v : _enemyData.fallFrame) {
+        fallAnimation->addSpriteFrameWithFile(v);
+    }
+    fallAnimation->setDelayPerUnit(_enemyData.fallFrameDelay);
     AnimationCache::getInstance()->addAnimation(fallAnimation, "FrogFallAnimation");
 
-    enemySprite->runAction(Animate::create(this->idleAnimation));
+    enemySprite->runAction(Animate::create(idleAnimation));
 
     //启动状态更新
     this->schedule(CC_SCHEDULE_SELECTOR(Frog::autoSwitchAnimation), 0.1);

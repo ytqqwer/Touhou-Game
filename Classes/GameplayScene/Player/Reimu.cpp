@@ -4,6 +4,7 @@
 
 #include "GameplayScene/Player/Reimu.h"
 #include "GameplayScene/Emitters/Emitter.h"
+#include "GameData/GameData.h"
 
 bool
 Reimu::init(std::string tag)
@@ -15,8 +16,9 @@ Reimu::init(std::string tag)
     this->setTag(playerCategoryTag);
     this->setName(tag);
 
+    Character _character = GameData::getInstance()->getCharacterByTag(tag);
     //此处必须初始化一张角色纹理，否则后面无法切换纹理
-    playerSprite = Sprite::create("gameplayscene/Reimu/walkFront000.png");
+    playerSprite = Sprite::create(_character.defaultTexture);
     this->addChild(playerSprite);
 
     // 设置攻击方式
@@ -33,14 +35,13 @@ Reimu::init(std::string tag)
     spellCardList = GameData::getInstance()->getCharacterSpellCardList(tag);
 
     //设置属性值
-    Character character = GameData::getInstance()->getCharacterByTag(tag);
-    this->healthPointBase = character.healthPointBase;
-    this->manaBase = character.manaBase;
-    this->walkSpeedBase = character.walkSpeedBase;
-    this->walkMaxSpeed = character.walkMaxSpeed;
-    this->walkAccelerationTimeBase = character.walkAccelerationTimeBase;
-    this->walkAccelerationBase = character.walkAccelerationBase;
-    this->dashAccelerationBase = character.dashAccelerationBase;
+    this->healthPointBase = _character.healthPointBase;
+    this->manaBase = _character.manaBase;
+    this->walkSpeedBase = _character.walkSpeedBase;
+    this->walkMaxSpeed = _character.walkMaxSpeed;
+    this->walkAccelerationTimeBase = _character.walkAccelerationTimeBase;
+    this->walkAccelerationBase = _character.walkAccelerationBase;
+    this->dashAccelerationBase = _character.dashAccelerationBase;
 
     //设置刚体
     body = PhysicsBody::createBox(Size(40, 75));
@@ -56,59 +57,58 @@ Reimu::init(std::string tag)
     body->setContactTestBitmask(groundCategory | enemyCategory | lockCategory | eventCategory);
     this->setPhysicsBody(body);
 
-    //设置动画，Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
-
+    //设置动画
     standAnimation = Animation::create();
-    for (int i = 0; i <= 9; i++)
-        standAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/stand00" + std::to_string(i) +
-                                               ".png");
-    standAnimation->setDelayPerUnit(0.1f);
+    for (auto v : _character.standFrame) {
+        standAnimation->addSpriteFrameWithFile(v);
+    }
+    standAnimation->setDelayPerUnit(_character.standFrameDelay);
     AnimationCache::getInstance()->addAnimation(standAnimation, "ReimuStandAnimation");
 
     runAnimation = Animation::create();
-    for (int i = 0; i <= 7; i++)
-        runAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/walkFront00" + std::to_string(i) +
-                                             ".png");
-    runAnimation->setDelayPerUnit(0.15f);
+    for (auto v : _character.runFrame) {
+        runAnimation->addSpriteFrameWithFile(v);
+    }
+    runAnimation->setDelayPerUnit(_character.runFrameDelay);
     AnimationCache::getInstance()->addAnimation(runAnimation, "ReimuRunAnimation");
 
     preJumpAnimation = Animation::create();
-    for (int i = 0; i <= 0; i++)
-        preJumpAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/jump00" + std::to_string(i) +
-                                                 ".png");
-    preJumpAnimation->setDelayPerUnit(0.1f);
+    for (auto v : _character.preJumpFrame) {
+        preJumpAnimation->addSpriteFrameWithFile(v);
+    }
+    preJumpAnimation->setDelayPerUnit(_character.preJumpFrameDelay);
     AnimationCache::getInstance()->addAnimation(preJumpAnimation, "ReimuPreJumpAnimation");
 
     jumpAnimation = Animation::create();
-    for (int i = 1; i <= 1; i++)
-        jumpAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/jump00" + std::to_string(i) +
-                                              ".png");
-    jumpAnimation->setDelayPerUnit(0.2f);
+    for (auto v : _character.jumpFrame) {
+        jumpAnimation->addSpriteFrameWithFile(v);
+    }
+    jumpAnimation->setDelayPerUnit(_character.jumpFrameDelay);
     AnimationCache::getInstance()->addAnimation(jumpAnimation, "ReimuJumpAnimation");
     // Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
     jumpAnimation->setLoops(-1);
 
     preFallAnimation = Animation::create();
-    for (int i = 1; i <= 1; i++)
-        preFallAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/jump00" + std::to_string(i) +
-                                                 ".png");
-    preFallAnimation->setDelayPerUnit(0.1f);
+    for (auto v : _character.preFallFrame) {
+        preFallAnimation->addSpriteFrameWithFile(v);
+    }
+    preFallAnimation->setDelayPerUnit(_character.preFallFrameDelay);
     AnimationCache::getInstance()->addAnimation(preFallAnimation, "ReimuPreFallAnimation");
 
     fallAnimation = Animation::create();
-    for (int i = 2; i <= 4; i++)
-        fallAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/jump00" + std::to_string(i) +
-                                              ".png");
-    fallAnimation->setDelayPerUnit(0.1f);
+    for (auto v : _character.fallFrame) {
+        fallAnimation->addSpriteFrameWithFile(v);
+    }
+    fallAnimation->setDelayPerUnit(_character.fallFrameDelay);
     AnimationCache::getInstance()->addAnimation(fallAnimation, "ReimuFallAnimation");
     // Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
     fallAnimation->setLoops(-1);
 
     dashAnimation = Animation::create();
-    for (int i = 0; i <= 7; i++)
-        dashAnimation->addSpriteFrameWithFile("gameplayscene/Reimu/dashFront00" +
-                                              std::to_string(i) + ".png");
-    dashAnimation->setDelayPerUnit(0.07f);
+    for (auto v : _character.dashFrame) {
+        dashAnimation->addSpriteFrameWithFile(v);
+    }
+    dashAnimation->setDelayPerUnit(_character.dashFrameDelay);
     AnimationCache::getInstance()->addAnimation(dashAnimation, "ReimuDashAnimation");
 
     curAction = ActionState::Default;

@@ -13,6 +13,24 @@ struct EnemyData
 {
     string tag;  //敌人标签
     string name; //敌人名字
+
+    /* 动画 */
+
+    string defaultTexture;
+    vector<string> standFrame;
+    vector<string> runFrame;
+    vector<string> preJumpFrame;
+    vector<string> jumpFrame;
+    vector<string> preFallFrame;
+    vector<string> fallFrame;
+
+    float standFrameDelay;
+    float runFrameDelay;
+    float preJumpFrameDelay;
+    float jumpFrameDelay;
+    float preFallFrameDelay;
+    float fallFrameDelay;
+
     //属性
     int healthPoint;
 };

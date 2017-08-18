@@ -34,6 +34,25 @@ struct Character
     vector<string> preview; //人物的动作预览图，在代码中组合成动态图片，
                             //用在 EquipScene 和 RoundSelectScene
 
+    /* 人物动画 */
+
+    string defaultTexture;
+    vector<string> standFrame;
+    vector<string> runFrame;
+    vector<string> preJumpFrame;
+    vector<string> jumpFrame;
+    vector<string> preFallFrame;
+    vector<string> fallFrame;
+    vector<string> dashFrame;
+
+    float standFrameDelay;
+    float runFrameDelay;
+    float preJumpFrameDelay;
+    float jumpFrameDelay;
+    float preFallFrameDelay;
+    float fallFrameDelay;
+    float dashFrameDelay;
+
     /* 人物各项属性 */
 
     int itemSlotNum;      //道具栏数量

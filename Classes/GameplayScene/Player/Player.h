@@ -6,7 +6,6 @@
 #define GAMEPLAY_PLAYER_H
 
 #include "GameData/Character.h"
-#include "GameData/GameData.h"
 #include "GameData/Item.h"
 #include "GameData/SpellCard.h"
 #include "GameplayScene/common.h"
@@ -86,7 +85,7 @@ public:
     ActionState curAction = ActionState::Default;
 
 protected:
-    std::string playerTextureName;
+    std::string playerTexture;
     Animation* standAnimation;
     Animation* runAnimation;
     Animation* preJumpAnimation;

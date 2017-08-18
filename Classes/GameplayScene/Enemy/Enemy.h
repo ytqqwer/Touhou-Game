@@ -5,9 +5,6 @@
 #ifndef GAMEPLAY_ENEMY_H
 #define GAMEPLAY_ENEMY_H
 
-#include "GameData/EnemyData.h"
-#include "GameData/GameData.h"
-#include "GameplayScene/Enemy/Enemy.h"
 #include "GameplayScene/Player/Player.h"
 #include "GameplayScene/common.h"
 
@@ -56,7 +53,7 @@ public:
 
 protected:
     Sprite* enemySprite; //敌人精灵
-    std::string enemyTextureName;
+    std::string enemyTexture;
 };
 
 #endif

@@ -1,12 +1,47 @@
-[
-    {
-        "tag": "Opossum",
-        "name": "opossum",
-        "healthPoint": 200
-    },
-    {
-        "tag": "Frog",
-        "name": "frog",
-        "healthPoint": 100
-    }
-]
+[{
+   "tag" : "Opossum",
+   "name" : "Opossum",
+   "defaultTexture" : "gameplayscene/Enemy/opossum-1.png",
+   "standFrameDelay" : 0.1,
+   "runFrameDelay" : 0.15,
+   "preJumpFrameDelay" : 0.3,
+   "jumpFrameDelay" : 0.3,
+   "preFallFrameDelay" : 0.3,
+   "fallFrameDelay" : 0.1,
+   "dashFrameDelay" : 0.1,
+   "standFrame" : ["place_holder.png"],
+   "runFrame" : [
+       "gameplayscene/Enemy/opossum-1.png", "gameplayscene/Enemy/opossum-2.png",
+       "gameplayscene/Enemy/opossum-3.png", "gameplayscene/Enemy/opossum-4.png",
+       "gameplayscene/Enemy/opossum-5.png", "gameplayscene/Enemy/opossum-6.png"
+   ],
+   "preJumpFrame" : ["place_holder.png"],
+   "jumpFrame" : ["place_holder.png"],
+   "preFallFrame" : ["place_holder.png"],
+   "fallFrame" : ["place_holder.png"],
+   "dashFrame" : ["place_holder.png"],
+   "healthPoint" : 200
+},
+ {
+   "tag" : "Frog",
+   "name" : "Frog",
+   "defaultTexture" : "gameplayscene/Enemy/frog-idle-1.png",
+   "standFrameDelay" : 0.25,
+   "runFrameDelay" : 0.15,
+   "preJumpFrameDelay" : 0.3,
+   "jumpFrameDelay" : 0.15,
+   "preFallFrameDelay" : 0.3,
+   "fallFrameDelay" : 0.15,
+   "dashFrameDelay" : 0.1,
+   "standFrame" : [
+       "gameplayscene/Enemy/frog-idle-1.png", "gameplayscene/Enemy/frog-idle-2.png",
+       "gameplayscene/Enemy/frog-idle-3.png", "gameplayscene/Enemy/frog-idle-4.png"
+   ],
+   "runFrame" : ["place_holder.png"],
+   "preJumpFrame" : ["place_holder.png"],
+   "jumpFrame" : ["gameplayscene/Enemy/frog-jump-1.png"],
+   "preFallFrame" : ["place_holder.png"],
+   "fallFrame" : ["gameplayscene/Enemy/frog-jump-2.png"],
+   "dashFrame" : ["place_holder.png"],
+   "healthPoint" : 100
+ }]
