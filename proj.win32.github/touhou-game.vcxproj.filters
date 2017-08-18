@@ -28,9 +28,6 @@
     <Filter Include="Classes\GameplayScene\Emitters">
       <UniqueIdentifier>{4e3f5bc7-5be0-4356-bdad-60d302cc49e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\GameplayScene\Emitters\test">
-      <UniqueIdentifier>{58c35281-3d98-4e9f-9be8-80bf62017541}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\Layers">
       <UniqueIdentifier>{2f1e71b1-979a-4923-aa88-c6931bc59bb4}</UniqueIdentifier>
     </Filter>
@@ -182,15 +179,6 @@
 
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp">
       <Filter>Classes\GameplayScene\Emitters</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.cpp">
-      <Filter>Classes\GameplayScene\Emitters\test</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.cpp">
-      <Filter>Classes\GameplayScene\Emitters\test</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.cpp">
-      <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp">
       <Filter>Classes\GameplayScene\Emitters</Filter>
@@ -378,18 +366,6 @@
 
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Bullet.h">
       <Filter>Classes\GameplayScene\Emitters</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.h">
-      <Filter>Classes\GameplayScene\Emitters\test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.h">
-      <Filter>Classes\GameplayScene\Emitters\test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.h">
-      <Filter>Classes\GameplayScene\Emitters\test</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\common.h">
-      <Filter>Classes\GameplayScene\Emitters\test</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitter.h">
       <Filter>Classes\GameplayScene\Emitters</Filter>

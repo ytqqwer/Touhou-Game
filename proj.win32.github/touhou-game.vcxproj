@@ -195,9 +195,6 @@
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.cpp" />
 
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -265,10 +262,6 @@
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\EmitterStyle.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestEnemy.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestScene.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\EmitterTestPlayer.h" />
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\test\common.h" />
 
     <ClInclude Include="..\Classes\external\json.h" />
 

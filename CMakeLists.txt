@@ -159,9 +159,10 @@ set(GAME_SRC
 
   # GameplayScene
   Classes/GameplayScene/GameplayScene.cpp
-  Classes/GameplayScene/Player.cpp
+  Classes/GameplayScene/Player/Player.cpp
+  Classes/GameplayScene/Player/Reimu.cpp
+  Classes/GameplayScene/Player/Marisa.cpp
   Classes/GameplayScene/EventFilterManager.cpp
-  Classes/GameplayScene/AnimateManager.cpp
 
   Classes/GameplayScene/CtrlPanel/CtrlPanelLayer.cpp
   Classes/GameplayScene/CtrlPanel/CoolDownButton.cpp
@@ -177,9 +178,6 @@ set(GAME_SRC
   Classes/GameplayScene/Emitters/Emitter.cpp
   Classes/GameplayScene/Emitters/Style/Scatter.cpp
   Classes/GameplayScene/Emitters/Style/OddEven.cpp
-  Classes/GameplayScene/Emitters/test/EmitterTestEnemy.cpp
-  Classes/GameplayScene/Emitters/test/EmitterTestScene.cpp
-  Classes/GameplayScene/Emitters/test/EmitterTestPlayer.cpp
 
   ${PLATFORM_SPECIFIC_SRC}
 )
@@ -229,10 +227,11 @@ set(GAME_HEADERS
 
   # GameplayScene
   Classes/GameplayScene/GameplayScene.h
-  Classes/GameplayScene/Player.h
+  Classes/GameplayScene/Player/Player.h
+  Classes/GameplayScene/Player/Reimu.h
+  Classes/GameplayScene/Player/Marisa.h
   Classes/GameplayScene/common.h
   Classes/GameplayScene/EventFilterManager.h
-  Classes/GameplayScene/AnimateManager.h
 
   Classes/GameplayScene/CtrlPanel/CtrlPanelLayer.h
   Classes/GameplayScene/CtrlPanel/CoolDownButton.h
@@ -251,10 +250,6 @@ set(GAME_HEADERS
   Classes/GameplayScene/Emitters/Style/EmitterStyle.h
   Classes/GameplayScene/Emitters/Style/Scatter.h
   Classes/GameplayScene/Emitters/Style/OddEven.h
-  Classes/GameplayScene/Emitters/test/EmitterTestEnemy.h
-  Classes/GameplayScene/Emitters/test/EmitterTestScene.h
-  Classes/GameplayScene/Emitters/test/EmitterTestPlayer.h
-  Classes/GameplayScene/Emitters/test/common.h
 
   # external
   Classes/external/json.h
