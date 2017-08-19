@@ -5,7 +5,7 @@ Parabola::Parabola(Direction* direction)
     //默认参数
     this->sc.style = StyleType::PARABOLA;
     this->sc.frequency = 0.2f;
-    this->sc.duration = 4.0;
+    this->sc.duration = 1.5;
     this->sc.number = 5;
     this->sc.count = 3;
     this->sc.height = 100;
@@ -38,13 +38,21 @@ Parabola::shootBullet(float dt)
         this->counter++;
     }
 
+    auto scene = Director::getInstance()->getRunningScene();
+
     for (int i = 0; i < sc.number; i++) {
 
         //构造贝塞尔结构参数
+        auto startPoint = this->getParent()->convertToWorldSpace(this->getPosition());
+        Vec2 endPoint;
 
-        auto startPoint = this->getPosition();
-        auto endPoint = Vec2(startPoint.x + sc.distance + 100.0 * CCRANDOM_0_1(),
-                             startPoint.y + 50.0 - 100.0 * CCRANDOM_0_1());
+        if ((*direction) == Direction::LEFT) {
+            endPoint = Vec2(startPoint.x - sc.distance - 100.0 * CCRANDOM_0_1(),
+                            startPoint.y + 50.0 - 100.0 * CCRANDOM_0_1());
+        } else {
+            endPoint = Vec2(startPoint.x + sc.distance + 100.0 * CCRANDOM_0_1(),
+                            startPoint.y + 50.0 - 100.0 * CCRANDOM_0_1());
+        }
 
         float height = sc.height + 50.0 * CCRANDOM_0_1();
         float angle = 15.0 + 60.0 * CCRANDOM_0_1();
@@ -67,16 +75,14 @@ Parabola::shootBullet(float dt)
         bullets.pushBack(spriteBullet);
         spriteBullet->setAnchorPoint(Vec2(0.5, 0.5));
         spriteBullet->setScale(0.3 + 0.5 * CCRANDOM_0_1());
-        this->addChild(spriteBullet);
+
+        spriteBullet->setPosition(startPoint);
+        scene->addChild(spriteBullet);
 
         auto actionBezierTo = BezierTo::create(sc.duration, cfg);
-        auto actionBezier = actionBezierTo;
-        if ((*direction) == Direction::LEFT) {
-            actionBezier = actionBezierTo->reverse();
-        }
-        // auto actionInOut = EaseInOut::create(actionBezier, 0.5);
-        auto actionRotate = RotateBy::create(1, 360);
-        auto actionSpawn = Spawn::create(actionBezier, actionRotate, nullptr);
+        // auto actionInOut = EaseInOut::create(actionBezierTo, 0.5);
+        auto actionRotate = RotateBy::create(sc.duration, (CCRANDOM_0_1() - 0.5) * 720);
+        auto actionSpawn = Spawn::create(actionBezierTo, actionRotate, nullptr);
         auto actionDone = CallFuncN::create(CC_CALLBACK_1(Parabola::removeBullet, this));
         auto sequence = Sequence::create(actionSpawn, actionDone, NULL);
         spriteBullet->runAction(sequence);

@@ -68,8 +68,8 @@ Scatter::shootBullet(float dt)
         }
     }
 
-    auto winSize = Director::getInstance()->getWinSize();
     auto scene = Director::getInstance()->getRunningScene();
+    auto winSize = Director::getInstance()->getWinSize();
     float angle = CC_DEGREES_TO_RADIANS(sc.endAngle - sc.startAngle) / (sc.number - 1);
     float distance = sqrt(winSize.width * winSize.width + winSize.height * winSize.height);
 
@@ -77,11 +77,10 @@ Scatter::shootBullet(float dt)
 
         Bullet* spriteBullet = Bullet::create(sc.bc);
         bullets.pushBack(spriteBullet);
-        spriteBullet->setAnchorPoint(Vec2(0.5, 0.0));
+        spriteBullet->setAnchorPoint(Vec2(0.5, 0.5));
         spriteBullet->setRotation(-sc.startAngle - i * angle);
 
-        auto pos =
-            this->getParent()->getParent()->convertToWorldSpace(this->getParent()->getPosition());
+        auto pos = this->getParent()->convertToWorldSpace(this->getPosition());
         spriteBullet->setPosition(pos);
         scene->addChild(spriteBullet);
 
@@ -89,7 +88,7 @@ Scatter::shootBullet(float dt)
                            distance * sin(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle));
         auto actionMove = MoveBy::create(sc.duration, deltaP);
         auto actionMoveBy = actionMove;
-        if (isPlayer == true) {
+        if (isPlayer == true) { //角色强烈建议使用全对称型形状子弹
             if ((*direction) == Direction::LEFT) {
                 actionMoveBy = actionMove->reverse();
             }

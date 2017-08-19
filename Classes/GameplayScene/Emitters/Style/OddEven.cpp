@@ -35,8 +35,10 @@ OddEven::createBullet()
 void
 OddEven::shootBullet(float dt)
 {
-    Size winSize = Director::getInstance()->getWinSize();
-    auto s = sqrt(winSize.width * winSize.width + winSize.height * winSize.height); //飞行距离
+    auto scene = Director::getInstance()->getRunningScene();
+    auto winSize = Director::getInstance()->getWinSize();
+    auto distance =
+        sqrt(winSize.width * winSize.width + winSize.height * winSize.height); //飞行距离
 
     if (sc.count != 0) {
         if (this->counter == sc.count) {
@@ -55,17 +57,19 @@ OddEven::shootBullet(float dt)
 
                 auto actualAngle = startAngle - i * angle; //实际偏转角
 
-                Vec2 deltaP = Vec2(s * cos(CC_DEGREES_TO_RADIANS(90.0 - actualAngle)),
-                                   s * sin(CC_DEGREES_TO_RADIANS(90.0 - actualAngle)));
-
                 Sprite* spriteBullet = Bullet::create(sc.bc);
                 bullets.pushBack(spriteBullet);
                 spriteBullet->setAnchorPoint(Vec2(0.5, 0.5));
                 spriteBullet->setRotation(actualAngle);
-                this->addChild(spriteBullet);
 
+                auto pos = this->getParent()->convertToWorldSpace(this->getPosition());
+                spriteBullet->setPosition(pos);
+                scene->addChild(spriteBullet);
+
+                Vec2 deltaP = Vec2(distance * cos(CC_DEGREES_TO_RADIANS(90.0 - actualAngle)),
+                                   distance * sin(CC_DEGREES_TO_RADIANS(90.0 - actualAngle)));
                 auto actionMoveBy = MoveBy::create(sc.duration, deltaP);
-                auto actionInOut = EaseInOut::create(actionMoveBy, 0.5);
+                auto actionInOut = EaseInOut::create(actionMoveBy, 1.0);
                 auto actionDone = CallFuncN::create(CC_CALLBACK_1(OddEven::removeBullet, this));
                 auto sequence = Sequence::create(actionInOut, actionDone, NULL);
                 spriteBullet->runAction(sequence);
