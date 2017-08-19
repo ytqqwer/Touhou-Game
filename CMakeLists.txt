@@ -178,6 +178,7 @@ set(GAME_SRC
   Classes/GameplayScene/Emitters/Emitter.cpp
   Classes/GameplayScene/Emitters/Style/Scatter.cpp
   Classes/GameplayScene/Emitters/Style/OddEven.cpp
+  Classes/GameplayScene/Emitters/Style/Parabola.cpp
 
   ${PLATFORM_SPECIFIC_SRC}
 )
@@ -250,6 +251,7 @@ set(GAME_HEADERS
   Classes/GameplayScene/Emitters/Style/EmitterStyle.h
   Classes/GameplayScene/Emitters/Style/Scatter.h
   Classes/GameplayScene/Emitters/Style/OddEven.h
+  Classes/GameplayScene/Emitters/Style/Parabola.h
 
   # external
   Classes/external/json.h

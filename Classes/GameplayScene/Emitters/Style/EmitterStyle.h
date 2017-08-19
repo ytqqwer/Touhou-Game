@@ -5,16 +5,15 @@
 #ifndef EMITTER_STYLE_H
 #define EMITTER_STYLE_H
 
-#include "../Bullet.h"
-#include "../StyleConfig.h"
+#include "GameplayScene/Emitters/Bullet.h"
+#include "GameplayScene/Emitters/StyleConfig.h"
+#include "GameplayScene/common.h"
 #include "cocos2d.h"
-USING_NS_CC;
 
-#define Pi 3.14
+USING_NS_CC;
 
 class EmitterStyle : public Node
 {
-
 public:
     void removeBullet(Node* pNode)
     {
@@ -26,32 +25,17 @@ public:
     }
 
 protected:
-    StyleConfig sc;
-    Vector<Node*> bullets;
+    StyleConfig sc;        // Style参数
+    Vector<Node*> bullets; //子弹容器
 };
 
-/* 无自机默认发射器 */
+/* 无自机默认弹幕 */
 
-/* 自机默认发射器 */
+/* 无自机定制弹幕 */
 #define APP_CREATE_STYLE1(__TYPE__)                                                                \
-    static __TYPE__* create(Node** target)                                                         \
-    {                                                                                              \
-        __TYPE__* pRet = new __TYPE__(target);                                                     \
-        if (pRet && pRet->init()) {                                                                \
-            pRet->autorelease();                                                                   \
-            return pRet;                                                                           \
-        } else {                                                                                   \
-            delete pRet;                                                                           \
-            pRet = NULL;                                                                           \
-            return NULL;                                                                           \
-        }                                                                                          \
-    }
-
-/* 无自机发射器 */
-#define APP_CREATE_STYLE2(__TYPE__)                                                                \
     static __TYPE__* create(const StyleConfig& sc)                                                 \
     {                                                                                              \
-        __TYPE__* pRet = new __TYPE__(sc);                                                         \
+        __TYPE__* pRet = new (std::nothrow) __TYPE__(sc);                                          \
         if (pRet && pRet->init()) {                                                                \
             pRet->autorelease();                                                                   \
             return pRet;                                                                           \
@@ -62,11 +46,56 @@ protected:
         }                                                                                          \
     }
 
-/* 自机发射器 */
+/* 自机默认弹幕 */
+#define APP_CREATE_STYLE2(__TYPE__)                                                                \
+    static __TYPE__* create(Node** target)                                                         \
+    {                                                                                              \
+        __TYPE__* pRet = new (std::nothrow) __TYPE__(target);                                      \
+        if (pRet && pRet->init()) {                                                                \
+            pRet->autorelease();                                                                   \
+            return pRet;                                                                           \
+        } else {                                                                                   \
+            delete pRet;                                                                           \
+            pRet = NULL;                                                                           \
+            return NULL;                                                                           \
+        }                                                                                          \
+    }
+
+/* 自机定制弹幕 */
 #define APP_CREATE_STYLE3(__TYPE__)                                                                \
     static __TYPE__* create(const StyleConfig& sc, Node** target)                                  \
     {                                                                                              \
-        __TYPE__* pRet = new __TYPE__(sc, target);                                                 \
+        __TYPE__* pRet = new (std::nothrow) __TYPE__(sc, target);                                  \
+        if (pRet && pRet->init()) {                                                                \
+            pRet->autorelease();                                                                   \
+            return pRet;                                                                           \
+        } else {                                                                                   \
+            delete pRet;                                                                           \
+            pRet = NULL;                                                                           \
+            return NULL;                                                                           \
+        }                                                                                          \
+    }
+
+/* 角色默认弹幕 */
+#define APP_CREATE_STYLE4(__TYPE__)                                                                \
+    static __TYPE__* create(Direction* direction)                                                  \
+    {                                                                                              \
+        __TYPE__* pRet = new (std::nothrow) __TYPE__(direction);                                   \
+        if (pRet && pRet->init()) {                                                                \
+            pRet->autorelease();                                                                   \
+            return pRet;                                                                           \
+        } else {                                                                                   \
+            delete pRet;                                                                           \
+            pRet = NULL;                                                                           \
+            return NULL;                                                                           \
+        }                                                                                          \
+    }
+
+/* 角色定制弹幕 */
+#define APP_CREATE_STYLE5(__TYPE__)                                                                \
+    static __TYPE__* create(const StyleConfig& sc, Direction* direction)                           \
+    {                                                                                              \
+        __TYPE__* pRet = new (std::nothrow) __TYPE__(sc, direction);                               \
         if (pRet && pRet->init()) {                                                                \
             pRet->autorelease();                                                                   \
             return pRet;                                                                           \

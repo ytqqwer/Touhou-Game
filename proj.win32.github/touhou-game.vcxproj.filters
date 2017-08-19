@@ -183,10 +183,13 @@
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp">
       <Filter>Classes\GameplayScene\Emitters</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp">
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp">
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parabola.cpp">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
 
@@ -380,6 +383,9 @@
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
 

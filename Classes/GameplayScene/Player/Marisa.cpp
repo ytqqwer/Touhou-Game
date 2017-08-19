@@ -114,9 +114,11 @@ Marisa::init(std::string tag)
     curAction = ActionState::Default;
     playerSprite->runAction(RepeatForever::create(Animate::create(standAnimation)));
 
-    //创建BatchNode节点，成批渲染子弹
-    bulletBatchNode = SpriteBatchNode::create("gameplayscene/bullet1.png");
-    this->addChild(bulletBatchNode);
+    //设置发射器
+    this->emitter = Emitter::create(&(this->playerDirection));
+    this->emitter->playStyle(StyleType::PARABOLA);
+    this->emitter->pauseAllStyle();
+    this->addChild(this->emitter);
 
     //启动状态更新
     this->schedule(CC_SCHEDULE_SELECTOR(Marisa::updatePlayerStatus));
@@ -220,7 +222,7 @@ Marisa::changeAttackType(const std::string& startType)
     } else if (startType == "marisa split attack 1") {
 
     } else if (startType == "marisa split attack 2") {
-        this->schedule(CC_SCHEDULE_SELECTOR(Marisa::ShootBullet), 0.5f);
+        this->emitter->resumeStyle(1);
     }
 
     this->currentAttackType = startType;
@@ -236,7 +238,7 @@ Marisa::stopAttackType(const std::string& stopType)
     } else if (stopType == "marisa split attack 1") {
 
     } else if (stopType == "marisa split attack 2") {
-        this->unschedule(CC_SCHEDULE_SELECTOR(Marisa::ShootBullet));
+        this->emitter->pauseStyle(1);
     }
 }
 

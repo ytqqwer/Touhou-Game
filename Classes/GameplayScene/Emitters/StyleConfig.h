@@ -11,8 +11,9 @@ using namespace std;
 
 enum class StyleType
 {
-    SCATTER,
     ODDEVEN,
+    PARABOLA,
+    SCATTER,
 };
 
 struct BulletConfig
@@ -35,6 +36,10 @@ struct StyleConfig
 
     /* 子弹参数 */
     BulletConfig bc;
+
+    /* Parabola参数 */
+    int height;   //高度
+    int distance; // 距离
 
     /* Scatter参数 */
     int startAngle; //起始角度

@@ -3,16 +3,35 @@
 #endif
 
 #include "Emitter.h"
+#include "Style/OddEven.h"
+#include "Style/Parabola.h"
+#include "Style/Scatter.h"
 
-Emitter::Emitter()
+Emitter*
+Emitter::create(Direction* direction)
 {
+    Emitter* pRet = new (std::nothrow) Emitter(direction);
+    if (pRet && pRet->init()) {
+        pRet->autorelease();
+        return pRet;
+    } else {
+        delete pRet;
+        pRet = nullptr;
+        return nullptr;
+    }
+}
+
+Emitter::Emitter(Direction* direction)
+{
+    this->isPlayer = true;
+    this->direction = direction;
     this->styleTag = 1;
 }
 
 Emitter*
 Emitter::create(Node** target)
 {
-    Emitter* pRet = new Emitter(target);
+    Emitter* pRet = new (std::nothrow) Emitter(target);
     if (pRet && pRet->init()) {
         pRet->autorelease();
         return pRet;
@@ -25,6 +44,7 @@ Emitter::create(Node** target)
 
 Emitter::Emitter(Node** target)
 {
+    this->isPlayer = false;
     this->target = target;
     this->styleTag = 1;
 }
@@ -35,13 +55,30 @@ Emitter::playStyle(const StyleConfig& sc)
     EmitterStyle* style;
 
     switch (sc.style) {
-        case StyleType::SCATTER:
-            style = Scatter::create(sc);
-            dynamic_cast<Scatter*>(style)->createBullet();
+
+        case StyleType::PARABOLA:
+            if (isPlayer) {
+                style = Parabola::create(sc, direction);
+            } else {
+                return 0;
+            }
+            dynamic_cast<Parabola*>(style)->createBullet();
             break;
         case StyleType::ODDEVEN:
-            style = OddEven::create(sc, target);
+            if (isPlayer) {
+                return 0;
+            } else {
+                style = OddEven::create(sc, target);
+            }
             dynamic_cast<OddEven*>(style)->createBullet();
+            break;
+        case StyleType::SCATTER:
+            if (isPlayer) {
+                style = Scatter::create(sc, direction);
+            } else {
+                style = Scatter::create(sc);
+            }
+            dynamic_cast<Scatter*>(style)->createBullet();
             break;
         default:
             return false;
@@ -61,14 +98,30 @@ Emitter::playStyle(StyleType st)
     EmitterStyle* style;
 
     switch (st) {
-        case StyleType::SCATTER:
-            style = Scatter::create();
-            dynamic_cast<Scatter*>(style)->createBullet();
+
+        case StyleType::PARABOLA:
+            if (isPlayer) {
+                style = Parabola::create(direction);
+            } else {
+                return 0;
+            }
+            dynamic_cast<Parabola*>(style)->createBullet();
             break;
         case StyleType::ODDEVEN:
-            style = OddEven::create(target);
+            if (isPlayer) {
+                return 0;
+            } else {
+                style = OddEven::create(target);
+            }
             dynamic_cast<OddEven*>(style)->createBullet();
             break;
+        case StyleType::SCATTER:
+            if (isPlayer) {
+                style = Scatter::create(direction);
+            } else {
+                style = Scatter::create();
+            }
+            dynamic_cast<Scatter*>(style)->createBullet();
             break;
         default:
             return false;
@@ -83,9 +136,9 @@ Emitter::playStyle(StyleType st)
 }
 
 void
-Emitter::pauseStyle(int tag)
+Emitter::pauseStyle(int styleTag)
 {
-    auto style = styles.at(tag);
+    auto style = styles.at(styleTag);
     style->pause();
 }
 
@@ -98,9 +151,9 @@ Emitter::pauseAllStyle()
 }
 
 void
-Emitter::resumeStyle(int tag)
+Emitter::resumeStyle(int styleTag)
 {
-    auto style = styles.at(tag);
+    auto style = styles.at(styleTag);
     style->resume();
 }
 
@@ -113,11 +166,11 @@ Emitter::resumeAllStyle()
 }
 
 void
-Emitter::stopStyle(int tag)
+Emitter::stopStyle(int styleTag)
 {
-    auto style = styles.at(tag);
+    auto style = styles.at(styleTag);
     style->removeFromParent();
-    styles.erase(tag);
+    styles.erase(styleTag);
 }
 
 void

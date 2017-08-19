@@ -6,22 +6,47 @@
 
 Scatter::Scatter()
 {
-    //默认参数
+    //敌人默认参数
     this->sc.style = StyleType::SCATTER;
     this->sc.frequency = 0.5f;
-    this->sc.duration = -1.0;
+    this->sc.duration = 6.0;
     this->sc.count = 3;
     this->sc.number = 20;
     this->sc.bc.name = "b2_2_1.png";
     this->sc.startAngle = 90;
     this->sc.endAngle = 180;
-
+    this->isPlayer = false;
     this->counter = 0;
 }
 
 Scatter::Scatter(const StyleConfig& sc)
 {
+    this->isPlayer = false;
     this->sc = sc;
+    this->counter = 0;
+}
+
+Scatter::Scatter(Direction* direction)
+{
+    //角色默认参数
+    this->sc.style = StyleType::SCATTER;
+    this->sc.frequency = 0.2f;
+    this->sc.duration = 3.0;
+    this->sc.count = 0;
+    this->sc.number = 2;
+    this->sc.bc.name = "b1_3_3.png";
+    this->sc.startAngle = 269;
+    this->sc.endAngle = 271;
+    this->isPlayer = true;
+    this->direction = direction;
+    this->counter = 0;
+}
+
+Scatter::Scatter(const StyleConfig& sc, Direction* direction)
+{
+    this->isPlayer = true;
+    this->sc = sc;
+    this->direction = direction;
     this->counter = 0;
 }
 
@@ -34,30 +59,42 @@ Scatter::createBullet()
 void
 Scatter::shootBullet(float dt)
 {
-    if (this->counter == sc.count) {
-        this->counter = 0;
-        return;
-    } else {
-        this->counter++;
+    if (sc.count != 0) {
+        if (this->counter == sc.count) {
+            this->counter = 0;
+            return;
+        } else {
+            this->counter++;
+        }
     }
 
-    Size winSize = Director::getInstance()->getWinSize();
+    auto winSize = Director::getInstance()->getWinSize();
+    auto scene = Director::getInstance()->getRunningScene();
     float angle = CC_DEGREES_TO_RADIANS(sc.endAngle - sc.startAngle) / (sc.number - 1);
-    float s = sqrt(winSize.width * winSize.width + winSize.height * winSize.height);
+    float distance = sqrt(winSize.width * winSize.width + winSize.height * winSize.height);
 
     for (int i = 0; i < sc.number; i++) {
 
-        Sprite* spriteBullet = Bullet::create(sc.bc);
-
+        Bullet* spriteBullet = Bullet::create(sc.bc);
         bullets.pushBack(spriteBullet);
         spriteBullet->setAnchorPoint(Vec2(0.5, 0.0));
         spriteBullet->setRotation(-sc.startAngle - i * angle);
-        this->addChild(spriteBullet);
 
-        Vec2 deltaP = Vec2(s * cos(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle),
-                           s * sin(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle));
-        auto actionMoveBy = MoveBy::create(6, deltaP);
-        auto actionInOut = EaseInOut::create(actionMoveBy, 1);
+        auto pos =
+            this->getParent()->getParent()->convertToWorldSpace(this->getParent()->getPosition());
+        spriteBullet->setPosition(pos);
+        scene->addChild(spriteBullet);
+
+        Vec2 deltaP = Vec2(distance * cos(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle),
+                           distance * sin(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle));
+        auto actionMove = MoveBy::create(sc.duration, deltaP);
+        auto actionMoveBy = actionMove;
+        if (isPlayer == true) {
+            if ((*direction) == Direction::LEFT) {
+                actionMoveBy = actionMove->reverse();
+            }
+        }
+        auto actionInOut = EaseInOut::create(actionMoveBy, 1.0);
         auto actionDone = CallFuncN::create(CC_CALLBACK_1(Scatter::removeBullet, this));
         auto sequence = Sequence::create(actionInOut, actionDone, NULL);
         spriteBullet->runAction(sequence);

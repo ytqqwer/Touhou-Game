@@ -114,9 +114,11 @@ Reimu::init(std::string tag)
     curAction = ActionState::Default;
     playerSprite->runAction(RepeatForever::create(Animate::create(standAnimation)));
 
-    //创建BatchNode节点，成批渲染子弹
-    bulletBatchNode = SpriteBatchNode::create("gameplayscene/bullet1.png");
-    this->addChild(bulletBatchNode);
+    //设置发射器
+    this->emitter = Emitter::create(&(this->playerDirection));
+    this->emitter->playStyle(StyleType::SCATTER);
+    this->emitter->pauseAllStyle();
+    this->addChild(this->emitter);
 
     //启动状态更新
     this->schedule(CC_SCHEDULE_SELECTOR(Reimu::updatePlayerStatus));
@@ -214,7 +216,8 @@ void
 Reimu::changeAttackType(const std::string& startType)
 {
     if (startType == "reimu focus attack 1") {
-        this->schedule(CC_SCHEDULE_SELECTOR(Reimu::ShootBullet), 0.3f);
+        this->emitter->resumeStyle(1);
+
     } else if (startType == "reimu focus attack 2") {
 
     } else if (startType == "reimu split attack 1") {
@@ -229,7 +232,7 @@ void
 Reimu::stopAttackType(const std::string& stopType)
 {
     if (stopType == "reimu focus attack 1") {
-        this->unschedule(CC_SCHEDULE_SELECTOR(Reimu::ShootBullet));
+        this->emitter->pauseStyle(1);
     } else if (stopType == "reimu focus attack 2") {
 
     } else if (stopType == "reimu split attack 1") {

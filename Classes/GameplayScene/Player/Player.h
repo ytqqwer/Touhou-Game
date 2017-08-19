@@ -8,6 +8,7 @@
 #include "GameData/Character.h"
 #include "GameData/Item.h"
 #include "GameData/SpellCard.h"
+#include "GameplayScene/Emitters/Emitter.h"
 #include "GameplayScene/common.h"
 #include "cocos2d.h"
 
@@ -40,17 +41,14 @@ public:
     void resetAction(Node* node);
     void autoSwitchAnimation(float dt);
 
-    //发射子弹
-    Vector<Sprite*> vecBullet;        //子弹容器
-    SpriteBatchNode* bulletBatchNode; //批次渲染节点
-    void ShootBullet(float dt);
-    void removeBullet(Node* pNode);
-
 public:
     std::string playerTag;
     Sprite* playerSprite;
     PhysicsBody* body;
     Direction playerDirection = Direction::RIGHT;
+
+    //绑定发射器
+    Emitter* emitter;
 
     //生命值
     int healthPointBase;

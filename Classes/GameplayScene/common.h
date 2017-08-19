@@ -5,9 +5,21 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-typedef enum { Stand = 1, Run = 2, Jump = 3, Fall = 4, Dash = 5, Default = 6 } ActionState;
+enum class Direction
+{
+    RIGHT = 1,
+    LEFT = 2
+};
 
-typedef enum { RIGHT = 1, LEFT = 2 } Direction;
+enum class ActionState
+{
+    Stand = 1,
+    Run = 2,
+    Jump = 3,
+    Fall = 4,
+    Dash = 5,
+    Default = 6
+};
 
 //游戏中用到的种别掩码
 static const int groundCategory = 0x1 << 1;

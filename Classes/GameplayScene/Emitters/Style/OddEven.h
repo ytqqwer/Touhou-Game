@@ -7,13 +7,14 @@
 
 #include "EmitterStyle.h"
 
-/* 奇偶数自机狙型弹幕 */
+/* 奇偶数自机狙型弹幕
+   特点：敌人，自机  */
 
 class OddEven : public EmitterStyle
 {
 public:
     /* 默认弹幕 */
-    APP_CREATE_STYLE1(OddEven);
+    APP_CREATE_STYLE2(OddEven);
     OddEven(Node** target);
 
     /* 定制弹幕 */
