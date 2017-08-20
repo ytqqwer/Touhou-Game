@@ -77,6 +77,7 @@ Scatter::shootBullet(float dt)
     }
 
     auto scene = Director::getInstance()->getRunningScene();
+    auto layer = (GameplayScene*)scene;
     auto winSize = Director::getInstance()->getWinSize();
     float angle = CC_DEGREES_TO_RADIANS(sc.endAngle - sc.startAngle) / (sc.number - 1);
     float distance = sqrt(winSize.width * winSize.width + winSize.height * winSize.height);
@@ -90,13 +91,13 @@ Scatter::shootBullet(float dt)
 
         auto pos = this->getParent()->convertToWorldSpace(this->getPosition());
         spriteBullet->setPosition(pos);
-        scene->addChild(spriteBullet);
+        layer->addChild(spriteBullet);
 
         Vec2 deltaP = Vec2(distance * cos(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle),
                            distance * sin(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle));
         auto actionMove = MoveBy::create(sc.duration, deltaP);
         auto actionMoveBy = actionMove;
-        if (isPlayer == true) { //角色强烈建议使用全对称型形状子弹
+        if (isPlayer == true) { //强烈建议角色使用中心对称型子弹
             if ((*direction) == Direction::LEFT) {
                 actionMoveBy = actionMove->reverse();
             }

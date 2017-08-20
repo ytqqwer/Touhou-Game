@@ -47,11 +47,15 @@ Parabola::shootBullet(float dt)
     }
 
     auto scene = Director::getInstance()->getRunningScene();
+    auto layer = (GameplayScene*)scene;
+    // auto character = this->getParent()->getParent();
 
     for (int i = 0; i < sc.number; i++) {
 
         //构造贝塞尔结构参数
+
         auto startPoint = this->getParent()->convertToWorldSpace(this->getPosition());
+        // auto startPoint = character->getPosition();
         Vec2 endPoint;
 
         if ((*direction) == Direction::LEFT) {
@@ -85,7 +89,7 @@ Parabola::shootBullet(float dt)
         spriteBullet->setScale(0.3 + 0.5 * CCRANDOM_0_1());
 
         spriteBullet->setPosition(startPoint);
-        scene->addChild(spriteBullet);
+        layer->addChild(spriteBullet);
 
         auto actionBezierTo = BezierTo::create(sc.duration, cfg);
         // auto actionInOut = EaseInOut::create(actionBezierTo, 0.5);

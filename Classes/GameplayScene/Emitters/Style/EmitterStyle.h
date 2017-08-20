@@ -7,6 +7,7 @@
 
 #include "GameplayScene/Emitters/Bullet.h"
 #include "GameplayScene/Emitters/StyleConfig.h"
+#include "GameplayScene/GameplayScene.h"
 #include "GameplayScene/common.h"
 #include "cocos2d.h"
 
@@ -24,7 +25,7 @@ public:
         bullets.eraseObject(pNode);
     }
 
-protected:
+public:
     StyleConfig sc;        // Style参数
     Vector<Node*> bullets; //子弹容器
 };

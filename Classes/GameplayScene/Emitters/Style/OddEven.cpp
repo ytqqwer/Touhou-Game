@@ -43,6 +43,7 @@ void
 OddEven::shootBullet(float dt)
 {
     auto scene = Director::getInstance()->getRunningScene();
+    auto layer = (GameplayScene*)scene;
     auto winSize = Director::getInstance()->getWinSize();
     auto distance =
         sqrt(winSize.width * winSize.width + winSize.height * winSize.height); //飞行距离
@@ -71,7 +72,7 @@ OddEven::shootBullet(float dt)
 
                 auto pos = this->getParent()->convertToWorldSpace(this->getPosition());
                 spriteBullet->setPosition(pos);
-                scene->addChild(spriteBullet);
+                layer->addChild(spriteBullet);
 
                 Vec2 deltaP = Vec2(distance * cos(CC_DEGREES_TO_RADIANS(90.0 - actualAngle)),
                                    distance * sin(CC_DEGREES_TO_RADIANS(90.0 - actualAngle)));

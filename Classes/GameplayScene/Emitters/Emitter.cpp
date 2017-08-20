@@ -3,6 +3,7 @@
 #endif
 
 #include "Emitter.h"
+#include "Style/EmitterStyle.h"
 #include "Style/OddEven.h"
 #include "Style/Parabola.h"
 #include "Style/Scatter.h"
@@ -88,7 +89,6 @@ Emitter::playStyle(const StyleConfig& sc)
     style->setTag(styleTag);
     this->addChild(style);
     int trueTag = styleTag;
-
     styles.insert(styleTag++, style);
 
     return trueTag;
@@ -132,9 +132,7 @@ Emitter::playStyle(StyleType st)
 
     style->setTag(styleTag);
     this->addChild(style);
-
     int trueTag = styleTag;
-
     styles.insert(styleTag++, style);
 
     return trueTag;
@@ -173,19 +171,26 @@ Emitter::resumeAllStyle()
 void
 Emitter::stopStyle(int styleTag)
 {
-    auto style = styles.at(styleTag);
-    style->removeFromParent();
+    auto style = (EmitterStyle*)styles.at(styleTag);
+    for (auto b : style->bullets) {
+        b->removeFromParentAndCleanup(true);
+    }
+    style->bullets.clear();
+    style->removeFromParentAndCleanup(true);
     styles.erase(styleTag);
 }
 
 void
 Emitter::stopAllStyle()
 {
-    //有bug
     for (auto s = styles.begin(); s != styles.end(); s++) {
-        s->second->removeFromParent();
-        // s->second->removeFromParentAndCleanup(false);
+        auto style = (EmitterStyle*)s->second;
+        for (auto b : style->bullets) {
+            b->removeFromParentAndCleanup(true);
+        }
+        style->bullets.clear();
+        style->removeFromParentAndCleanup(true);
     }
     styles.clear();
-    // styleTag = 1;
+    styleTag = 1;
 }
