@@ -99,12 +99,11 @@ Frog::jump()
 }
 
 void
-Frog::decreaseHp(Node* node)
+Frog::decreaseHp(int damage)
 {
-    auto enemy = (Enemy*)node;
-    enemy->hp = enemy->hp - 5;
-    if (enemy->hp < 0) {
-        enemy->removeFromParentAndCleanup(true);
+    this->hp = this->hp - damage;
+    if (this->hp < 0) {
+        this->removeFromParentAndCleanup(true);
     }
 }
 

@@ -62,8 +62,11 @@ RoundSelectScene::onEnter()
     beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
     beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::BEGAN) {
+
+            //未来将在这里增加一个加载界面
+
             auto gameplayScene = GameplayScene::create();
-            TransitionScene* transition = TransitionPageTurn::create(0.2f, gameplayScene, false);
+            TransitionScene* transition = TransitionPageTurn::create(1.0f, gameplayScene, false);
             Director::getInstance()->popToRootScene();
             Director::getInstance()->replaceScene(transition);
         }

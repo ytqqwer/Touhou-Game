@@ -23,7 +23,7 @@ public:
     virtual void run(float dt) = 0; //敌人移动
     virtual void jump() = 0;        //敌人跳跃
 
-    virtual void decreaseHp(Node* node) = 0;
+    virtual void decreaseHp(int damage) = 0;
 
     virtual void switchMode() = 0;
     virtual void patrolMode(float dt) = 0;

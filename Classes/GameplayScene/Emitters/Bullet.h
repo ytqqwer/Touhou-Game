@@ -16,6 +16,8 @@ public:
     Bullet(const BulletConfig& bc);
     bool init();
 
+    int getDamage();
+
 private:
     BulletConfig bc;
 };

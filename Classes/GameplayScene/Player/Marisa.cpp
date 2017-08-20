@@ -3,8 +3,8 @@
 #endif
 
 #include "GameplayScene/Player/Marisa.h"
-#include "GameplayScene/Emitters/Emitter.h"
 #include "GameData/GameData.h"
+#include "GameplayScene/Emitters/Emitter.h"
 
 bool
 Marisa::init(std::string tag)
@@ -20,13 +20,6 @@ Marisa::init(std::string tag)
     //此处必须初始化一张角色纹理，否则后面无法切换纹理
     playerSprite = Sprite::create(_character.defaultTexture);
     this->addChild(playerSprite);
-
-    // 设置攻击方式
-    vector<Character::Attack> selectAttackList =
-        GameData::getInstance()->getSelectedAttackList(tag);
-    type1 = selectAttackList[0];
-    type2 = selectAttackList[1];
-    currentAttackType = type1.tag;
 
     // 设置道具
     itemList = GameData::getInstance()->getCharacterItemList(tag);
@@ -114,10 +107,19 @@ Marisa::init(std::string tag)
     curAction = ActionState::Default;
     playerSprite->runAction(RepeatForever::create(Animate::create(standAnimation)));
 
+    // 设置攻击方式
+    vector<Character::Attack> selectAttackList =
+        GameData::getInstance()->getSelectedAttackList(tag);
+    type1 = selectAttackList[0];
+    type2 = selectAttackList[1];
+    currentAttackType = type1.tag;
+
+    // 根据攻击方式，从文件中读取弹幕参数sc1和sc2
+    // sc1 = ;
+    // sc2 = ;
+
     //设置发射器
     this->emitter = Emitter::create(&(this->playerDirection));
-    this->emitter->playStyle(StyleType::PARABOLA);
-    this->emitter->pauseAllStyle();
     this->addChild(this->emitter);
 
     //启动状态更新
@@ -210,36 +212,6 @@ Marisa::playerDash()
     auto actionDone = CallFuncN::create(CC_CALLBACK_1(Marisa::resetAction, this));
     auto sequence = Sequence::create(Repeat::create(animate, 1), actionDone, NULL);
     playerSprite->runAction(sequence);
-}
-
-void
-Marisa::changeAttackType(const std::string& startType)
-{
-    if (startType == "marisa focus attack 1") {
-
-    } else if (startType == "marisa focus attack 2") {
-
-    } else if (startType == "marisa split attack 1") {
-
-    } else if (startType == "marisa split attack 2") {
-        this->emitter->resumeStyle(1);
-    }
-
-    this->currentAttackType = startType;
-}
-
-void
-Marisa::stopAttackType(const std::string& stopType)
-{
-    if (stopType == "marisa focus attack 1") {
-
-    } else if (stopType == "marisa focus attack 2") {
-
-    } else if (stopType == "marisa split attack 1") {
-
-    } else if (stopType == "marisa split attack 2") {
-        this->emitter->pauseStyle(1);
-    }
 }
 
 void

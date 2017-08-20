@@ -3,6 +3,7 @@
 #endif
 
 #include "Bullet.h"
+#include "GameplayScene/common.h"
 
 Bullet*
 Bullet::create(const BulletConfig& bc)
@@ -35,6 +36,20 @@ Bullet::init()
     initWithSpriteFrame(frame);
 
     //绑定刚体，设置掩码值
+    this->setTag(bulletCategoryTag);
+    auto _body = PhysicsBody::createBox(Size(bc.length, bc.width));
+    _body->setRotationEnable(false);
+    _body->setGravityEnable(false);
+    _body->setCategoryBitmask(bc._categoryBitmask);
+    _body->setCollisionBitmask(bc._collisionBitmask);
+    _body->setContactTestBitmask(bc._contactTestBitmask);
+    this->setPhysicsBody(_body);
 
     return true;
+}
+
+int
+Bullet::getDamage()
+{
+    return this->bc.harm;
 }

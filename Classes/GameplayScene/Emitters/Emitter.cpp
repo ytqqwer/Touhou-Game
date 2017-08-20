@@ -87,9 +87,11 @@ Emitter::playStyle(const StyleConfig& sc)
 
     style->setTag(styleTag);
     this->addChild(style);
+    int trueTag = styleTag;
+
     styles.insert(styleTag++, style);
 
-    return styleTag;
+    return trueTag;
 }
 
 int
@@ -130,9 +132,12 @@ Emitter::playStyle(StyleType st)
 
     style->setTag(styleTag);
     this->addChild(style);
+
+    int trueTag = styleTag;
+
     styles.insert(styleTag++, style);
 
-    return styleTag;
+    return trueTag;
 }
 
 void
@@ -176,8 +181,11 @@ Emitter::stopStyle(int styleTag)
 void
 Emitter::stopAllStyle()
 {
+    //有bug
     for (auto s = styles.begin(); s != styles.end(); s++) {
         s->second->removeFromParent();
+        // s->second->removeFromParentAndCleanup(false);
     }
     styles.clear();
+    // styleTag = 1;
 }

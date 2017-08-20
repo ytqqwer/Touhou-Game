@@ -4,6 +4,7 @@
 
 #include "GameplayScene/GameplayScene.h"
 #include "GameplayScene/CtrlPanel/CtrlPanelLayer.h"
+#include "GameplayScene/Emitters/Bullet.h"
 #include "GameplayScene/Emitters/Emitter.h"
 #include "GameplayScene/Enemy/Enemy.h"
 #include "GameplayScene/EventFilterManager.h"
@@ -71,36 +72,41 @@ GameplayScene::init()
     this->getPhysicsWorld()->setGravity(gravity);                           //设置重力
     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL); //调试模式看包围盒
 
-    // 初始化地图背景层
-    initBackGround();
-
-    // 初始化地图层
-    initMap();
-
-    // 初始化控制面板
-    initCtrlPanel();
-
-    // 加载角色
-    initCharacter();
-
-    // 加载首个区域
-    initArea();
-
-    // 加载摄像机
-    initCamera();
-
-    // 加载监听器
-    initPhysicsContactListener();
-
-    // 加载自定义事件监听器
-    initCustomEventListener();
-
-    // 启动帧调度器
-    scheduleUpdate();
-
     // 用于支持符卡 buf 效果的 EventFilterManager
     this->_eventFilterMgr = EventFilterManager::create();
     this->_eventFilterMgr->retain();
+
+    //将初始化动作延迟执行，保证在后续初始化工作中当前scene已经准备完毕。
+    std::function<void(Ref*)> delayInit = [&](Ref*) {
+        // 初始化地图背景层
+        this->initBackGround();
+
+        // 初始化地图层
+        this->initMap();
+
+        // 初始化控制面板
+        this->initCtrlPanel();
+
+        // 加载角色
+        this->initCharacter();
+
+        // 加载首个区域
+        this->initArea();
+
+        // 加载摄像机
+        this->initCamera();
+
+        // 加载监听器
+        this->initPhysicsContactListener();
+
+        // 加载自定义事件监听器
+        this->initCustomEventListener();
+
+        // 启动帧调度器
+        this->scheduleUpdate();
+    };
+    auto init = CallFuncN::create(delayInit);
+    this->runAction(Sequence::create(DelayTime::create(1.0), init, NULL));
 
     return true;
 }
@@ -160,14 +166,6 @@ GameplayScene::initMap()
 
     //创建静态刚体墙
     createPhysical(1);
-}
-
-void
-GameplayScene::initCtrlPanel()
-{
-    controlPanel = CtrlPanelLayer::create();
-
-    this->addChild(controlPanel);
 }
 
 //创建静态刚体，接受参数设置刚体大小倍率
@@ -303,7 +301,36 @@ GameplayScene::initCharacter()
     curPlayer->setName("curPlayer");
     mapLayer->addChild(p1Player);
 
+    /*临时代码*/
+    StyleConfig sc;
+    sc.style = StyleType::PARABOLA;
+    sc.frequency = 0.2f;
+    sc.duration = 1.5;
+    sc.number = 5;
+    sc.count = 3;
+    sc.height = 100;
+    sc.distance = 500;
+    sc.bc.name = "b3_1_3.png";
+    sc.bc.length = 20;
+    sc.bc.width = 20;
+    sc.bc.harm = 15;
+    sc.bc._categoryBitmask = bulletCategory;
+    sc.bc._collisionBitmask = enemyCategory;
+    sc.bc._contactTestBitmask = enemyCategory;
+
+    p1Player->type1Tag = p1Player->emitter->playStyle(sc);
+    p1Player->emitter->pauseAllStyle();
+    /*临时代码*/
+
     curPlayer->changeAttackType(p1Player->currentAttackType);
+}
+
+void
+GameplayScene::initCtrlPanel()
+{
+    controlPanel = CtrlPanelLayer::create();
+
+    this->addChild(controlPanel);
 }
 
 void
@@ -487,7 +514,8 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
                 ps->setPosition(entityA->getPosition());
 
                 auto enemy = (Enemy*)entityA;
-                enemy->decreaseHp(entityA);
+                auto bullet = (Bullet*)entityB;
+                enemy->decreaseHp(bullet->getDamage());
                 entityB->removeFromParentAndCleanup(true); //移除子弹
             }
             //其他
@@ -692,7 +720,7 @@ GameplayScene::onEventSwitchCharacter(EventCustom*)
         theOther = p1Player;
     }
 
-    curPlayer->stopAttackType(curPlayer->currentAttackType);
+    curPlayer->stopAttackType();
     mapLayer->removeChild(curPlayer, false);
 
     if (curPlayer->playerDirection == Direction::RIGHT) {
@@ -714,7 +742,7 @@ GameplayScene::onEventSwitchCharacter(EventCustom*)
 void
 GameplayScene::onEventSwitchAttackType(EventCustom*)
 {
-    curPlayer->stopAttackType(curPlayer->currentAttackType);
+    curPlayer->stopAttackType();
     if (curPlayer->currentAttackType == curPlayer->type1.tag) {
         curPlayer->changeAttackType(curPlayer->type2.tag);
     } else {

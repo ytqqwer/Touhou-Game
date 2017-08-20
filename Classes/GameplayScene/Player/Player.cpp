@@ -3,6 +3,7 @@
 #endif
 
 #include "GameplayScene/Player/Player.h"
+#include "GameplayScene/Emitters/Emitter.h"
 #include "GameplayScene/Player/Marisa.h"
 #include "GameplayScene/Player/Reimu.h"
 
@@ -24,6 +25,25 @@ Player::create(std::string tag)
         pRet = nullptr;
         return nullptr;
     }
+}
+
+void
+Player::changeAttackType(const std::string& startType)
+{
+    if (startType == this->type1.tag) {
+        this->emitter->resumeStyle(type1Tag);
+        // this->emitter->playStyle(sc1);//传入弹幕参数
+    } else {
+        // this->emitter->playStyle(sc2);
+    }
+    this->currentAttackType = startType;
+}
+
+void
+Player::stopAttackType()
+{
+    // emitter->stopAllStyle();
+    emitter->pauseAllStyle();
 }
 
 void

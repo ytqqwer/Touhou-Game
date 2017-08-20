@@ -168,7 +168,7 @@
     <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\ItemButton.cpp">
       <Filter>Classes\GameplayScene\CtrlPanel</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\SpellCard.cpp">
+    <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\SpellCardButton.cpp">
       <Filter>Classes\GameplayScene\CtrlPanel</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\HpManaBar.cpp">
@@ -358,7 +358,7 @@
     <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\ItemButton.h">
       <Filter>Classes\GameplayScene\CtrlPanel</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\SpellCard.h">
+    <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\SpellCardButton.h">
       <Filter>Classes\GameplayScene\CtrlPanel</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\HpManaBar.h">

@@ -11,7 +11,14 @@ OddEven::OddEven(Node** target)
     this->sc.duration = 3.0;
     this->sc.count = 3;
     this->sc.number = 5;
+
     this->sc.bc.name = "b2_2_1.png";
+    this->sc.bc.length = 10;
+    this->sc.bc.width = 20;
+    this->sc.bc.harm = 10;
+    this->sc.bc._categoryBitmask = 0;
+    this->sc.bc._collisionBitmask = 0;
+    this->sc.bc._contactTestBitmask = 0;
 
     this->target = target;
     this->angle = 10.0;

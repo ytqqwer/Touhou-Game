@@ -28,7 +28,7 @@ public:
 public:
     void run(float dt);
     void jump();
-    void decreaseHp(Node* node);
+    void decreaseHp(int damage);
 
     void switchMode();
     void alertMode(float dt);

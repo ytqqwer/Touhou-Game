@@ -30,10 +30,6 @@ public:
     void playerJump();
     void playerDash();
 
-    //切换攻击方式
-    void changeAttackType(const std::string& startType);
-    void stopAttackType(const std::string& stopType);
-
     //更新角色状态
     void updatePlayerStatus(float dt);
 };

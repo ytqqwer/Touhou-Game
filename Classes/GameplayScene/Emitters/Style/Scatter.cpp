@@ -12,7 +12,15 @@ Scatter::Scatter()
     this->sc.duration = 6.0;
     this->sc.count = 3;
     this->sc.number = 20;
+
     this->sc.bc.name = "b2_2_1.png";
+    this->sc.bc.length = 20;
+    this->sc.bc.width = 10;
+    this->sc.bc.harm = 10;
+    this->sc.bc._categoryBitmask = 0;
+    this->sc.bc._collisionBitmask = 0;
+    this->sc.bc._contactTestBitmask = 0;
+
     this->sc.startAngle = 90;
     this->sc.endAngle = 180;
     this->isPlayer = false;

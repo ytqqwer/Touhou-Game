@@ -10,7 +10,15 @@ Parabola::Parabola(Direction* direction)
     this->sc.count = 3;
     this->sc.height = 100;
     this->sc.distance = 500;
+
     this->sc.bc.name = "b3_1_3.png";
+    this->sc.bc.length = 20;
+    this->sc.bc.width = 10;
+    this->sc.bc.harm = 15;
+    this->sc.bc._categoryBitmask = 0;
+    this->sc.bc._collisionBitmask = 0;
+    this->sc.bc._contactTestBitmask = 0;
+
     this->direction = direction;
     this->counter = 0;
 }

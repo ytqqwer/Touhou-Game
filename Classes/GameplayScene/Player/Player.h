@@ -9,6 +9,7 @@
 #include "GameData/Item.h"
 #include "GameData/SpellCard.h"
 #include "GameplayScene/Emitters/Emitter.h"
+#include "GameplayScene/Emitters/StyleConfig.h"
 #include "GameplayScene/common.h"
 #include "cocos2d.h"
 
@@ -28,8 +29,8 @@ public:
     virtual void playerDash() = 0;
 
     //切换攻击方式
-    virtual void changeAttackType(const std::string& startType) = 0;
-    virtual void stopAttackType(const std::string& stopType) = 0;
+    virtual void changeAttackType(const std::string& startType);
+    virtual void stopAttackType();
 
     //更新角色状态
     virtual void updatePlayerStatus(float dt) = 0;
@@ -72,6 +73,10 @@ public:
     std::string currentAttackType;
     Character::Attack type1;
     Character::Attack type2;
+    StyleConfig sc1;
+    StyleConfig sc2;
+    int type1Tag;
+    int type2Tag;
 
     //道具列表
     vector<Item> itemList;

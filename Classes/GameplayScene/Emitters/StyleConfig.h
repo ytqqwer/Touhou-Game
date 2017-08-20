@@ -20,6 +20,11 @@ struct BulletConfig
 {
     string name;
     int harm;
+    int length;
+    int width;
+    int _categoryBitmask;
+    int _collisionBitmask;
+    int _contactTestBitmask;
 };
 
 struct StyleConfig
