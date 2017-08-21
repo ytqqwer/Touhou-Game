@@ -11,6 +11,7 @@ using namespace std;
 
 enum class StyleType
 {
+    LASER,
     ODDEVEN,
     PARABOLA,
     SCATTER,

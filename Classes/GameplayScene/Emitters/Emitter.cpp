@@ -4,6 +4,7 @@
 
 #include "Emitter.h"
 #include "Style/EmitterStyle.h"
+#include "Style/Laser.h"
 #include "Style/OddEven.h"
 #include "Style/Parabola.h"
 #include "Style/Scatter.h"
@@ -57,6 +58,14 @@ Emitter::playStyle(const StyleConfig& sc)
 
     switch (sc.style) {
 
+        case StyleType::LASER:
+            if (isPlayer) {
+                style = Laser::create(sc, direction);
+            } else {
+                style = Laser::create(sc, target);
+            }
+            dynamic_cast<Laser*>(style)->createBullet();
+            break;
         case StyleType::PARABOLA:
             if (isPlayer) {
                 style = Parabola::create(sc, direction);
@@ -101,6 +110,14 @@ Emitter::playStyle(StyleType st)
 
     switch (st) {
 
+        case StyleType::LASER:
+            if (isPlayer) {
+                style = Laser::create(direction);
+            } else {
+                style = Laser::create(target);
+            }
+            dynamic_cast<Laser*>(style)->createBullet();
+            break;
         case StyleType::PARABOLA:
             if (isPlayer) {
                 style = Parabola::create(direction);
@@ -172,10 +189,10 @@ void
 Emitter::stopStyle(int styleTag)
 {
     auto style = (EmitterStyle*)styles.at(styleTag);
-    for (auto b : style->bullets) {
+    for (auto b : style->getBullets()) {
         b->removeFromParentAndCleanup(true);
     }
-    style->bullets.clear();
+    style->getBullets().clear();
     style->removeFromParentAndCleanup(true);
     styles.erase(styleTag);
 }
@@ -185,7 +202,7 @@ Emitter::stopAllStyle()
 {
     for (auto s = styles.begin(); s != styles.end(); s++) {
         auto style = (EmitterStyle*)s->second;
-        style->stopSchedule();
+        style->stopShoot();
 
         std::function<void(Ref*)> clean = [style](Ref*) {
             style->cleanup();

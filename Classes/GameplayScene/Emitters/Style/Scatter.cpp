@@ -65,7 +65,7 @@ Scatter::createBullet()
 }
 
 void
-Scatter::stopSchedule()
+Scatter::stopShoot()
 {
     this->unschedule(schedule_selector(Scatter::shootBullet));
 }
@@ -83,8 +83,8 @@ Scatter::shootBullet(float dt)
     }
 
     auto emitter = this->getParent();
-    auto node = emitter->getParent();
-    auto mapLayer = node->getParent();
+    auto character = emitter->getParent();
+    auto mapLayer = character->getParent();
 
     auto winSize = Director::getInstance()->getWinSize();
     float angle = CC_DEGREES_TO_RADIANS(sc.endAngle - sc.startAngle) / (sc.number - 1);
@@ -97,7 +97,7 @@ Scatter::shootBullet(float dt)
         spriteBullet->setAnchorPoint(Vec2(0.5, 0.5));
         spriteBullet->setRotation(-sc.startAngle - i * angle);
 
-        auto pos = this->getParent()->convertToWorldSpace(this->getPosition());
+        auto pos = character->getPosition();
         spriteBullet->setPosition(pos);
         mapLayer->addChild(spriteBullet);
 

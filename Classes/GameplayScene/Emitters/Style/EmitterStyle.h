@@ -25,9 +25,13 @@ public:
         bullets.eraseObject(pNode);
     }
 
-    virtual void stopSchedule() = 0;
+    Vector<Node*>& getBullets() { return bullets; }
 
-public:
+    virtual void createBullet() = 0;
+    virtual void stopShoot() = 0;
+    virtual void shootBullet(float dt) = 0;
+
+protected:
     StyleConfig sc;        // Style参数
     Vector<Node*> bullets; //子弹容器
 };

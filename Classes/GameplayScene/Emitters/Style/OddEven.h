@@ -13,17 +13,17 @@
 class OddEven : public EmitterStyle
 {
 public:
-    /* 默认弹幕 */
+    /* 自机默认弹幕 */
     APP_CREATE_STYLE2(OddEven);
     OddEven(Node** target);
 
-    /* 定制弹幕 */
+    /* 自机定制弹幕 */
     APP_CREATE_STYLE3(OddEven);
     OddEven(const StyleConfig& sc, Node** target);
 
     /* 调度器 */
     void createBullet();
-    void stopSchedule();
+    void stopShoot();
     void shootBullet(float dt);
 
 private:

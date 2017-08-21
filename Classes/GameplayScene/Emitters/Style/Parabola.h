@@ -23,12 +23,12 @@ public:
 
     /* 调度器 */
     void createBullet();
-    void stopSchedule();
+    void stopShoot();
     void shootBullet(float dt);
 
 private:
-    Direction* direction; //玩家方向
-    int counter;          //计数器
+    Direction* direction;
+    int counter;
 };
 
 #endif // !PARABOLA_H

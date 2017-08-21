@@ -37,7 +37,7 @@ Parabola::createBullet()
 }
 
 void
-Parabola::stopSchedule()
+Parabola::stopShoot()
 {
     this->unschedule(schedule_selector(Parabola::shootBullet));
 }
@@ -53,15 +53,15 @@ Parabola::shootBullet(float dt)
     }
 
     auto emitter = this->getParent();
-    auto node = emitter->getParent();
-    auto mapLayer = node->getParent();
+    auto character = emitter->getParent();
+    auto mapLayer = character->getParent();
 
-    for (int i = 0; i < sc.number; i++) {
+    for (int i = 0; i < (2 * sc.number * CCRANDOM_0_1()); i++) {
 
         //构造贝塞尔结构参数
 
-        auto startPoint = this->getParent()->convertToWorldSpace(this->getPosition());
-        // auto startPoint = character->getPosition();
+        // auto startPoint = this->getParent()->convertToWorldSpace(this->getPosition());
+        auto startPoint = character->getPosition();
         Vec2 endPoint;
 
         if ((*direction) == Direction::LEFT) {

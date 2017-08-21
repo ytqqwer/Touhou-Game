@@ -183,10 +183,13 @@
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp">
       <Filter>Classes\GameplayScene\Emitters</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Laser.cpp">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parabola.cpp">
+	<ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parabola.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp">
@@ -376,16 +379,19 @@
     <ClInclude Include="..\Classes\GameplayScene\Emitters\StyleConfig.h">
       <Filter>Classes\GameplayScene\Emitters</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h">
-      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\EmitterStyle.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h">
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Laser.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h">
+	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClInclude>
+	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
 
