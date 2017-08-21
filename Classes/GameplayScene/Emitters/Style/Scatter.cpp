@@ -65,6 +65,12 @@ Scatter::createBullet()
 }
 
 void
+Scatter::stopSchedule()
+{
+    this->unschedule(schedule_selector(Scatter::shootBullet));
+}
+
+void
 Scatter::shootBullet(float dt)
 {
     if (sc.count != 0) {
@@ -76,8 +82,10 @@ Scatter::shootBullet(float dt)
         }
     }
 
-    auto scene = Director::getInstance()->getRunningScene();
-    auto layer = (GameplayScene*)scene;
+    auto emitter = this->getParent();
+    auto node = emitter->getParent();
+    auto mapLayer = node->getParent();
+
     auto winSize = Director::getInstance()->getWinSize();
     float angle = CC_DEGREES_TO_RADIANS(sc.endAngle - sc.startAngle) / (sc.number - 1);
     float distance = sqrt(winSize.width * winSize.width + winSize.height * winSize.height);
@@ -91,7 +99,7 @@ Scatter::shootBullet(float dt)
 
         auto pos = this->getParent()->convertToWorldSpace(this->getPosition());
         spriteBullet->setPosition(pos);
-        layer->addChild(spriteBullet);
+        mapLayer->addChild(spriteBullet);
 
         Vec2 deltaP = Vec2(distance * cos(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle),
                            distance * sin(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle));

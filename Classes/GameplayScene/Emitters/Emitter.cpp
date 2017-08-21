@@ -185,11 +185,14 @@ Emitter::stopAllStyle()
 {
     for (auto s = styles.begin(); s != styles.end(); s++) {
         auto style = (EmitterStyle*)s->second;
-        for (auto b : style->bullets) {
-            b->removeFromParentAndCleanup(true);
-        }
-        style->bullets.clear();
-        style->removeFromParentAndCleanup(true);
+        style->stopSchedule();
+
+        std::function<void(Ref*)> clean = [style](Ref*) {
+            style->cleanup();
+            log("[Emitter] style cleaned");
+        };
+        auto removeSelf = CallFuncN::create(clean);
+        style->runAction(Sequence::create(DelayTime::create(15), removeSelf, NULL));
     }
     styles.clear();
     styleTag = 1;

@@ -200,7 +200,7 @@ Reimu::playerDash()
         Vec2 impluse = Vec2(dashAccelerationBase + 100, 0.0f);
         body->applyImpulse(impluse);
     } else {
-        Vec2 impluse = Vec2(-dashAccelerationBase + 100, 0.0f);
+        Vec2 impluse = Vec2(-(dashAccelerationBase + 100), 0.0f);
         body->applyImpulse(impluse);
     }
 

@@ -23,6 +23,7 @@ public:
 
     /* 调度器 */
     void createBullet();
+    void stopSchedule();
     void shootBullet(float dt);
 
 private:

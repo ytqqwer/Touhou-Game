@@ -37,6 +37,12 @@ Parabola::createBullet()
 }
 
 void
+Parabola::stopSchedule()
+{
+    this->unschedule(schedule_selector(Parabola::shootBullet));
+}
+
+void
 Parabola::shootBullet(float dt)
 {
     if (this->counter == sc.count) {
@@ -46,9 +52,9 @@ Parabola::shootBullet(float dt)
         this->counter++;
     }
 
-    auto scene = Director::getInstance()->getRunningScene();
-    auto layer = (GameplayScene*)scene;
-    // auto character = this->getParent()->getParent();
+    auto emitter = this->getParent();
+    auto node = emitter->getParent();
+    auto mapLayer = node->getParent();
 
     for (int i = 0; i < sc.number; i++) {
 
@@ -89,7 +95,7 @@ Parabola::shootBullet(float dt)
         spriteBullet->setScale(0.3 + 0.5 * CCRANDOM_0_1());
 
         spriteBullet->setPosition(startPoint);
-        layer->addChild(spriteBullet);
+        mapLayer->addChild(spriteBullet);
 
         auto actionBezierTo = BezierTo::create(sc.duration, cfg);
         // auto actionInOut = EaseInOut::create(actionBezierTo, 0.5);

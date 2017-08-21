@@ -301,28 +301,6 @@ GameplayScene::initCharacter()
     curPlayer->setName("curPlayer");
     mapLayer->addChild(p1Player);
 
-    /*临时代码*/
-    StyleConfig sc;
-    sc.style = StyleType::PARABOLA;
-    sc.frequency = 0.2f;
-    sc.duration = 1.5;
-    sc.number = 5;
-    sc.count = 3;
-    sc.height = 100;
-    sc.distance = 500;
-    sc.bc.name = "b3_1_3.png";
-    sc.bc.length = 20;
-    sc.bc.width = 20;
-    sc.bc.harm = 15;
-    sc.bc._categoryBitmask = bulletCategory;
-    sc.bc._collisionBitmask = enemyCategory;
-    sc.bc._contactTestBitmask = enemyCategory;
-
-    p1Player->type1Tag = p1Player->emitter->playStyle(sc);
-    p1Player->emitter->pauseAllStyle();
-
-    /*临时代码*/
-
     curPlayer->changeAttackType(p1Player->currentAttackType);
 }
 

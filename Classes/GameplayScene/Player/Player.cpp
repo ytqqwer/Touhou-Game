@@ -31,10 +31,28 @@ void
 Player::changeAttackType(const std::string& startType)
 {
     if (startType == this->type1.tag) {
-        this->emitter->resumeStyle(type1Tag);
         // this->emitter->playStyle(sc1);//传入弹幕参数
+
+        /*临时代码*/
+        StyleConfig sc1;
+        sc1.style = StyleType::PARABOLA;
+        sc1.frequency = 0.15f;
+        sc1.duration = 2;
+        sc1.number = 7;
+        sc1.count = 4;
+        sc1.height = 150;
+        sc1.distance = 600;
+        sc1.bc.name = "b3_1_3.png";
+        sc1.bc.length = 30;
+        sc1.bc.width = 30;
+        sc1.bc.harm = 8;
+        sc1.bc._categoryBitmask = bulletCategory;
+        sc1.bc._collisionBitmask = enemyCategory;
+        sc1.bc._contactTestBitmask = enemyCategory;
+        emitter->playStyle(sc1);
+        /*临时代码*/
     } else {
-        // this->emitter->playStyle(sc2);
+        // this->emitter->playStyle(sc2);//传入弹幕参数
     }
     this->currentAttackType = startType;
 }
@@ -42,8 +60,7 @@ Player::changeAttackType(const std::string& startType)
 void
 Player::stopAttackType()
 {
-    // emitter->stopAllStyle();
-    emitter->pauseAllStyle();
+    emitter->stopAllStyle();
 }
 
 void
