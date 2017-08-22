@@ -262,7 +262,7 @@
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitter.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\StyleConfig.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\EmitterStyle.h" />
-    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Laser.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Laser.h" />
 	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h" />
