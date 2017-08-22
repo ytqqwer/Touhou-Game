@@ -134,6 +134,9 @@
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp">
       <Filter>Classes\GameplayScene</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Elevator.cpp">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClCompile>
 
     <!-- Classes\GameplayScene\Player -->
     <ClCompile Include="..\Classes\GameplayScene\Player\Player.cpp">
@@ -189,7 +192,7 @@
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
-	<ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parabola.cpp">
+  	<ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parabola.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp">
@@ -327,6 +330,9 @@
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h">
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Elevator.h">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClInclude>
 
     <!-- Classes\GameplayScene\Player -->
     <ClInclude Include="..\Classes\GameplayScene\Player\Player.h">
@@ -385,13 +391,13 @@
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Laser.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
-	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h">
+	  <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
-	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h">
+	  <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
 

@@ -81,8 +81,8 @@ Player::autoSwitchAnimation(float dt)
 {
     if (curAction != ActionState::Dash) {
         Vec2 velocity = body->getVelocity();
-        if (-15 < velocity.y && velocity.y < 15) {
-            if (-15 < velocity.x && velocity.x < 15) { //站立
+        if (-25 < velocity.y && velocity.y < 25) {
+            if (-25 < velocity.x && velocity.x < 25) { //站立
                 if (curAction != ActionState::Stand) {
                     if (curAction != ActionState::Jump) {
                         if (curAction != ActionState::Fall) {
@@ -93,8 +93,8 @@ Player::autoSwitchAnimation(float dt)
                         }
                     }
                 }
-            } else if (-15 > velocity.x || velocity.x > 15) { //行走
-                if (-15 < velocity.y || velocity.y < 15) {
+            } else if (-25 > velocity.x || velocity.x > 25) { //行走
+                if (-25 < velocity.y || velocity.y < 25) {
                     if (curAction != ActionState::Run) {
                         curAction = ActionState::Run;
                         playerSprite->stopAllActions();
@@ -104,8 +104,8 @@ Player::autoSwitchAnimation(float dt)
                 }
             }
         }
-        if (-15 > velocity.y || velocity.y > 15) {
-            if (velocity.y > 15) { //向上跳跃
+        if (-25 > velocity.y || velocity.y > 25) {
+            if (velocity.y > 25) { //向上跳跃
                 if (curAction != ActionState::Jump) {
                     curAction = ActionState::Jump;
                     playerSprite->stopAllActions();
@@ -113,7 +113,7 @@ Player::autoSwitchAnimation(float dt)
                                                      Animate::create(jumpAnimation), NULL);
                     playerSprite->runAction(sequence);
                 }
-            } else if (-15 > velocity.y) { //下降
+            } else if (-25 > velocity.y) { //下降
                 if (curAction != ActionState::Fall) {
                     curAction = ActionState::Fall;
                     playerSprite->stopAllActions();

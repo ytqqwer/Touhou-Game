@@ -36,5 +36,5 @@ Enemy::resetAction(Node* node)
 void
 Enemy::setTarget(Player*& player)
 {
-    curPlayer = &player;
+    curTarget = (Node **)&player;
 }

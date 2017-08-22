@@ -46,8 +46,8 @@ Marisa::init(std::string tag)
     body->getFirstShape()->setFriction(0.2);
     body->getFirstShape()->setRestitution(0);
     body->setCategoryBitmask(playerCategory);
-    body->setCollisionBitmask(groundCategory);
-    body->setContactTestBitmask(groundCategory | enemyCategory | lockCategory | eventCategory);
+    body->setCollisionBitmask(groundCategory | elevatorCategory);
+    body->setContactTestBitmask(groundCategory | enemyCategory | lockCategory | eventCategory | elevatorCategory);
     this->setPhysicsBody(body);
 
     //设置动画

@@ -4,6 +4,7 @@
 
 #include "GameplayScene/GameplayScene.h"
 #include "GameplayScene/CtrlPanel/CtrlPanelLayer.h"
+#include "GameplayScene/Elevator.h"
 #include "GameplayScene/Emitters/Bullet.h"
 #include "GameplayScene/Emitters/Emitter.h"
 #include "GameplayScene/Enemy/Enemy.h"
@@ -330,6 +331,9 @@ GameplayScene::initArea()
         if (curArea.containsPoint(playerPos)) {
             // 加载发射器
             initLauncher();
+            // 加载电梯
+            initElevator();
+
             // 加载敌人
             initEnemy();
             // 加载事件
@@ -377,6 +381,54 @@ GameplayScene::initLauncher()
             fe->playStyle(StyleType::ODDEVEN);
 
             launcherList.pushBack(_launcher);
+        }
+    }
+}
+
+void
+GameplayScene::initElevator()
+{
+    TMXObjectGroup* group = _map->getObjectGroup("elevator");
+    auto objects = group->getObjects();
+
+    for (auto v : objects) {
+        auto dict = v.asValueMap();
+        if (dict.size() == 0)
+            continue;
+        //读取起始点
+        float x = dict["x"].asFloat();
+        float y = dict["y"].asFloat();
+
+        if (curArea.containsPoint(Vec2(x, y))) {
+            auto polyline_points = dict["polylinePoints"].asValueVector();
+            vector<Vec2> vertex;
+            for (auto obj : polyline_points) {
+                float offx = obj.asValueMap()["x"].asFloat();
+                float offy = obj.asValueMap()["y"].asFloat();
+                vertex.push_back(Vec2((x + offx), (y - offy)));
+            }
+            auto seq = Sequence::create(DelayTime::create(1.0f), nullptr);
+
+            for (auto obj : vertex) {
+                seq = Sequence::createWithTwoActions(seq, MoveTo::create(1.0f, obj));
+            }
+
+            // Sequence::reverse()方法不支持moveTo
+            auto seq_reverse = Sequence::create(DelayTime::create(1.0f), nullptr);
+            vector<Vec2>::reverse_iterator it = vertex.rbegin();
+            while (it != vertex.rend()) {
+                seq_reverse =
+                    Sequence::createWithTwoActions(seq_reverse, MoveTo::create(1.0f, *it));
+                ++it;
+            }
+
+            auto _elevator = Elevator::create();
+            _elevator->setPosition(x, y);
+            mapLayer->addChild(_elevator);
+            _elevator->runAction(
+                RepeatForever::create(Sequence::create(seq, seq_reverse, nullptr)));
+
+            elevatorList.pushBack(_elevator);
         }
     }
 }
@@ -444,7 +496,7 @@ GameplayScene::initEvent()
 }
 
 bool
-GameplayScene::contactFilter(const PhysicsContact& contact)
+GameplayScene::contactBegin(const PhysicsContact& contact)
 {
     auto nodeA = contact.getShapeA()->getBody()->getNode();
     auto nodeB = contact.getShapeB()->getBody()->getNode();
@@ -467,7 +519,7 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
 
             // 当enemy碰到了折线刚体
             if (entityB->getTag() == polylineCategoryTag) {
-                //当冲量方向向上时可以穿过折现刚体
+                //当冲量方向向上时可以穿过折线刚体
                 if (contact.getContactData()->normal.y > 0) {
                     auto enemy = (Enemy*)entityA;
                     enemy->_canJump = true;
@@ -537,6 +589,67 @@ GameplayScene::contactFilter(const PhysicsContact& contact)
                 event.setUserData((void*)entityB->getName().c_str());
                 _eventDispatcher->dispatchEvent(&event);
                 entityB->removeFromParent();
+            } else if (entityB->getTag() == elevatorCategoryTag) {
+
+                if (contact.getContactData()->normal.y > 0) {
+                    auto player = (Player*)entityA;
+                    auto elevator = (Elevator*)entityB;
+                    player->jumpCounts = 2;
+                    player->curAction = ActionState::Default;
+
+                    elevator->prePosition = elevator->getPosition();
+                    elevator->setTarget(curPlayer);
+                    elevator->schedule(CC_SCHEDULE_SELECTOR(Elevator::moveTogether));
+
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            //其他
+        }
+    }
+    return true;
+}
+
+bool
+GameplayScene::contactSeparate(const PhysicsContact& contact)
+{
+    auto nodeA = contact.getShapeA()->getBody()->getNode();
+    auto nodeB = contact.getShapeB()->getBody()->getNode();
+    if (nodeA && nodeB) {
+        auto tagA = nodeA->getTag();
+        auto tagB = nodeB->getTag();
+        Node* entityA;
+        Node* entityB;
+
+        // enemy相关
+        if (tagA == enemyCategoryTag || tagB == enemyCategoryTag) {
+            if (tagA == enemyCategoryTag) {
+                entityA = nodeA;
+                entityB = nodeB;
+            } else if (tagB == enemyCategoryTag) {
+                entityA = nodeB;
+                entityB = nodeA;
+            }
+
+            //其他
+        }
+        // player相关
+        if (tagA == playerCategoryTag || tagB == playerCategoryTag) {
+            if (nodeA->getTag() == playerCategoryTag) {
+                entityA = nodeA;
+                entityB = nodeB;
+            } else if (nodeB->getTag() == playerCategoryTag) {
+                entityA = nodeB;
+                entityB = nodeA;
+            }
+
+            if (entityB->getTag() == elevatorCategoryTag) {
+                auto elevator = (Elevator*)entityB;
+                if (elevator->isScheduled(CC_SCHEDULE_SELECTOR(Elevator::moveTogether))) {
+                    elevator->unschedule(CC_SCHEDULE_SELECTOR(Elevator::moveTogether));
+                }
             }
             //其他
         }
@@ -549,9 +662,8 @@ void
 GameplayScene::initPhysicsContactListener()
 {
     auto filter = EventListenerPhysicsContact::create();
-    filter->onContactBegin = CC_CALLBACK_1(GameplayScene::contactFilter, this);
-    //留空，当玩家脱离索敌区域后恢复敌人状态
-    // filter->onContactSeparate = ;
+    filter->onContactBegin = CC_CALLBACK_1(GameplayScene::contactBegin, this);
+    filter->onContactSeparate = CC_CALLBACK_1(GameplayScene::contactSeparate, this);
     _eventDispatcher->addEventListenerWithFixedPriority(filter, 50);
 }
 
@@ -752,10 +864,14 @@ GameplayScene::update(float dt)
         for (auto v : enemyList) {
             v->removeFromParent();
         }
+        for (auto v : eventPoint) {
+            v->removeFromParent();
+        }
+
         for (auto v : launcherList) {
             v->removeFromParent();
         }
-        for (auto v : eventPoint) {
+        for (auto v : elevatorList) {
             v->removeFromParent();
         }
 

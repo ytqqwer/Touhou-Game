@@ -156,7 +156,7 @@ void
 Frog::autoChangeDirection(float dt)
 {
     Point enemyPos = this->getPosition();
-    Vec2 playerPos = (*curPlayer)->getPosition();
+    Vec2 playerPos = (*curTarget)->getPosition();
     if (enemyPos.x > playerPos.x) {
         this->enemyDirection = Direction::LEFT;
         enemySprite->setScaleX(1);

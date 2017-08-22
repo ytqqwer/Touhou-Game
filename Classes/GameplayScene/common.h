@@ -28,7 +28,9 @@ static const int bulletCategory = 0x1 << 3;
 static const int enemyCategory = 0x1 << 4;
 static const int eventCategory = 0x1 << 5;
 static const int lockCategory = 0x1 << 6;
+static const int elevatorCategory = 0x1 << 7;
 
+static const int elevatorCategoryTag = 1005;
 static const int eventCategoryTag = 1004;
 static const int enemyCategoryTag = 1003;
 static const int bulletCategoryTag = 1002;

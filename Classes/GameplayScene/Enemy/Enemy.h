@@ -38,7 +38,7 @@ public:
 
 public:
     std::string enemyTag;
-    Player** curPlayer;
+    Node** curTarget;
 
     int hp;
     bool _canJump = false;

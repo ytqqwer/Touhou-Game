@@ -176,6 +176,7 @@
 
     <ClCompile Include="..\Classes\GameplayScene\EventFilterManager.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Elevator.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\Player\Player.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Player\Reimu.cpp" />
@@ -194,7 +195,7 @@
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Laser.cpp" />
-	<ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\OddEven.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parabola.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp" />
 
@@ -243,6 +244,7 @@
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.inc" />
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Elevator.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\Player\Player.h" />
     <ClInclude Include="..\Classes\GameplayScene\Player\Reimu.h" />
@@ -263,7 +265,7 @@
     <ClInclude Include="..\Classes\GameplayScene\Emitters\StyleConfig.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\EmitterStyle.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Laser.h" />
-	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\OddEven.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h" />
 

@@ -7,7 +7,6 @@
 
 #include "GameplayScene/Emitters/Bullet.h"
 #include "GameplayScene/Emitters/StyleConfig.h"
-#include "GameplayScene/GameplayScene.h"
 #include "GameplayScene/common.h"
 #include "cocos2d.h"
 

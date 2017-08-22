@@ -32,11 +32,15 @@ public:
     void initCharacter();
     void initArea();
     void initCamera();
-    void initLauncher();
     void initEnemy();
     void initEvent();
     void initPhysicsContactListener();
     void initCustomEventListener();
+
+    /*临时项*/
+    void initLauncher();
+    void initElevator();
+    /*临时项*/
 
     void update(float dt);
     void testEventFilterManager();
@@ -46,7 +50,8 @@ public:
     void nextEvent();
 
     //对碰撞进行处理
-    bool contactFilter(const PhysicsContact& contact);
+    bool contactBegin(const PhysicsContact& contact);
+    bool contactSeparate(const PhysicsContact& contact);
 
 public:
     void onEventLeftKeyPressed(EventCustom*);
@@ -82,7 +87,11 @@ private:
 
     Vector<Node*> eventPoint;
     Vector<Node*> enemyList;
+
+    /*临时项*/
     Vector<Node*> launcherList;
+    Vector<Node*> elevatorList;
+    /*临时项*/
 
     vector<EventData> eventList;
     int _curEventIndex;
