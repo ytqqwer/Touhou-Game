@@ -9,6 +9,7 @@
 #include "GameplayScene/Emitters/Emitter.h"
 #include "GameplayScene/Enemy/Enemy.h"
 #include "GameplayScene/EventFilterManager.h"
+#include "GameplayScene/LoadingLayer.h"
 #include "GameplayScene/Player/Player.h"
 #include "GameplayScene/common.h"
 #include "Layers/ConversationLayer.h"
@@ -46,6 +47,8 @@ GameplayScene::cleanup()
     Scene::cleanup();
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     Director::getInstance()->getEventDispatcher()->removeEventListenersForTarget(this);
+    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+    _eventFilterMgr->removeAllEventFilters();
 }
 
 bool
@@ -77,6 +80,9 @@ GameplayScene::init()
     this->_eventFilterMgr = EventFilterManager::create();
     this->_eventFilterMgr->retain();
 
+    auto loadingLayer = LoadingLayer::create();
+    this->addChild(loadingLayer);
+
     //将初始化动作延迟执行，保证在后续初始化工作中当前scene已经准备完毕。
     std::function<void(Ref*)> delayInit = [&](Ref*) {
         // 初始化地图背景层
@@ -97,7 +103,7 @@ GameplayScene::init()
         // 加载摄像机
         this->initCamera();
 
-        // 加载监听器
+        // 加载物理碰撞监听器
         this->initPhysicsContactListener();
 
         // 加载自定义事件监听器
@@ -105,10 +111,12 @@ GameplayScene::init()
 
         // 启动帧调度器
         this->scheduleUpdate();
+
     };
     auto init = CallFuncN::create(delayInit);
-    this->runAction(Sequence::create(DelayTime::create(1.0), init, NULL));
+    this->runAction(Sequence::create(DelayTime::create(1.2), init, NULL));
 
+    this->retain();
     return true;
 }
 
@@ -152,6 +160,18 @@ GameplayScene::initBackGround()
     backGroundLayer->addChild(bg);
 
     this->addChild(backGroundLayer, -100);
+
+    scheduleOnce(
+        [this](float dt) {
+            EventCustom event("loading_event");
+            LoadingInfo loadingInfo;
+            loadingInfo.progress = 10;
+            loadingInfo.information = "加载背景";
+            event.setUserData((void*)&loadingInfo);
+            event.retain();
+            _eventDispatcher->dispatchEvent(&event);
+        },
+        0.1, "bg");
 }
 
 void
@@ -167,6 +187,17 @@ GameplayScene::initMap()
 
     //创建静态刚体墙
     createPhysical(1);
+
+    scheduleOnce(
+        [this](float dt) {
+            EventCustom event("loading_event");
+            LoadingInfo loadingInfo;
+            loadingInfo.progress = 30;
+            loadingInfo.information = "加载地图";
+            event.setUserData((void*)&loadingInfo);
+            _eventDispatcher->dispatchEvent(&event);
+        },
+        0.4, "map");
 }
 
 //创建静态刚体，接受参数设置刚体大小倍率
@@ -303,6 +334,18 @@ GameplayScene::initCharacter()
     mapLayer->addChild(p1Player);
 
     curPlayer->changeAttackType(p1Player->currentAttackType);
+
+    scheduleOnce(
+        [this](float dt) {
+
+            EventCustom event("loading_event");
+            LoadingInfo loadingInfo;
+            loadingInfo.progress = 20;
+            loadingInfo.information = "加载角色";
+            event.setUserData((void*)&loadingInfo);
+            _eventDispatcher->dispatchEvent(&event);
+        },
+        0.6, "character");
 }
 
 void
@@ -311,6 +354,18 @@ GameplayScene::initCtrlPanel()
     controlPanel = CtrlPanelLayer::create();
 
     this->addChild(controlPanel);
+
+    scheduleOnce(
+        [this](float dt) {
+            EventCustom event("loading_event");
+            LoadingInfo loadingInfo;
+            loadingInfo.progress = 10;
+            loadingInfo.information = "加载控制面板";
+            event.setUserData((void*)&loadingInfo);
+            event.retain();
+            _eventDispatcher->dispatchEvent(&event);
+        },
+        0.7, "controlPanel");
 }
 
 void
@@ -355,6 +410,17 @@ GameplayScene::initCamera()
     auto cameraFollow = Follow::create(camera, curArea);
     cameraFollow->setTag(cameraTag);
     mapLayer->runAction(cameraFollow);
+
+    scheduleOnce(
+        [this](float dt) {
+            EventCustom event("loading_event");
+            LoadingInfo loadingInfo;
+            loadingInfo.progress = 10;
+            loadingInfo.information = "加载摄像机";
+            event.setUserData((void*)&loadingInfo);
+            _eventDispatcher->dispatchEvent(&event);
+        },
+        0.8, "camera");
 }
 
 void
@@ -699,6 +765,17 @@ GameplayScene::initCustomEventListener()
 
     _eventDispatcher->addCustomEventListener("conversation_end",
                                              [this](EventCustom* e) { this->nextEvent(); });
+
+    scheduleOnce(
+        [this](float dt) {
+            EventCustom event("loading_event");
+            LoadingInfo loadingInfo;
+            loadingInfo.progress = 20;
+            loadingInfo.information = "加载事件";
+            event.setUserData((void*)&loadingInfo);
+            _eventDispatcher->dispatchEvent(&event);
+        },
+        1.0, "customEvent");
 }
 
 void
