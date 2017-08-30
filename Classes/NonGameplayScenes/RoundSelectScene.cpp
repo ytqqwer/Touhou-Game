@@ -8,6 +8,7 @@
 #include "ui/CocosGUI.h"
 // #include "resources.h.dir/main_menu.h"
 #include <string>
+#include <iostream>
 
 //需要用到的头文件
 #include "GameData/GameData.h"
@@ -15,6 +16,7 @@
 #include "GameplayScene/GameplayScene.h"
 
 using namespace ui;
+using namespace std;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -144,7 +146,7 @@ RoundSelectScene::onEnter()
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(round[i].name);
             roundButton->setTitleFontSize(25);
-            roundButton->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
+            roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
                 //根据点击的按钮设置当前的关卡难度，同时将当前选择的关卡保存，接口尚未实现，以后添加
                 int difficulty(static_cast<int>(round[i].difficulty));
                 for (int i = 0; i < difficulty; ++i) {
@@ -171,7 +173,7 @@ RoundSelectScene::onEnter()
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(round[i].name);
             roundButton->setTitleFontSize(25);
-            roundButton->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
+            roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
                 //根据点击的按钮设置当前的关卡难度，同时将当前选择的关卡保存，接口尚未实现，以后添加
                 int difficulty(static_cast<int>(round[i].difficulty));
                 for (int i = 0; i < difficulty; ++i) {
@@ -180,7 +182,7 @@ RoundSelectScene::onEnter()
                         Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
                 }
                 for (int i = difficulty; i < 5; ++i) {
-                    difficult[i]->setTexture("roundselectscene/star_2.png");
+                    difficult[i]->setTexture("roundselectscene/star_1.png");
                     difficult[i]->setContentSize(
                         Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
                 }
@@ -198,7 +200,7 @@ RoundSelectScene::onEnter()
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(round[i].name);
             roundButton->setTitleFontSize(25);
-            roundButton->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
+            roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
                 //根据点击的按钮设置当前的关卡难度
                 int difficulty(static_cast<int>(round[i].difficulty));
                 for (int i = 0; i < difficulty; ++i) {
@@ -207,9 +209,9 @@ RoundSelectScene::onEnter()
                         Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
                 }
                 for (int i = difficulty; i < 5; ++i) {
-                    difficult[i]->setTexture("roundselectscene/star_2.png");
+					difficult[i]->setTexture("roundselectscene/star_2.png");
                     difficult[i]->setContentSize(
-                        Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+                    Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
                 }
                 preView->setTexture(round[i].previewPicture);
                 preView->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
@@ -267,16 +269,15 @@ RoundSelectScene::onEnter()
                 auto button = Button::create("roundselectscene/right.png");
                 button->setPosition(
                     Vec2(_visibleSize.width * (0.43 + 0.2 * i), _visibleSize.height * 0.4));
-                button->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
-                    GameData::getInstance()->switchOnStageCharacter(j, character[i]);
+                button->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {   //修改角色按钮出错，接口和界面没有协调好
+ 					GameData::getInstance()->switchOnStageCharacter(j+1, characters.at((j + 1) / characters.size()).tag);
                     sprite->setTexture(characters.at((j + 1) / characters.size()).portrait);
                     sprite->setContentSize(
                         Size(_visibleSize.width * 0.1, _visibleSize.height * 0.15));
                     //修改符卡
-                    vector<SpellCard> card = GameData::getInstance()->getCharacterSpellCardList(
-                        characters.at((j + 1) / characters.size()).tag);
+                    vector<SpellCard> card = GameData::getInstance()->getCharacterSpellCardList(characters.at((j + 1) / characters.size()).tag);
                     for (int k = 0; k < card.size(); ++k) {
-                        cardSprite[k]->setTexture(card.at(k).icon);
+				        cardSprite[k]->setTexture(card.at(k).icon);           //一直出错，我也不知道啊
                         cardSprite[k]->setContentSize(
                             Size(_visibleSize.width * 0.06, _visibleSize.height * 0.06));
                     }
