@@ -83,40 +83,35 @@ GameplayScene::init()
     auto loadingLayer = LoadingLayer::create();
     this->addChild(loadingLayer);
 
-    //将初始化动作延迟执行，保证在后续初始化工作中当前scene已经准备完毕。
-    std::function<void(Ref*)> delayInit = [&](Ref*) {
-        // 初始化地图背景层
-        this->initBackGround();
+    // 不要在场景初始化的时候执行任何需要获取当前运行场景的代码
+    // 初始化的时候场景还没有被替换上
+    // 否则就需要使用下列代码延迟初始化动作
+    // 将初始化动作延迟执行，保证在后续初始化工作中当前scene已经准备完毕
+    // std::function<void(Ref*)> delayInit = [&](Ref*) {
+    //;
+    //};
+    // auto init = CallFuncN::create(delayInit);
+    // this->runAction(Sequence::create(DelayTime::create(1.2), init, NULL));
 
-        // 初始化地图层
-        this->initMap();
+    // 初始化地图背景层
+    this->initBackGround();
+    // 初始化地图层
+    this->initMap();
+    // 初始化控制面板
+    this->initCtrlPanel();
+    // 加载角色
+    this->initCharacter();
+    // 加载首个区域
+    this->initArea();
+    // 加载摄像机
+    this->initCamera();
+    // 加载物理碰撞监听器
+    this->initPhysicsContactListener();
+    // 加载自定义事件监听器
+    this->initCustomEventListener();
+    // 启动帧调度器
+    this->scheduleUpdate();
 
-        // 初始化控制面板
-        this->initCtrlPanel();
-
-        // 加载角色
-        this->initCharacter();
-
-        // 加载首个区域
-        this->initArea();
-
-        // 加载摄像机
-        this->initCamera();
-
-        // 加载物理碰撞监听器
-        this->initPhysicsContactListener();
-
-        // 加载自定义事件监听器
-        this->initCustomEventListener();
-
-        // 启动帧调度器
-        this->scheduleUpdate();
-
-    };
-    auto init = CallFuncN::create(delayInit);
-    this->runAction(Sequence::create(DelayTime::create(1.2), init, NULL));
-
-    this->retain();
     return true;
 }
 
@@ -564,6 +559,8 @@ GameplayScene::initEvent()
 bool
 GameplayScene::contactBegin(const PhysicsContact& contact)
 {
+    auto shapeA = contact.getShapeA();
+    auto shapeB = contact.getShapeB();
     auto nodeA = contact.getShapeA()->getBody()->getNode();
     auto nodeB = contact.getShapeB()->getBody()->getNode();
     if (nodeA && nodeB) {
@@ -572,15 +569,21 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
         // entityA和entityB对nodeA和nodeB进行映射
         Node* entityA;
         Node* entityB;
+        PhysicsShape* entityA_shape;
+        PhysicsShape* entityB_shape;
 
         // enemy相关
         if (tagA == enemyCategoryTag || tagB == enemyCategoryTag) {
             if (tagA == enemyCategoryTag) {
                 entityA = nodeA;
                 entityB = nodeB;
+                entityA_shape = shapeA;
+                entityB_shape = shapeB;
             } else if (tagB == enemyCategoryTag) {
                 entityA = nodeB;
                 entityB = nodeA;
+                entityA_shape = shapeB;
+                entityB_shape = shapeA;
             }
 
             // 当enemy碰到了折线刚体
@@ -612,9 +615,31 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
 
                 auto enemy = (Enemy*)entityA;
                 auto bullet = (Bullet*)entityB;
-                enemy->decreaseHp(bullet->getDamage());
+
+                DamageInfo _damageInfo;
+                _damageInfo.damage = bullet->getDamage();
+                _damageInfo.target = enemy;
+                EventCustom event("bullet_hit_enemy");
+                event.setUserData((void*)&_damageInfo);
+                _eventDispatcher->dispatchEvent(&event);
+
                 entityB->removeFromParentAndCleanup(true); //移除子弹
             }
+            // 当enemy站在电梯上
+            else if (entityB->getTag() == elevatorCategoryTag) {
+
+                if (contact.getContactData()->normal.y > 0) {
+                    auto _enemy = (Enemy*)entityA;
+                    auto elevator = (Elevator*)entityB;
+                    _enemy->_canJump = true;
+                    _enemy->curAction = ActionState::Default;
+                    elevator->addPassenger(_enemy);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
             //其他
         }
         // player相关
@@ -622,9 +647,13 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
             if (nodeA->getTag() == playerCategoryTag) {
                 entityA = nodeA;
                 entityB = nodeB;
+                entityA_shape = shapeA;
+                entityB_shape = shapeB;
             } else if (nodeB->getTag() == playerCategoryTag) {
                 entityA = nodeB;
                 entityB = nodeA;
+                entityA_shape = shapeB;
+                entityB_shape = shapeA;
             }
 
             //当player碰到了折线刚体
@@ -642,11 +671,24 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
             else if (entityB->getTag() == groundCategoryTag) {
                 // do nothing
             }
-            // 当player碰到了敌人的索敌框，但getTag得到的是node的tag
+            // 当player碰到了敌人或索敌框
             else if (entityB->getTag() == enemyCategoryTag) {
-                auto enemy = (Enemy*)entityB;
-                enemy->curState = EnemyActionMode::Alert;
-                enemy->switchMode();
+                // 当player碰到了敌人的索敌框
+                if (entityB_shape->getTag() == lockCategoryTag) {
+                    auto enemy = (Enemy*)entityB;
+                    enemy->curState = EnemyActionMode::Alert;
+                    enemy->switchMode();
+                }
+                // 当player碰到了敌人本身
+                else {
+                    DamageInfo _damageInfo;
+                    _damageInfo.damage = 10;      //碰撞伤害
+                    _damageInfo.target = entityA; //受损目标
+                    EventCustom event("bullet_hit_player");
+                    event.setUserData((void*)&_damageInfo);
+                    _eventDispatcher->dispatchEvent(&event);
+                }
+
             }
             // 当player碰到了事件点或者宝箱
             else if (entityB->getTag() == eventCategoryTag) {
@@ -655,18 +697,16 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
                 event.setUserData((void*)entityB->getName().c_str());
                 _eventDispatcher->dispatchEvent(&event);
                 entityB->removeFromParent();
-            } else if (entityB->getTag() == elevatorCategoryTag) {
+            }
+            // 当player站在电梯上
+            else if (entityB->getTag() == elevatorCategoryTag) {
 
                 if (contact.getContactData()->normal.y > 0) {
                     auto player = (Player*)entityA;
                     auto elevator = (Elevator*)entityB;
                     player->jumpCounts = 2;
                     player->curAction = ActionState::Default;
-
-                    elevator->prePosition = elevator->getPosition();
-                    elevator->setTarget(curPlayer);
-                    elevator->schedule(CC_SCHEDULE_SELECTOR(Elevator::moveTogether));
-
+                    elevator->addPassenger(curPlayer);
                     return true;
                 } else {
                     return false;
@@ -699,6 +739,11 @@ GameplayScene::contactSeparate(const PhysicsContact& contact)
                 entityB = nodeA;
             }
 
+            if (entityB->getTag() == elevatorCategoryTag) {
+                auto _enemy = (Enemy*)entityA;
+                auto elevator = (Elevator*)entityB;
+                elevator->removePassenger(_enemy);
+            }
             //其他
         }
         // player相关
@@ -713,9 +758,7 @@ GameplayScene::contactSeparate(const PhysicsContact& contact)
 
             if (entityB->getTag() == elevatorCategoryTag) {
                 auto elevator = (Elevator*)entityB;
-                if (elevator->isScheduled(CC_SCHEDULE_SELECTOR(Elevator::moveTogether))) {
-                    elevator->unschedule(CC_SCHEDULE_SELECTOR(Elevator::moveTogether));
-                }
+                elevator->removePassenger(curPlayer);
             }
             //其他
         }
@@ -765,6 +808,34 @@ GameplayScene::initCustomEventListener()
 
     _eventDispatcher->addCustomEventListener("conversation_end",
                                              [this](EventCustom* e) { this->nextEvent(); });
+
+    _eventDispatcher->addCustomEventListener("bullet_hit_enemy", [this](EventCustom* e) {
+        auto _damageInfo = (DamageInfo*)e->getUserData();
+        auto _enemy = (Enemy*)_damageInfo->target;
+        _enemy->decreaseHp(_damageInfo->damage);
+    });
+
+    _eventDispatcher->addCustomEventListener("bullet_hit_player", [this](EventCustom* e) {
+        auto _damageInfo = (DamageInfo*)e->getUserData();
+        auto _player = (Player*)_damageInfo->target;
+
+        //暂时代替受损
+        auto body = _player->getPhysicsBody();
+        auto velocity = body->getVelocity();
+        Vec2 impluse = Vec2(0.0f, 300.0f);
+        body->applyImpulse(impluse);
+
+        //阻隔
+        _eventFilterMgr->addEventFilter(
+            [](EventCustom* event) -> void {
+                if (event->getEventName() == "bullet_hit_player") {
+                    event->stopPropagation();
+                }
+                log("[EventFilterManager] Propagation stopped");
+            },
+            1, "bullet_hit_player");
+
+    });
 
     scheduleOnce(
         [this](float dt) {

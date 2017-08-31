@@ -33,13 +33,15 @@ Frog::init(std::string tag)
     body->getFirstShape()->setDensity(0);
     body->getFirstShape()->setFriction(0.2);
     body->getFirstShape()->setRestitution(0); //设置刚体回弹力
-    body->setCategoryBitmask(enemyCategory);
-    body->setCollisionBitmask(groundCategory | bulletCategory);
-    body->setContactTestBitmask(groundCategory | bulletCategory);
+    body->getFirstShape()->setCategoryBitmask(enemyCategory);
+    body->getFirstShape()->setCollisionBitmask(groundCategory | bulletCategory | elevatorCategory);
+    body->getFirstShape()->setContactTestBitmask(groundCategory | bulletCategory |
+                                                 elevatorCategory | playerCategory);
     this->setPhysicsBody(body);
 
     //索敌检测框
     auto rect = PhysicsShapeBox::create(Size(200, 150));
+    rect->setTag(lockCategoryTag);
     rect->setCategoryBitmask(lockCategory);
     rect->setCollisionBitmask(0);
     rect->setContactTestBitmask(playerCategory);

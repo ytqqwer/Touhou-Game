@@ -77,7 +77,7 @@ LoadingLayer::init()
                     _eventDispatcher->removeEventListener(ELC);
                     this->removeFromParentAndCleanup(true);
                 };
-                this->runAction(Sequence::create(DelayTime::create(0.80),
+                this->runAction(Sequence::create(DelayTime::create(0.50),
                                                  CallFuncN::create(delayRemove), NULL));
             }
 

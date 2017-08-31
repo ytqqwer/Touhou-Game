@@ -7,6 +7,7 @@
 
 #include "cocos2d.h"
 
+#include "GameplayScene/Enemy/Enemy.h"
 #include "GameplayScene/Player/Player.h"
 
 USING_NS_CC;
@@ -33,8 +34,11 @@ public:
     Vec2 prePosition;
     void moveTogether(float dt);
 
-    Node** curTarget;
-    void setTarget(Player*& target);
+    vector<Node*> passengers;
+    void addPassenger(Player* target);
+    void addPassenger(Enemy* target);
+    void removePassenger(Player* target);
+    void removePassenger(Enemy* target);
 };
 
 #endif

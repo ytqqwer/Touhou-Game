@@ -5,6 +5,9 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include "cocos2d.h"
+using namespace cocos2d;
+
 enum class Direction
 {
     RIGHT = 1,
@@ -38,6 +41,7 @@ static const int playerCategoryTag = 1001;
 static const int groundCategoryTag = 1000;
 static const int polylineCategoryTag = 999;
 static const int polygonCategoryTag = 998;
+static const int lockCategoryTag = 997;
 
 //摄像机
 static const int cameraTag = 50;
@@ -47,5 +51,11 @@ static const int gameGravity = 1000.0f;
 
 // EventFilterManager 中的 filter 所工作的 priority
 #define EVENT_FILTER_PRIORITY -1024
+
+struct DamageInfo
+{
+    Node* target;
+    int damage;
+};
 
 #endif

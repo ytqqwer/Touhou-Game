@@ -23,5 +23,6 @@ static const char* eventFilterWorkingRange[] = {
     "settings_key_pressed",
 
     "bullet_hit_boss",
-    "bullet_hit_player"
+    "bullet_hit_player",
+	"bullet_hit_enemy"
 };

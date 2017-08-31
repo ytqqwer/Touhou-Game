@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="200" height="70" tilewidth="16" tileheight="16" nextobjectid="151">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="200" height="70" tilewidth="16" tileheight="16" nextobjectid="157">
  <tileset firstgid="1" name="jungle tileset" tilewidth="16" tileheight="16" tilecount="741" columns="39">
   <image source="jungle tileset.png" trans="000000" width="624" height="304"/>
  </tileset>
@@ -12,9 +12,23 @@
  <objectgroup name="area">
   <object id="132" x="0" y="0" width="1732" height="1120"/>
   <object id="134" x="1732" y="0" width="1464" height="1120"/>
+  <object id="154" x="2800" y="704" width="40" height="36">
+   <properties>
+    <property name="tag" value="Frog"/>
+   </properties>
+  </object>
+  <object id="155" x="1172" y="300" width="40" height="36">
+   <properties>
+    <property name="tag" value="Frog"/>
+   </properties>
+  </object>
+  <object id="156" x="924" y="120" width="40" height="36">
+   <properties>
+    <property name="tag" value="Frog"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="physics">
-  <object id="76" x="1828" y="1404"/>
   <object id="77" x="688" y="496">
    <polyline points="0,0 128,0"/>
   </object>
@@ -70,6 +84,9 @@
   </object>
   <object id="150" x="944" y="320">
    <polyline points="0,0 0,-192"/>
+  </object>
+  <object id="153" x="2828" y="980">
+   <polyline points="0,0 -4,-196"/>
   </object>
  </objectgroup>
  <objectgroup name="launcher">

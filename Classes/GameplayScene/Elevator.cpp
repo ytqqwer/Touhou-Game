@@ -10,7 +10,7 @@ Elevator::init()
 {
     this->setTag(elevatorCategoryTag);
 
-    auto _elevator = Sprite::create("gameplayscene/manaBar.png");
+    auto _elevator = Sprite::create();
     this->addChild(_elevator);
 
     PhysicsBody* _body = PhysicsBody::createEdgeSegment(Vec2(0, 0), Vec2(300, 0),
@@ -23,6 +23,9 @@ Elevator::init()
     _body->setContactTestBitmask(playerCategory | enemyCategory);
     this->setPhysicsBody(_body);
 
+    this->prePosition = this->getPosition();
+    this->schedule(CC_SCHEDULE_SELECTOR(Elevator::moveTogether));
+
     return true;
 }
 
@@ -33,12 +36,45 @@ Elevator::moveTogether(float dt)
     auto offX = posE.x - prePosition.x;
     auto offY = posE.y - prePosition.y;
     prePosition = posE;
-    auto posP = (*curTarget)->getPosition();
-    (*curTarget)->setPosition(posP.x + offX, posP.y + offY);
+
+    if (!(passengers.empty())) {
+        for (auto it = passengers.begin(); it != passengers.end(); ++it) {
+            auto posN = (*it)->getPosition();
+            (*it)->setPosition(posN.x + offX, posN.y + offY);
+        }
+    }
 }
 
 void
-Elevator::setTarget(Player*& target)
+Elevator::addPassenger(Player* target)
 {
-    curTarget = (Node**)(&target);
+    passengers.push_back(target);
+}
+
+void
+Elevator::addPassenger(Enemy* target)
+{
+    passengers.push_back(target);
+}
+
+void
+Elevator::removePassenger(Player* target)
+{
+    for (auto it = passengers.begin(); it != passengers.end(); ++it) {
+        if (*it == target) {
+            passengers.erase(it);
+            break;
+        }
+    }
+}
+
+void
+Elevator::removePassenger(Enemy* target)
+{
+    for (auto it = passengers.begin(); it != passengers.end(); ++it) {
+        if (*it == target) {
+            passengers.erase(it);
+            break;
+        }
+    }
 }

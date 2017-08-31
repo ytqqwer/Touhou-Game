@@ -65,9 +65,8 @@ RoundSelectScene::onEnter()
     beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::BEGAN) {
             auto gameplayScene = GameplayScene::create();
-            TransitionScene* transition = TransitionPageTurn::create(1.0f, gameplayScene, false);
             Director::getInstance()->popToRootScene();
-            Director::getInstance()->replaceScene(transition);
+            Director::getInstance()->replaceScene(gameplayScene);
         }
     });
     this->addChild(beginButton, 2);
