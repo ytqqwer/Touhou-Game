@@ -30,11 +30,18 @@ void
 Enemy::resetAction(Node* node)
 {
     enemySprite->stopAllActions();
-    curAction = ActionState::Default;
+    curActionState = ActionState::Default;
+}
+
+void
+Enemy::resetJump()
+{
+    this->_canJump = true;
+    this->curActionState = ActionState::Default;
 }
 
 void
 Enemy::setTarget(Player*& player)
 {
-    curTarget = (Node **)&player;
+    curTarget = (Node**)&player;
 }

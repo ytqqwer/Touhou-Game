@@ -6,6 +6,7 @@
 #define GAMEPLAY_ENEMY_H
 
 #include "GameplayScene/Player/Player.h"
+#include "GameplayScene/State.h"
 #include "GameplayScene/common.h"
 
 #include "cocos2d.h"
@@ -17,17 +18,13 @@ class Enemy : public Node
 {
 public:
     virtual bool init(std::string tag) = 0;
+
     static Enemy* create(std::string tag);
 
+    ~Enemy() { delete stateMachine; }
+
 public:
-    virtual void run(float dt) = 0; //敌人移动
-    virtual void jump() = 0;        //敌人跳跃
-
     virtual void decreaseHp(int damage) = 0;
-
-    virtual void switchMode() = 0;
-    virtual void patrolMode(float dt) = 0;
-    virtual void alertMode(float dt) = 0;
 
     //动作切换
     virtual void resetAction(Node* node);
@@ -35,6 +32,8 @@ public:
     virtual void autoChangeDirection(float dt) = 0;
 
     virtual void setTarget(Player*& player);
+
+    virtual void resetJump();
 
 public:
     std::string enemyTag;
@@ -44,16 +43,16 @@ public:
     bool _canJump = false;
 
     PhysicsBody* body;
-    EnemyActionMode curState = EnemyActionMode::Patrol;
+
+    StateMachine<Enemy>* stateMachine;
 
     Direction enemyDirection = Direction::LEFT;
 
     //当前动作状态
-    ActionState curAction = ActionState::Default;
+    ActionState curActionState = ActionState::Default;
 
 protected:
     Sprite* enemySprite; //敌人精灵
-    std::string enemyTexture;
 };
 
 #endif

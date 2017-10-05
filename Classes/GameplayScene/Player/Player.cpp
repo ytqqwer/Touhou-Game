@@ -7,6 +7,8 @@
 #include "GameplayScene/Player/Marisa.h"
 #include "GameplayScene/Player/Reimu.h"
 
+#include "GameplayScene/EventFilterManager.h"
+
 Player*
 Player::create(std::string tag)
 {
@@ -64,29 +66,49 @@ Player::stopAttackType()
 }
 
 void
-Player::regainDashCounts(float dt)
+Player::resetJump()
 {
-    this->dashCounts++;
+    this->jumpCounts = 2;
+    this->curActionState = ActionState::Default;
+}
+
+void
+Player::getHit(DamageInfo* damageInfo, EventFilterManager* eventFilterManager)
+{
+    //暂时代替受损
+    auto velocity = body->getVelocity();
+    Vec2 impluse = Vec2(0.0f, 300.0f);
+    body->applyImpulse(impluse);
+
+    //阻隔
+    eventFilterManager->addEventFilter(
+        [](EventCustom* event) -> void {
+            if (event->getEventName() == "bullet_hit_player") {
+                event->stopPropagation();
+            }
+            log("[EventFilterManager] Propagation stopped");
+        },
+        1, "bullet_hit_player");
 }
 
 void
 Player::resetAction(Node* node)
 {
     playerSprite->stopAllActions();
-    curAction = ActionState::Default;
+    curActionState = ActionState::Default;
 }
 
 void
 Player::autoSwitchAnimation(float dt)
 {
-    if (curAction != ActionState::Dash) {
+    if (curActionState != ActionState::Dash) {
         Vec2 velocity = body->getVelocity();
         if (-25 < velocity.y && velocity.y < 25) {
             if (-25 < velocity.x && velocity.x < 25) { //站立
-                if (curAction != ActionState::Stand) {
-                    if (curAction != ActionState::Jump) {
-                        if (curAction != ActionState::Fall) {
-                            curAction = ActionState::Stand;
+                if (curActionState != ActionState::Stand) {
+                    if (curActionState != ActionState::Jump) {
+                        if (curActionState != ActionState::Fall) {
+                            curActionState = ActionState::Stand;
                             playerSprite->stopAllActions();
                             playerSprite->runAction(
                                 RepeatForever::create(Animate::create(standAnimation)));
@@ -95,8 +117,8 @@ Player::autoSwitchAnimation(float dt)
                 }
             } else if (-25 > velocity.x || velocity.x > 25) { //行走
                 if (-25 < velocity.y || velocity.y < 25) {
-                    if (curAction != ActionState::Run) {
-                        curAction = ActionState::Run;
+                    if (curActionState != ActionState::Run) {
+                        curActionState = ActionState::Run;
                         playerSprite->stopAllActions();
                         playerSprite->runAction(
                             RepeatForever::create(Animate::create(runAnimation)));
@@ -106,16 +128,16 @@ Player::autoSwitchAnimation(float dt)
         }
         if (-25 > velocity.y || velocity.y > 25) {
             if (velocity.y > 25) { //向上跳跃
-                if (curAction != ActionState::Jump) {
-                    curAction = ActionState::Jump;
+                if (curActionState != ActionState::Jump) {
+                    curActionState = ActionState::Jump;
                     playerSprite->stopAllActions();
                     auto sequence = Sequence::create(Animate::create(preJumpAnimation),
                                                      Animate::create(jumpAnimation), NULL);
                     playerSprite->runAction(sequence);
                 }
             } else if (-25 > velocity.y) { //下降
-                if (curAction != ActionState::Fall) {
-                    curAction = ActionState::Fall;
+                if (curActionState != ActionState::Fall) {
+                    curActionState = ActionState::Fall;
                     playerSprite->stopAllActions();
                     auto sequence = Sequence::create(Animate::create(preFallAnimation),
                                                      Animate::create(fallAnimation), NULL);

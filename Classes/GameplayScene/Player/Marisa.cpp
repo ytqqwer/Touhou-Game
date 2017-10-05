@@ -105,7 +105,7 @@ Marisa::init(std::string tag)
     dashAnimation->setDelayPerUnit(_character.dashFrameDelay);
     AnimationCache::getInstance()->addAnimation(dashAnimation, "MarisaDashAnimation");
 
-    curAction = ActionState::Default;
+    curActionState = ActionState::Default;
     playerSprite->runAction(RepeatForever::create(Animate::create(standAnimation)));
 
     // 设置攻击方式
@@ -124,7 +124,7 @@ Marisa::init(std::string tag)
     this->addChild(this->emitter);
 
     //启动状态更新
-    this->schedule(CC_SCHEDULE_SELECTOR(Marisa::updatePlayerStatus));
+    this->updatePlayerStatus();
     this->schedule(CC_SCHEDULE_SELECTOR(Marisa::autoSwitchAnimation), 0.1);
 
     return true;
@@ -180,7 +180,7 @@ Marisa::playerJump()
     this->jumpCounts--;
 
     playerSprite->stopAllActions();
-    curAction = ActionState::Default;
+    curActionState = ActionState::Default;
 }
 
 void
@@ -206,7 +206,7 @@ Marisa::playerDash()
     }
 
     this->dashCounts--;
-    curAction = ActionState::Dash;
+    curActionState = ActionState::Dash;
 
     playerSprite->stopAllActions();
     auto animate = Animate::create(dashAnimation);
@@ -216,14 +216,20 @@ Marisa::playerDash()
 }
 
 void
-Marisa::updatePlayerStatus(float dt)
+Marisa::regainDashCounts(float dt)
+{
+    regainDashTimeAccumulation += dt;
+    if (regainDashTimeAccumulation >= 3.0) {
+        if (this->dashCounts < 2) {
+            this->dashCounts++;
+        }
+        regainDashTimeAccumulation = 0;
+    }
+}
+
+void
+Marisa::updatePlayerStatus()
 {
     //回复dash次数
-    if (this->dashCounts < 2) {
-        if (this->isScheduled(CC_SCHEDULE_SELECTOR(Player::regainDashCounts))) {
-            ;
-        } else {
-            this->scheduleOnce(CC_SCHEDULE_SELECTOR(Player::regainDashCounts), 3.0f);
-        }
-    }
+    this->schedule(CC_SCHEDULE_SELECTOR(Marisa::regainDashCounts));
 }

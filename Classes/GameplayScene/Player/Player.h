@@ -14,6 +14,7 @@
 #include "cocos2d.h"
 
 class Emitter;
+class EventFilterManager;
 
 using namespace cocos2d;
 
@@ -33,10 +34,13 @@ public:
     virtual void stopAttackType();
 
     //更新角色状态
-    virtual void updatePlayerStatus(float dt) = 0;
+    virtual void updatePlayerStatus() = 0;
 
     //状态回复
-    void regainDashCounts(float dt);
+    virtual void regainDashCounts(float dt) = 0;
+    virtual void resetJump();
+
+    virtual void getHit(DamageInfo*, EventFilterManager*);
 
     //动作切换
     void resetAction(Node* node);
@@ -45,7 +49,6 @@ public:
 public:
     std::string playerTag;
     Sprite* playerSprite;
-    PhysicsBody* body;
     Direction playerDirection = Direction::RIGHT;
 
     //绑定发射器
@@ -85,9 +88,10 @@ public:
     vector<SpellCard> spellCardList;
 
     //当前动作状态
-    ActionState curAction = ActionState::Default;
+    ActionState curActionState = ActionState::Default;
 
 protected:
+    PhysicsBody* body;
     std::string playerTexture;
     Animation* standAnimation;
     Animation* runAnimation;

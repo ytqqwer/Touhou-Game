@@ -31,14 +31,27 @@ public:
         }
     }
 
+    template <class T>
+    inline void Elevator::addPassenger(T* target)
+    {
+        passengers.push_back(target);
+    }
+
+    template <class T>
+    inline void Elevator::removePassenger(T* target)
+    {
+        for (auto it = passengers.begin(); it != passengers.end(); ++it) {
+            if (*it == target) {
+                passengers.erase(it);
+                break;
+            }
+        }
+    }
+
+private:
+    vector<Node*> passengers;
     Vec2 prePosition;
     void moveTogether(float dt);
-
-    vector<Node*> passengers;
-    void addPassenger(Player* target);
-    void addPassenger(Enemy* target);
-    void removePassenger(Player* target);
-    void removePassenger(Enemy* target);
 };
 
 #endif

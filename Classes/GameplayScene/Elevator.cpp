@@ -44,37 +44,3 @@ Elevator::moveTogether(float dt)
         }
     }
 }
-
-void
-Elevator::addPassenger(Player* target)
-{
-    passengers.push_back(target);
-}
-
-void
-Elevator::addPassenger(Enemy* target)
-{
-    passengers.push_back(target);
-}
-
-void
-Elevator::removePassenger(Player* target)
-{
-    for (auto it = passengers.begin(); it != passengers.end(); ++it) {
-        if (*it == target) {
-            passengers.erase(it);
-            break;
-        }
-    }
-}
-
-void
-Elevator::removePassenger(Enemy* target)
-{
-    for (auto it = passengers.begin(); it != passengers.end(); ++it) {
-        if (*it == target) {
-            passengers.erase(it);
-            break;
-        }
-    }
-}

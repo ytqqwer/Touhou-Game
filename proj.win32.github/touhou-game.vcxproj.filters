@@ -140,6 +140,9 @@
     <ClCompile Include="..\Classes\GameplayScene\LoadingLayer.cpp">
       <Filter>Classes\GameplayScene</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\EventScriptHanding.cpp">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClCompile>
 
     <!-- Classes\GameplayScene\Player -->
     <ClCompile Include="..\Classes\GameplayScene\Player\Player.cpp">
@@ -337,6 +340,12 @@
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\LoadingLayer.h">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\State.h">
+      <Filter>Classes\GameplayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\EventScriptHanding.h">
       <Filter>Classes\GameplayScene</Filter>
     </ClInclude>
 

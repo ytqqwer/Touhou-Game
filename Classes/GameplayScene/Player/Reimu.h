@@ -31,7 +31,11 @@ public:
     void playerDash();
 
     //更新角色状态
-    void updatePlayerStatus(float dt);
+    void updatePlayerStatus();
+    void regainDashCounts(float dt);
+
+private:
+    float regainDashTimeAccumulation = 0;
 };
 
 #endif

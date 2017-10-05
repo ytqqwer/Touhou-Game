@@ -81,13 +81,10 @@ Frog::init(std::string tag)
     //启动状态更新
     this->schedule(CC_SCHEDULE_SELECTOR(Frog::autoSwitchAnimation), 0.1);
 
-    return true;
-}
+    stateMachine = new StateMachine<Enemy>(this);
+    stateMachine->changeState(FrogPatrolState::getInstance());
 
-void
-Frog::run(float dt)
-{
-    return;
+    return true;
 }
 
 void
@@ -106,24 +103,6 @@ Frog::decreaseHp(int damage)
     this->hp = this->hp - damage;
     if (this->hp < 0) {
         this->removeFromParentAndCleanup(true);
-    }
-}
-
-void
-Frog::switchMode()
-{
-    if (this->isScheduled(CC_SCHEDULE_SELECTOR(Frog::alertMode))) {
-        this->unschedule(CC_SCHEDULE_SELECTOR(Frog::alertMode));
-    }
-    if (this->isScheduled(CC_SCHEDULE_SELECTOR(Frog::patrolMode))) {
-        this->unschedule(CC_SCHEDULE_SELECTOR(Frog::patrolMode));
-    }
-
-    if (this->curState == EnemyActionMode::Patrol) {
-        this->schedule(CC_SCHEDULE_SELECTOR(Frog::patrolMode), 1.0);
-    } else if (this->curState == EnemyActionMode::Alert) {
-        this->schedule(CC_SCHEDULE_SELECTOR(Frog::alertMode), 0.30);
-        this->schedule(CC_SCHEDULE_SELECTOR(Frog::autoChangeDirection), 0.50);
     }
 }
 
@@ -173,10 +152,10 @@ Frog::autoSwitchAnimation(float dt)
 {
     Vec2 velocity = body->getVelocity();
     if (-15 < velocity.y && velocity.y < 15) {
-        if (curAction != ActionState::Stand) { //站立
-            if (curAction != ActionState::Jump) {
-                if (curAction != ActionState::Fall) {
-                    curAction = ActionState::Stand;
+        if (curActionState != ActionState::Stand) { //站立
+            if (curActionState != ActionState::Jump) {
+                if (curActionState != ActionState::Fall) {
+                    curActionState = ActionState::Stand;
                     enemySprite->stopAllActions();
                     enemySprite->runAction(Animate::create(this->idleAnimation));
                 }
@@ -185,17 +164,69 @@ Frog::autoSwitchAnimation(float dt)
     }
     if (-15 > velocity.y || velocity.y > 15) {
         if (velocity.y > 15) { //跳跃
-            if (curAction != ActionState::Jump) {
-                curAction = ActionState::Jump;
+            if (curActionState != ActionState::Jump) {
+                curActionState = ActionState::Jump;
                 enemySprite->stopAllActions();
                 enemySprite->runAction(Animate::create(this->jumpAnimation));
             }
         } else if (-15 > velocity.y) { //下降
-            if (curAction != ActionState::Fall) {
-                curAction = ActionState::Fall;
+            if (curActionState != ActionState::Fall) {
+                curActionState = ActionState::Fall;
                 enemySprite->stopAllActions();
                 enemySprite->runAction(Animate::create(this->fallAnimation));
             }
         }
     }
+}
+
+FrogAlertState*
+FrogAlertState::getInstance()
+{
+    static FrogAlertState instance;
+    return &instance;
+}
+
+void
+FrogAlertState::Enter(Enemy* entity)
+{
+    entity->schedule(CC_SCHEDULE_SELECTOR(Frog::alertMode), 0.30);
+    entity->schedule(CC_SCHEDULE_SELECTOR(Frog::autoChangeDirection), 0.50);
+}
+
+void
+FrogAlertState::Exit(Enemy* entity)
+{
+    entity->unschedule(CC_SCHEDULE_SELECTOR(Frog::alertMode));
+    entity->unschedule(CC_SCHEDULE_SELECTOR(Frog::autoChangeDirection));
+}
+
+void
+FrogAlertState::changeToState(Enemy* entity)
+{
+    ;
+}
+
+FrogPatrolState*
+FrogPatrolState::getInstance()
+{
+    static FrogPatrolState instance;
+    return &instance;
+}
+
+void
+FrogPatrolState::Enter(Enemy* entity)
+{
+    entity->schedule(CC_SCHEDULE_SELECTOR(Frog::patrolMode), 1.0);
+}
+
+void
+FrogPatrolState::Exit(Enemy* entity)
+{
+    entity->unschedule(CC_SCHEDULE_SELECTOR(Frog::patrolMode));
+}
+
+void
+FrogPatrolState::changeToState(Enemy* entity)
+{
+    entity->stateMachine->changeState(FrogAlertState::getInstance());
 }

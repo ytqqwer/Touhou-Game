@@ -10,20 +10,28 @@
 
 class Player;
 class EventFilterManager;
+class EventScriptHanding;
 
 USING_NS_CC;
 
 class GameplayScene : public cocos2d::Scene
 {
 public:
-    CREATE_FUNC(GameplayScene);
+    friend class EventScriptHanding;
 
+    CREATE_FUNC(GameplayScene);
     virtual bool init() override;
+
+    //析构函数，释放事件脚本处理器内存等
+    ~GameplayScene();
+
     //重载场景生命周期中的几个函数
     void onEnter() override;
     void onEnterTransitionDidFinish() override;
     void onExit() override;
     void cleanup() override;
+
+    void update(float dt);
 
     //初始化工作
     void initBackGround();
@@ -40,14 +48,8 @@ public:
     /*临时项*/
     void initLauncher();
     void initElevator();
-    /*临时项*/
-
-    void update(float dt);
     void testEventFilterManager();
-
-    void eventHandling(EventCustom*);
-    void eventActionHandling(float delay, float duration);
-    void nextEvent();
+    /*临时项*/
 
     //对碰撞进行处理
     bool contactBegin(const PhysicsContact& contact);
@@ -69,9 +71,9 @@ private:
 
 private:
     //实用的全局量
-    GameData* gameData;
     Size visibleSize;
     EventFilterManager* _eventFilterMgr;
+    EventScriptHanding* _eventScriptHanding;
 
     //对curPlayer的操作就是对当前指定角色的操作
     Player* curPlayer;
@@ -92,9 +94,6 @@ private:
     Vector<Node*> launcherList;
     Vector<Node*> elevatorList;
     /*临时项*/
-
-    vector<EventData> eventList;
-    int _curEventIndex;
 
     //游戏场景的几个重要层
     Layer* mapLayer;

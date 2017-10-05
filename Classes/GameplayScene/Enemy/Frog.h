@@ -12,25 +12,10 @@ class Frog : public Enemy
 public:
     virtual bool init(std::string tag);
 
-    static Frog* create(std::string tag)
-    {
-        Frog* pRet = new (std::nothrow) Frog();
-        if (pRet && pRet->init(tag)) {
-            pRet->autorelease();
-            return pRet;
-        } else {
-            delete pRet;
-            pRet = nullptr;
-            return nullptr;
-        }
-    }
-
 public:
-    void run(float dt);
     void jump();
     void decreaseHp(int damage);
 
-    void switchMode();
     void alertMode(float dt);
     void patrolMode(float dt);
 
@@ -41,6 +26,28 @@ protected:
     Animation* idleAnimation;
     Animation* jumpAnimation;
     Animation* fallAnimation;
+};
+
+class FrogAlertState : public State<Enemy>
+{
+public:
+    static FrogAlertState* getInstance();
+    void Enter(Enemy*);
+    void Exit(Enemy*);
+    void changeToState(Enemy*);
+    FrogAlertState() {}
+    ~FrogAlertState() {}
+};
+
+class FrogPatrolState : public State<Enemy>
+{
+public:
+    static FrogPatrolState* getInstance();
+    void Enter(Enemy*);
+    void Exit(Enemy*);
+    void changeToState(Enemy*);
+    FrogPatrolState() {}
+    ~FrogPatrolState() {}
 };
 
 #endif

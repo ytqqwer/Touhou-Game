@@ -64,25 +64,24 @@ Opossum::init(std::string tag)
     //启动状态更新
     this->schedule(CC_SCHEDULE_SELECTOR(Opossum::autoSwitchAnimation), 0.1);
 
+    stateMachine = new StateMachine<Enemy>(this);
+    stateMachine->changeState(OpossumPatrolState::getInstance());
+
     return true;
 }
 
 void
 Opossum::run(float dt)
 {
-    if (this->enemyDirection == Direction::LEFT) {
-
-        this->getPhysicsBody()->applyImpulse(Vec2(-30.0f, 0.0f));
-    } else {
-
-        this->getPhysicsBody()->applyImpulse(Vec2(30.0f, 0.0f));
+    timeAccumulation += dt;
+    if (timeAccumulation >= 0.1) {
+        if (this->enemyDirection == Direction::LEFT) {
+            this->getPhysicsBody()->applyImpulse(Vec2(-30.0f, 0.0f));
+        } else {
+            this->getPhysicsBody()->applyImpulse(Vec2(30.0f, 0.0f));
+        }
+        timeAccumulation = 0;
     }
-}
-
-void
-Opossum::jump()
-{
-    return;
 }
 
 void
@@ -95,29 +94,9 @@ Opossum::decreaseHp(int damage)
 }
 
 void
-Opossum::switchMode()
-{
-    if (this->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::alertMode))) {
-        this->unschedule(CC_SCHEDULE_SELECTOR(Opossum::alertMode));
-    }
-    if (this->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::patrolMode))) {
-        this->unschedule(CC_SCHEDULE_SELECTOR(Opossum::patrolMode));
-    }
-
-    if (this->curState == EnemyActionMode::Patrol) {
-        this->schedule(CC_SCHEDULE_SELECTOR(Opossum::patrolMode), 1.0);
-    } else if (this->curState == EnemyActionMode::Alert) {
-        this->schedule(CC_SCHEDULE_SELECTOR(Opossum::alertMode), 0.50);
-        this->schedule(CC_SCHEDULE_SELECTOR(Opossum::autoChangeDirection), 0.50);
-    }
-}
-
-void
 Opossum::alertMode(float dt)
 {
-    if (!(this->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::run)))) {
-        this->schedule(CC_SCHEDULE_SELECTOR(Opossum::run), 0.1);
-    }
+    this->schedule(CC_SCHEDULE_SELECTOR(Opossum::run));
 }
 
 void
@@ -136,9 +115,8 @@ Opossum::patrolMode(float dt)
             enemySprite->setScaleX(1);
             this->enemyDirection = Direction::LEFT;
         }
-
         if (!(this->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::run)))) {
-            this->schedule(CC_SCHEDULE_SELECTOR(Opossum::run), 0.1);
+            this->schedule(CC_SCHEDULE_SELECTOR(Opossum::run));
         }
     }
 }
@@ -161,4 +139,57 @@ void
 Opossum::autoSwitchAnimation(float dt)
 {
     return;
+}
+
+OpossumAlertState*
+OpossumAlertState::getInstance()
+{
+    static OpossumAlertState instance;
+    return &instance;
+}
+
+void
+OpossumAlertState::Enter(Enemy* entity)
+{
+    entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::alertMode), 0.50);
+    entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::autoChangeDirection), 0.50);
+}
+
+void
+OpossumAlertState::Exit(Enemy* entity)
+{
+    entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::alertMode));
+    entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::autoChangeDirection));
+}
+
+void
+OpossumAlertState::changeToState(Enemy* entity)
+{
+    ;
+}
+
+OpossumPatrolState*
+OpossumPatrolState::getInstance()
+{
+    static OpossumPatrolState instance;
+    return &instance;
+}
+
+void
+OpossumPatrolState::Enter(Enemy* entity)
+{
+
+    entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::patrolMode), 1.0);
+}
+
+void
+OpossumPatrolState::Exit(Enemy* entity)
+{
+    entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::patrolMode));
+}
+
+void
+OpossumPatrolState::changeToState(Enemy* entity)
+{
+    entity->stateMachine->changeState(OpossumAlertState::getInstance());
 }
