@@ -2,20 +2,16 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "MainMenuScene.h"
+#include "NonGameplayScenes/MainMenuScene.h"
 #include "GameData/GameData.h"
-#include "HomeScene.h"
+#include "Layers/SettingsLayer.h"
+#include "NonGameplayScenes/HomeScene.h"
+#include "NonGameplayScenes/SaveScene.h"
+#include "NonGameplayScenes/StaffScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
-#include "RoundSelectScene.h"
-#include "SaveScene.h"
-#include "Layers/SettingsLayer.h"
-#include "ui/CocosGUI.h"
-
-using namespace ui;
 
 // #include "resources.h.dir/main_menu.h"
-#include <string>
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -24,7 +20,6 @@ const std::string MainMenuScene::TAG{ "MainMenuScene" };
 
 MainMenuScene::MainMenuScene()
 {
-    gamedata = GameData::getInstance();
     _visibleSize = _director->getVisibleSize();
 }
 
@@ -47,15 +42,14 @@ MainMenuScene::init()
     this->addChild(sceneTag);
 #endif
 
-    /*  3. PlaceHolder
+    /*  3. init background */
 
-    auto p = PlaceHolder::createCircle(100, "MainMenuScene");
-    p->setPosition(_visibleSize / 2);
-    this->addChild(p);
+    backGround = Sprite::create("mainmenuscene/begin.png");
+    backGround->setScale(1.35);
+    backGround->setPosition(_visibleSize / 2);
+    addChild(backGround, -1);
 
-    /*  4. schedule */
-
-    // this->scheduleUpdate();
+    /*  4. init button */
 
     /*新游戏*/
     auto NGButton = Button::create("", "", "");
@@ -65,16 +59,18 @@ MainMenuScene::init()
     NGButton->setTitleFontSize(50);
     NGButton->setAnchorPoint(Vec2(0, 0));
     NGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.57));
-    NGButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-        gamedata = GameData::getInstance();
-        auto canNew = gamedata->newGame();
+    NGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            // auto canNew = GameData::getInstance()->newGame();
+            //有不能创建新存档的BUG，暂时注释掉
+            // if (canNew) {
+            //    Director::getInstance()->pushScene(HomeScene::create());
+            //}
+            // Director::getInstance()->replaceScene(HomeScene::create());
 
-        //有不能创建新存档的BUG，暂时注释掉
-        // if (canNew) {
-        //    Director::getInstance()->pushScene(HomeScene::create());
-        //}
-
-        Director::getInstance()->pushScene(HomeScene::create());
+            TransitionScene* transition = TransitionFade::create(1.0f, HomeScene::create());
+            Director::getInstance()->replaceScene(transition);
+        }
     });
     addChild(NGButton);
 
@@ -87,7 +83,10 @@ MainMenuScene::init()
     LGButton->setAnchorPoint(Vec2(0, 0));
     LGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.43));
     LGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
-        Director::getInstance()->pushScene(SaveScene::create());
+        if (type == Widget::TouchEventType::ENDED) {
+            TransitionScene* transition = TransitionFade::create(1.0f, SaveScene::create());
+            Director::getInstance()->replaceScene(transition);
+        }
     });
     addChild(LGButton);
 
@@ -105,8 +104,8 @@ MainMenuScene::init()
             this->addChild(lay, 5);
         }
     });
-
     addChild(SGButton);
+
     /*职员表*/
     auto ZGButton = Button::create("", "", "");
     ZGButton->setTitleText("职员表");
@@ -116,18 +115,27 @@ MainMenuScene::init()
     ZGButton->setAnchorPoint(Vec2(0, 0));
     ZGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.27));
     addChild(ZGButton);
-    /*退出游戏*/
-    auto ret = Button::create("", "", "");
-    ret->setTitleText("退出");
-    ret->setTitleFontName("fonts/dengxian.ttf");
-    ret->setTitleColor(Color3B(184, 134, 11));
-    ret->setTitleFontSize(25);
-    ret->setAnchorPoint(Vec2(0, 0));
-    ret->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.2));
+    ZGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            TransitionScene* transition = TransitionFade::create(1.0f, StaffScene::create());
+            Director::getInstance()->replaceScene(transition);
+        }
+    });
 
-    ret->addTouchEventListener(
-        [](Ref* pSender, Widget::TouchEventType type) { Director::getInstance()->end(); });
-    addChild(ret);
+    /*退出游戏*/
+    auto exitButton = Button::create("", "", "");
+    exitButton->setTitleText("退出");
+    exitButton->setTitleFontName("fonts/dengxian.ttf");
+    exitButton->setTitleColor(Color3B(184, 134, 11));
+    exitButton->setTitleFontSize(25);
+    exitButton->setAnchorPoint(Vec2(0, 0));
+    exitButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.2));
+    exitButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            Director::getInstance()->end();
+        }
+    });
+    addChild(exitButton);
 
     return true;
 }
@@ -137,22 +145,18 @@ MainMenuScene::onEnter()
 {
     Scene::onEnter();
 
-    //每次进入该场景时都会创建一个背景图片，等待以后改进
-    // auto loc = gamedata->getCurrentLocation();
-    /*背景*/
-    // auto bg = Sprite::create(loc.backgroundPicture);
-    auto bg = Sprite::create("mainmenuscene/begin.png");
-    // bg->setContentSize(_visibleSize);
-    bg->setScale(1.35);
-    bg->setPosition(_visibleSize / 2);
-    addChild(bg, -1);
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 
     auto move = MoveBy::create(40, Vec2(0, _visibleSize.height / 4));
     auto move_back = move->reverse();
     auto seq = Sequence::create(move, move_back, nullptr);
-    bg->runAction(RepeatForever::create(seq));
+    backGround->runAction(RepeatForever::create(seq));
 }
+
 void
-MainMenuScene::update(float dt)
+MainMenuScene::onExit()
 {
+    Scene::onExit();
+
+    backGround->stopAllActions();
 }

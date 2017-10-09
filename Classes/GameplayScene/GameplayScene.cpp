@@ -10,10 +10,10 @@
 #include "GameplayScene/Enemy/Enemy.h"
 #include "GameplayScene/EventFilterManager.h"
 #include "GameplayScene/EventScriptHanding.h"
-#include "GameplayScene/LoadingLayer.h"
 #include "GameplayScene/Player/Player.h"
 #include "GameplayScene/common.h"
 #include "Layers/ConversationLayer.h"
+#include "Layers/LoadingLayer.h"
 #include "Layers/SettingsLayer.h"
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
@@ -48,7 +48,6 @@ GameplayScene::cleanup()
     Scene::cleanup();
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     Director::getInstance()->getEventDispatcher()->removeEventListenersForTarget(this);
-    Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
     _eventFilterMgr->removeAllEventFilters();
 }
 
@@ -154,12 +153,12 @@ GameplayScene::initBackGround()
 {
     auto backGroundLayer = Layer::create();
 
-    Sprite* bg = Sprite::create("gameplayscene/gbg.png");
-    bg->setAnchorPoint(Point::ZERO);
-    bg->setPosition(Point::ZERO);
-    bg->setScale(1.8);
+    Sprite* backGround = Sprite::create("gameplayscene/gbg.png");
+    backGround->setAnchorPoint(Point::ZERO);
+    backGround->setPosition(Point::ZERO);
+    backGround->setScale(1.8);
 
-    backGroundLayer->addChild(bg);
+    backGroundLayer->addChild(backGround);
 
     this->addChild(backGroundLayer, -100);
 

@@ -5,6 +5,7 @@
 #ifndef ARMS_STORE_SCENE_H
 #define ARMS_STORE_SCENE_H
 
+#include "NonGameplayScenes/ConversationIndicatorButton.h"
 #include "TouhouGame.h"
 #include "cocos2d.h"
 #include <string>
@@ -17,7 +18,8 @@ public:
     APP_SCENE_CREATE_FUNC(ArmsStoreScene, TAG);
 
     virtual bool init();
-    virtual void update(float dt);
+    virtual void onEnter();
+    virtual void onExit();
 
 private:
     ArmsStoreScene();
@@ -25,8 +27,9 @@ private:
 private:
     static const std::string TAG;
 
-    // intorspection
     Size _visibleSize;
+    Label* money_text;
+    Vector<ConversationIndicatorButton*> vector_indicator;
 };
 
 #endif // ARMS_STORE_SCENE_H

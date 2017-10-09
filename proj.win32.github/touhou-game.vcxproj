@@ -71,7 +71,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -115,7 +115,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(EngineRoot);$(EngineRoot)external;$(EngineRoot)cocos\audio\include;$(EngineRoot)external\chipmunk\include\chipmunk;$(EngineRoot)extensions;..\Classes;..;%(AdditionalIncludeDirectories);$(_COCOS_HEADER_WIN32_BEGIN);$(_COCOS_HEADER_WIN32_END)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES;CC_ENABLE_CHIPMUNK_INTEGRATION=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -164,20 +164,22 @@
     <ClCompile Include="..\Classes\NonGameplayScenes\KnowledgeBaseScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\KoumakanLibraryScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\KourindouScene.cpp" />
+    <ClCompile Include="..\Classes\NonGameplayScenes\KourindouPurchaseScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\LocationSelectScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\LogoAndDisclaimerScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\RoundSelectScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\SaveScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenes\StaffScene.cpp" />
+    <ClCompile Include="..\Classes\NonGameplayScenes\ConversationIndicatorButton.cpp" />
 
     <ClCompile Include="..\Classes\Layers\ConversationLayer.cpp" />
     <ClCompile Include="..\Classes\Layers\SettingsLayer.cpp" />
+    <ClCompile Include="..\Classes\Layers\LoadingLayer.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\EventFilterManager.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Elevator.cpp" />
-    <ClCompile Include="..\Classes\GameplayScene\LoadingLayer.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\EventScriptHanding.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\Player\Player.cpp" />
@@ -232,22 +234,24 @@
     <ClInclude Include="..\Classes\NonGameplayScenes\KnowledgeBaseScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\KoumakanLibraryScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\KourindouScene.h" />
+    <ClInclude Include="..\Classes\NonGameplayScenes\KourindouPurchaseScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\LocationSelectScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\LogoAndDisclaimerScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\MainMenuScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\RoundSelectScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\SaveScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenes\StaffScene.h" />
+    <ClInclude Include="..\Classes\NonGameplayScenes\ConversationIndicatorButton.h" />
 
     <ClInclude Include="..\Classes\Layers\ConversationLayer.h" />
     <ClInclude Include="..\Classes\Layers\SettingsLayer.h" />
+    <ClInclude Include="..\Classes\Layers\LoadingLayer.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\common.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.inc" />
     <ClInclude Include="..\Classes\GameplayScene\GameplayScene.h" />
     <ClInclude Include="..\Classes\GameplayScene\Elevator.h" />
-    <ClInclude Include="..\Classes\GameplayScene\LoadingLayer.h" />
     <ClInclude Include="..\Classes\GameplayScene\State.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventScriptHanding.h" />
 

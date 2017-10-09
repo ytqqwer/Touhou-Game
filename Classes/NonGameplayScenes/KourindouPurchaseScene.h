@@ -2,8 +2,8 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#ifndef INVENTORY_SCENE_H
-#define INVENTORY_SCENE_H
+#ifndef KOURINDOU_PURCHASE_SCENE_H
+#define KOURINDOU_PURCHASE_SCENE_H
 
 #include "GameData/GameData.h"
 #include "TouhouGame.h"
@@ -17,10 +17,10 @@ USING_NS_CC;
 
 using namespace ui;
 
-class InventoryScene : public Scene, public TableViewDataSource, public TableViewDelegate
+class KourindouPurchaseScene : public Scene, public TableViewDataSource, public TableViewDelegate
 {
 public:
-    APP_SCENE_CREATE_FUNC(InventoryScene, TAG);
+    APP_SCENE_CREATE_FUNC(KourindouPurchaseScene, TAG);
 
     virtual bool init();
     virtual void onEnter();
@@ -43,7 +43,7 @@ public:
     virtual void scrollViewDidZoom(cocos2d::extension::ScrollView* view) {}
 
 private:
-    InventoryScene();
+    KourindouPurchaseScene();
 
 private:
     static const std::string TAG;
@@ -54,9 +54,9 @@ private:
     Item::Type currentType;
     vector<Item> normalItems;
     vector<Item> strengthenItems;
-    vector<Item> specialItems;
+    vector<Character> characters;
 
     TableView* itemTable;
 };
 
-#endif // INVENTORY_SCENE_H
+#endif

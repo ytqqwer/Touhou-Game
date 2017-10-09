@@ -2,11 +2,14 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "KnowledgeBaseScene.h"
+#include "NonGameplayScenes/KnowledgeBaseScene.h"
+#include "NonGameplayScenes/HomeScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 // #include "resources.h.dir/knowledge_base.h"
-#include <string>
+
+#include "ui/CocosGUI.h"
+using namespace ui;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -43,14 +46,19 @@ KnowledgeBaseScene::init()
     p->setPosition(_visibleSize / 2);
     this->addChild(p);
 
-    /*  4. schedule */
-
-    this->scheduleUpdate();
+    auto BackButton = Button::create();
+    BackButton->setTitleText("返回");
+    BackButton->setTitleFontName("fonts/dengxian.ttf");
+    BackButton->setTitleColor(Color3B(194, 134, 11));
+    BackButton->setTitleFontSize(50);
+    BackButton->setAnchorPoint(Vec2(0, 0));
+    BackButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.43));
+    BackButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            Director::getInstance()->replaceScene(HomeScene::create());
+        }
+    });
+    addChild(BackButton);
 
     return true;
-}
-
-void
-KnowledgeBaseScene::update(float dt)
-{
 }

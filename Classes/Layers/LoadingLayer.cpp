@@ -2,7 +2,7 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "GameplayScene/LoadingLayer.h"
+#include "Layers/LoadingLayer.h"
 #include "GameplayScene/common.h"
 #include "ui/CocosGUI.h"
 #include <string>

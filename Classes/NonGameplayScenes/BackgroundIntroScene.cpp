@@ -2,11 +2,11 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "BackgroundIntroScene.h"
+#include "NonGameplayScenes/BackgroundIntroScene.h"
+#include "NonGameplayScenes/MainMenuScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 // #include "resources.h.dir/background_intro.h"
-#include <string>
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -43,14 +43,5 @@ BackgroundIntroScene::init()
     p->setPosition(_visibleSize / 2);
     this->addChild(p);
 
-    /*  4. schedule */
-
-    this->scheduleUpdate();
-
     return true;
-}
-
-void
-BackgroundIntroScene::update(float dt)
-{
 }

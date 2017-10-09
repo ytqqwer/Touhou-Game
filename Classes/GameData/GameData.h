@@ -157,8 +157,20 @@ public:
 
     // pair.first 是符卡， pair.second 是符卡数量
     vector<pair<Item, int>> getAvailableItemList();
-    vector<Item> getItemListInStore(const string& storeTag);
+    vector<Item> getAvailableItems();
+    vector<Item> getAvailableNormalItems();
+    vector<Item> getAvailableStrengthenItems();
+    vector<Item> getAvailableSpecialItems();
+
+    vector<Item> getItemsInStore(const string& storeTag);
+    vector<Item> getNormalItemsInStore(const string& storeTag);
+    vector<Item> getStrengthenItemsInStore(const string& storeTag);
+    vector<Item> getSpecialItemsInStore(const string& storeTag);
+    vector<SpellCard> getSpellCardsInStore(const string& storeTag);
+
+    vector<SpellCard> getAvailableSpellCards();
     vector<pair<SpellCard, int>> getAvailableSpellCardList();
+
     void buyItem(const string& itemTag);
     void buySpellCard(const string& cardTag);
 

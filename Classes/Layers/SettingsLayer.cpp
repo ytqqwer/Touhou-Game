@@ -283,15 +283,13 @@ SettingsLayer::touchEvent(Ref* pSender, TouchEventType type)
         switch (tag) {
             case 7: {
                 this->removeFromParent();
-                auto s = SaveScene::create(true);
-                Director::getInstance()->pushScene(s);
+                Director::getInstance()->pushScene(SaveScene::create(true));
                 break;
             }
             case 8: {
                 this->removeFromParent();
                 Director::getInstance()->popToRootScene();
-                auto s = MainMenuScene::create();
-                Director::getInstance()->replaceScene(s);
+                Director::getInstance()->replaceScene(MainMenuScene::create());
                 break;
             }
             case 9: {
@@ -299,12 +297,10 @@ SettingsLayer::touchEvent(Ref* pSender, TouchEventType type)
                 break;
             }
             case 10: {
-                //如果说从gameplayScene直接返回该界面，再点击返回会直接退出游戏，因为场景栈为空，所以需要修改选关界面。
                 this->removeFromParent();
+                Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
                 Director::getInstance()->popToRootScene();
-                auto s = RoundSelectScene::create();
-                Director::getInstance()->replaceScene(s);
-                // Director::getInstance()->pushScene(s);
+                Director::getInstance()->replaceScene(RoundSelectScene::create());
                 break;
             }
             case 11: {

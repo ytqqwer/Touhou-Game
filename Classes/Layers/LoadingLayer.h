@@ -6,7 +6,6 @@
 #define LOADING_LAYER_H
 
 #include "cocos2d.h"
-
 USING_NS_CC;
 
 struct LoadingInfo

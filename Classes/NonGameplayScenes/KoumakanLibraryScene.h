@@ -5,6 +5,7 @@
 #ifndef KOUMAKAN_LIBRARY_SCENE_H
 #define KOUMAKAN_LIBRARY_SCENE_H
 
+#include "NonGameplayScenes/ConversationIndicatorButton.h"
 #include "TouhouGame.h"
 #include "cocos2d.h"
 #include <string>
@@ -17,7 +18,8 @@ public:
     APP_SCENE_CREATE_FUNC(KoumakanLibraryScene, TAG);
 
     virtual bool init();
-    virtual void update(float dt);
+    virtual void onEnter();
+    virtual void onExit();
 
 private:
     KoumakanLibraryScene();
@@ -27,6 +29,8 @@ private:
 
     // intorspection
     Size _visibleSize;
+    Label* money_text;
+    Vector<ConversationIndicatorButton*> vector_indicator;
 };
 
 #endif // KOUMAKAN_LIBRARY_SCENE_H

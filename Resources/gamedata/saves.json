@@ -9,42 +9,42 @@
                 {
                   "tag" : "Reimu",
                   "itemSlotNum" : 2,
-                  "spellCardSlotNum" : 2,
+                  "spellCardSlotNum" : 3,
                   "healthPointInc" : 3,
                   "manaInc" : 3,
                   "walkSpeedInc" : 3,
                   "walkAccelerationInc" : 3,
                   "dashAccelerationInc" : 3,
-                  "equipedItemList" : [ "I1", "I2" ],
+                  "equipedItemList" : [ "I1", "I3" ],
                   "equipedSpellCardList" : [ "C1", "C3", "C5" ],
                   "preferedAttackType" : "FOCUS",
                   "selectedAttackType" : [ "reimu focus attack 1", "reimu split attack 1" ]
                 },
                 {
                   "tag" : "Marisa",
-                  "itemSlotNum" : 2,
+                  "itemSlotNum" : 1,
                   "spellCardSlotNum" : 2,
                   "healthPointInc" : 4,
                   "manaInc" : 4,
                   "walkSpeedInc" : 4,
                   "walkAccelerationInc" : 4,
                   "dashAccelerationInc" : 4,
-                  "equipedItemList" : ["I4"],
-                  "equipedSpellCardList" : [ "C2", "C4" ],
+                  "equipedItemList" : ["I2"],
+                  "equipedSpellCardList" : [ "C2" ],
                   "preferedAttackType" : "SPLIT",
                   "selectedAttackType" : [ "marisa focus attack 2", "marisa split attack 2" ]
                 },
                 {
                   "tag" : "Alice",
-                  "itemSlotNum" : 2,
-                  "spellCardSlotNum" : 2,
+                  "itemSlotNum" : 1,
+                  "spellCardSlotNum" : 1,
                   "healthPointInc" : 3,
                   "manaInc" : 3,
                   "walkSpeedInc" : 3,
                   "walkAccelerationInc" : 3,
                   "dashAccelerationInc" : 3,
-                  "equipedItemList" : ["I3"],
-                  "equipedSpellCardList" : [ "C3", "C5" ],
+                  "equipedItemList" : ["I4"],
+                  "equipedSpellCardList" : [ "C3" ],
                   "preferedAttackType" : "SPLIT",
                   "selectedAttackType" : [ "alice focus attack 1", "alice split attack 1" ]
                 }
@@ -55,12 +55,13 @@
                 { "tag" : "I1", "amount" : 1 }, { "tag" : "I2", "amount" : 1 },
                 { "tag" : "I3", "amount" : 1 }, { "tag" : "I4", "amount" : 1 },
                 { "tag" : "I5", "amount" : 1 }, { "tag" : "I6", "amount" : 1 },
-                { "tag" : "I7", "amount" : 1 }
+                { "tag" : "I7", "amount" : 1 }, { "tag" : "I8", "amount" : 1 },
+                { "tag" : "I9", "amount" : 1 }
             ],
             "availableSpellCardList" : [
                 { "tag" : "C1", "amount" : 1 }, { "tag" : "C2", "amount" : 1 },
                 { "tag" : "C3", "amount" : 1 }, { "tag" : "C4", "amount" : 1 },
-                { "tag" : "C5", "amount" : 1 }, { "tag" : "C6", "amount" : 1 }
+                { "tag" : "C5", "amount" : 1 }
             ],
             "money" : 512
         } ]

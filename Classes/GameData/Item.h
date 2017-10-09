@@ -15,6 +15,7 @@ struct Item
         NORMAL,
         STRENGTHEN,
         SPECIAL,
+        OTHER,
     };
 
     string tag;         //物品标签

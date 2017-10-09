@@ -2,18 +2,20 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "LocationSelectScene.h"
-#include "ArmsStoreScene.h"
-#include "EquipScene.h"
-#include "HomeScene.h"
-#include "InventoryScene.h"
-#include "KoumakanLibraryScene.h"
-#include "KourindouScene.h"
+#include "NonGameplayScenes/LocationSelectScene.h"
+#include "NonGameplayScenes/ArmsStoreScene.h"
+#include "NonGameplayScenes/HomeScene.h"
+#include "NonGameplayScenes/KoumakanLibraryScene.h"
+#include "NonGameplayScenes/KourindouScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
-#include "RoundSelectScene.h"
+
+#include "GameData/Location.h"
+
 // #include "resources.h.dir/map_select.h"
-#include <string>
+
+#include "ui/CocosGUI.h"
+using namespace ui;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -26,41 +28,14 @@ LocationSelectScene::LocationSelectScene()
     _visibleSize = _director->getVisibleSize();
 }
 
-Sprite*
-LocationSelectScene::makeLocationOption(const Size& size, const std::string& wordArt,
-                                        const std::string& previewPicture, int passedRound,
-                                        int totalRound)
-{
-    auto WordArt = Sprite::create(wordArt);
-    WordArt->setScale(0.7);
-    auto progress = Label::createWithTTF(to_string(passedRound) + "/" + to_string(totalRound),
-                                         "fonts/dengxian.ttf", 16);
-
-    auto PreviewPicture = Sprite::create(previewPicture);
-    PreviewPicture->setContentSize(size);
-    PreviewPicture->addChild(WordArt);
-    PreviewPicture->addChild(progress, 1);
-    WordArt->setPosition(Vec2(PreviewPicture->getContentSize().width * 0.7,
-                              PreviewPicture->getContentSize().height * 0.7));
-    progress->setPosition(Vec2(PreviewPicture->getContentSize().width * 0.5,
-                               PreviewPicture->getContentSize().height * 0.3));
-    return PreviewPicture;
-}
-
-void
-LocationSelectScene::menuItemCallback()
-{
-}
-
 bool
 LocationSelectScene::init()
 {
-    /*  1. super init first */
-
     if (!Scene::init()) {
         return false;
     }
 
+    /*背景*/
     auto under = Sprite::create("location_select/under.png");
     under->setPosition(_visibleSize / 2);
     addChild(under, 1);
@@ -69,11 +44,18 @@ LocationSelectScene::init()
     up->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height * 0.55));
     addChild(up, 2);
 
+    backGround = Sprite::create();
+    backGround->setContentSize(_visibleSize);
+    backGround->setPosition(_visibleSize / 2);
+    addChild(backGround, 0);
+
     /*返回*/
-    auto ret = Button::create("location_select/back.png");
-    ret->setTitleColor(Color3B(0, 0, 0));
+    auto ret = Button::create("homescene/p1.png");
+    ret->setTitleFontName("fonts/dengxian.ttf");
+    ret->setTitleText("返回");
     ret->setTitleFontSize(30);
     ret->setAnchorPoint(Vec2(0, 1));
+    ret->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     ret->setPosition(Vec2(_visibleSize.width * 0.1, _visibleSize.height * 0.2));
     ret->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
@@ -83,68 +65,62 @@ LocationSelectScene::init()
     addChild(ret, 2);
 
     /*特殊地点   红魔馆大图书馆*/
-    auto koumakanLibrary = Button::create("location_select/KoumakanLibrary.png");
-    koumakanLibrary->setTitleColor(Color3B(0, 0, 0));
+    auto koumakanLibrary = Button::create("homescene/p1.png");
+    koumakanLibrary->setTitleFontName("fonts/dengxian.ttf");
+    koumakanLibrary->setTitleText("红魔馆大图书馆");
     koumakanLibrary->setTitleFontSize(30);
     koumakanLibrary->setAnchorPoint(Vec2(0, 1));
+    koumakanLibrary->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     koumakanLibrary->setPosition(Vec2(_visibleSize.width * 0.35, _visibleSize.height * 0.2));
     koumakanLibrary->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            Director::getInstance()->pushScene(KoumakanLibraryScene::create());
+            // GameData::getInstance()->switchLocation("KoumakanLibraryScene");
+
+            TransitionScene* transition =
+                TransitionFade::create(0.5f, KoumakanLibraryScene::create());
+            Director::getInstance()->popToRootScene();
+            Director::getInstance()->replaceScene(transition);
         }
     });
     addChild(koumakanLibrary, 2);
 
     /*特殊地点   香霖堂*/
-    auto Kourindou = Button::create("location_select/Kourindou.png");
-    Kourindou->setTitleColor(Color3B(0, 0, 0));
+    auto Kourindou = Button::create("homescene/p1.png");
+    Kourindou->setTitleFontName("fonts/dengxian.ttf");
+    Kourindou->setTitleText("香霖堂");
     Kourindou->setTitleFontSize(30);
     Kourindou->setAnchorPoint(Vec2(0, 1));
+    Kourindou->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     Kourindou->setPosition(Vec2(_visibleSize.width * 0.55, _visibleSize.height * 0.2));
     Kourindou->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            Director::getInstance()->pushScene(KourindouScene::create());
+            // GameData::getInstance()->switchLocation("KourindouScene");
+
+            TransitionScene* transition = TransitionFade::create(0.5f, KourindouScene::create());
+            Director::getInstance()->popToRootScene();
+            Director::getInstance()->replaceScene(transition);
         }
     });
     addChild(Kourindou, 2);
 
     /*特殊地点   军火店*/
-    auto ArmsStore = Button::create("location_select/ArmsStore.png");
-    ArmsStore->setTitleColor(Color3B(0, 0, 0));
+    auto ArmsStore = Button::create("homescene/p1.png");
+    ArmsStore->setTitleFontName("fonts/dengxian.ttf");
+    ArmsStore->setTitleText("夜雀烤鳗店");
     ArmsStore->setTitleFontSize(30);
     ArmsStore->setAnchorPoint(Vec2(0, 1));
+    ArmsStore->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     ArmsStore->setPosition(Vec2(_visibleSize.width * 0.75, _visibleSize.height * 0.2));
     ArmsStore->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            Director::getInstance()->pushScene(ArmsStoreScene::create());
+            // GameData::getInstance()->switchLocation("ArmsStorePurchaseScene");
+
+            TransitionScene* transition = TransitionFade::create(0.5f, ArmsStoreScene::create());
+            Director::getInstance()->popToRootScene();
+            Director::getInstance()->replaceScene(transition);
         }
     });
     addChild(ArmsStore, 2);
-
-    LocationList = Menu::create();
-    LocationList->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.6));
-    this->addChild(LocationList, 4);
-
-    vector<Location> locations = gamedata->getLocationList();
-
-    for (int i = 0; i < locations.size(); i++) {
-
-        auto PreviewPicture =
-            makeLocationOption(Size(200, 100), locations[i].wordArt, locations[i].previewPicture,
-                               locations[i].passedRound, locations[i].totalRound);
-        // log(">> " + locations[i].passedRound);
-        // log(">> " + locations[i].totalRound);
-        auto location = MenuItemSprite::create(PreviewPicture, PreviewPicture, PreviewPicture,
-                                               [this, locations, i](Ref*) {
-                                                   gamedata->switchLocation(locations[i].tag);
-
-                                                   _director->popScene();
-                                               });
-        LocationList->addChild(location, 4);
-    }
-    LocationList->alignItemsInColumns(3, 3, 1, NULL);
-
-    this->scheduleUpdate();
 
     return true;
 }
@@ -158,12 +134,99 @@ LocationSelectScene::onEnter()
     auto currentlocation = gamedata->getCurrentLocation();
 
     //背景  使用目前地点的背景
-    auto bg = Sprite::create(currentlocation.backgroundPicture);
-    bg->setContentSize(_visibleSize);
-    bg->setPosition(_visibleSize / 2);
-    addChild(bg, 0);
+    backGround->setTexture(currentlocation.backgroundPicture);
+
+    //重新获取全部地点
+    locations = gamedata->getLocationList();
+
+    //重新生成地点选择菜单
+    LocationList = Menu::create();
+    LocationList->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.6));
+    for (int i = 0; i < locations.size(); i++) {
+        auto menuItem = SelectLocationMenuItem::create(locations[i]);
+        LocationList->addChild(menuItem, 8);
+    }
+    //动态排列
+    ValueVector rows;
+    auto _size = locations.size();
+    int _columnsInRow = 4;
+    while (_size) {
+        if (_size > _columnsInRow) {
+            rows.push_back(Value(_columnsInRow));
+            _size -= _columnsInRow;
+        } else {
+            rows.push_back(Value(_size));
+            _size = 0;
+        }
+    }
+    LocationList->alignItemsInColumnsWithArray(rows);
+
+    this->addChild(LocationList, 4);
 }
+
 void
-LocationSelectScene::update(float dt)
+LocationSelectScene::onExit()
 {
+    Scene::onExit();
+    locations.clear();
+    LocationList->removeAllChildrenWithCleanup(true);
+    LocationList->removeFromParentAndCleanup(true);
+}
+
+SelectLocationMenuItem*
+SelectLocationMenuItem::create(const Location& i)
+{
+    SelectLocationMenuItem* pRet;
+    pRet = new (std::nothrow) SelectLocationMenuItem(i);
+    if (pRet && pRet->init()) {
+        pRet->autorelease();
+        return pRet;
+    } else {
+        delete pRet;
+        pRet = nullptr;
+        return nullptr;
+    }
+}
+
+SelectLocationMenuItem::SelectLocationMenuItem(const Location& i)
+{
+    location = i;
+}
+
+bool
+SelectLocationMenuItem::init()
+{
+    if (!MenuItemSprite::init())
+        return false;
+
+    auto WordArt = Sprite::create(location.wordArt);
+    WordArt->setScale(0.7);
+    auto progress =
+        Label::createWithTTF(to_string(location.passedRound) + "/" + to_string(location.totalRound),
+                             "fonts/dengxian.ttf", 16);
+
+    auto PreviewPicture = Sprite::create(location.previewPicture);
+    PreviewPicture->setContentSize(Size(200, 100));
+    PreviewPicture->addChild(WordArt);
+    PreviewPicture->addChild(progress, 1);
+    WordArt->setPosition(Vec2(PreviewPicture->getContentSize().width * 0.7,
+                              PreviewPicture->getContentSize().height * 0.7));
+    progress->setPosition(Vec2(PreviewPicture->getContentSize().width * 0.5,
+                               PreviewPicture->getContentSize().height * 0.3));
+
+    this->setNormalImage(PreviewPicture);
+    this->setSelectedImage(PreviewPicture);
+
+    this->initWithCallback(CC_CALLBACK_0(SelectLocationMenuItem::callBack, this));
+
+    return true;
+}
+
+void
+SelectLocationMenuItem::callBack()
+{
+    GameData::getInstance()->switchLocation(location.tag);
+    TransitionScene* transition = TransitionFade::create(0.5f, HomeScene::create());
+    Director::getInstance()->popToRootScene();
+    Director::getInstance()->replaceScene(transition);
 }

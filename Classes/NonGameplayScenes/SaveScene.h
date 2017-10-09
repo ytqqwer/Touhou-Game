@@ -17,7 +17,6 @@ public:
     static Scene* create(bool isSaveAction = false);
 
     virtual bool init();
-    virtual void update(float dt);
 
 private:
     SaveScene(bool isSaveAction);

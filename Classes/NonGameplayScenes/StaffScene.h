@@ -17,7 +17,6 @@ public:
     APP_SCENE_CREATE_FUNC(StaffScene, TAG);
 
     virtual bool init();
-    virtual void update(float dt);
 
 private:
     StaffScene();

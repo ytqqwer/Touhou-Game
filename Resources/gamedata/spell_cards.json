@@ -5,7 +5,9 @@
         "icon": "gamedata/spell_cards/c1.png",
         "description": "This is spell card1's description",
         "manaCost": 1,
-        "coolDown": 1
+        "coolDown": 1,
+        "price": 1,
+        "inStore": ""
     },
     {
         "tag": "C2",
@@ -13,7 +15,9 @@
         "icon": "gamedata/spell_cards/c2.png",
         "description": "This is spell card2's description",
         "manaCost": 2,
-        "coolDown": 2
+        "coolDown": 2,
+        "price": 2,
+        "inStore": ""
     },
     {
         "tag": "C3",
@@ -21,7 +25,9 @@
         "icon": "gamedata/spell_cards/c3.png",
         "description": "This is spell card3's description",
         "manaCost": 3,
-        "coolDown": 3
+        "coolDown": 3,
+        "price": 3,
+        "inStore": "ArmsStore"
     },
     {
         "tag": "C4",
@@ -29,7 +35,9 @@
         "icon": "gamedata/spell_cards/c4.png",
         "description": "This is spell card4's description",
         "manaCost": 4,
-        "coolDown": 4
+        "coolDown": 4,
+        "price": 4,
+        "inStore": "ArmsStore"
     },
     {
         "tag": "C5",
@@ -37,6 +45,8 @@
         "icon": "gamedata/spell_cards/c5.png",
         "description": "This is spell card5's description",
         "manaCost": 5,
-        "coolDown": 5
+        "coolDown": 5,
+        "price": 5,
+        "inStore": "ArmsStore"
     }
 ]

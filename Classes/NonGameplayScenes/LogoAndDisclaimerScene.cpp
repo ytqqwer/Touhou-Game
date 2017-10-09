@@ -2,11 +2,11 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-#include "LogoAndDisclaimerScene.h"
-#include "BackgroundIntroScene.h"
+#include "NonGameplayScenes/LogoAndDisclaimerScene.h"
 #include "GameData/GameData.h"
 #include "JumpTableScene.h"
-#include "MainMenuScene.h"
+#include "NonGameplayScenes/BackgroundIntroScene.h"
+#include "NonGameplayScenes/MainMenuScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 #include "resources.h.dir/logo.h"
@@ -97,8 +97,8 @@ LogoAndDisclaimerScene::init()
 
     this->scheduleOnce(
         [this](float) {
-            auto s = MainMenuScene::create();
-            _director->replaceScene(s);
+            _director->replaceScene(MainMenuScene::create());
+            //_director->replaceScene(BackgroundIntroScene::create());
         },
         _logoLast + _disclaimerLast, "nextScene");
 

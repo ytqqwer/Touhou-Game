@@ -19,6 +19,8 @@ struct SpellCard
 
     int manaCost;   //灵力消耗
     float cooldown; //冷却时间
+
+    int price; //售价
 };
 
 #endif

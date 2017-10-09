@@ -363,6 +363,8 @@ from_json(const json& j, SpellCard& c)
     c.description = j.at("description");
     c.manaCost = j.at("manaCost");
     c.cooldown = j.at("coolDown");
+
+    c.price = j.at("price");
 }
 
 // enemyListDom[n] -> EnemyData
@@ -1197,7 +1199,123 @@ GameData::getAvailableItemList()
 }
 
 vector<Item>
-GameData::getItemListInStore(const string& storeTag)
+GameData::getAvailableItems()
+{
+    const json& availItemListDom = cachedSave["availableItemList"];
+
+    vector<Item> listRet;
+    listRet.reserve(availItemListDom.size());
+
+    for (auto const& iToPred : itemListDom) {
+        auto it = find_if(availItemListDom.begin(), availItemListDom.end(),
+                          [&iToPred](const json& availI) -> bool {
+                              if (iToPred.at("tag") == availI.at("tag")) {
+                                  return true;
+                              } else {
+                                  return false;
+                              }
+                          });
+
+        if (it != availItemListDom.end()) {
+            listRet.push_back(iToPred);
+        }
+    }
+
+    return listRet;
+}
+
+vector<Item>
+GameData::getAvailableNormalItems()
+{
+    const json& availItemListDom = cachedSave["availableItemList"];
+
+    vector<Item> listRet;
+    listRet.reserve(availItemListDom.size());
+
+    for (auto const& iToPred : itemListDom) {
+        auto it = find_if(availItemListDom.begin(), availItemListDom.end(),
+                          [&iToPred](const json& availI) -> bool {
+                              if (iToPred.at("tag") == availI.at("tag")) {
+                                  if (iToPred.at("type") == "NORMAL") {
+                                      return true;
+                                  } else {
+                                      return false;
+                                  }
+                              } else {
+                                  return false;
+                              }
+                          });
+
+        if (it != availItemListDom.end()) {
+            listRet.push_back(iToPred);
+        }
+    }
+
+    return listRet;
+}
+
+vector<Item>
+GameData::getAvailableStrengthenItems()
+{
+    const json& availItemListDom = cachedSave["availableItemList"];
+
+    vector<Item> listRet;
+    listRet.reserve(availItemListDom.size());
+
+    for (auto const& iToPred : itemListDom) {
+        auto it = find_if(availItemListDom.begin(), availItemListDom.end(),
+                          [&iToPred](const json& availI) -> bool {
+                              if (iToPred.at("tag") == availI.at("tag")) {
+                                  if (iToPred.at("type") == "STRENGTHEN") {
+                                      return true;
+                                  } else {
+                                      return false;
+                                  }
+                              } else {
+                                  return false;
+                              }
+                          });
+
+        if (it != availItemListDom.end()) {
+            listRet.push_back(iToPred);
+        }
+    }
+
+    return listRet;
+}
+
+vector<Item>
+GameData::getAvailableSpecialItems()
+{
+    const json& availItemListDom = cachedSave["availableItemList"];
+
+    vector<Item> listRet;
+    listRet.reserve(availItemListDom.size());
+
+    for (auto const& iToPred : itemListDom) {
+        auto it = find_if(availItemListDom.begin(), availItemListDom.end(),
+                          [&iToPred](const json& availI) -> bool {
+                              if (iToPred.at("tag") == availI.at("tag")) {
+                                  if (iToPred.at("type") == "SPECIAL") {
+                                      return true;
+                                  } else {
+                                      return false;
+                                  }
+                              } else {
+                                  return false;
+                              }
+                          });
+
+        if (it != availItemListDom.end()) {
+            listRet.push_back(iToPred);
+        }
+    }
+
+    return listRet;
+}
+
+vector<Item>
+GameData::getItemsInStore(const string& storeTag)
 {
     vector<Item> listRet;
     listRet.reserve(32);
@@ -1205,6 +1323,98 @@ GameData::getItemListInStore(const string& storeTag)
     for (auto const& iToPred : itemListDom) {
         if (iToPred.at("inStore") == storeTag) {
             listRet.push_back(iToPred);
+        }
+    }
+
+    return listRet;
+}
+
+vector<Item>
+GameData::getNormalItemsInStore(const string& storeTag)
+{
+    vector<Item> listRet;
+    listRet.reserve(32);
+
+    for (auto const& iToPred : itemListDom) {
+        if (iToPred.at("inStore") == storeTag) {
+            if (iToPred.at("type") == "NORMAL") {
+                listRet.push_back(iToPred);
+            }
+        }
+    }
+
+    return listRet;
+}
+
+vector<Item>
+GameData::getStrengthenItemsInStore(const string& storeTag)
+{
+    vector<Item> listRet;
+    listRet.reserve(32);
+
+    for (auto const& iToPred : itemListDom) {
+        if (iToPred.at("inStore") == storeTag) {
+            if (iToPred.at("type") == "STRENGTHEN") {
+                listRet.push_back(iToPred);
+            }
+        }
+    }
+
+    return listRet;
+}
+
+vector<Item>
+GameData::getSpecialItemsInStore(const string& storeTag)
+{
+    vector<Item> listRet;
+    listRet.reserve(32);
+
+    for (auto const& iToPred : itemListDom) {
+        if (iToPred.at("inStore") == storeTag) {
+            if (iToPred.at("type") == "SPECIAL") {
+                listRet.push_back(iToPred);
+            }
+        }
+    }
+
+    return listRet;
+}
+
+vector<SpellCard>
+GameData::getSpellCardsInStore(const string& storeTag)
+{
+    vector<SpellCard> listRet;
+    listRet.reserve(32);
+
+    for (auto const& iToPred : spellCardListDom) {
+        if (iToPred.at("inStore") == storeTag) {
+            listRet.push_back(iToPred);
+        }
+    }
+
+    return listRet;
+}
+
+vector<SpellCard>
+GameData::getAvailableSpellCards()
+{
+    const json& availSpellCardListDom = cachedSave["availableSpellCardList"];
+
+    vector<SpellCard> listRet;
+    listRet.reserve(availSpellCardListDom.size());
+
+    for (auto const& cToPred : spellCardListDom) {
+        auto it = find_if(availSpellCardListDom.begin(), availSpellCardListDom.end(),
+                          [&cToPred](const json& availC) -> bool {
+                              if (cToPred.at("tag") == availC.at("tag")) {
+                                  return true;
+                              } else {
+                                  return false;
+                              }
+                          });
+
+        if (it != availSpellCardListDom.end()) {
+            listRet.push_back(cToPred);
         }
     }
 
@@ -1319,8 +1529,8 @@ testSelf()
     ptr->increaseMoney(+1024);
     get_money_num = ptr->getMoneyNum();
     auto get_avail_item_list = ptr->getAvailableItemList();
-    auto get_item_list_in_store_1 = ptr->getItemListInStore("ArmsStore");
-    auto get_item_list_in_store_2 = ptr->getItemListInStore("Kourindou");
+    auto get_item_list_in_store_1 = ptr->getItemsInStore("ArmsStore");
+    auto get_item_list_in_store_2 = ptr->getItemsInStore("Kourindou");
     auto get_avail_card_list = ptr->getAvailableSpellCardList();
     ptr->setRoundToPlay("round 1");
     auto get_round_to_play = ptr->getRoundToPlay();

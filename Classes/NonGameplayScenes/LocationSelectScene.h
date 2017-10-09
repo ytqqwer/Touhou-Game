@@ -6,13 +6,9 @@
 #define LOCATION_SELECT_SCENE_H
 
 #include "GameData/GameData.h"
-#include "GameData/Location.h"
-#include "GameData/SpellCard.h"
 #include "TouhouGame.h"
 #include "cocos2d.h"
-#include "ui/CocosGUI.h"
 #include <string>
-#include <vector>
 
 USING_NS_CC;
 
@@ -23,10 +19,7 @@ public:
 
     virtual bool init();
     virtual void onEnter();
-    virtual void update(float dt);
-    Sprite* makeLocationOption(const Size& size, const std::string& wordArt,
-                               const std::string& previewPicture, int passedRound, int totalRound);
-    virtual void menuItemCallback();
+    virtual void onExit();
 
 private:
     LocationSelectScene();
@@ -34,11 +27,23 @@ private:
 private:
     static const std::string TAG;
     GameData* gamedata;
+    Size _visibleSize;
 
     Menu* LocationList;
-
-    // intorspection
-    Size _visibleSize;
+    Sprite* backGround;
+    vector<Location> locations;
 };
 
-#endif // MAP_SELECT_SCENE_H
+class SelectLocationMenuItem : public MenuItemSprite
+{
+public:
+    static SelectLocationMenuItem* create(const Location& i);
+    SelectLocationMenuItem(const Location& i);
+    virtual bool init();
+    void callBack();
+
+private:
+    Location location;
+};
+
+#endif
