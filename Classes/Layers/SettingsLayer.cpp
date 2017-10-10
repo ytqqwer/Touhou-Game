@@ -7,7 +7,6 @@
 #include "NonGameplayScenes/MainMenuScene.h"
 #include "NonGameplayScenes/RoundSelectScene.h"
 #include "NonGameplayScenes/SaveScene.h"
-#include "SimpleAudioEngine.h"
 #include "resources.h.dir/settings_layer.h"
 
 SettingsLayer::SettingsLayer(const string& TAG)
@@ -184,7 +183,7 @@ SettingsLayer::init()
         button1->setPosition(
             Vec2(layout->getSize().width / 2.0, layout->getSize().height * 4.0 / 8.0));
         button1->setScale(0.7);
-        button1->addTouchEventListener(this, toucheventselector(SettingsLayer::touchEvent));
+        button1->addTouchEventListener(this, (SEL_TouchEvent)(&SettingsLayer::touchEvent));
         layout->addChild(button1);
     }
 
@@ -280,6 +279,7 @@ SettingsLayer::touchEvent(Ref* pSender, TouchEventType type)
     Button* button = (Button*)pSender;
     int tag = button->getTag();
     if (type == TOUCH_EVENT_ENDED) {
+        SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
         switch (tag) {
             case 7: {
                 this->removeFromParent();

@@ -6,8 +6,10 @@
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 
+#include "SimpleAudioEngine.h"
 #include "ui/CocosGUI.h"
 using namespace ui;
+using namespace CocosDenshion;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -68,6 +70,7 @@ ArmsStorePurchaseScene::init()
     backButton->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.15));
     backButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
             Director::getInstance()->popScene();
         }
     });
@@ -82,6 +85,7 @@ ArmsStorePurchaseScene::init()
     normalProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.25));
     normalProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             currentType = Item::Type::NORMAL;
             itemTable->reloadData();
         }
@@ -97,6 +101,7 @@ ArmsStorePurchaseScene::init()
     strongProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     strongProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             currentType = Item::Type::OTHER;
             itemTable->reloadData();
         }

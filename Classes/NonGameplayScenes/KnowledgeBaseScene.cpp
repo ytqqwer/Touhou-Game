@@ -8,8 +8,10 @@
 #include "PlaceHolder.h"
 // #include "resources.h.dir/knowledge_base.h"
 
+#include "SimpleAudioEngine.h"
 #include "ui/CocosGUI.h"
 using namespace ui;
+using namespace CocosDenshion;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -55,6 +57,7 @@ KnowledgeBaseScene::init()
     BackButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.43));
     BackButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
             Director::getInstance()->replaceScene(HomeScene::create());
         }
     });

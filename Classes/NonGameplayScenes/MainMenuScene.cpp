@@ -61,6 +61,7 @@ MainMenuScene::init()
     NGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.57));
     NGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             // auto canNew = GameData::getInstance()->newGame();
             //有不能创建新存档的BUG，暂时注释掉
             // if (canNew) {
@@ -84,8 +85,9 @@ MainMenuScene::init()
     LGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.43));
     LGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition = TransitionFade::create(1.0f, SaveScene::create());
-            Director::getInstance()->replaceScene(transition);
+            Director::getInstance()->pushScene(transition);
         }
     });
     addChild(LGButton);
@@ -100,6 +102,7 @@ MainMenuScene::init()
     SGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.34));
     SGButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             auto lay = SettingsLayer::create("MainMenuScene");
             this->addChild(lay, 5);
         }
@@ -117,6 +120,7 @@ MainMenuScene::init()
     addChild(ZGButton);
     ZGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition = TransitionFade::create(1.0f, StaffScene::create());
             Director::getInstance()->replaceScene(transition);
         }

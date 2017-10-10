@@ -9,13 +9,10 @@
 #include "TouhouGame.h"
 #include "cocos-ext.h"
 #include "cocos2d.h"
-#include "ui/CocosGUI.h"
 #include <string>
 
 USING_NS_CC_EXT;
 USING_NS_CC;
-
-using namespace ui;
 
 class ArmsStorePurchaseScene : public Scene, public TableViewDataSource, public TableViewDelegate
 {

@@ -13,6 +13,11 @@
 #include "GameData/GameData.h"
 #include "GameplayScene/GameplayScene.h"
 
+#include "SimpleAudioEngine.h"
+#include "ui/CocosGUI.h"
+using namespace ui;
+using namespace CocosDenshion;
+
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
 // 这个定义也不能写入 .h 文件中，放在对应的 .cpp 文件的开头是最好选择
@@ -49,6 +54,7 @@ RoundSelectScene::onEnter()
     backButton->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     backButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
             Director::getInstance()->replaceScene(HomeScene::create());
         }
     });
@@ -62,6 +68,7 @@ RoundSelectScene::onEnter()
     beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
     beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             NonGameplayScenesCache::getInstance()->removeAllScenes();
             Director::getInstance()->popToRootScene();
             Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
@@ -145,6 +152,7 @@ RoundSelectScene::onEnter()
             roundButton->addTouchEventListener(
                 [i, this](Ref* pSender, Widget::TouchEventType type) {
                     if (type == Widget::TouchEventType::ENDED) {
+                        SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
                         setRoundInformation(rounds[i]);
                         GameData::getInstance()->setRoundToPlay(rounds[i].tag);
                     }
@@ -161,6 +169,7 @@ RoundSelectScene::onEnter()
             roundButton->addTouchEventListener(
                 [i, this](Ref* pSender, Widget::TouchEventType type) {
                     if (type == Widget::TouchEventType::ENDED) {
+                        SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
                         setRoundInformation(rounds[i]);
                         GameData::getInstance()->setRoundToPlay(rounds[i].tag);
                     }
@@ -177,6 +186,7 @@ RoundSelectScene::onEnter()
             roundButton->setTitleFontSize(25);
             roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
                 if (type == Widget::TouchEventType::ENDED) {
+                    SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
                     setRoundInformation(rounds[i]);
                 }
 
@@ -221,6 +231,7 @@ RoundSelectScene::onEnter()
 
     p1Button->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             auto characters = GameData::getInstance()->getAvailableCharacterList();
             if (characters.size() <= GameData::getInstance()->getOnStageCharacterTagList().size()) {
                 return;
@@ -274,6 +285,7 @@ RoundSelectScene::onEnter()
     this->addChild(p2Button, 3);
     p2Button->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             auto characters = GameData::getInstance()->getAvailableCharacterList();
             if (characters.size() <= GameData::getInstance()->getOnStageCharacterTagList().size()) {
                 return;

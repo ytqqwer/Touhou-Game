@@ -50,18 +50,54 @@
                 }
             ],
             "onStageCharacterList" : [ "Marisa", "Reimu" ],
-            "unlockedLocationList" : [ { "tag" : "Hakurei Jinja", "passedRound" : 1 } ],
+            "unlockedLocationList" : [ 
+                {
+                    "tag": "Hakurei Jinja",
+                    "passedRound": 1,
+                    "conversationIndicators": ["C1", "C2"]
+                },
+                {
+                    "tag": "Forest of Magic",
+                    "passedRound": 0,
+                    "conversationIndicators": []
+                },
+                {
+                    "tag": "Misty Lake",
+                    "passedRound": 0,
+                    "conversationIndicators": ["C2","C3"]
+                },
+                {
+                    "tag": "Bamboo Forest of the Lost",
+                    "passedRound": 0,
+                    "conversationIndicators": ["C1","C4","C2"]
+                },
+                {
+                    "tag": "Kourindou",
+                    "passedRound": 0,
+                    "conversationIndicators": ["C1"]
+                },
+                {
+                    "tag": "ArmsStore",
+                    "passedRound": 0,
+                    "conversationIndicators": []
+                },
+                {
+                    "tag": "KoumakanLibrary",
+                    "passedRound": 0,
+                    "conversationIndicators": ["C4"]
+                }
+            ],
             "availableItemList" : [
-                { "tag" : "I1", "amount" : 1 }, { "tag" : "I2", "amount" : 1 },
-                { "tag" : "I3", "amount" : 1 }, { "tag" : "I4", "amount" : 1 },
-                { "tag" : "I5", "amount" : 1 }, { "tag" : "I6", "amount" : 1 },
-                { "tag" : "I7", "amount" : 1 }, { "tag" : "I8", "amount" : 1 },
-                { "tag" : "I9", "amount" : 1 }
+                { "tag" : "I1" }, { "tag" : "I2" },
+                { "tag" : "I3" }, { "tag" : "I4" },
+                { "tag" : "I5" }, { "tag" : "I6" },
+                { "tag" : "I7" }, { "tag" : "I8" },
+                { "tag" : "I9" }
             ],
             "availableSpellCardList" : [
-                { "tag" : "C1", "amount" : 1 }, { "tag" : "C2", "amount" : 1 },
-                { "tag" : "C3", "amount" : 1 }, { "tag" : "C4", "amount" : 1 },
-                { "tag" : "C5", "amount" : 1 }
+                { "tag" : "C1" }, { "tag" : "C2" },
+                { "tag" : "C3" }, { "tag" : "C4" },
+                { "tag" : "C5" }
             ],
             "money" : 512
         } ]

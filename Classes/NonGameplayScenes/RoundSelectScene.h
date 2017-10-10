@@ -12,7 +12,6 @@
 #include <string>
 
 USING_NS_CC;
-
 #include "ui/CocosGUI.h"
 using namespace ui;
 

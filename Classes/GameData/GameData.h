@@ -68,7 +68,7 @@ public:
 
     // 返回 vector.empty() = true 时表示这个地点中无对话
     // 在 HomeScene 中使用
-    vector<ConversationIndicator> getConversationIndicatorList(const string& locationTag);
+    vector<ConversationIndicator> getConversationIndicators(const string& locationTag);
 
     // 通过对话编号返回详细对话内容，包括对话的双方，对话的内容，对话过程中人物的变化
     // 在 ConversationLayer 中使用
@@ -89,6 +89,7 @@ public:
     // 配合 getLocationList 使用，这个接口只返回已解锁地点的 tag
     // 在 LocationSelectScene 中使用
     vector<string> getUnlockedLocationTagList();
+    vector<Location> getUnlockedLocationList();
 
     // 在 LocationSelectScene 中使用
     bool switchLocation(const string& newLocationTag);
@@ -153,10 +154,8 @@ public:
 
     // 符卡和道具本身并没有数量的概念，全部独一无二，因此数量是没有意义的属性
     // 换句话说，即使有数量，那么数量的值也只能是1
-    // 暂时没有计划更正这个与设定不符的问题，但也没有多大影响
 
     // pair.first 是符卡， pair.second 是符卡数量
-    vector<pair<Item, int>> getAvailableItemList();
     vector<Item> getAvailableItems();
     vector<Item> getAvailableNormalItems();
     vector<Item> getAvailableStrengthenItems();
@@ -169,7 +168,6 @@ public:
     vector<SpellCard> getSpellCardsInStore(const string& storeTag);
 
     vector<SpellCard> getAvailableSpellCards();
-    vector<pair<SpellCard, int>> getAvailableSpellCardList();
 
     void buyItem(const string& itemTag);
     void buySpellCard(const string& cardTag);

@@ -7,8 +7,10 @@
 #include "PlaceHolder.h"
 // #include "resources.h.dir/inventory.h"
 
+#include "SimpleAudioEngine.h"
 #include "ui/CocosGUI.h"
 using namespace ui;
+using namespace CocosDenshion;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -68,6 +70,7 @@ InventoryScene::init()
     backButton->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.15));
     backButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
             Director::getInstance()->popScene();
         }
     });
@@ -82,6 +85,7 @@ InventoryScene::init()
     normalProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.25));
     normalProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             currentType = Item::Type::NORMAL;
             itemTable->reloadData();
         }
@@ -97,6 +101,7 @@ InventoryScene::init()
     strongProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     strongProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             currentType = Item::Type::STRENGTHEN;
             itemTable->reloadData();
         }
@@ -112,6 +117,7 @@ InventoryScene::init()
     specialProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     specialProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             currentType = Item::Type::SPECIAL;
             itemTable->reloadData();
         }
@@ -120,12 +126,11 @@ InventoryScene::init()
 
     /*道具列表控件*/
     itemTable = TableView::create(this, Size(750, 500));
-    // this->addChild(itemTable);
-    bg_3->addChild(itemTable);
     itemTable->setPosition(Vec2(20, 0));
     itemTable->setDirection(cocos2d::extension::ScrollView::Direction::VERTICAL); //纵向
     itemTable->setVerticalFillOrder(TableView::VerticalFillOrder::TOP_DOWN); //从小到大排列
     itemTable->setDelegate(this);                                            //委托代理
+    bg_3->addChild(itemTable);
 
     return true;
 }

@@ -233,6 +233,7 @@ ConversationLayer::changeBgp(const string& bgp)
 #endif
 
     _bgp->setTexture(bgp.c_str());
+    _bgp->setContentSize(_visibleSize);
 }
 
 void

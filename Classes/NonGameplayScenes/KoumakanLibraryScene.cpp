@@ -83,24 +83,23 @@ KoumakanLibraryScene::init()
     button_start->setTitleFontName("fonts/dengxian.ttf");
     button_start->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.705));
     button_start->setTitleText("托管");
-    button_start->setTitleFontSize(18);
-    button_start->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
-    addChild(button_start);
+    button_start->setTitleFontSize(25);
     // button_start->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
     //    if (type == Widget::TouchEventType::ENDED) {
     //        Director::getInstance()->pushScene();
     //    }
     //});
+    addChild(button_start);
 
     /*整备按钮*/
     auto button_equip = Button::create("homescene/p1.png");
     button_equip->setTitleFontName("fonts/dengxian.ttf");
     button_equip->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.525));
     button_equip->setTitleText("整备");
-    button_equip->setTitleFontSize(18);
-    button_equip->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
+    button_equip->setTitleFontSize(25);
     button_equip->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition = TransitionFade::create(0.5f, EquipScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -112,10 +111,10 @@ KoumakanLibraryScene::init()
     button_inventory->setTitleFontName("fonts/dengxian.ttf");
     button_inventory->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.345));
     button_inventory->setTitleText("道具库");
-    button_inventory->setTitleFontSize(18);
-    button_inventory->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
+    button_inventory->setTitleFontSize(25);
     button_inventory->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition = TransitionFade::create(0.5f, InventoryScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -127,11 +126,10 @@ KoumakanLibraryScene::init()
     button_map->setTitleFontName("fonts/dengxian.ttf");
     button_map->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.165));
     button_map->setTitleText("前往其他地图");
-    button_map->setTitleFontSize(18);
-    button_map->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
-    button_map->setTitleFontName("fonts/dengxian.ttf");
+    button_map->setTitleFontSize(25);
     button_map->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition =
                 TransitionFade::create(0.5f, LocationSelectScene::create());
             Director::getInstance()->pushScene(transition);
@@ -144,13 +142,12 @@ KoumakanLibraryScene::init()
     know_button->setTitleFontName("fonts/dengxian.ttf");
     know_button->setAnchorPoint(Vec2(0, 1));
     know_button->setPosition(Vec2(_visibleSize.width * 0.84, _visibleSize.height * 0.99));
-    know_button->setScale9Enabled(true);
-    know_button->setSize(Size(_visibleSize.width * 100 / 1280, _visibleSize.height * 100 / 720));
     know_button->setTitleText("资料库");
     know_button->setTitleFontSize(20);
     know_button->setScale(0.87);
     know_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition =
                 TransitionFade::create(0.5f, KnowledgeBaseScene::create());
             Director::getInstance()->pushScene(transition);
@@ -163,11 +160,13 @@ KoumakanLibraryScene::init()
     store_button->setTitleFontName("fonts/dengxian.ttf");
     store_button->setAnchorPoint(Vec2(0, 1));
     store_button->setPosition(Vec2(_visibleSize.width * 0.774, _visibleSize.height * 0.99));
-    store_button->setScale9Enabled(true);
-    store_button->setSize(Size(_visibleSize.width * 100 / 1280, _visibleSize.height * 100 / 720));
     store_button->setTitleText("系统商店");
     store_button->setTitleFontSize(20);
     store_button->setScale(0.87);
+    store_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED)
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+    });
     addChild(store_button);
 
     /*设置按钮*/
@@ -175,12 +174,12 @@ KoumakanLibraryScene::init()
     set_button->setTitleFontName("fonts/dengxian.ttf");
     set_button->setAnchorPoint(Vec2(0, 1));
     set_button->setPosition(Vec2(_visibleSize.width * 0.905, _visibleSize.height * 0.99));
-    set_button->setSize(Size(_visibleSize.width * 100 / 1280, _visibleSize.height * 100 / 720));
     set_button->setTitleText("设置");
     set_button->setTitleFontSize(20);
     set_button->setScale(0.87);
     set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             auto lay = SettingsLayer::create("HomeScene");
             this->addChild(lay, 5);
         }
@@ -194,8 +193,6 @@ void
 KoumakanLibraryScene::onEnter()
 {
     Scene::onEnter();
-
-    auto location = GameData::getInstance()->getCurrentLocation();
 
     /*背景音乐*/
     auto playMusic = SimpleAudioEngine::getInstance();
@@ -212,15 +209,14 @@ KoumakanLibraryScene::onEnter()
     money_text->setString(str);
 
     /*对话图标*/
-    double dis = 0.36;
-    auto conversation = GameData::getInstance()->getConversationIndicatorList(location.tag);
-    for (int i = 0; i < conversation.size(); i++) {
-        auto indicatorButton = ConversationIndicatorButton::create(conversation[i]);
-        indicatorButton->setPosition(
-            Vec2(_visibleSize.width * (dis - 0.01), _visibleSize.height * 0.17));
+    double dis = 0.34;
+    auto conversations = GameData::getInstance()->getConversationIndicators("KoumakanLibrary");
+    for (int i = 0; i < conversations.size(); i++) {
+        auto indicatorButton = ConversationIndicatorButton::create(conversations[i]);
         this->addChild(indicatorButton);
         vector_indicator.pushBack(indicatorButton);
-        dis += 0.10;
+        indicatorButton->setPosition(Vec2(_visibleSize.width * dis, _visibleSize.height * 0.13));
+        dis += 0.08;
     }
 }
 

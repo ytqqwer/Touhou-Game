@@ -7,8 +7,10 @@
 #include "PlaceHolder.h"
 // #include "resources.h.dir/equip.h"
 
+#include "SimpleAudioEngine.h"
 #include "ui/CocosGUI.h"
 using namespace ui;
+using namespace CocosDenshion;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -68,6 +70,7 @@ EquipScene::init()
     ret->setSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.1));
     ret->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
             Director::getInstance()->popScene();
         }
     });
@@ -327,6 +330,7 @@ EquipScene::SelectCharacterButton::init()
                               _director->getVisibleSize().width * 0.16 * 64 / 160));
     this->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             auto equipScene = (EquipScene*)parent;
             equipScene->loadCharacterProperty(character);
         }

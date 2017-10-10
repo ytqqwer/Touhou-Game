@@ -31,23 +31,10 @@
                 "difficulty": "FOUR",
                 "TMXMap": "gamedata/locations/L1_rounds/r2.tmx"
             }
-
-        ],
-        "conversationIndicatorList": [
-            {
-                "conversationTag": "1",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
-            },
-            {
-                "conversationTag": "1",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
-            }
         ]
     },
     {
-        "tag": "L2",
+        "tag": "Misty Lake",
         "name": "雾之湖",
         "wordArt": "gamedata/locations/L2_word_art.png",
         "previewPicture": "gamedata/locations/L2_prev.png",
@@ -70,17 +57,10 @@
                 "difficulty": "FOUR",
                 "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
             }
-        ],
-        "conversationIndicatorList": [
-            {
-                "conversationTag": "1",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
-            }
         ]
     },
     {
-        "tag": "L3",
+        "tag": "Bamboo Forest of the Lost",
         "name": "迷途竹林",
         "wordArt": "gamedata/locations/L3_word_art.png",
         "previewPicture": "gamedata/locations/L3_prev.png",
@@ -103,17 +83,10 @@
                 "difficulty": "THREE",
                 "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
             }
-        ],
-        "conversationIndicatorList": [
-            {
-                "conversationTag": "1",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
-            }
         ]
     },
     {
-        "tag": "L4",
+        "tag": "Forest of Magic",
         "name": "魔法森林",
         "wordArt": "gamedata/locations/L4_word_art.png",
         "previewPicture": "gamedata/locations/L4_prev.png",
@@ -135,13 +108,6 @@
                 "description": "This is L4 round2's description",
                 "difficulty": "THREE",
                 "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
-            }
-        ],
-        "conversationIndicatorList": [
-            {
-                "conversationTag": "1",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
             }
         ]
     },
@@ -169,18 +135,6 @@
                 "difficulty": "THREE",
                 "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
             }
-        ],
-        "conversationIndicatorList": [
-            {
-                "conversationTag": "1",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
-            },
-            {
-                "conversationTag": "2",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
-            }
         ]
     },
     {
@@ -206,18 +160,6 @@
                 "description": "This is L6 round2's description",
                 "difficulty": "THREE",
                 "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
-            }
-        ],
-        "conversationIndicatorList": [
-            {
-                "conversationTag": "1",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
-            },
-            {
-                "conversationTag": "2",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
             }
         ]
     },
@@ -245,18 +187,33 @@
                 "difficulty": "THREE",
                 "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
             }
-        ],
-        "conversationIndicatorList": [
-            {
-                "conversationTag": "1",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
-            },
-            {
-                "conversationTag": "2",
-                "icon": "gamedata/characters/cirno_avatar.png",
-                "name": "Cirno"
-            }
         ]
+    },
+    {
+        "tag": "Kourindou",
+        "name": "香霖堂",
+        "wordArt": "",
+        "previewPicture": "",
+        "backgroundPicture": "",
+        "backgroundMusic": "",
+        "roundList": []
+    },
+    {
+        "tag": "KoumakanLibrary",
+        "name": "红魔馆大图书馆",
+        "wordArt": "",
+        "previewPicture": "",
+        "backgroundPicture": "",
+        "backgroundMusic": "",
+        "roundList": []
+    },
+    {
+        "tag": "ArmsStore",
+        "name": "夜雀烤鳗店",
+        "wordArt": "",
+        "previewPicture": "",
+        "backgroundPicture": "",
+        "backgroundMusic": "",
+        "roundList": []
     }
 ]

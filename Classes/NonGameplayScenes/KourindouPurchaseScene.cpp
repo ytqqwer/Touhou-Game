@@ -6,8 +6,10 @@
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 
+#include "SimpleAudioEngine.h"
 #include "ui/CocosGUI.h"
 using namespace ui;
+using namespace CocosDenshion;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -56,6 +58,7 @@ KourindouPurchaseScene::init()
     backButton->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.15));
     backButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
             Director::getInstance()->popScene();
         }
     });
@@ -70,6 +73,7 @@ KourindouPurchaseScene::init()
     normalProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.25));
     normalProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             currentType = Item::Type::NORMAL;
             itemTable->reloadData();
         }
@@ -85,6 +89,7 @@ KourindouPurchaseScene::init()
     strongProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     strongProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             currentType = Item::Type::STRENGTHEN;
             itemTable->reloadData();
         }
@@ -100,6 +105,7 @@ KourindouPurchaseScene::init()
     unlockColumn->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     unlockColumn->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             currentType = Item::Type::OTHER;
             itemTable->reloadData();
         }
@@ -168,12 +174,12 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
             auto portrait = Sprite::create(characters[idx].portrait);
             portrait->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             portrait->setScale(0.25);
-            portrait->setPosition(Vec2(30, 90));
+            portrait->setPosition(Vec2(50, 90));
             cell->addChild(portrait);
 
             auto name = Label::createWithTTF(characters[idx].name, "fonts/dengxian.ttf", 20);
             name->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            name->setPosition(Vec2(150, 90));
+            name->setPosition(Vec2(180, 90));
             name->setColor(Color3B::BLACK);
             cell->addChild(name);
 

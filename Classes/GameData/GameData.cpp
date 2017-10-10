@@ -115,7 +115,7 @@ from_json(const json& j, Save& s)
     s.locationTag = j.at("locationTag");
 }
 
-// locationListDom[n]["conversationIndicatorList"][n] -> ConversationIndicator
+// conversationListDom[n] -> ConversationIndicator
 static void
 from_json(const json& j, ConversationIndicator& i)
 {
@@ -124,7 +124,7 @@ from_json(const json& j, ConversationIndicator& i)
     i.name = j.at("name");
 }
 
-// conversationDom[n]["dialogues"][n] -> Dialogue
+// conversationListDom[n]["dialogues"][n] -> Dialogue
 static void
 from_json(const json& j, Dialogue& d)
 {
@@ -198,7 +198,7 @@ from_json(const json& j, Location& l)
     }
 }
 
-/// locationListDom[n]["roundList"][n] -> Round
+// locationListDom[n]["roundList"][n] -> Round
 static void
 from_json(const json& j, Round& r)
 {
@@ -656,25 +656,32 @@ APP_IMPLEMENT_GET_AND_SAVE(EffectsVolume, effectsVolume)
 APP_IMPLEMENT_GET_AND_SAVE(ConversationSpeed, conversationSpeed)
 
 vector<ConversationIndicator>
-GameData::getConversationIndicatorList(const string& locationTag)
+GameData::getConversationIndicators(const string& locationTag)
 {
-    /* 1. it 是指向 locationTag 所在 location 的迭代器 */
+    const json& unlockedLocListDom = cachedSave["unlockedLocationList"];
 
-    json::const_iterator it;
-    for (it = locationListDom.begin(); it != locationListDom.end(); ++it) {
-        if (it->at("tag") == locationTag) {
-            break;
+    vector<string> tagList;
+    for (auto const& ul : unlockedLocListDom) {
+        if (ul.at("tag") == locationTag) {
+            for (auto const& ctag : ul["conversationIndicators"]) {
+                tagList.push_back(ctag);
+            }
         }
     }
 
-    /* 2. 拷贝 it 迭代器指向的 conversationIndicatorList */
+    if (tagList.size() <= 0) {
+        return vector<ConversationIndicator>();
+    }
 
-    int saveCnt = it->at("conversationIndicatorList").size();
     vector<ConversationIndicator> listRet;
-    listRet.reserve(saveCnt);
-
-    for (auto const& c : it->at("conversationIndicatorList")) {
-        listRet.push_back(c);
+    json::const_iterator it;
+    for (auto const& ctag : tagList) {
+        for (auto const& it : conversationListDom) {
+            if (it.at("conversationTag") == ctag) {
+                listRet.push_back(it);
+                break;
+            }
+        }
     }
 
     return listRet;
@@ -764,6 +771,29 @@ GameData::getUnlockedLocationTagList()
 
     for (auto const& l : unlockedLocListDom) {
         listRet.push_back(l.at("tag"));
+    }
+
+    return listRet;
+}
+
+vector<Location>
+GameData::getUnlockedLocationList()
+{
+    const json& unlockedLocListDom = cachedSave["unlockedLocationList"];
+
+    vector<string> unlockLocationTag;
+    for (auto const& location : unlockedLocListDom) {
+        unlockLocationTag.push_back(location.at("tag"));
+    }
+
+    vector<Location> listRet;
+    for (auto const& tag : unlockLocationTag) {
+        for (auto const& location : locationListDom) {
+            if (location.at("tag") == tag) {
+                listRet.push_back(location);
+                break;
+            }
+        }
     }
 
     return listRet;
@@ -1172,32 +1202,6 @@ GameData::getEnemyByTag(const string& enemyTag)
     return enemy;
 }
 
-vector<pair<Item, int>>
-GameData::getAvailableItemList()
-{
-    const json& availItemListDom = cachedSave["availableItemList"];
-
-    vector<pair<Item, int>> listRet;
-    listRet.reserve(availItemListDom.size());
-
-    for (auto const& iToPred : itemListDom) {
-        auto it = find_if(availItemListDom.begin(), availItemListDom.end(),
-                          [&iToPred](const json& availI) -> bool {
-                              if (iToPred.at("tag") == availI.at("tag")) {
-                                  return true;
-                              } else {
-                                  return false;
-                              }
-                          });
-
-        if (it != availItemListDom.end()) {
-            listRet.push_back(make_pair<Item, int>(iToPred, it->at("amount")));
-        }
-    }
-
-    return listRet;
-}
-
 vector<Item>
 GameData::getAvailableItems()
 {
@@ -1421,32 +1425,6 @@ GameData::getAvailableSpellCards()
     return listRet;
 }
 
-vector<pair<SpellCard, int>>
-GameData::getAvailableSpellCardList()
-{
-    const json& availSpellCardListDom = cachedSave["availableSpellCardList"];
-
-    vector<pair<SpellCard, int>> listRet;
-    listRet.reserve(availSpellCardListDom.size());
-
-    for (auto const& cToPred : spellCardListDom) {
-        auto it = find_if(availSpellCardListDom.begin(), availSpellCardListDom.end(),
-                          [&cToPred](const json& availC) -> bool {
-                              if (cToPred.at("tag") == availC.at("tag")) {
-                                  return true;
-                              } else {
-                                  return false;
-                              }
-                          });
-
-        if (it != availSpellCardListDom.end()) {
-            listRet.push_back(make_pair<SpellCard, int>(cToPred, it->at("amount")));
-        }
-    }
-
-    return listRet;
-}
-
 void
 GameData::buyItem(const string& itemTag)
 {
@@ -1505,7 +1483,7 @@ testSelf()
     auto get_saved_effects_volume = ptr->getSavedEffectsVolume();
     ptr->saveConversationSpeed(0.7);
     auto get_saved_conversation_speed = ptr->getSavedConversationSpeed();
-    auto get_conversation_indicator_list = ptr->getConversationIndicatorList("Hakurei Jinja");
+    auto get_conversation_indicator_list = ptr->getConversationIndicators("Hakurei Jinja");
     auto const& get_conversation = ptr->getConversation("C1");
     auto get_current_location = ptr->getCurrentLocation();
     auto get_location_list = ptr->getLocationList();
@@ -1528,10 +1506,10 @@ testSelf()
     auto get_money_num = ptr->getMoneyNum();
     ptr->increaseMoney(+1024);
     get_money_num = ptr->getMoneyNum();
-    auto get_avail_item_list = ptr->getAvailableItemList();
+    auto get_avail_item_s = ptr->getAvailableItems();
     auto get_item_list_in_store_1 = ptr->getItemsInStore("ArmsStore");
     auto get_item_list_in_store_2 = ptr->getItemsInStore("Kourindou");
-    auto get_avail_card_list = ptr->getAvailableSpellCardList();
+    auto get_avail_card_s = ptr->getAvailableSpellCards();
     ptr->setRoundToPlay("round 1");
     auto get_round_to_play = ptr->getRoundToPlay();
 
@@ -1547,7 +1525,7 @@ testSelf()
         cout << "  locationTag: " << s.locationTag << endl;
     }
 
-    log(">> getConversationIndicatorList:");
+    log(">> getConversationIndicators:");
     for (auto const& i : get_conversation_indicator_list) {
         cout << "  conversationTag: " << i.conversationTag << endl;
         cout << "  icon: " << i.icon << endl;
@@ -1660,18 +1638,17 @@ testSelf()
              << endl;
     }
 
-    log(">> getAvailItemList:");
-    for (auto const& p : get_avail_item_list) {
-        cout << "  tag: " << p.first.tag << endl;
-        cout << "  amount: " << p.second << endl;
+    log(">> getAvailItems:");
+    for (auto const& p : get_avail_item_s) {
+        cout << "  tag: " << p.tag << endl;
 
         cout << "  ..." << endl;
     }
 
-    log(">> getAvailSpellCardList:");
-    for (auto const& p : get_avail_card_list) {
-        cout << "  tag: " << p.first.tag << endl;
-        cout << "  amount: " << p.second << endl;
+    log(">> getAvailSpellCards:");
+    for (auto const& p : get_avail_card_s) {
+        cout << "  tag: " << p.tag << endl;
+
         cout << "  ..." << endl;
     }
 

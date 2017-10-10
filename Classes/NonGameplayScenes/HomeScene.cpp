@@ -64,9 +64,9 @@ HomeScene::init()
     button_start->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.705));
     button_start->setTitleText("出发");
     button_start->setTitleFontSize(25);
-    button_start->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     button_start->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition = TransitionFade::create(0.5f, RoundSelectScene::create());
             Director::getInstance()->replaceScene(transition);
         }
@@ -79,9 +79,9 @@ HomeScene::init()
     button_equip->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.525));
     button_equip->setTitleText("整备");
     button_equip->setTitleFontSize(25);
-    button_equip->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     button_equip->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition = TransitionFade::create(0.5f, EquipScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -94,9 +94,9 @@ HomeScene::init()
     button_inventory->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.345));
     button_inventory->setTitleText("道具库");
     button_inventory->setTitleFontSize(25);
-    button_inventory->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
     button_inventory->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition = TransitionFade::create(0.5f, InventoryScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -109,10 +109,9 @@ HomeScene::init()
     button_map->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.165));
     button_map->setTitleText("前往其他地图");
     button_map->setTitleFontSize(25);
-    button_map->setSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.12));
-    button_map->setTitleFontName("fonts/dengxian.ttf");
     button_map->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition =
                 TransitionFade::create(0.5f, LocationSelectScene::create());
             Director::getInstance()->pushScene(transition);
@@ -124,9 +123,9 @@ HomeScene::init()
     auto role_change = Button::create("homescene/p4.png");
     role_change->setAnchorPoint(Vec2(0, 0));
     role_change->setPosition(Vec2(_visibleSize.width * 0.01, _visibleSize.height * 0.45));
-    role_change->setSize(Size(_visibleSize.width * 55 / 1280, _visibleSize.height * 108 / 720));
     role_change->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             people_order++;
             people_order %= people_array.size();
             this->getPeople();
@@ -151,7 +150,6 @@ HomeScene::init()
     auto info_bg = Sprite::create("homescene/p3.png");
     info_bg->setAnchorPoint(Vec2(0, 1));
     info_bg->setPosition(Vec2(_visibleSize.width * 0.52, _visibleSize.height));
-    info_bg->setContentSize(Size(_visibleSize.width * 580 / 1280, _visibleSize.height * 106 / 720));
     info_bg->setOpacity(150);
     addChild(info_bg);
 
@@ -160,12 +158,12 @@ HomeScene::init()
     know_button->setTitleFontName("fonts/dengxian.ttf");
     know_button->setAnchorPoint(Vec2(0, 1));
     know_button->setPosition(Vec2(_visibleSize.width * 0.84, _visibleSize.height * 0.99));
-    know_button->setSize(Size(_visibleSize.width * 100 / 1280, _visibleSize.height * 100 / 720));
     know_button->setTitleText("资料库");
     know_button->setTitleFontSize(20);
     know_button->setScale(0.87);
     know_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             TransitionScene* transition =
                 TransitionFade::create(0.5f, KnowledgeBaseScene::create());
             Director::getInstance()->pushScene(transition);
@@ -178,10 +176,13 @@ HomeScene::init()
     store_button->setTitleFontName("fonts/dengxian.ttf");
     store_button->setAnchorPoint(Vec2(0, 1));
     store_button->setPosition(Vec2(_visibleSize.width * 0.774, _visibleSize.height * 0.99));
-    store_button->setSize(Size(_visibleSize.width * 100 / 1280, _visibleSize.height * 100 / 720));
     store_button->setTitleText("系统商店");
     store_button->setTitleFontSize(20);
     store_button->setScale(0.87);
+    store_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED)
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+    });
     addChild(store_button);
 
     /*设置按钮*/
@@ -189,12 +190,12 @@ HomeScene::init()
     set_button->setTitleFontName("fonts/dengxian.ttf");
     set_button->setAnchorPoint(Vec2(0, 1));
     set_button->setPosition(Vec2(_visibleSize.width * 0.905, _visibleSize.height * 0.99));
-    set_button->setSize(Size(_visibleSize.width * 100 / 1280, _visibleSize.height * 100 / 720));
     set_button->setTitleText("设置");
     set_button->setTitleFontSize(20);
     set_button->setScale(0.87);
     set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
             auto lay = SettingsLayer::create("HomeScene");
             this->addChild(lay, 5);
         }
@@ -288,20 +289,15 @@ HomeScene::onEnter()
     getPeople();
 
     /*对话图标*/
-    double dis = 0.36;
-    auto conversation = gamedata->getConversationIndicatorList(location.tag);
-    for (int i = 0; i < conversation.size(); i++) {
-
-        auto conversation = GameData::getInstance()->getConversationIndicatorList(location.tag);
-        for (int i = 0; i < conversation.size(); i++) {
-            ConversationIndicatorButton* indicatorButton =
-                ConversationIndicatorButton::create(conversation[i]);
-            this->addChild(indicatorButton);
-            vector_indicator.pushBack(indicatorButton);
-            indicatorButton->setPosition(
-                Vec2(_visibleSize.width * (dis - 0.01), _visibleSize.height * 0.17));
-            dis += 0.10;
-        }
+    double dis = 0.34;
+    auto conversations = gamedata->getConversationIndicators(location.tag);
+    for (int i = 0; i < conversations.size(); i++) {
+        ConversationIndicatorButton* indicatorButton =
+            ConversationIndicatorButton::create(conversations[i]);
+        this->addChild(indicatorButton);
+        vector_indicator.pushBack(indicatorButton);
+        indicatorButton->setPosition(Vec2(_visibleSize.width * dis, _visibleSize.height * 0.13));
+        dis += 0.08;
     }
 }
 
@@ -323,7 +319,6 @@ HomeScene::getPeople()
             width = height = 0.047;
         }
         cards[i]->setTexture(img);
-        cards[i]->setContentSize(Size(_visibleSize.width * width, _visibleSize.width * height));
     }
 }
 

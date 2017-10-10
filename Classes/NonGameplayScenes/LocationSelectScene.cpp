@@ -14,8 +14,10 @@
 
 // #include "resources.h.dir/map_select.h"
 
+#include "SimpleAudioEngine.h"
 #include "ui/CocosGUI.h"
 using namespace ui;
+using namespace CocosDenshion;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -59,6 +61,7 @@ LocationSelectScene::init()
     ret->setPosition(Vec2(_visibleSize.width * 0.1, _visibleSize.height * 0.2));
     ret->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+			SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
             Director::getInstance()->popScene();
         }
     });
@@ -74,8 +77,8 @@ LocationSelectScene::init()
     koumakanLibrary->setPosition(Vec2(_visibleSize.width * 0.35, _visibleSize.height * 0.2));
     koumakanLibrary->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            // GameData::getInstance()->switchLocation("KoumakanLibraryScene");
-
+			SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            GameData::getInstance()->switchLocation("KoumakanLibrary");
             TransitionScene* transition =
                 TransitionFade::create(0.5f, KoumakanLibraryScene::create());
             Director::getInstance()->popToRootScene();
@@ -94,8 +97,8 @@ LocationSelectScene::init()
     Kourindou->setPosition(Vec2(_visibleSize.width * 0.55, _visibleSize.height * 0.2));
     Kourindou->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            // GameData::getInstance()->switchLocation("KourindouScene");
-
+			SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            GameData::getInstance()->switchLocation("Kourindou");
             TransitionScene* transition = TransitionFade::create(0.5f, KourindouScene::create());
             Director::getInstance()->popToRootScene();
             Director::getInstance()->replaceScene(transition);
@@ -113,8 +116,8 @@ LocationSelectScene::init()
     ArmsStore->setPosition(Vec2(_visibleSize.width * 0.75, _visibleSize.height * 0.2));
     ArmsStore->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            // GameData::getInstance()->switchLocation("ArmsStorePurchaseScene");
-
+			SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            GameData::getInstance()->switchLocation("ArmsStore");
             TransitionScene* transition = TransitionFade::create(0.5f, ArmsStoreScene::create());
             Director::getInstance()->popToRootScene();
             Director::getInstance()->replaceScene(transition);
@@ -137,7 +140,20 @@ LocationSelectScene::onEnter()
     backGround->setTexture(currentlocation.backgroundPicture);
 
     //重新获取全部地点
-    locations = gamedata->getLocationList();
+    locations = gamedata->getUnlockedLocationList();
+	//排除特例
+	vector<Location> locationsExclude;
+	for (int i = 0; i < locations.size(); i++) {
+		if (locations[i].tag == "Kourindou"
+			|| locations[i].tag == "KoumakanLibrary"
+			|| locations[i].tag == "ArmsStore")
+		{
+			continue;
+		}
+			locationsExclude.push_back(locations[i]);
+	}
+	locations = locationsExclude;
+	locationsExclude.clear();
 
     //重新生成地点选择菜单
     LocationList = Menu::create();
@@ -225,6 +241,7 @@ SelectLocationMenuItem::init()
 void
 SelectLocationMenuItem::callBack()
 {
+	SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
     GameData::getInstance()->switchLocation(location.tag);
     TransitionScene* transition = TransitionFade::create(0.5f, HomeScene::create());
     Director::getInstance()->popToRootScene();
