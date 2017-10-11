@@ -4,6 +4,7 @@
 
 #include "GameplayScene/Player/Player.h"
 #include "GameplayScene/Emitters/Emitter.h"
+#include "GameplayScene/Player/Alice.h"
 #include "GameplayScene/Player/Marisa.h"
 #include "GameplayScene/Player/Reimu.h"
 
@@ -17,6 +18,8 @@ Player::create(std::string tag)
         pRet = new (std::nothrow) Reimu();
     } else if (tag == "Marisa") {
         pRet = new (std::nothrow) Marisa();
+    } else if (tag == "Alice") {
+        pRet = new (std::nothrow) Alice();
     }
 
     if (pRet && pRet->init(tag)) {

@@ -153,7 +153,13 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
         auto switchCharacterBtn = Button::create(characterList[i].circularAvatar);
         switchCharacterBtn->setPosition(
             Vec2(_visibleSize.width * 0.060, _visibleSize.height * 0.820));
-        switchCharacterBtn->setScale(0.2);
+
+        auto width = switchCharacterBtn->getContentSize().width;
+        auto height = switchCharacterBtn->getContentSize().height;
+        auto bigger = width > height ? width : height;
+        float scale = 100.0 / bigger;
+        switchCharacterBtn->setScale(scale);
+
         switchCharacterBtn->addTouchEventListener(
             [this, i, switchCharacterBtn](Ref* pSender, Widget::TouchEventType type) {
                 if (type == Widget::TouchEventType::ENDED) {

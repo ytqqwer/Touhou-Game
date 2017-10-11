@@ -27,7 +27,6 @@ private:
 private:
     static const std::string TAG;
 
-    // intorspection
     Size _visibleSize;
     Label* money_text;
     Vector<ConversationIndicatorButton*> vector_indicator;

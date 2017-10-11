@@ -4,12 +4,15 @@
 
 #include "NonGameplayScenes/MainMenuScene.h"
 #include "GameData/GameData.h"
+#include "JumpTableScene.h"
 #include "Layers/SettingsLayer.h"
 #include "NonGameplayScenes/HomeScene.h"
 #include "NonGameplayScenes/SaveScene.h"
 #include "NonGameplayScenes/StaffScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
+
+#include "AudioController.h"
 
 // #include "resources.h.dir/main_menu.h"
 
@@ -40,6 +43,22 @@ MainMenuScene::init()
     sceneTag->setPosition(Vec2(0, _visibleSize.height));
     sceneTag->setColor(Color3B::WHITE);
     this->addChild(sceneTag);
+
+    auto JTButton = Button::create("", "", "");
+    JTButton->setTitleText("跳转表");
+    JTButton->setTitleFontName("fonts/dengxian.ttf");
+    JTButton->setTitleColor(Color3B(194, 134, 11));
+    JTButton->setTitleFontSize(30);
+    JTButton->setAnchorPoint(Vec2(0, 0));
+    JTButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.13));
+    JTButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playClickButtonEffect();
+            TransitionScene* transition = TransitionFade::create(1.0f, JumpTableScene::create());
+            Director::getInstance()->replaceScene(transition);
+        }
+    });
+    addChild(JTButton);
 #endif
 
     /*  3. init background */
@@ -61,7 +80,8 @@ MainMenuScene::init()
     NGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.57));
     NGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->stopMusic();
+            AudioController::getInstance()->playClickButtonEffect();
             // auto canNew = GameData::getInstance()->newGame();
             //有不能创建新存档的BUG，暂时注释掉
             // if (canNew) {
@@ -85,7 +105,7 @@ MainMenuScene::init()
     LGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.43));
     LGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition = TransitionFade::create(1.0f, SaveScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -102,7 +122,7 @@ MainMenuScene::init()
     SGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.34));
     SGButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             auto lay = SettingsLayer::create("MainMenuScene");
             this->addChild(lay, 5);
         }
@@ -120,7 +140,7 @@ MainMenuScene::init()
     addChild(ZGButton);
     ZGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition = TransitionFade::create(1.0f, StaffScene::create());
             Director::getInstance()->replaceScene(transition);
         }
@@ -149,12 +169,16 @@ MainMenuScene::onEnter()
 {
     Scene::onEnter();
 
-    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+    if (AudioController::getInstance()->getCurrentMusic() != "bgm000.mp3") {
+        AudioController::getInstance()->stopMusic();
+        AudioController::getInstance()->playMusic("bgm000.mp3", true);
+    }
 
     auto move = MoveBy::create(40, Vec2(0, _visibleSize.height / 4));
     auto move_back = move->reverse();
     auto seq = Sequence::create(move, move_back, nullptr);
     backGround->runAction(RepeatForever::create(seq));
+    backGround->setPosition(_visibleSize / 2);
 }
 
 void

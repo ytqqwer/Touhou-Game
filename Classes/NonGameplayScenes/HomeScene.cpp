@@ -19,6 +19,8 @@
 
 // #include "resources.h.dir/home.h"
 
+#include "AudioController.h"
+
 #include "ui/CocosGUI.h"
 using namespace ui;
 
@@ -28,8 +30,7 @@ using namespace ui;
 const std::string HomeScene::TAG{ "HomeScene" };
 
 HomeScene::HomeScene()
-    : music("")
-    , people_order(0)
+    : people_order(0)
 {
     gamedata = GameData::getInstance();
     _visibleSize = _director->getVisibleSize();
@@ -66,7 +67,7 @@ HomeScene::init()
     button_start->setTitleFontSize(25);
     button_start->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition = TransitionFade::create(0.5f, RoundSelectScene::create());
             Director::getInstance()->replaceScene(transition);
         }
@@ -81,7 +82,7 @@ HomeScene::init()
     button_equip->setTitleFontSize(25);
     button_equip->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition = TransitionFade::create(0.5f, EquipScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -96,7 +97,7 @@ HomeScene::init()
     button_inventory->setTitleFontSize(25);
     button_inventory->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition = TransitionFade::create(0.5f, InventoryScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -111,7 +112,7 @@ HomeScene::init()
     button_map->setTitleFontSize(25);
     button_map->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition =
                 TransitionFade::create(0.5f, LocationSelectScene::create());
             Director::getInstance()->pushScene(transition);
@@ -125,7 +126,7 @@ HomeScene::init()
     role_change->setPosition(Vec2(_visibleSize.width * 0.01, _visibleSize.height * 0.45));
     role_change->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             people_order++;
             people_order %= people_array.size();
             this->getPeople();
@@ -163,7 +164,7 @@ HomeScene::init()
     know_button->setScale(0.87);
     know_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition =
                 TransitionFade::create(0.5f, KnowledgeBaseScene::create());
             Director::getInstance()->pushScene(transition);
@@ -180,8 +181,9 @@ HomeScene::init()
     store_button->setTitleFontSize(20);
     store_button->setScale(0.87);
     store_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
-        if (type == Widget::TouchEventType::ENDED)
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playClickButtonEffect();
+        }
     });
     addChild(store_button);
 
@@ -195,7 +197,7 @@ HomeScene::init()
     set_button->setScale(0.87);
     set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             auto lay = SettingsLayer::create("HomeScene");
             this->addChild(lay, 5);
         }
@@ -244,16 +246,8 @@ HomeScene::onEnter()
     people_array = gamedata->getAvailableCharacterList();
 
     /*背景音乐*/
-    if (music != location.backgroundMusic) {
-        SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-        SimpleAudioEngine::getInstance()->playBackgroundMusic(location.backgroundMusic.c_str(),
-                                                              true);
-        music = location.backgroundMusic;
-    }
-    if (music == location.backgroundMusic) {
-        if (!SimpleAudioEngine::getInstance()->isBackgroundMusicPlaying()) {
-            SimpleAudioEngine::getInstance()->playBackgroundMusic(music.c_str(), true);
-        }
+    if (AudioController::getInstance()->getCurrentMusic() != location.backgroundMusic) {
+        AudioController::getInstance()->playMusic(location.backgroundMusic, true);
     }
 
     /*背景*/

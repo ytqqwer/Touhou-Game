@@ -65,7 +65,7 @@
         "wordArt": "gamedata/locations/L3_word_art.png",
         "previewPicture": "gamedata/locations/L3_prev.png",
         "backgroundPicture": "gamedata/locations/L3_bgp.jpg",
-        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "backgroundMusic": "bgm002.mp3",
         "roundList": [
             {
                 "tag": "L3_1",
@@ -91,7 +91,7 @@
         "wordArt": "gamedata/locations/L4_word_art.png",
         "previewPicture": "gamedata/locations/L4_prev.png",
         "backgroundPicture": "gamedata/locations/L4_bgp.png",
-        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "backgroundMusic": "bgm003.mp3",
         "roundList": [
             {
                 "tag": "L4_1",
@@ -194,8 +194,8 @@
         "name": "香霖堂",
         "wordArt": "",
         "previewPicture": "",
-        "backgroundPicture": "",
-        "backgroundMusic": "",
+        "backgroundPicture": "KourindouScene/kourindou.jpg",
+        "backgroundMusic": "bgm014.mp3",
         "roundList": []
     },
     {
@@ -203,8 +203,8 @@
         "name": "红魔馆大图书馆",
         "wordArt": "",
         "previewPicture": "",
-        "backgroundPicture": "",
-        "backgroundMusic": "",
+        "backgroundPicture": "KoumakanLibraryScene/library.jpg",
+        "backgroundMusic": "bgm015.mp3",
         "roundList": []
     },
     {
@@ -212,8 +212,8 @@
         "name": "夜雀烤鳗店",
         "wordArt": "",
         "previewPicture": "",
-        "backgroundPicture": "",
-        "backgroundMusic": "",
+        "backgroundPicture": "ArmsStore/store.jpg",
+        "backgroundMusic": "bgm016.mp3",
         "roundList": []
     }
 ]

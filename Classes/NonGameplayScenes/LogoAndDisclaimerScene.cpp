@@ -6,7 +6,6 @@
 #include "GameData/GameData.h"
 #include "JumpTableScene.h"
 #include "NonGameplayScenes/BackgroundIntroScene.h"
-#include "NonGameplayScenes/MainMenuScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 #include "resources.h.dir/logo.h"
@@ -95,12 +94,8 @@ LogoAndDisclaimerScene::init()
 
     // 都展示完了，切换到下一场景
 
-    this->scheduleOnce(
-        [this](float) {
-            _director->replaceScene(MainMenuScene::create());
-            //_director->replaceScene(BackgroundIntroScene::create());
-        },
-        _logoLast + _disclaimerLast, "nextScene");
+    this->scheduleOnce([this](float) { _director->replaceScene(BackgroundIntroScene::create()); },
+                       _logoLast + _disclaimerLast, "nextScene");
 
     /*  5. 一点击画面就会进入 JumpTable
      *     Non-Gameplay 一些重要场景开发尚未完成，需要 JumpTable

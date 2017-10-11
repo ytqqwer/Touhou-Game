@@ -7,10 +7,10 @@
 #include "PlaceHolder.h"
 // #include "resources.h.dir/inventory.h"
 
-#include "SimpleAudioEngine.h"
+#include "AudioController.h"
+
 #include "ui/CocosGUI.h"
 using namespace ui;
-using namespace CocosDenshion;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -69,7 +69,7 @@ InventoryScene::init()
     backButton->setTitleColor(Color3B::WHITE);
     backButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
+            AudioController::getInstance()->playReturnButtonEffect();
             Director::getInstance()->popScene();
         }
     });
@@ -83,7 +83,7 @@ InventoryScene::init()
     normalProps->setTitleColor(Color3B(91, 155, 213));
     normalProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             currentType = Item::Type::NORMAL;
             itemTable->reloadData();
         }
@@ -98,7 +98,7 @@ InventoryScene::init()
     strongProps->setTitleColor(Color3B(91, 155, 213));
     strongProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             currentType = Item::Type::STRENGTHEN;
             itemTable->reloadData();
         }
@@ -113,7 +113,7 @@ InventoryScene::init()
     specialProps->setTitleColor(Color3B(91, 155, 213));
     specialProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             currentType = Item::Type::SPECIAL;
             itemTable->reloadData();
         }

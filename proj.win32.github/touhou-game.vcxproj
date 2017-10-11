@@ -152,6 +152,7 @@
     <ClCompile Include="..\Classes\JumpTableScene.cpp" />
     <ClCompile Include="..\Classes\NonGameplayScenesCache.cpp" />
     <ClCompile Include="..\Classes\PlaceHolder.cpp" />
+    <ClCompile Include="..\Classes\AudioController.cpp" />
 
     <ClCompile Include="..\Classes\GameData\GameData.cpp" />
 
@@ -185,6 +186,7 @@
     <ClCompile Include="..\Classes\GameplayScene\Player\Player.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Player\Reimu.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Player\Marisa.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Player\Alice.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\CtrlPanelLayer.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\CoolDownButton.cpp" />
@@ -213,6 +215,7 @@
     <ClInclude Include="..\Classes\JumpTableScene.h" />
     <ClInclude Include="..\Classes\NonGameplayScenesCache.h" />
     <ClInclude Include="..\Classes\PlaceHolder.h" />
+    <ClInclude Include="..\Classes\AudioController.h" />
 
     <ClInclude Include="..\Classes\GameData\GameData.h" />
     <ClInclude Include="..\Classes\GameData\Character.h" />
@@ -258,6 +261,7 @@
     <ClInclude Include="..\Classes\GameplayScene\Player\Player.h" />
     <ClInclude Include="..\Classes\GameplayScene\Player\Reimu.h" />
     <ClInclude Include="..\Classes\GameplayScene\Player\Marisa.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Player\Alice.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\CtrlPanelLayer.h" />
     <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\CoolDownButton.h" />

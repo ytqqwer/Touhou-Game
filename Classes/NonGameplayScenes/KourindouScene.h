@@ -30,6 +30,8 @@ private:
     Size _visibleSize;
     Label* money_text;
     Vector<ConversationIndicatorButton*> vector_indicator;
+
+    string music;
 };
 
 #endif // KOURINDOU_SCENE_H

@@ -27,7 +27,6 @@ private:
     static const std::string TAG;
 
     Sprite* backGround;
-    // intorspection
     Size _visibleSize;
 };
 

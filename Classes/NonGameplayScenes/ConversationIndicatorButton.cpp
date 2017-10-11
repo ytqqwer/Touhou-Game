@@ -4,8 +4,8 @@
 
 #include "NonGameplayScenes/ConversationIndicatorButton.h"
 #include "Layers/ConversationLayer.h"
-#include "SimpleAudioEngine.h"
-using namespace CocosDenshion;
+
+#include "AudioController.h"
 
 ConversationIndicatorButton*
 ConversationIndicatorButton::create(const ConversationIndicator& i)
@@ -55,7 +55,7 @@ ConversationIndicatorButton::init()
 
     this->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             this->newTip->setOpacity(0);
             auto conversationTag = this->_indicator.conversationTag;
 

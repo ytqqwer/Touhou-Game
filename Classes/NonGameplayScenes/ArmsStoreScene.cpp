@@ -18,6 +18,8 @@
 
 // #include "resources.h.dir/arms_store.h"
 
+#include "AudioController.h"
+
 #include "ui/CocosGUI.h"
 using namespace ui;
 
@@ -50,8 +52,9 @@ ArmsStoreScene::init()
     this->addChild(sceneTag);
 #endif
 
+    auto location = GameData::getInstance()->getCurrentLocation();
     /*背景*/
-    auto bg_1 = Sprite::create();
+    auto bg_1 = Sprite::create(location.backgroundPicture);
     bg_1->setContentSize(_visibleSize);
     bg_1->setPosition(_visibleSize / 2);
     addChild(bg_1);
@@ -90,7 +93,7 @@ ArmsStoreScene::init()
     button_start->setTitleFontSize(25);
     button_start->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition =
                 TransitionFade::create(0.5f, ArmsStorePurchaseScene::create());
             Director::getInstance()->pushScene(transition);
@@ -106,7 +109,7 @@ ArmsStoreScene::init()
     button_equip->setTitleFontSize(25);
     button_equip->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition = TransitionFade::create(0.5f, EquipScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -121,7 +124,7 @@ ArmsStoreScene::init()
     button_inventory->setTitleFontSize(25);
     button_inventory->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition = TransitionFade::create(0.5f, InventoryScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -136,7 +139,7 @@ ArmsStoreScene::init()
     button_map->setTitleFontSize(25);
     button_map->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition =
                 TransitionFade::create(0.5f, LocationSelectScene::create());
             Director::getInstance()->pushScene(transition);
@@ -153,10 +156,12 @@ ArmsStoreScene::init()
     know_button->setTitleFontSize(20);
     know_button->setScale(0.87);
     know_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
-        if (type == Widget::TouchEventType::ENDED)
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
-        TransitionScene* transition = TransitionFade::create(0.5f, KnowledgeBaseScene::create());
-        Director::getInstance()->pushScene(transition);
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playClickButtonEffect();
+            TransitionScene* transition =
+                TransitionFade::create(0.5f, KnowledgeBaseScene::create());
+            Director::getInstance()->pushScene(transition);
+        }
     });
     addChild(know_button);
 
@@ -169,8 +174,9 @@ ArmsStoreScene::init()
     store_button->setTitleFontSize(20);
     store_button->setScale(0.87);
     store_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
-        if (type == Widget::TouchEventType::ENDED)
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playClickButtonEffect();
+        }
     });
     addChild(store_button);
 
@@ -184,7 +190,7 @@ ArmsStoreScene::init()
     set_button->setScale(0.87);
     set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             auto lay = SettingsLayer::create("HomeScene");
             this->addChild(lay, 5);
         }
@@ -199,10 +205,12 @@ ArmsStoreScene::onEnter()
 {
     Scene::onEnter();
 
+    auto location = GameData::getInstance()->getCurrentLocation();
+
     /*背景音乐*/
-    auto playMusic = SimpleAudioEngine::getInstance();
-    // playMusic->stopBackgroundMusic();
-    // playMusic->playBackgroundMusic(" ", true);
+    if (AudioController::getInstance()->getCurrentMusic() != location.backgroundMusic) {
+        AudioController::getInstance()->playMusic(location.backgroundMusic, true);
+    }
 
     /*钱币*/
     // auto money = GameData::getInstance()->getMoneyNum();

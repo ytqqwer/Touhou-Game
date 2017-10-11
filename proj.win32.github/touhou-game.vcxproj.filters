@@ -62,6 +62,9 @@
     <ClCompile Include="..\Classes\PlaceHolder.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\AudioController.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
 
     <!-- Classes\GameData -->
 
@@ -160,6 +163,9 @@
     <ClCompile Include="..\Classes\GameplayScene\Player\Marisa.cpp">
       <Filter>Classes\GameplayScene\Player</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Player\Alice.cpp">
+      <Filter>Classes\GameplayScene\Player</Filter>
+    </ClCompile>
 
     <!-- Classes\GameplayScene\Enemy -->
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Enemy.cpp">
@@ -235,6 +241,9 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\PlaceHolder.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AudioController.h">
       <Filter>Classes</Filter>
     </ClInclude>
 
@@ -369,6 +378,9 @@
       <Filter>Classes\GameplayScene\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Player\Marisa.h">
+      <Filter>Classes\GameplayScene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Player\Alice.h">
       <Filter>Classes\GameplayScene\Player</Filter>
     </ClInclude>
 

@@ -18,6 +18,8 @@
 
 // #include "resources.h.dir/kourindou.h"
 
+#include "AudioController.h"
+
 #include "ui/CocosGUI.h"
 using namespace ui;
 
@@ -50,8 +52,9 @@ KourindouScene::init()
     this->addChild(sceneTag);
 #endif
 
+    auto location = GameData::getInstance()->getCurrentLocation();
     /*背景*/
-    auto bg_1 = Sprite::create("kourindouscene/shop_1.jpg");
+    auto bg_1 = Sprite::create(location.backgroundPicture);
     bg_1->setContentSize(_visibleSize);
     bg_1->setPosition(_visibleSize / 2);
     addChild(bg_1);
@@ -66,7 +69,7 @@ KourindouScene::init()
 
     /*地点艺术字*/
     // auto wordArt = Sprite::create();
-    // wordArt->setTexture("KoumakanLibraryScene/word_art.png");
+    // wordArt->setTexture("KourindouScene/word_art.png");
     // wordArt->setAnchorPoint(Vec2(0, 1));
     // wordArt->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.077));
     // wordArt->setPosition(Vec2(_visibleSize.width * 0.53, _visibleSize.height * 0.955));
@@ -90,7 +93,7 @@ KourindouScene::init()
     button_start->setTitleFontSize(25);
     button_start->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playReturnButtonEffect();
             TransitionScene* transition =
                 TransitionFade::create(0.5f, KourindouPurchaseScene::create());
             Director::getInstance()->pushScene(transition);
@@ -106,7 +109,7 @@ KourindouScene::init()
     button_equip->setTitleFontSize(25);
     button_equip->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition = TransitionFade::create(0.5f, EquipScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -121,7 +124,7 @@ KourindouScene::init()
     button_inventory->setTitleFontSize(25);
     button_inventory->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition = TransitionFade::create(0.5f, InventoryScene::create());
             Director::getInstance()->pushScene(transition);
         }
@@ -136,7 +139,7 @@ KourindouScene::init()
     button_map->setTitleFontSize(25);
     button_map->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition =
                 TransitionFade::create(0.5f, LocationSelectScene::create());
             Director::getInstance()->pushScene(transition);
@@ -154,7 +157,7 @@ KourindouScene::init()
     know_button->setScale(0.87);
     know_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             TransitionScene* transition =
                 TransitionFade::create(0.5f, KnowledgeBaseScene::create());
             Director::getInstance()->pushScene(transition);
@@ -171,8 +174,9 @@ KourindouScene::init()
     store_button->setTitleFontSize(20);
     store_button->setScale(0.87);
     store_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
-        if (type == Widget::TouchEventType::ENDED)
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playClickButtonEffect();
+        }
     });
     addChild(store_button);
 
@@ -186,7 +190,7 @@ KourindouScene::init()
     set_button->setScale(0.87);
     set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             auto lay = SettingsLayer::create("HomeScene");
             this->addChild(lay, 5);
         }
@@ -201,15 +205,14 @@ KourindouScene::onEnter()
 {
     Scene::onEnter();
 
+    auto location = GameData::getInstance()->getCurrentLocation();
+
     /*背景音乐*/
-    auto playMusic = SimpleAudioEngine::getInstance();
-    // playMusic->stopBackgroundMusic();
-    // playMusic->playBackgroundMusic(" ", true);
+    if (AudioController::getInstance()->getCurrentMusic() != location.backgroundMusic) {
+        AudioController::getInstance()->playMusic(location.backgroundMusic, true);
+    }
 
     /*钱币*/
-    // auto money = GameData::getInstance()->getMoneyNum();
-    // stringstream ss;
-    // ss << money;
     char str[10];
     sprintf(str, "%ld", GameData::getInstance()->getMoneyNum());
     money_text->setColor(Color3B::BLACK);

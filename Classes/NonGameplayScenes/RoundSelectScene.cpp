@@ -9,14 +9,13 @@
 
 // #include "resources.h.dir/main_menu.h"
 
-//需要用到的头文件
 #include "GameData/GameData.h"
 #include "GameplayScene/GameplayScene.h"
 
-#include "SimpleAudioEngine.h"
+#include "AudioController.h"
+
 #include "ui/CocosGUI.h"
 using namespace ui;
-using namespace CocosDenshion;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -45,7 +44,34 @@ RoundSelectScene::onEnter()
 {
     Scene::onEnter();
 
+    //取得当前所在的地点和回合，gameDate，以及角色,以及当前可以使用的所有角色
+    Location location = GameData::getInstance()->getCurrentLocation();
+
+    /*背景音乐*/
+    if (!AudioController::getInstance()->isPlayingMusic()) {
+        AudioController::getInstance()->playMusic(location.backgroundMusic, true);
+    }
+    if (AudioController::getInstance()->getCurrentMusic() != location.backgroundMusic) {
+        AudioController::getInstance()->playMusic(location.backgroundMusic, true);
+    }
+
     /*****************静态不会变化的板块.创建大概模型*****************/
+    //创建背景
+    auto backGround = Sprite::create(location.backgroundPicture);
+    backGround->setContentSize(Size(_visibleSize.width, _visibleSize.height));
+    backGround->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
+    this->addChild(backGround);
+
+    auto backGround1 = Sprite::create("roundselectscene/layer_1.png");
+    backGround1->setContentSize(Size(_visibleSize.width * 0.6, _visibleSize.height * 0.25));
+    backGround1->setPosition(Vec2(_visibleSize.width * 0.65, _visibleSize.height * 0.7));
+    this->addChild(backGround1);
+
+    auto backGround2 = Sprite::create("roundselectscene/layer_2.png");
+    backGround2->setContentSize(Size(_visibleSize.width * 0.6, _visibleSize.height * 0.5));
+    backGround2->setPosition(Vec2(_visibleSize.width * 0.65, _visibleSize.height * 0.3));
+    this->addChild(backGround2);
+
     //创建返回按钮
     auto backButton = Button::create("roundselectscene/p1.png", "", "");
     backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
@@ -53,7 +79,7 @@ RoundSelectScene::onEnter()
     backButton->setTitleFontSize(20);
     backButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
+            AudioController::getInstance()->playReturnButtonEffect();
             Director::getInstance()->replaceScene(HomeScene::create());
         }
     });
@@ -66,7 +92,7 @@ RoundSelectScene::onEnter()
     beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
     beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             NonGameplayScenesCache::getInstance()->removeAllScenes();
             Director::getInstance()->popToRootScene();
             Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
@@ -76,24 +102,6 @@ RoundSelectScene::onEnter()
     this->addChild(beginButton, 2);
 
     /***********************创建会变化的模块********************/
-    //取得当前所在的地点和回合，gameDate，以及角色,以及当前可以使用的所有角色
-    Location location = GameData::getInstance()->getCurrentLocation();
-
-    //创建背景
-    auto backGround = Sprite::create(location.backgroundPicture);
-    backGround->setContentSize(Size(_visibleSize.width, _visibleSize.height));
-    backGround->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
-    this->addChild(backGround, -1);
-
-    auto backGround1 = Sprite::create("roundselectscene/layer_1.png");
-    backGround1->setContentSize(Size(_visibleSize.width * 0.6, _visibleSize.height * 0.25));
-    backGround1->setPosition(Vec2(_visibleSize.width * 0.65, _visibleSize.height * 0.7));
-    this->addChild(backGround1);
-
-    auto backGround2 = Sprite::create("roundselectscene/layer_2.png");
-    backGround2->setContentSize(Size(_visibleSize.width * 0.6, _visibleSize.height * 0.5));
-    backGround2->setPosition(Vec2(_visibleSize.width * 0.65, _visibleSize.height * 0.3));
-    this->addChild(backGround2);
 
     //创建当前场景的场景名字的艺术字
     auto sceneName = Sprite::create(location.wordArt);
@@ -150,7 +158,7 @@ RoundSelectScene::onEnter()
             roundButton->addTouchEventListener(
                 [i, this](Ref* pSender, Widget::TouchEventType type) {
                     if (type == Widget::TouchEventType::ENDED) {
-                        SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+                        AudioController::getInstance()->playClickButtonEffect();
                         setRoundInformation(rounds[i]);
                         GameData::getInstance()->setRoundToPlay(rounds[i].tag);
                     }
@@ -167,7 +175,7 @@ RoundSelectScene::onEnter()
             roundButton->addTouchEventListener(
                 [i, this](Ref* pSender, Widget::TouchEventType type) {
                     if (type == Widget::TouchEventType::ENDED) {
-                        SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+                        AudioController::getInstance()->playClickButtonEffect();
                         setRoundInformation(rounds[i]);
                         GameData::getInstance()->setRoundToPlay(rounds[i].tag);
                     }
@@ -184,7 +192,7 @@ RoundSelectScene::onEnter()
             roundButton->setTitleFontSize(25);
             roundButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
                 if (type == Widget::TouchEventType::ENDED) {
-                    SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+                    AudioController::getInstance()->playClickButtonEffect();
                     setRoundInformation(rounds[i]);
                 }
 
@@ -211,10 +219,15 @@ RoundSelectScene::onEnter()
 
     //设置p1的肖像
     p1Portrait = Sprite::create();
-    p1Portrait->setTexture(p1.portrait);
-    p1Portrait->setScale(0.2);
     p1Portrait->setPosition(Vec2(_visibleSize.width * (0.5), _visibleSize.height * 0.4));
     this->addChild(p1Portrait, 3);
+
+    auto p1StandAnimation = Animation::create();
+    for (auto v : p1.standFrame) {
+        p1StandAnimation->addSpriteFrameWithFile(v);
+    }
+    p1StandAnimation->setDelayPerUnit(p1.standFrameDelay);
+    p1Portrait->runAction(RepeatForever::create(Animate::create(p1StandAnimation)));
 
     //设置p1的符卡
     setSpellCard(p1.tag, p1CardSprites, 0.45);
@@ -229,7 +242,7 @@ RoundSelectScene::onEnter()
 
     p1Button->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             auto characters = GameData::getInstance()->getAvailableCharacterList();
             if (characters.size() <= GameData::getInstance()->getOnStageCharacterTagList().size()) {
                 return;
@@ -255,8 +268,13 @@ RoundSelectScene::onEnter()
             GameData::getInstance()->switchOnStageCharacter(1, character.tag);
             p1 = character;
             //替换立绘
-            // p1Portrait->removeFromParent();
-            this->p1Portrait->setTexture(character.portrait);
+            auto standAnimation = Animation::create();
+            for (auto v : p1.standFrame) {
+                standAnimation->addSpriteFrameWithFile(v);
+            }
+            standAnimation->setDelayPerUnit(p1.standFrameDelay);
+            p1Portrait->stopAllActions();
+            p1Portrait->runAction(RepeatForever::create(Animate::create(standAnimation)));
             //替换符卡
             setSpellCard(character.tag, p1CardSprites, 0.45);
             //替换道具
@@ -266,10 +284,15 @@ RoundSelectScene::onEnter()
 
     //设置p2的肖像
     p2Portrait = Sprite::create();
-    p2Portrait->setTexture(p2.portrait);
-    p2Portrait->setScale(0.2);
     p2Portrait->setPosition(Vec2(_visibleSize.width * (0.7), _visibleSize.height * 0.4));
     this->addChild(p2Portrait, 3);
+
+    auto p2StandAnimation = Animation::create();
+    for (auto v : p2.standFrame) {
+        p2StandAnimation->addSpriteFrameWithFile(v);
+    }
+    p2StandAnimation->setDelayPerUnit(p2.standFrameDelay);
+    p2Portrait->runAction(RepeatForever::create(Animate::create(p2StandAnimation)));
 
     //设置p2的符卡
     setSpellCard(p2.tag, p2CardSprites, 0.65);
@@ -283,7 +306,7 @@ RoundSelectScene::onEnter()
     this->addChild(p2Button, 3);
     p2Button->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             auto characters = GameData::getInstance()->getAvailableCharacterList();
             if (characters.size() <= GameData::getInstance()->getOnStageCharacterTagList().size()) {
                 return;
@@ -309,7 +332,13 @@ RoundSelectScene::onEnter()
             GameData::getInstance()->switchOnStageCharacter(2, character.tag);
             p2 = character;
             //替换立绘
-            p2Portrait->setTexture(character.portrait);
+            auto standAnimation = Animation::create();
+            for (auto v : p2.standFrame) {
+                standAnimation->addSpriteFrameWithFile(v);
+            }
+            standAnimation->setDelayPerUnit(p2.standFrameDelay);
+            p2Portrait->stopAllActions();
+            p2Portrait->runAction(RepeatForever::create(Animate::create(standAnimation)));
             //替换符卡
             setSpellCard(character.tag, p2CardSprites, 0.65);
             //替换道具

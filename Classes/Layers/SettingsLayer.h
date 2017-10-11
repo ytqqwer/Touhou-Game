@@ -5,7 +5,6 @@
 #ifndef SETTINGS_LAYER_H
 #define SETTINGS_LAYER_H
 
-#include "SimpleAudioEngine.h"
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include <string>
@@ -13,7 +12,6 @@
 USING_NS_CC;
 using namespace std;
 using namespace cocos2d::ui;
-using namespace CocosDenshion;
 
 class SettingsLayer : public Layer
 {
@@ -29,10 +27,8 @@ private:
     SettingsLayer(const string& TAG); // for autorelease consideration, make ctor private
 
 private:
-    // intorspection
     Size _visibleSize;
     string currentScene;
-    SimpleAudioEngine* audioEngine;
 
     Node* pauseNode;
 };

@@ -48,7 +48,6 @@ public:
     /*临时项*/
     void initLauncher();
     void initElevator();
-    void testEventFilterManager();
     /*临时项*/
 
     //对碰撞进行处理

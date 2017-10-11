@@ -17,6 +17,8 @@ public:
     APP_SCENE_CREATE_FUNC(BackgroundIntroScene, TAG);
 
     virtual bool init();
+    virtual void onEnter();
+    virtual void onExit();
 
 private:
     BackgroundIntroScene();
@@ -24,8 +26,9 @@ private:
 private:
     static const std::string TAG;
 
-    // intorspection
     Size _visibleSize;
+    Sprite* background;
+    Label* label;
 };
 
 #endif // BACKGROUND_INTRO_SCENE_H

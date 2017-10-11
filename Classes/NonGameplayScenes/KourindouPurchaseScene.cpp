@@ -6,10 +6,10 @@
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 
-#include "SimpleAudioEngine.h"
+#include "AudioController.h"
+
 #include "ui/CocosGUI.h"
 using namespace ui;
-using namespace CocosDenshion;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -58,7 +58,7 @@ KourindouPurchaseScene::init()
     backButton->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.15));
     backButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
+            AudioController::getInstance()->playReturnButtonEffect();
             Director::getInstance()->popScene();
         }
     });
@@ -72,7 +72,7 @@ KourindouPurchaseScene::init()
     normalProps->setTitleColor(Color3B(91, 155, 213));
     normalProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             currentType = Item::Type::NORMAL;
             itemTable->reloadData();
         }
@@ -87,7 +87,7 @@ KourindouPurchaseScene::init()
     strongProps->setTitleColor(Color3B(91, 155, 213));
     strongProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             currentType = Item::Type::STRENGTHEN;
             itemTable->reloadData();
         }
@@ -102,7 +102,7 @@ KourindouPurchaseScene::init()
     unlockColumn->setTitleColor(Color3B(91, 155, 213));
     unlockColumn->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             currentType = Item::Type::OTHER;
             itemTable->reloadData();
         }
@@ -168,9 +168,14 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
             box->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
             cell->addChild(box);
 
-            auto portrait = Sprite::create(characters[idx].portrait);
+            auto standAnimation = Animation::create();
+            for (auto v : characters[idx].standFrame) {
+                standAnimation->addSpriteFrameWithFile(v);
+            }
+            standAnimation->setDelayPerUnit(characters[idx].standFrameDelay);
+            auto portrait = Sprite::create();
+            portrait->runAction(RepeatForever::create(Animate::create(standAnimation)));
             portrait->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            portrait->setScale(0.25);
             portrait->setPosition(Vec2(50, 90));
             cell->addChild(portrait);
 

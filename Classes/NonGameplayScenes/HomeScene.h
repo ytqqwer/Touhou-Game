@@ -45,8 +45,6 @@ private:
     Label* prog_text;
     Label* money_text;
 
-    string music;
-
     Vector<ConversationIndicatorButton*> vector_indicator;
 };
 

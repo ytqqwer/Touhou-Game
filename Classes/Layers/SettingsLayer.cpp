@@ -7,12 +7,16 @@
 #include "NonGameplayScenes/MainMenuScene.h"
 #include "NonGameplayScenes/RoundSelectScene.h"
 #include "NonGameplayScenes/SaveScene.h"
+
 #include "resources.h.dir/settings_layer.h"
+
+#include "AudioController.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 SettingsLayer::SettingsLayer(const string& TAG)
 {
     _visibleSize = _director->getVisibleSize();
-    audioEngine = SimpleAudioEngine::getInstance();
     currentScene = TAG;
 }
 
@@ -96,7 +100,8 @@ SettingsLayer::init()
     auto _sliderMusicVolume = Slider::create();
     _sliderMusicVolume->setTag(2);
     _sliderMusicVolume->setTouchEnabled(true);
-    _sliderMusicVolume->setPercent(audioEngine->getBackgroundMusicVolume() * 100);
+    _sliderMusicVolume->setPercent(SimpleAudioEngine::getInstance()->getBackgroundMusicVolume() *
+                                   100);
     _sliderMusicVolume->loadBarTexture(IMG_SETTING_SLIDER_TRACK);
     _sliderMusicVolume->loadSlidBallTextures(IMG_SETTING_SLIDER_THUMB, IMG_SETTING_SLIDER_THUMB);
     _sliderMusicVolume->loadProgressBarTexture(IMG_SETTING_SLIDER_PROGRESS);
@@ -111,7 +116,7 @@ SettingsLayer::init()
     auto _sliderEffectVolume = Slider::create();
     _sliderEffectVolume->setTag(4);
     _sliderEffectVolume->setTouchEnabled(true);
-    _sliderEffectVolume->setPercent(audioEngine->getEffectsVolume() * 100);
+    _sliderEffectVolume->setPercent(SimpleAudioEngine::getInstance()->getEffectsVolume() * 100);
     _sliderEffectVolume->loadBarTexture(IMG_SETTING_SLIDER_TRACK);
     _sliderEffectVolume->loadSlidBallTextures(IMG_SETTING_SLIDER_THUMB, IMG_SETTING_SLIDER_THUMB);
     _sliderEffectVolume->loadProgressBarTexture(IMG_SETTING_SLIDER_PROGRESS);
@@ -264,10 +269,10 @@ SettingsLayer::sliderEvent(Ref* pSender, Slider::EventType type)
         auto slider = dynamic_cast<Slider*>(pSender);
         int percent = slider->getPercent();
         if (slider->getTag() == 2) {
-            audioEngine->setBackgroundMusicVolume(percent / 100.0);
+            SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(percent / 100.0);
             GameData::getInstance()->saveBgmVolume(percent / 100.0);
         } else if (slider->getTag() == 4) {
-            audioEngine->setEffectsVolume(percent / 100.0);
+            SimpleAudioEngine::getInstance()->setEffectsVolume(percent / 100.0);
             GameData::getInstance()->saveEffectsVolume(percent / 100.0);
         }
     }
@@ -279,7 +284,7 @@ SettingsLayer::touchEvent(Ref* pSender, TouchEventType type)
     Button* button = (Button*)pSender;
     int tag = button->getTag();
     if (type == TOUCH_EVENT_ENDED) {
-        SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+        AudioController::getInstance()->playEffect("button_click.wav");
         switch (tag) {
             case 7: {
                 this->removeFromParent();
@@ -288,6 +293,7 @@ SettingsLayer::touchEvent(Ref* pSender, TouchEventType type)
             }
             case 8: {
                 this->removeFromParent();
+                AudioController::getInstance()->stopMusic();
                 Director::getInstance()->popToRootScene();
                 Director::getInstance()->replaceScene(MainMenuScene::create());
                 break;

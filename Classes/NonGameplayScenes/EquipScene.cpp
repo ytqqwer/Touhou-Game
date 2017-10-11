@@ -7,10 +7,10 @@
 #include "PlaceHolder.h"
 // #include "resources.h.dir/equip.h"
 
-#include "SimpleAudioEngine.h"
+#include "AudioController.h"
+
 #include "ui/CocosGUI.h"
 using namespace ui;
-using namespace CocosDenshion;
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -68,7 +68,7 @@ EquipScene::init()
     ret->setPosition(Vec2(_visibleSize.width * 0.095, _visibleSize.height * 0.265));
     ret->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
+            AudioController::getInstance()->playReturnButtonEffect();
             Director::getInstance()->popScene();
         }
     });
@@ -157,10 +157,15 @@ EquipScene::loadCharacterProperty(const Character& character)
         removeChildByTag(i);
     }
     tagSum = 0;
-    auto portrait = Sprite::create(character.portrait);
-    portrait->setContentSize(
-        Size(_visibleSize.width * 0.08, _visibleSize.width * 0.08 * 600 / 450));
+
+    auto standAnimation = Animation::create();
+    for (auto v : character.standFrame) {
+        standAnimation->addSpriteFrameWithFile(v);
+    }
+    standAnimation->setDelayPerUnit(character.standFrameDelay);
+    auto portrait = Sprite::create();
     portrait->setPosition(Vec2(_visibleSize.width * 0.32, _visibleSize.height * 0.74));
+    portrait->runAction(RepeatForever::create(Animate::create(standAnimation)));
     addChild(portrait, 1, ++tagSum);
 
     /*生命*/
@@ -330,7 +335,7 @@ EquipScene::SelectCharacterButton::init()
                               _director->getVisibleSize().width * 0.16 * 64 / 160));
     this->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
+            AudioController::getInstance()->playClickButtonEffect();
             auto equipScene = (EquipScene*)parent;
             equipScene->loadCharacterProperty(character);
         }
