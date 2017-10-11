@@ -67,7 +67,6 @@ ArmsStorePurchaseScene::init()
     backButton->setTitleText("返回");
     backButton->setTitleFontSize(20);
     backButton->setTitleColor(Color3B::WHITE);
-    backButton->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.15));
     backButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
@@ -82,7 +81,6 @@ ArmsStorePurchaseScene::init()
     normalProps->setTitleText("普通道具");
     normalProps->setTitleFontSize(20);
     normalProps->setTitleColor(Color3B(91, 155, 213));
-    normalProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.25));
     normalProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
@@ -98,7 +96,6 @@ ArmsStorePurchaseScene::init()
     strongProps->setTitleText("符卡");
     strongProps->setTitleFontSize(20);
     strongProps->setTitleColor(Color3B(91, 155, 213));
-    strongProps->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     strongProps->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             SimpleAudioEngine::getInstance()->playEffect("button_click.wav");

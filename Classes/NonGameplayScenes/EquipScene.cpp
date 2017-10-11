@@ -66,14 +66,14 @@ EquipScene::init()
     ret->setTitleFontSize(20);
     ret->setAnchorPoint(Vec2(0, 1));
     ret->setPosition(Vec2(_visibleSize.width * 0.095, _visibleSize.height * 0.265));
-    ret->setScale9Enabled(true);
-    ret->setSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.1));
     ret->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
             Director::getInstance()->popScene();
         }
     });
+    ret->setScale9Enabled(true);
+    ret->setSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.1));
     addChild(ret);
 
     /*包围盒*/

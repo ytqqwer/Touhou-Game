@@ -149,7 +149,6 @@ KourindouScene::init()
     know_button->setTitleFontName("fonts/dengxian.ttf");
     know_button->setAnchorPoint(Vec2(0, 1));
     know_button->setPosition(Vec2(_visibleSize.width * 0.84, _visibleSize.height * 0.99));
-    know_button->setScale9Enabled(true);
     know_button->setTitleText("资料库");
     know_button->setTitleFontSize(20);
     know_button->setScale(0.87);
@@ -168,7 +167,6 @@ KourindouScene::init()
     store_button->setTitleFontName("fonts/dengxian.ttf");
     store_button->setAnchorPoint(Vec2(0, 1));
     store_button->setPosition(Vec2(_visibleSize.width * 0.774, _visibleSize.height * 0.99));
-    store_button->setScale9Enabled(true);
     store_button->setTitleText("系统商店");
     store_button->setTitleFontSize(20);
     store_button->setScale(0.87);

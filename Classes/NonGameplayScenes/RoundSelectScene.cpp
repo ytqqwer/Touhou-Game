@@ -51,7 +51,6 @@ RoundSelectScene::onEnter()
     backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     backButton->setTitleText("返回");
     backButton->setTitleFontSize(20);
-    backButton->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     backButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
@@ -64,7 +63,6 @@ RoundSelectScene::onEnter()
     auto beginButton = Button::create("roundselectscene/p10.png", "", "");
     beginButton->setTitleText("开始游戏");
     beginButton->setTitleFontSize(20);
-    beginButton->setContentSize(Size(_visibleSize.width * 0.3, _visibleSize.height * 0.3));
     beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
     beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {

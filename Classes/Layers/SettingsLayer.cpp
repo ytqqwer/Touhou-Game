@@ -72,13 +72,13 @@ SettingsLayer::init()
     /*  3.构建界面背景 */
     auto layout = Layout::create();
     if (currentScene == "MainMenuScene") {
-        layout->setSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 2.0));
+        layout->setContentSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 2.0));
     }
     if (currentScene == "HomeScene") {
-        layout->setSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 1.25));
+        layout->setContentSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 1.25));
     }
     if (currentScene == "GameplayScene") {
-        layout->setSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 1.5));
+        layout->setContentSize(Size(_visibleSize.width / 3.0, _visibleSize.height / 1.5));
     }
     layout->setBackGroundColorType(LAYOUT_COLOR_SOLID);
     layout->setBackGroundColor(Color3B(255, 255, 255));

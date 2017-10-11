@@ -91,6 +91,8 @@ public class AppActivity extends Cocos2dxActivity {
         String[] filesToCopy = {"awards.json",
                 "characters.json",
                 "conversations.json",
+                "enemies.json",
+                "events.json",
                 "items.json",
                 "locations.json",
                 "saves.json",

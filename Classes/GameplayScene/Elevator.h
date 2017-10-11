@@ -32,13 +32,13 @@ public:
     }
 
     template <class T>
-    inline void Elevator::addPassenger(T* target)
+    inline void addPassenger(T* target)
     {
         passengers.push_back(target);
     }
 
     template <class T>
-    inline void Elevator::removePassenger(T* target)
+    inline void removePassenger(T* target)
     {
         for (auto it = passengers.begin(); it != passengers.end(); ++it) {
             if (*it == target) {
