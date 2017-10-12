@@ -6,6 +6,8 @@
 #include "GameData/Conversation.h"
 #include "GameData/GameData.h"
 #include "PlaceHolder.h"
+
+#include "AudioController.h"
 #include "SimpleAudioEngine.h"
 
 #define CHANGE_TIME 1.0
@@ -121,6 +123,8 @@ ConversationLayer::init()
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
+    AudioController::getInstance()->recordFormerMusic();
+
     return true;
 }
 
@@ -194,6 +198,8 @@ ConversationLayer::quitConversation()
     _eventDispatcher->dispatchCustomEvent("conversation_end");
 
     this->removeFromParent();
+
+    AudioController::getInstance()->resumeFormerMusic();
 }
 
 void
@@ -239,7 +245,9 @@ ConversationLayer::changeBgp(const string& bgp)
 void
 ConversationLayer::changeBgm(const string& bgm)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(bgm.c_str());
+    if (AudioController::getInstance()->getCurrentMusic() != bgm) {
+        AudioController::getInstance()->playMusic(bgm, true);
+    }
 }
 
 void
@@ -260,12 +268,10 @@ ConversationLayer::playSoundEffect(const string& effect)
 {
     static unsigned int lastEffect;
 
-    auto audioEg = CocosDenshion::SimpleAudioEngine::getInstance();
     if (lastEffect != 0) {
-        audioEg->stopEffect(lastEffect);
+        AudioController::getInstance()->stopEffect(lastEffect);
     }
-
-    lastEffect = audioEg->playEffect(effect.c_str());
+    lastEffect = AudioController::getInstance()->playEffect(effect);
 }
 
 void

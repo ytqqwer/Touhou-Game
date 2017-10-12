@@ -18,14 +18,19 @@ public:
 
     bool isPlayingMusic();
     void playMusic(std::string, bool);
-    void playEffect(std::string);
-    void playClickButtonEffect();
-    void playReturnButtonEffect();
     void stopMusic();
     std::string getCurrentMusic();
+    void recordFormerMusic();
+    void resumeFormerMusic();
+
+    unsigned int playEffect(std::string);
+    void stopEffect(unsigned int);
+    void playClickButtonEffect();
+    void playReturnButtonEffect();
 
 private:
     std::string currentMusic;
+    std::string formerMusic;
 };
 
 #endif

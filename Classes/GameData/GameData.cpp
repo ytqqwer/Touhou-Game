@@ -1228,95 +1228,35 @@ GameData::getAvailableItems()
     return listRet;
 }
 
-vector<Item>
-GameData::getAvailableNormalItems()
-{
-    const json& availItemListDom = cachedSave["availableItemList"];
-
-    vector<Item> listRet;
-    listRet.reserve(availItemListDom.size());
-
-    for (auto const& iToPred : itemListDom) {
-        auto it = find_if(availItemListDom.begin(), availItemListDom.end(),
-                          [&iToPred](const json& availI) -> bool {
-                              if (iToPred.at("tag") == availI.at("tag")) {
-                                  if (iToPred.at("type") == "NORMAL") {
-                                      return true;
-                                  } else {
-                                      return false;
-                                  }
-                              } else {
-                                  return false;
-                              }
-                          });
-
-        if (it != availItemListDom.end()) {
-            listRet.push_back(iToPred);
-        }
+#define APP_IMPLEMENT_GET_AVAIL_TYPE_ITEMS(funcName, itemType)                                     \
+    vector<Item> GameData::getAvailable##funcName()                                                \
+    {                                                                                              \
+        const json& availItemListDom = cachedSave["availableItemList"];                            \
+        vector<Item> listRet;                                                                      \
+        listRet.reserve(availItemListDom.size());                                                  \
+        for (auto const& iToPred : itemListDom) {                                                  \
+            auto it = find_if(availItemListDom.begin(), availItemListDom.end(),                    \
+                              [&iToPred](const json& availI) -> bool {                             \
+                                  if (iToPred.at("tag") == availI.at("tag")) {                     \
+                                      if (iToPred.at("type") == itemType) {                        \
+                                          return true;                                             \
+                                      } else {                                                     \
+                                          return false;                                            \
+                                      }                                                            \
+                                  } else {                                                         \
+                                      return false;                                                \
+                                  }                                                                \
+                              });                                                                  \
+            if (it != availItemListDom.end()) {                                                    \
+                listRet.push_back(iToPred);                                                        \
+            }                                                                                      \
+        }                                                                                          \
+        return listRet;                                                                            \
     }
 
-    return listRet;
-}
-
-vector<Item>
-GameData::getAvailableStrengthenItems()
-{
-    const json& availItemListDom = cachedSave["availableItemList"];
-
-    vector<Item> listRet;
-    listRet.reserve(availItemListDom.size());
-
-    for (auto const& iToPred : itemListDom) {
-        auto it = find_if(availItemListDom.begin(), availItemListDom.end(),
-                          [&iToPred](const json& availI) -> bool {
-                              if (iToPred.at("tag") == availI.at("tag")) {
-                                  if (iToPred.at("type") == "STRENGTHEN") {
-                                      return true;
-                                  } else {
-                                      return false;
-                                  }
-                              } else {
-                                  return false;
-                              }
-                          });
-
-        if (it != availItemListDom.end()) {
-            listRet.push_back(iToPred);
-        }
-    }
-
-    return listRet;
-}
-
-vector<Item>
-GameData::getAvailableSpecialItems()
-{
-    const json& availItemListDom = cachedSave["availableItemList"];
-
-    vector<Item> listRet;
-    listRet.reserve(availItemListDom.size());
-
-    for (auto const& iToPred : itemListDom) {
-        auto it = find_if(availItemListDom.begin(), availItemListDom.end(),
-                          [&iToPred](const json& availI) -> bool {
-                              if (iToPred.at("tag") == availI.at("tag")) {
-                                  if (iToPred.at("type") == "SPECIAL") {
-                                      return true;
-                                  } else {
-                                      return false;
-                                  }
-                              } else {
-                                  return false;
-                              }
-                          });
-
-        if (it != availItemListDom.end()) {
-            listRet.push_back(iToPred);
-        }
-    }
-
-    return listRet;
-}
+APP_IMPLEMENT_GET_AVAIL_TYPE_ITEMS(NormalItems, "NORMAL");
+APP_IMPLEMENT_GET_AVAIL_TYPE_ITEMS(StrengthenItems, "STRENGTHEN");
+APP_IMPLEMENT_GET_AVAIL_TYPE_ITEMS(SpecialItems, "SPECIAL");
 
 vector<Item>
 GameData::getItemsInStore(const string& storeTag)

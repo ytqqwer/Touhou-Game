@@ -63,7 +63,7 @@ GameplayScene::init()
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/laser1.plist");
 
     //设置背景音乐
-    AudioController::getInstance()->playMusic("bgm001.mp3", true);
+    AudioController::getInstance()->playMusic("bgm/bgm001.mp3", true);
 
     visibleSize = Director::getInstance()->getVisibleSize();
 

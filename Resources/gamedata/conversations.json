@@ -10,13 +10,13 @@
                 "picPosition": "LEFT",
                 "picture": "gamedata/characters/marisa_pro.png",
                 "bgp": "gamedata/conversations/c1_bgp.png",
-                "bgm": "TODO"
+                "bgm": "gamedata/locations/sample.mp3"
             },
             {
                 "speakerName": "Kirisame Marisa",
                 "speakerColor": "#fff87c",
                 "text": "哟，灵梦。我在这附近抓住了一只冰之妖精（⑨）哦！",
-                "soundEffect": "",
+                "soundEffect": "se/happy.wav",
                 "screenEffect": "SHAKE"
             },
             {
@@ -37,7 +37,7 @@
                 "speakerName": "Hakurei Reimu",
                 "speakerColor": "#fe462b",
                 "text": "很冷啊，快把门关上好吗。",
-                "soundEffect": "",
+                "soundEffect": "se/surprise.wav",
                 "screenEffect": ""
             },
             {
@@ -92,7 +92,7 @@
                 "picPosition": "LEFT",
                 "picture": "gamedata/characters/marisa_pro.png",
                 "bgp": "gamedata/conversations/c2_bgp.jpg",
-                "bgm": "TODO"
+                "bgm": "gamedata/locations/sample.mp3"
             },
             {
                 "speakerName": "Kirisame Marisa",
@@ -119,7 +119,7 @@
                 "speakerName": "Hakurei Reimu",
                 "speakerColor": "#fe462b",
                 "text": "很冷啊，快把门关上好吗。",
-                "soundEffect": "",
+                "soundEffect": "se/surprise.wav",
                 "screenEffect": ""
             },
             {
@@ -140,7 +140,7 @@
                 "speakerName": "Kirisame Marisa",
                 "speakerColor": "#fff87c",
                 "text": "不对，一定有妖精在作祟。消除异变和驱除妖怪不是你这个巫女的工作吗？",
-                "soundEffect": "",
+                "soundEffect": "se/surprise.wav",
                 "screenEffect": ""
             },
             {
@@ -174,7 +174,7 @@
                 "picPosition": "LEFT",
                 "picture": "gamedata/characters/marisa_pro.png",
                 "bgp": "gamedata/conversations/c3_bgp.png",
-                "bgm": "TODO"
+                "bgm": "gamedata/locations/sample.mp3"
             },
             {
                 "speakerName": "Kirisame Marisa",
@@ -256,13 +256,13 @@
                 "picPosition": "LEFT",
                 "picture": "gamedata/characters/marisa_pro.png",
                 "bgp": "gamedata/conversations/c1_bgp.png",
-                "bgm": "TODO"
+                "bgm": "gamedata/locations/sample.mp3"
             },
             {
                 "speakerName": "Kirisame Marisa",
                 "speakerColor": "#fff87c",
                 "text": "哟，灵梦。我在这附近抓住了一只冰之妖精（⑨）哦！",
-                "soundEffect": "",
+                "soundEffect": "se/surprise.wav",
                 "screenEffect": "SHAKE"
             },
             {

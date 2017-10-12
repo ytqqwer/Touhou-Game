@@ -22,24 +22,6 @@ AudioController::playMusic(std::string music, bool loop)
 }
 
 void
-AudioController::playEffect(std::string effect)
-{
-    SimpleAudioEngine::getInstance()->playEffect(effect.c_str());
-}
-
-void
-AudioController::playClickButtonEffect()
-{
-    SimpleAudioEngine::getInstance()->playEffect("button_click.wav");
-}
-
-void
-AudioController::playReturnButtonEffect()
-{
-    SimpleAudioEngine::getInstance()->playEffect("back_click.wav");
-}
-
-void
 AudioController::stopMusic()
 {
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
@@ -49,6 +31,44 @@ std::string
 AudioController::getCurrentMusic()
 {
     return currentMusic;
+}
+
+void
+AudioController::recordFormerMusic()
+{
+    formerMusic = currentMusic;
+}
+
+void
+AudioController::resumeFormerMusic()
+{
+    if (currentMusic != formerMusic) {
+        playMusic(formerMusic, true);
+    }
+}
+
+unsigned int
+AudioController::playEffect(std::string effect)
+{
+    return SimpleAudioEngine::getInstance()->playEffect(effect.c_str());
+}
+
+void
+AudioController::stopEffect(unsigned int effect)
+{
+    SimpleAudioEngine::getInstance()->stopEffect(effect);
+}
+
+void
+AudioController::playClickButtonEffect()
+{
+    SimpleAudioEngine::getInstance()->playEffect("se/button_click.wav");
+}
+
+void
+AudioController::playReturnButtonEffect()
+{
+    SimpleAudioEngine::getInstance()->playEffect("se/back_click.wav");
 }
 
 AudioController*

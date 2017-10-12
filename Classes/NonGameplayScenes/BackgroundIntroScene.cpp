@@ -48,7 +48,7 @@ BackgroundIntroScene::onEnter()
 {
     Scene::onEnter();
 
-    AudioController::getInstance()->playMusic("bgm000.mp3", true);
+    AudioController::getInstance()->playMusic("bgm/bgm000.mp3", true);
 
     background = Sprite::create();
     this->addChild(background);

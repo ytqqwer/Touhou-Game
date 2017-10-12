@@ -169,9 +169,9 @@ MainMenuScene::onEnter()
 {
     Scene::onEnter();
 
-    if (AudioController::getInstance()->getCurrentMusic() != "bgm000.mp3") {
+    if (AudioController::getInstance()->getCurrentMusic() != "bgm/bgm000.mp3") {
         AudioController::getInstance()->stopMusic();
-        AudioController::getInstance()->playMusic("bgm000.mp3", true);
+        AudioController::getInstance()->playMusic("bgm/bgm000.mp3", true);
     }
 
     auto move = MoveBy::create(40, Vec2(0, _visibleSize.height / 4));
