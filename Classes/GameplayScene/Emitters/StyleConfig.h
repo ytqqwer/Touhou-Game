@@ -14,6 +14,7 @@ enum class StyleType
     LASER,
     ODDEVEN,
     PARABOLA,
+    PARALLEL,
     SCATTER,
 };
 
@@ -46,6 +47,9 @@ struct StyleConfig
     /* Parabola参数 */
     int height;   //高度
     int distance; // 距离
+
+    /* Parallel参数 */
+    float interval; //间距
 
     /* Scatter参数 */
     int startAngle; //起始角度

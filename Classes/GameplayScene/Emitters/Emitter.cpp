@@ -7,6 +7,7 @@
 #include "Style/Laser.h"
 #include "Style/OddEven.h"
 #include "Style/Parabola.h"
+#include "Style/Parallel.h"
 #include "Style/Scatter.h"
 
 Emitter*
@@ -66,6 +67,14 @@ Emitter::playStyle(const StyleConfig& sc)
             }
             dynamic_cast<Laser*>(style)->createBullet();
             break;
+        case StyleType::ODDEVEN:
+            if (isPlayer) {
+                return 0;
+            } else {
+                style = OddEven::create(sc, target);
+            }
+            dynamic_cast<OddEven*>(style)->createBullet();
+            break;
         case StyleType::PARABOLA:
             if (isPlayer) {
                 style = Parabola::create(sc, direction);
@@ -74,13 +83,13 @@ Emitter::playStyle(const StyleConfig& sc)
             }
             dynamic_cast<Parabola*>(style)->createBullet();
             break;
-        case StyleType::ODDEVEN:
+        case StyleType::PARALLEL:
             if (isPlayer) {
-                return 0;
+                style = Parallel::create(sc, direction);
             } else {
-                style = OddEven::create(sc, target);
+                style = Parallel::create(sc, target);
             }
-            dynamic_cast<OddEven*>(style)->createBullet();
+            dynamic_cast<Parallel*>(style)->createBullet();
             break;
         case StyleType::SCATTER:
             if (isPlayer) {
@@ -118,6 +127,14 @@ Emitter::playStyle(StyleType st)
             }
             dynamic_cast<Laser*>(style)->createBullet();
             break;
+        case StyleType::ODDEVEN:
+            if (isPlayer) {
+                return 0;
+            } else {
+                style = OddEven::create(target);
+            }
+            dynamic_cast<OddEven*>(style)->createBullet();
+            break;
         case StyleType::PARABOLA:
             if (isPlayer) {
                 style = Parabola::create(direction);
@@ -126,13 +143,13 @@ Emitter::playStyle(StyleType st)
             }
             dynamic_cast<Parabola*>(style)->createBullet();
             break;
-        case StyleType::ODDEVEN:
+        case StyleType::PARALLEL:
             if (isPlayer) {
-                return 0;
+                style = Parallel::create(direction);
             } else {
-                style = OddEven::create(target);
+                style = Parallel::create(target);
             }
-            dynamic_cast<OddEven*>(style)->createBullet();
+            dynamic_cast<Parallel*>(style)->createBullet();
             break;
         case StyleType::SCATTER:
             if (isPlayer) {

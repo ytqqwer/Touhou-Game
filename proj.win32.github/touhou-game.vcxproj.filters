@@ -213,6 +213,9 @@
   	<ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parabola.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
+	<ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parallel.cpp">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
@@ -436,7 +439,10 @@
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
-	  <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h">
+	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h">
+      <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClInclude>
+	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parallel.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
 

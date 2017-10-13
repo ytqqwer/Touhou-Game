@@ -413,7 +413,8 @@ GameplayScene::initLauncher()
             auto fe = Emitter::create((Node**)(&curPlayer));
             _launcher->addChild(fe);
             // fe->playStyle(StyleType::SCATTER);
-            fe->playStyle(StyleType::ODDEVEN);
+            // fe->playStyle(StyleType::ODDEVEN);
+            fe->playStyle(StyleType::PARALLEL);
 
             launcherList.pushBack(_launcher);
         }
