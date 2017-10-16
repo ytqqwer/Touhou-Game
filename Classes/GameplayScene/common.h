@@ -14,16 +14,6 @@ enum class Direction
     LEFT = 2
 };
 
-enum class ActionState
-{
-    Stand = 1,
-    Run = 2,
-    Jump = 3,
-    Fall = 4,
-    Dash = 5,
-    Default = 6
-};
-
 //游戏中用到的种别掩码
 static const int groundCategory = 0x1 << 1;
 static const int playerCategory = 0x1 << 2;

@@ -27,17 +27,9 @@ Enemy::create(std::string tag)
 }
 
 void
-Enemy::resetAction(Node* node)
-{
-    enemySprite->stopAllActions();
-    curActionState = ActionState::Default;
-}
-
-void
 Enemy::resetJump()
 {
     this->_canJump = true;
-    this->curActionState = ActionState::Default;
 }
 
 void

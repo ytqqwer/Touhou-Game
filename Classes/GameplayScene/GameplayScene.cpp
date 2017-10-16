@@ -63,7 +63,7 @@ GameplayScene::init()
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/laser1.plist");
 
     //设置背景音乐
-    AudioController::getInstance()->playMusic("bgm/bgm001.mp3", true);
+    // AudioController::getInstance()->playMusic("bgm/bgm001.mp3", true);
 
     visibleSize = Director::getInstance()->getVisibleSize();
 
@@ -646,7 +646,7 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
                 // 当player碰到了敌人的索敌框
                 if (entityB_shape->getTag() == lockCategoryTag) {
                     auto _enemy = (Enemy*)entityB;
-                    _enemy->stateMachine->autoChangeState();
+                    _enemy->modeStateMachine->autoChangeState();
                 }
                 // 当player碰到了敌人本身
                 else {
@@ -781,6 +781,7 @@ GameplayScene::initCustomEventListener()
         auto _damageInfo = (DamageInfo*)e->getUserData();
         auto _player = (Player*)_damageInfo->target;
         _player->getHit(_damageInfo, _eventFilterMgr);
+
     });
 
     scheduleOnce(

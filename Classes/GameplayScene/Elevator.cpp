@@ -5,16 +5,21 @@
 #include "GameplayScene/Elevator.h"
 #include "GameplayScene/common.h"
 
+#include "cocos-ext.h"
+using namespace cocos2d::extension;
+
 bool
 Elevator::init()
 {
     this->setTag(elevatorCategoryTag);
 
-    auto _elevator = Sprite::create();
+    auto _elevator = Scale9Sprite::create("gameplayscene/elevator.png");
+    _elevator->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    _elevator->setContentSize(Size(300, 10.0f)); //不设置capInsets，拉伸
     this->addChild(_elevator);
 
     PhysicsBody* _body = PhysicsBody::createEdgeSegment(Vec2(0, 0), Vec2(300, 0),
-                                                        PHYSICSBODY_MATERIAL_DEFAULT, 3.0f);
+                                                        PHYSICSBODY_MATERIAL_DEFAULT, 7.0f);
     _body->getFirstShape()->setDensity(0);
     _body->getFirstShape()->setFriction(1.0);
     _body->getFirstShape()->setRestitution(0);

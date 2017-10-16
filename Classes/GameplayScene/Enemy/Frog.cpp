@@ -6,6 +6,14 @@
 #include "GameData/EnemyData.h"
 #include "GameData/GameData.h"
 
+#define CREATE_AND_ADD_ANIMATION_CACHE(animation, enemy, frames, delayPerUnit, key)                \
+    animation = Animation::create();                                                               \
+    for (auto v : enemy.frames) {                                                                  \
+        animation->addSpriteFrameWithFile(v);                                                      \
+    }                                                                                              \
+    animation->setDelayPerUnit(enemy.delayPerUnit);                                                \
+    AnimationCache::getInstance()->addAnimation(animation, key);
+
 bool
 Frog::init(std::string tag)
 {
@@ -51,38 +59,26 @@ Frog::init(std::string tag)
     body->setVelocityLimit(300);
 
     //设置动画
-    idleAnimation = Animation::create();
-    idleAnimation->retain(); //如果不手动增加引用计数，会被释放掉，未知原因
-    for (auto v : _enemyData.standFrame) {
-        idleAnimation->addSpriteFrameWithFile(v);
-    }
-    idleAnimation->setDelayPerUnit(_enemyData.standFrameDelay);
+    CREATE_AND_ADD_ANIMATION_CACHE(idleAnimation, _enemyData, standFrame, standFrameDelay,
+                                   "FrogIdleAnimation");
     idleAnimation->setLoops(-1);
-    AnimationCache::getInstance()->addAnimation(idleAnimation, "FrogIdleAnimation");
 
-    jumpAnimation = Animation::create();
+    CREATE_AND_ADD_ANIMATION_CACHE(jumpAnimation, _enemyData, jumpFrame, jumpFrameDelay,
+                                   "FrogJumpAnimation");
+
+    CREATE_AND_ADD_ANIMATION_CACHE(fallAnimation, _enemyData, fallFrame, fallFrameDelay,
+                                   "FrogFallAnimation");
+
+    idleAnimation->retain(); //如果不手动增加引用计数，会被释放掉
     jumpAnimation->retain();
-    for (auto v : _enemyData.jumpFrame) {
-        jumpAnimation->addSpriteFrameWithFile(v);
-    }
-    jumpAnimation->setDelayPerUnit(_enemyData.jumpFrameDelay);
-    AnimationCache::getInstance()->addAnimation(jumpAnimation, "FrogJumpAnimation");
-
-    fallAnimation = Animation::create();
     fallAnimation->retain();
-    for (auto v : _enemyData.fallFrame) {
-        fallAnimation->addSpriteFrameWithFile(v);
-    }
-    fallAnimation->setDelayPerUnit(_enemyData.fallFrameDelay);
-    AnimationCache::getInstance()->addAnimation(fallAnimation, "FrogFallAnimation");
 
-    enemySprite->runAction(Animate::create(idleAnimation));
-
-    //启动状态更新
-    this->schedule(CC_SCHEDULE_SELECTOR(Frog::autoSwitchAnimation), 0.1);
-
-    stateMachine = new StateMachine<Enemy>(this);
-    stateMachine->changeState(FrogPatrolState::getInstance());
+    //行为模式状态机
+    modeStateMachine = new StateMachine<Enemy>(this);
+    modeStateMachine->changeState(FrogPatrolState::getInstance());
+    //动画状态机
+    animateStateMachine = new StateMachine<Enemy>(this);
+    animateStateMachine->changeState(Frog::IdleAnimation::getInstance());
 
     return true;
 }
@@ -147,38 +143,6 @@ Frog::autoChangeDirection(float dt)
     }
 }
 
-void
-Frog::autoSwitchAnimation(float dt)
-{
-    Vec2 velocity = body->getVelocity();
-    if (-15 < velocity.y && velocity.y < 15) {
-        if (curActionState != ActionState::Stand) { //站立
-            if (curActionState != ActionState::Jump) {
-                if (curActionState != ActionState::Fall) {
-                    curActionState = ActionState::Stand;
-                    enemySprite->stopAllActions();
-                    enemySprite->runAction(Animate::create(this->idleAnimation));
-                }
-            }
-        }
-    }
-    if (-15 > velocity.y || velocity.y > 15) {
-        if (velocity.y > 15) { //跳跃
-            if (curActionState != ActionState::Jump) {
-                curActionState = ActionState::Jump;
-                enemySprite->stopAllActions();
-                enemySprite->runAction(Animate::create(this->jumpAnimation));
-            }
-        } else if (-15 > velocity.y) { //下降
-            if (curActionState != ActionState::Fall) {
-                curActionState = ActionState::Fall;
-                enemySprite->stopAllActions();
-                enemySprite->runAction(Animate::create(this->fallAnimation));
-            }
-        }
-    }
-}
-
 FrogAlertState*
 FrogAlertState::getInstance()
 {
@@ -203,7 +167,6 @@ FrogAlertState::Exit(Enemy* entity)
 void
 FrogAlertState::changeToState(Enemy* entity)
 {
-    ;
 }
 
 FrogPatrolState*
@@ -228,5 +191,118 @@ FrogPatrolState::Exit(Enemy* entity)
 void
 FrogPatrolState::changeToState(Enemy* entity)
 {
-    entity->stateMachine->changeState(FrogAlertState::getInstance());
+    entity->modeStateMachine->changeState(FrogAlertState::getInstance());
+}
+
+Frog::IdleAnimation*
+Frog::IdleAnimation::getInstance()
+{
+    static Frog::IdleAnimation instance;
+    return &instance;
+}
+
+void
+Frog::IdleAnimation::Enter(Enemy* enemy)
+{
+    auto frog = (Frog*)enemy;
+    frog->currentAnimateAction = RepeatForever::create(Animate::create(frog->idleAnimation));
+    frog->enemySprite->runAction(frog->currentAnimateAction);
+
+    frog->enemySprite->schedule(
+        [frog](float dt) {
+            Vec2 velocity = frog->body->getVelocity();
+            if (velocity.y > 15) {
+                frog->animateStateMachine->changeState(Frog::JumpAnimation::getInstance());
+            } else if (velocity.y < -15) {
+                frog->animateStateMachine->changeState(Frog::FallAnimation::getInstance());
+            }
+        },
+        0.1, "IdleAnimationUpdate");
+}
+
+void
+Frog::IdleAnimation::Exit(Enemy* enemy)
+{
+    auto frog = (Frog*)enemy;
+    frog->enemySprite->stopAction(frog->currentAnimateAction);
+    frog->enemySprite->unschedule("IdleAnimationUpdate");
+}
+
+void
+Frog::IdleAnimation::changeToState(Enemy* enemy)
+{
+}
+
+Frog::JumpAnimation*
+Frog::JumpAnimation::getInstance()
+{
+    static Frog::JumpAnimation instance;
+    return &instance;
+}
+
+void
+Frog::JumpAnimation::Enter(Enemy* enemy)
+{
+    auto frog = (Frog*)enemy;
+    frog->currentAnimateAction = Animate::create(frog->jumpAnimation);
+    frog->enemySprite->runAction(frog->currentAnimateAction);
+
+    frog->enemySprite->schedule(
+        [frog](float dt) {
+            Vec2 velocity = frog->body->getVelocity();
+            if (velocity.y < -15) {
+                frog->animateStateMachine->changeState(Frog::FallAnimation::getInstance());
+            }
+        },
+        0.1, "JumpAnimationUpdate");
+}
+
+void
+Frog::JumpAnimation::Exit(Enemy* enemy)
+{
+    auto frog = (Frog*)enemy;
+    frog->enemySprite->stopAction(frog->currentAnimateAction);
+    frog->enemySprite->unschedule("JumpAnimationUpdate");
+}
+
+void
+Frog::JumpAnimation::changeToState(Enemy* enemy)
+{
+}
+
+Frog::FallAnimation*
+Frog::FallAnimation::getInstance()
+{
+    static Frog::FallAnimation instance;
+    return &instance;
+}
+
+void
+Frog::FallAnimation::Enter(Enemy* enemy)
+{
+    auto frog = (Frog*)enemy;
+    frog->currentAnimateAction = Animate::create(frog->fallAnimation);
+    frog->enemySprite->runAction(frog->currentAnimateAction);
+
+    frog->enemySprite->schedule(
+        [frog](float dt) {
+            Vec2 velocity = frog->body->getVelocity();
+            if (velocity.y > -15) {
+                frog->animateStateMachine->changeState(Frog::IdleAnimation::getInstance());
+            }
+        },
+        0.1, "FallAnimationUpdate");
+}
+
+void
+Frog::FallAnimation::Exit(Enemy* enemy)
+{
+    auto frog = (Frog*)enemy;
+    frog->enemySprite->stopAction(frog->currentAnimateAction);
+    frog->enemySprite->unschedule("FallAnimationUpdate");
+}
+
+void
+Frog::FallAnimation::changeToState(Enemy* enemy)
+{
 }

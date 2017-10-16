@@ -12,8 +12,6 @@
 #include "cocos2d.h"
 using namespace cocos2d;
 
-typedef enum { Patrol = 1, Alert = 2 } EnemyActionMode;
-
 class Enemy : public Node
 {
 public:
@@ -21,18 +19,16 @@ public:
 
     static Enemy* create(std::string tag);
 
-    ~Enemy() { delete stateMachine; }
+    ~Enemy()
+    {
+        delete modeStateMachine;
+        delete animateStateMachine;
+    }
 
 public:
     virtual void decreaseHp(int damage) = 0;
-
-    //动作切换
-    virtual void resetAction(Node* node);
-    virtual void autoSwitchAnimation(float dt) = 0;
     virtual void autoChangeDirection(float dt) = 0;
-
     virtual void setTarget(Player*& player);
-
     virtual void resetJump();
 
 public:
@@ -42,17 +38,16 @@ public:
     int hp;
     bool _canJump = false;
 
-    PhysicsBody* body;
-
-    StateMachine<Enemy>* stateMachine;
-
     Direction enemyDirection = Direction::LEFT;
 
-    //当前动作状态
-    ActionState curActionState = ActionState::Default;
+    StateMachine<Enemy>* modeStateMachine;
+    StateMachine<Enemy>* animateStateMachine;
 
 protected:
-    Sprite* enemySprite; //敌人精灵
+    PhysicsBody* body;
+
+    Sprite* enemySprite;
+    Action* currentAnimateAction;
 };
 
 #endif

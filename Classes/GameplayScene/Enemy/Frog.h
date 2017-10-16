@@ -20,12 +20,38 @@ public:
     void patrolMode(float dt);
 
     void autoChangeDirection(float dt);
-    void autoSwitchAnimation(float dt);
 
 protected:
     Animation* idleAnimation;
     Animation* jumpAnimation;
     Animation* fallAnimation;
+
+    class IdleAnimation : public State<Enemy>
+    {
+    public:
+        static IdleAnimation* getInstance();
+        void Enter(Enemy*);
+        void Exit(Enemy*);
+        void changeToState(Enemy*);
+    };
+
+    class JumpAnimation : public State<Enemy>
+    {
+    public:
+        static JumpAnimation* getInstance();
+        void Enter(Enemy*);
+        void Exit(Enemy*);
+        void changeToState(Enemy*);
+    };
+
+    class FallAnimation : public State<Enemy>
+    {
+    public:
+        static FallAnimation* getInstance();
+        void Enter(Enemy*);
+        void Exit(Enemy*);
+        void changeToState(Enemy*);
+    };
 };
 
 class FrogAlertState : public State<Enemy>

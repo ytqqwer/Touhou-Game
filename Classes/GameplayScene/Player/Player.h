@@ -13,6 +13,8 @@
 #include "GameplayScene/common.h"
 #include "cocos2d.h"
 
+#include "GameplayScene/State.h"
+
 class Emitter;
 class EventFilterManager;
 
@@ -23,6 +25,8 @@ class Player : public Node
 public:
     virtual bool init(std::string tag) = 0;
     static Player* create(std::string tag);
+
+    ~Player() { delete animateStateMachine; }
 
 public:
     virtual void playerRun(float dt) = 0;
@@ -41,10 +45,6 @@ public:
     virtual void resetJump();
 
     virtual void getHit(DamageInfo*, EventFilterManager*);
-
-    //动作切换
-    void resetAction(Node* node);
-    void autoSwitchAnimation(float dt);
 
 public:
     std::string playerTag;
@@ -87,12 +87,11 @@ public:
     //符卡列表
     vector<SpellCard> spellCardList;
 
-    //当前动作状态
-    ActionState curActionState = ActionState::Default;
+    //动画状态机
+    StateMachine<Player>* animateStateMachine;
 
 protected:
     PhysicsBody* body;
-    std::string playerTexture;
     Animation* standAnimation;
     Animation* runAnimation;
     Animation* preJumpAnimation;
@@ -100,6 +99,53 @@ protected:
     Animation* preFallAnimation;
     Animation* fallAnimation;
     Animation* dashAnimation;
+
+    Action* currentAnimateAction;
+
+    class StandAnimation : public State<Player>
+    {
+    public:
+        static StandAnimation* getInstance();
+        void Enter(Player*);
+        void Exit(Player*);
+        void changeToState(Player*);
+    };
+
+    class RunAnimation : public State<Player>
+    {
+    public:
+        static RunAnimation* getInstance();
+        void Enter(Player*);
+        void Exit(Player*);
+        void changeToState(Player*);
+    };
+
+    class JumpAnimation : public State<Player>
+    {
+    public:
+        static JumpAnimation* getInstance();
+        void Enter(Player*);
+        void Exit(Player*);
+        void changeToState(Player*);
+    };
+
+    class FallAnimation : public State<Player>
+    {
+    public:
+        static FallAnimation* getInstance();
+        void Enter(Player*);
+        void Exit(Player*);
+        void changeToState(Player*);
+    };
+
+    class DashAnimation : public State<Player>
+    {
+    public:
+        static DashAnimation* getInstance();
+        void Enter(Player*);
+        void Exit(Player*);
+        void changeToState(Player*);
+    };
 };
 
 #endif

@@ -10,6 +10,8 @@
 
 #include "GameplayScene/EventFilterManager.h"
 
+#include "GameplayScene/Shaders/BlendAction.h"
+
 Player*
 Player::create(std::string tag)
 {
@@ -72,7 +74,6 @@ void
 Player::resetJump()
 {
     this->jumpCounts = 2;
-    this->curActionState = ActionState::Default;
 }
 
 void
@@ -82,6 +83,12 @@ Player::getHit(DamageInfo* damageInfo, EventFilterManager* eventFilterManager)
     auto velocity = body->getVelocity();
     Vec2 impluse = Vec2(0.0f, 300.0f);
     body->applyImpulse(impluse);
+
+    //应用着色器
+    auto rColor = BlendAction::create(0.1f, Color4B::RED);
+    auto bColor = rColor->reverse();
+    auto sequence = Sequence::create(bColor, rColor, NULL);
+    this->playerSprite->runAction(Repeat::create(sequence, 10));
 
     //阻隔
     eventFilterManager->addEventFilter(
@@ -94,59 +101,188 @@ Player::getHit(DamageInfo* damageInfo, EventFilterManager* eventFilterManager)
         1, "bullet_hit_player");
 }
 
-void
-Player::resetAction(Node* node)
+Player::StandAnimation*
+Player::StandAnimation::getInstance()
 {
-    playerSprite->stopAllActions();
-    curActionState = ActionState::Default;
+    static StandAnimation instance;
+    return &instance;
 }
 
 void
-Player::autoSwitchAnimation(float dt)
+Player::StandAnimation::Enter(Player* player)
 {
-    if (curActionState != ActionState::Dash) {
-        Vec2 velocity = body->getVelocity();
-        if (-25 < velocity.y && velocity.y < 25) {
-            if (-25 < velocity.x && velocity.x < 25) { //站立
-                if (curActionState != ActionState::Stand) {
-                    if (curActionState != ActionState::Jump) {
-                        if (curActionState != ActionState::Fall) {
-                            curActionState = ActionState::Stand;
-                            playerSprite->stopAllActions();
-                            playerSprite->runAction(
-                                RepeatForever::create(Animate::create(standAnimation)));
-                        }
-                    }
+    player->currentAnimateAction = RepeatForever::create(Animate::create(player->standAnimation));
+    player->playerSprite->runAction(player->currentAnimateAction);
+
+    player->playerSprite->schedule(
+        [player](float dt) {
+            Vec2 velocity = player->body->getVelocity();
+            if (-25 < velocity.y && velocity.y < 25) {
+                if (velocity.x < -25 || 25 < velocity.x) {
+                    player->animateStateMachine->changeState(Player::RunAnimation::getInstance());
                 }
-            } else if (-25 > velocity.x || velocity.x > 25) { //行走
-                if (-25 < velocity.y || velocity.y < 25) {
-                    if (curActionState != ActionState::Run) {
-                        curActionState = ActionState::Run;
-                        playerSprite->stopAllActions();
-                        playerSprite->runAction(
-                            RepeatForever::create(Animate::create(runAnimation)));
-                    }
+            } else {
+                if (25 < velocity.y) {
+                    player->animateStateMachine->changeState(Player::JumpAnimation::getInstance());
+                } else if (velocity.y < -25) {
+                    player->animateStateMachine->changeState(Player::FallAnimation::getInstance());
                 }
             }
-        }
-        if (-25 > velocity.y || velocity.y > 25) {
-            if (velocity.y > 25) { //向上跳跃
-                if (curActionState != ActionState::Jump) {
-                    curActionState = ActionState::Jump;
-                    playerSprite->stopAllActions();
-                    auto sequence = Sequence::create(Animate::create(preJumpAnimation),
-                                                     Animate::create(jumpAnimation), NULL);
-                    playerSprite->runAction(sequence);
+        },
+        0.1, "StandAnimationUpdate");
+}
+
+void
+Player::StandAnimation::Exit(Player* player)
+{
+    player->playerSprite->stopAction(player->currentAnimateAction);
+    player->playerSprite->unschedule("StandAnimationUpdate");
+}
+
+void
+Player::StandAnimation::changeToState(Player* player)
+{
+}
+
+Player::RunAnimation*
+Player::RunAnimation::getInstance()
+{
+    static RunAnimation instance;
+    return &instance;
+}
+
+void
+Player::RunAnimation::Enter(Player* player)
+{
+    player->currentAnimateAction = RepeatForever::create(Animate::create(player->runAnimation));
+    player->playerSprite->runAction(player->currentAnimateAction);
+
+    player->playerSprite->schedule(
+        [player](float dt) {
+            Vec2 velocity = player->body->getVelocity();
+            if (-25 < velocity.y && velocity.y < 25) {
+                if (-25 < velocity.x && velocity.x < 25) {
+                    player->animateStateMachine->changeState(Player::StandAnimation::getInstance());
                 }
-            } else if (-25 > velocity.y) { //下降
-                if (curActionState != ActionState::Fall) {
-                    curActionState = ActionState::Fall;
-                    playerSprite->stopAllActions();
-                    auto sequence = Sequence::create(Animate::create(preFallAnimation),
-                                                     Animate::create(fallAnimation), NULL);
-                    playerSprite->runAction(sequence);
+            } else {
+                if (25 < velocity.y) {
+                    player->animateStateMachine->changeState(Player::JumpAnimation::getInstance());
+                } else if (velocity.y < -25) {
+                    player->animateStateMachine->changeState(Player::FallAnimation::getInstance());
                 }
             }
-        }
-    }
+        },
+        0.1, "RunAnimationUpdate");
+}
+
+void
+Player::RunAnimation::Exit(Player* player)
+{
+    player->playerSprite->stopAction(player->currentAnimateAction);
+    player->playerSprite->unschedule("RunAnimationUpdate");
+}
+
+void
+Player::RunAnimation::changeToState(Player* player)
+{
+}
+
+Player::JumpAnimation*
+Player::JumpAnimation::getInstance()
+{
+    static JumpAnimation instance;
+    return &instance;
+}
+
+void
+Player::JumpAnimation::Enter(Player* player)
+{
+    player->currentAnimateAction = Sequence::create(Animate::create(player->preJumpAnimation),
+                                                    Animate::create(player->jumpAnimation), NULL);
+    player->playerSprite->runAction(player->currentAnimateAction);
+
+    player->playerSprite->schedule(
+        [player](float dt) {
+            Vec2 velocity = player->body->getVelocity();
+            if (velocity.y < -25) {
+                player->animateStateMachine->changeState(Player::FallAnimation::getInstance());
+            }
+        },
+        0.1, "JumpAnimationUpdate");
+}
+
+void
+Player::JumpAnimation::Exit(Player* player)
+{
+    player->playerSprite->stopAction(player->currentAnimateAction);
+    player->playerSprite->unschedule("JumpAnimationUpdate");
+}
+
+void
+Player::JumpAnimation::changeToState(Player* player)
+{
+}
+
+Player::FallAnimation*
+Player::FallAnimation::getInstance()
+{
+    static FallAnimation instance;
+    return &instance;
+}
+
+void
+Player::FallAnimation::Enter(Player* player)
+{
+    player->currentAnimateAction = Sequence::create(Animate::create(player->preFallAnimation),
+                                                    Animate::create(player->fallAnimation), NULL);
+    player->playerSprite->runAction(player->currentAnimateAction);
+
+    player->playerSprite->schedule(
+        [player](float dt) {
+            Vec2 velocity = player->body->getVelocity();
+            if (-25 < velocity.y) {
+                player->animateStateMachine->changeState(Player::StandAnimation::getInstance());
+            }
+        },
+        0.1, "FallAnimationUpdate");
+}
+
+void
+Player::FallAnimation::Exit(Player* player)
+{
+    player->playerSprite->stopAction(player->currentAnimateAction);
+    player->playerSprite->unschedule("FallAnimationUpdate");
+}
+
+void
+Player::FallAnimation::changeToState(Player* player)
+{
+}
+
+Player::DashAnimation*
+Player::DashAnimation::getInstance()
+{
+    static DashAnimation instance;
+    return &instance;
+}
+
+void
+Player::DashAnimation::Enter(Player* player)
+{
+    auto animate = Animate::create(player->dashAnimation);
+    auto actionDone = CallFuncN::create(CC_CALLBACK_0(DashAnimation::changeToState, this, player));
+    player->currentAnimateAction = Sequence::create(animate, actionDone, NULL);
+    player->playerSprite->runAction(player->currentAnimateAction);
+}
+
+void
+Player::DashAnimation::Exit(Player* player)
+{
+    player->playerSprite->stopAction(player->currentAnimateAction);
+}
+
+void
+Player::DashAnimation::changeToState(Player* player)
+{
+    player->animateStateMachine->changeState(Player::StandAnimation::getInstance());
 }

@@ -81,7 +81,7 @@ SaveScene::init()
     BackButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.43));
     BackButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            AudioController::getInstance()->playClickButtonEffect();
+            AudioController::getInstance()->playReturnButtonEffect();
             Director::getInstance()->popScene();
         }
     });

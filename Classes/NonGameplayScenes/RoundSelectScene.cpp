@@ -93,6 +93,7 @@ RoundSelectScene::onEnter()
     beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
+			AudioController::getInstance()->stopMusic();
             NonGameplayScenesCache::getInstance()->removeAllScenes();
             Director::getInstance()->popToRootScene();
             Director::getInstance()->getEventDispatcher()->removeAllEventListeners();

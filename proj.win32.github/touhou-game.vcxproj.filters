@@ -25,6 +25,8 @@
     </Filter>
     <Filter Include="Classes\GameplayScene\CtrlPanel">
     </Filter>
+    <Filter Include="Classes\GameplayScene\Shaders">
+    </Filter>
     <Filter Include="Classes\GameplayScene\Emitters">
       <UniqueIdentifier>{4e3f5bc7-5be0-4356-bdad-60d302cc49e7}</UniqueIdentifier>
     </Filter>
@@ -213,11 +215,16 @@
   	<ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parabola.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
-	<ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parallel.cpp">
+    <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Parallel.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Style\Scatter.cpp">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClCompile>
+
+    <!-- Classes\GameplayScene\Shaders -->
+    <ClCompile Include="..\Classes\GameplayScene\Shaders\BlendAction.cpp">
+      <Filter>Classes\GameplayScene\Shaders</Filter>
     </ClCompile>
 
   </ItemGroup>
@@ -439,11 +446,16 @@
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Scatter.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
-	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h">
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parabola.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
     </ClInclude>
-	<ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parallel.h">
+    <ClInclude Include="..\Classes\GameplayScene\Emitters\Style\Parallel.h">
       <Filter>Classes\GameplayScene\Emitters\Style</Filter>
+    </ClInclude>
+
+    <!-- Classes\GameplayScene\Shaders -->
+    <ClInclude Include="..\Classes\GameplayScene\Shaders\BlendAction.h">
+      <Filter>Classes\GameplayScene\Shaders</Filter>
     </ClInclude>
 
     <!-- external -->

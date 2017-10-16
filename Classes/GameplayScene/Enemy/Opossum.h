@@ -21,10 +21,18 @@ public:
     void patrolMode(float dt);
 
     void autoChangeDirection(float dt);
-    void autoSwitchAnimation(float dt);
 
 protected:
     Animation* runAnimation;
+
+    class RunAnimation : public State<Enemy>
+    {
+    public:
+        static RunAnimation* getInstance();
+        void Enter(Enemy*);
+        void Exit(Enemy*);
+        void changeToState(Enemy*);
+    };
 
 private:
     float timeAccumulation = 0;

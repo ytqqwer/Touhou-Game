@@ -6,6 +6,14 @@
 #include "GameData/GameData.h"
 #include "GameplayScene/Emitters/Emitter.h"
 
+#define CREATE_AND_ADD_ANIMATION_CACHE(animation, character, frames, delayPerUnit, key)            \
+    animation = Animation::create();                                                               \
+    for (auto v : character.frames) {                                                              \
+        animation->addSpriteFrameWithFile(v);                                                      \
+    }                                                                                              \
+    animation->setDelayPerUnit(character.delayPerUnit);                                            \
+    AnimationCache::getInstance()->addAnimation(animation, key);
+
 bool
 Alice::init(std::string tag)
 {
@@ -17,7 +25,6 @@ Alice::init(std::string tag)
     this->setName(tag);
 
     Character _character = GameData::getInstance()->getCharacterByTag(tag);
-    //此处必须初始化一张角色纹理，否则后面无法切换纹理
     playerSprite = Sprite::create(_character.defaultTexture);
     this->addChild(playerSprite);
 
@@ -52,61 +59,29 @@ Alice::init(std::string tag)
     this->setPhysicsBody(body);
 
     //设置动画
-    standAnimation = Animation::create();
-    for (auto v : _character.standFrame) {
-        standAnimation->addSpriteFrameWithFile(v);
-    }
-    standAnimation->setDelayPerUnit(_character.standFrameDelay);
-    AnimationCache::getInstance()->addAnimation(standAnimation, "AliceStandAnimation");
+    CREATE_AND_ADD_ANIMATION_CACHE(standAnimation, _character, standFrame, standFrameDelay,
+                                   "AliceStandAnimation");
 
-    runAnimation = Animation::create();
-    for (auto v : _character.runFrame) {
-        runAnimation->addSpriteFrameWithFile(v);
-    }
-    runAnimation->setDelayPerUnit(_character.runFrameDelay);
-    AnimationCache::getInstance()->addAnimation(runAnimation, "AliceRunAnimation");
+    CREATE_AND_ADD_ANIMATION_CACHE(runAnimation, _character, runFrame, runFrameDelay,
+                                   "AliceRunAnimation");
 
-    preJumpAnimation = Animation::create();
-    for (auto v : _character.preJumpFrame) {
-        preJumpAnimation->addSpriteFrameWithFile(v);
-    }
-    preJumpAnimation->setDelayPerUnit(_character.preJumpFrameDelay);
-    AnimationCache::getInstance()->addAnimation(preJumpAnimation, "AlicePreJumpAnimation");
+    CREATE_AND_ADD_ANIMATION_CACHE(preJumpAnimation, _character, preJumpFrame, preJumpFrameDelay,
+                                   "AlicePreJumpAnimation");
 
-    jumpAnimation = Animation::create();
-    for (auto v : _character.jumpFrame) {
-        jumpAnimation->addSpriteFrameWithFile(v);
-    }
-    jumpAnimation->setDelayPerUnit(_character.jumpFrameDelay);
-    AnimationCache::getInstance()->addAnimation(jumpAnimation, "AliceJumpAnimation");
+    CREATE_AND_ADD_ANIMATION_CACHE(jumpAnimation, _character, jumpFrame, jumpFrameDelay,
+                                   "AliceJumpAnimation");
     // Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
     jumpAnimation->setLoops(-1);
 
-    preFallAnimation = Animation::create();
-    for (auto v : _character.preFallFrame) {
-        preFallAnimation->addSpriteFrameWithFile(v);
-    }
-    preFallAnimation->setDelayPerUnit(_character.preFallFrameDelay);
-    AnimationCache::getInstance()->addAnimation(preFallAnimation, "AlicePreFallAnimation");
+    CREATE_AND_ADD_ANIMATION_CACHE(preFallAnimation, _character, preFallFrame, preFallFrameDelay,
+                                   "AlicePreFallAnimation");
 
-    fallAnimation = Animation::create();
-    for (auto v : _character.fallFrame) {
-        fallAnimation->addSpriteFrameWithFile(v);
-    }
-    fallAnimation->setDelayPerUnit(_character.fallFrameDelay);
-    AnimationCache::getInstance()->addAnimation(fallAnimation, "AliceFallAnimation");
-    // Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
+    CREATE_AND_ADD_ANIMATION_CACHE(fallAnimation, _character, fallFrame, fallFrameDelay,
+                                   "AliceFallAnimation");
     fallAnimation->setLoops(-1);
 
-    dashAnimation = Animation::create();
-    for (auto v : _character.dashFrame) {
-        dashAnimation->addSpriteFrameWithFile(v);
-    }
-    dashAnimation->setDelayPerUnit(_character.dashFrameDelay);
-    AnimationCache::getInstance()->addAnimation(dashAnimation, "AliceDashAnimation");
-
-    curActionState = ActionState::Default;
-    playerSprite->runAction(RepeatForever::create(Animate::create(standAnimation)));
+    CREATE_AND_ADD_ANIMATION_CACHE(dashAnimation, _character, dashFrame, dashFrameDelay,
+                                   "AliceDashAnimation");
 
     // 设置攻击方式
     vector<Character::Attack> selectAttackList =
@@ -123,9 +98,12 @@ Alice::init(std::string tag)
     this->emitter = Emitter::create(&(this->playerDirection));
     this->addChild(this->emitter);
 
-    //启动状态更新
+    //启动属性状态更新
     this->updatePlayerStatus();
-    this->schedule(CC_SCHEDULE_SELECTOR(Alice::autoSwitchAnimation), 0.1);
+
+    //动画更新
+    animateStateMachine = new StateMachine<Player>(this);
+    animateStateMachine->changeState(StandAnimation::getInstance());
 
     return true;
 }
@@ -178,9 +156,6 @@ Alice::playerJump()
     body->applyImpulse(impluse);
 
     this->jumpCounts--;
-
-    playerSprite->stopAllActions();
-    curActionState = ActionState::Default;
 }
 
 void
@@ -206,13 +181,8 @@ Alice::playerDash()
     }
 
     this->dashCounts--;
-    curActionState = ActionState::Dash;
 
-    playerSprite->stopAllActions();
-    auto animate = Animate::create(dashAnimation);
-    auto actionDone = CallFuncN::create(CC_CALLBACK_1(Alice::resetAction, this));
-    auto sequence = Sequence::create(Repeat::create(animate, 1), actionDone, NULL);
-    playerSprite->runAction(sequence);
+    animateStateMachine->changeState(DashAnimation::getInstance());
 }
 
 void

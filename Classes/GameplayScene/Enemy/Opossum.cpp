@@ -6,6 +6,14 @@
 #include "GameData/EnemyData.h"
 #include "GameData/GameData.h"
 
+#define CREATE_AND_ADD_ANIMATION_CACHE(animation, enemy, frames, delayPerUnit, key)                \
+    animation = Animation::create();                                                               \
+    for (auto v : enemy.frames) {                                                                  \
+        animation->addSpriteFrameWithFile(v);                                                      \
+    }                                                                                              \
+    animation->setDelayPerUnit(enemy.delayPerUnit);                                                \
+    AnimationCache::getInstance()->addAnimation(animation, key);
+
 bool
 Opossum::init(std::string tag)
 {
@@ -51,21 +59,16 @@ Opossum::init(std::string tag)
     body->setVelocityLimit(500);
 
     //设置动画
-    runAnimation = Animation::create();
+    CREATE_AND_ADD_ANIMATION_CACHE(runAnimation, _enemyData, runFrame, runFrameDelay,
+                                   "OpossumRunAnimation");
     runAnimation->retain();
-    for (auto v : _enemyData.runFrame) {
-        runAnimation->addSpriteFrameWithFile(v);
-    }
-    runAnimation->setDelayPerUnit(_enemyData.runFrameDelay);
-    AnimationCache::getInstance()->addAnimation(runAnimation, "OpossumRunAnimation");
 
-    enemySprite->runAction(RepeatForever::create(Animate::create(runAnimation))); //初始时刻在奔跑
-
-    //启动状态更新
-    this->schedule(CC_SCHEDULE_SELECTOR(Opossum::autoSwitchAnimation), 0.1);
-
-    stateMachine = new StateMachine<Enemy>(this);
-    stateMachine->changeState(OpossumPatrolState::getInstance());
+    //行为模式状态机
+    modeStateMachine = new StateMachine<Enemy>(this);
+    modeStateMachine->changeState(OpossumPatrolState::getInstance());
+    //动画状态机
+    animateStateMachine = new StateMachine<Enemy>(this);
+    animateStateMachine->changeState(Opossum::RunAnimation::getInstance());
 
     return true;
 }
@@ -135,12 +138,6 @@ Opossum::autoChangeDirection(float dt)
     }
 }
 
-void
-Opossum::autoSwitchAnimation(float dt)
-{
-    return;
-}
-
 OpossumAlertState*
 OpossumAlertState::getInstance()
 {
@@ -165,7 +162,6 @@ OpossumAlertState::Exit(Enemy* entity)
 void
 OpossumAlertState::changeToState(Enemy* entity)
 {
-    ;
 }
 
 OpossumPatrolState*
@@ -191,5 +187,33 @@ OpossumPatrolState::Exit(Enemy* entity)
 void
 OpossumPatrolState::changeToState(Enemy* entity)
 {
-    entity->stateMachine->changeState(OpossumAlertState::getInstance());
+    entity->modeStateMachine->changeState(OpossumAlertState::getInstance());
+}
+
+Opossum::RunAnimation*
+Opossum::RunAnimation::getInstance()
+{
+    static Opossum::RunAnimation instance;
+    return &instance;
+}
+
+void
+Opossum::RunAnimation::Enter(Enemy* enemy)
+{
+    auto opossum = (Opossum*)enemy;
+    opossum->currentAnimateAction = RepeatForever::create(Animate::create(opossum->runAnimation));
+    opossum->enemySprite->runAction(opossum->currentAnimateAction);
+}
+
+void
+Opossum::RunAnimation::Exit(Enemy* enemy)
+{
+    auto opossum = (Opossum*)enemy;
+    opossum->enemySprite->stopAction(opossum->currentAnimateAction);
+    opossum->enemySprite->unschedule("RunAnimationUpdate");
+}
+
+void
+Opossum::RunAnimation::changeToState(Enemy* enemy)
+{
 }
