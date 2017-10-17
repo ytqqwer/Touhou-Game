@@ -45,6 +45,14 @@ struct Character
     vector<string> fallFrame;
     vector<string> dashFrame;
 
+	string standAnimationKey;
+	string runAnimationKey;
+	string preJumpAnimationKey;
+	string jumpAnimationKey;
+	string preFallAnimationKey;
+	string fallAnimationKey;
+	string dashAnimationKey;
+
     float standFrameDelay;
     float runFrameDelay;
     float preJumpFrameDelay;

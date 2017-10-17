@@ -22,10 +22,6 @@ public:
     void autoChangeDirection(float dt);
 
 protected:
-    Animation* idleAnimation;
-    Animation* jumpAnimation;
-    Animation* fallAnimation;
-
     class IdleAnimation : public State<Enemy>
     {
     public:

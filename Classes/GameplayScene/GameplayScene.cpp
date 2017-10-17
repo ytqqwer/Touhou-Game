@@ -48,6 +48,8 @@ GameplayScene::cleanup()
     AudioController::getInstance()->stopMusic();
     Director::getInstance()->getEventDispatcher()->removeEventListenersForTarget(this);
     _eventFilterMgr->removeAllEventFilters();
+
+    AnimationCache::getInstance()->destroyInstance();
 }
 
 bool
@@ -95,6 +97,8 @@ GameplayScene::init()
     this->initBackGround();
     // 初始化地图层
     this->initMap();
+    // 加载动画缓存
+    this->initAnimationCache();
     // 初始化控制面板
     this->initCtrlPanel();
     // 加载角色
@@ -282,6 +286,81 @@ GameplayScene::createPhysical(float scale)
     return true;
 }
 
+#define CREATE_AND_ADD_ANIMATION_CACHE(frames, delayPerUnit, key)                                  \
+    if (frames.size() > 0) {                                                                       \
+        auto animation = Animation::create();                                                      \
+        for (auto v : frames) {                                                                    \
+            animation->addSpriteFrameWithFile(v);                                                  \
+        }                                                                                          \
+        animation->setDelayPerUnit(delayPerUnit);                                                  \
+        AnimationCache::getInstance()->addAnimation(animation, key);                               \
+    }
+
+void
+GameplayScene::initAnimationCache()
+{
+    auto characterTags = GameData::getInstance()->getOnStageCharacterTagList();
+
+    std::set<string> enemyTags;
+    TMXObjectGroup* group = _map->getObjectGroup("enemy");
+    auto objects = group->getObjects();
+    for (auto v : objects) {
+        auto dict = v.asValueMap();
+        if (dict.size() == 0)
+            continue;
+        std::string tag = dict["tag"].asString();
+        enemyTags.insert(tag);
+    }
+
+    for (auto s : characterTags) {
+        Character _character = GameData::getInstance()->getCharacterByTag(s);
+
+        CREATE_AND_ADD_ANIMATION_CACHE(_character.standFrame, _character.standFrameDelay,
+                                       _character.standAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_character.runFrame, _character.runFrameDelay,
+                                       _character.runAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_character.preJumpFrame, _character.preJumpFrameDelay,
+                                       _character.preJumpAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_character.jumpFrame, _character.jumpFrameDelay,
+                                       _character.jumpAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_character.preFallFrame, _character.preFallFrameDelay,
+                                       _character.preFallAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_character.fallFrame, _character.fallFrameDelay,
+                                       _character.fallAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_character.dashFrame, _character.dashFrameDelay,
+                                       _character.dashAnimationKey);
+    }
+
+    for (auto s : enemyTags) {
+        EnemyData _enemy = GameData::getInstance()->getEnemyByTag(s);
+
+        CREATE_AND_ADD_ANIMATION_CACHE(_enemy.standFrame, _enemy.standFrameDelay,
+                                       _enemy.standAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_enemy.runFrame, _enemy.runFrameDelay,
+                                       _enemy.runAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_enemy.preJumpFrame, _enemy.preJumpFrameDelay,
+                                       _enemy.preJumpAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_enemy.jumpFrame, _enemy.jumpFrameDelay,
+                                       _enemy.jumpAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_enemy.preFallFrame, _enemy.preFallFrameDelay,
+                                       _enemy.preFallAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_enemy.fallFrame, _enemy.fallFrameDelay,
+                                       _enemy.fallAnimationKey);
+    }
+
+    scheduleOnce(
+        [this](float dt) {
+
+            EventCustom event("loading_event");
+            LoadingInfo loadingInfo;
+            loadingInfo.progress = 30;
+            loadingInfo.information = "加载动画缓存";
+            event.setUserData((void*)&loadingInfo);
+            _eventDispatcher->dispatchEvent(&event);
+        },
+        0.7, "animationCache");
+}
+
 void
 GameplayScene::initCharacter()
 {
@@ -311,12 +390,12 @@ GameplayScene::initCharacter()
 
             EventCustom event("loading_event");
             LoadingInfo loadingInfo;
-            loadingInfo.progress = 20;
+            loadingInfo.progress = 10;
             loadingInfo.information = "加载角色";
             event.setUserData((void*)&loadingInfo);
             _eventDispatcher->dispatchEvent(&event);
         },
-        0.6, "character");
+        0.8, "character");
 }
 
 void
@@ -336,7 +415,7 @@ GameplayScene::initCtrlPanel()
             event.retain();
             _eventDispatcher->dispatchEvent(&event);
         },
-        0.7, "controlPanel");
+        0.9, "controlPanel");
 }
 
 void
@@ -379,17 +458,6 @@ GameplayScene::initCamera()
     auto cameraFollow = Follow::create(camera, curArea);
     cameraFollow->setTag(cameraTag);
     mapLayer->runAction(cameraFollow);
-
-    scheduleOnce(
-        [this](float dt) {
-            EventCustom event("loading_event");
-            LoadingInfo loadingInfo;
-            loadingInfo.progress = 10;
-            loadingInfo.information = "加载摄像机";
-            event.setUserData((void*)&loadingInfo);
-            _eventDispatcher->dispatchEvent(&event);
-        },
-        0.8, "camera");
 }
 
 void
@@ -788,7 +856,7 @@ GameplayScene::initCustomEventListener()
         [this](float dt) {
             EventCustom event("loading_event");
             LoadingInfo loadingInfo;
-            loadingInfo.progress = 20;
+            loadingInfo.progress = 10;
             loadingInfo.information = "加载事件";
             event.setUserData((void*)&loadingInfo);
             _eventDispatcher->dispatchEvent(&event);

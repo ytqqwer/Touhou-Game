@@ -23,8 +23,6 @@ public:
     void autoChangeDirection(float dt);
 
 protected:
-    Animation* runAnimation;
-
     class RunAnimation : public State<Enemy>
     {
     public:

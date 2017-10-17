@@ -6,14 +6,6 @@
 #include "GameData/EnemyData.h"
 #include "GameData/GameData.h"
 
-#define CREATE_AND_ADD_ANIMATION_CACHE(animation, enemy, frames, delayPerUnit, key)                \
-    animation = Animation::create();                                                               \
-    for (auto v : enemy.frames) {                                                                  \
-        animation->addSpriteFrameWithFile(v);                                                      \
-    }                                                                                              \
-    animation->setDelayPerUnit(enemy.delayPerUnit);                                                \
-    AnimationCache::getInstance()->addAnimation(animation, key);
-
 bool
 Opossum::init(std::string tag)
 {
@@ -58,10 +50,8 @@ Opossum::init(std::string tag)
     //设置速度上限
     body->setVelocityLimit(500);
 
-    //设置动画
-    CREATE_AND_ADD_ANIMATION_CACHE(runAnimation, _enemyData, runFrame, runFrameDelay,
-                                   "OpossumRunAnimation");
-    runAnimation->retain();
+    //获得动画缓存
+    runAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.runAnimationKey);
 
     //行为模式状态机
     modeStateMachine = new StateMachine<Enemy>(this);
@@ -210,7 +200,6 @@ Opossum::RunAnimation::Exit(Enemy* enemy)
 {
     auto opossum = (Opossum*)enemy;
     opossum->enemySprite->stopAction(opossum->currentAnimateAction);
-    opossum->enemySprite->unschedule("RunAnimationUpdate");
 }
 
 void

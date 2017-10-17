@@ -36,6 +36,7 @@ public:
     //初始化工作
     void initBackGround();
     void initMap();
+    void initAnimationCache();
     void initCtrlPanel();
     void initCharacter();
     void initArea();

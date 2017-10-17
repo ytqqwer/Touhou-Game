@@ -6,14 +6,6 @@
 #include "GameData/EnemyData.h"
 #include "GameData/GameData.h"
 
-#define CREATE_AND_ADD_ANIMATION_CACHE(animation, enemy, frames, delayPerUnit, key)                \
-    animation = Animation::create();                                                               \
-    for (auto v : enemy.frames) {                                                                  \
-        animation->addSpriteFrameWithFile(v);                                                      \
-    }                                                                                              \
-    animation->setDelayPerUnit(enemy.delayPerUnit);                                                \
-    AnimationCache::getInstance()->addAnimation(animation, key);
-
 bool
 Frog::init(std::string tag)
 {
@@ -58,20 +50,10 @@ Frog::init(std::string tag)
     //设置速度上限
     body->setVelocityLimit(300);
 
-    //设置动画
-    CREATE_AND_ADD_ANIMATION_CACHE(idleAnimation, _enemyData, standFrame, standFrameDelay,
-                                   "FrogIdleAnimation");
-    idleAnimation->setLoops(-1);
-
-    CREATE_AND_ADD_ANIMATION_CACHE(jumpAnimation, _enemyData, jumpFrame, jumpFrameDelay,
-                                   "FrogJumpAnimation");
-
-    CREATE_AND_ADD_ANIMATION_CACHE(fallAnimation, _enemyData, fallFrame, fallFrameDelay,
-                                   "FrogFallAnimation");
-
-    idleAnimation->retain(); //如果不手动增加引用计数，会被释放掉
-    jumpAnimation->retain();
-    fallAnimation->retain();
+    //获得动画缓存
+    standAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.standAnimationKey);
+    jumpAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.jumpAnimationKey);
+    fallAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.fallAnimationKey);
 
     //行为模式状态机
     modeStateMachine = new StateMachine<Enemy>(this);
@@ -205,7 +187,7 @@ void
 Frog::IdleAnimation::Enter(Enemy* enemy)
 {
     auto frog = (Frog*)enemy;
-    frog->currentAnimateAction = RepeatForever::create(Animate::create(frog->idleAnimation));
+    frog->currentAnimateAction = RepeatForever::create(Animate::create(frog->standAnimation));
     frog->enemySprite->runAction(frog->currentAnimateAction);
 
     frog->enemySprite->schedule(
@@ -217,7 +199,7 @@ Frog::IdleAnimation::Enter(Enemy* enemy)
                 frog->animateStateMachine->changeState(Frog::FallAnimation::getInstance());
             }
         },
-        0.1, "IdleAnimationUpdate");
+        0.1, "StandAnimationUpdate");
 }
 
 void
@@ -225,7 +207,7 @@ Frog::IdleAnimation::Exit(Enemy* enemy)
 {
     auto frog = (Frog*)enemy;
     frog->enemySprite->stopAction(frog->currentAnimateAction);
-    frog->enemySprite->unschedule("IdleAnimationUpdate");
+    frog->enemySprite->unschedule("StandAnimationUpdate");
 }
 
 void

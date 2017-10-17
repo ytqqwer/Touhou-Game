@@ -60,29 +60,17 @@ Reimu::init(std::string tag)
     this->setPhysicsBody(body);
 
     //设置动画
-    CREATE_AND_ADD_ANIMATION_CACHE(standAnimation, _character, standFrame, standFrameDelay,
-                                   "ReimuStandAnimation");
 
-    CREATE_AND_ADD_ANIMATION_CACHE(runAnimation, _character, runFrame, runFrameDelay,
-                                   "ReimuRunAnimation");
+    standAnimation = AnimationCache::getInstance()->getAnimation(_character.standAnimationKey);
+    runAnimation = AnimationCache::getInstance()->getAnimation(_character.runAnimationKey);
+    preJumpAnimation = AnimationCache::getInstance()->getAnimation(_character.preJumpAnimationKey);
+    jumpAnimation = AnimationCache::getInstance()->getAnimation(_character.jumpAnimationKey);
+    preFallAnimation = AnimationCache::getInstance()->getAnimation(_character.preFallAnimationKey);
+    fallAnimation = AnimationCache::getInstance()->getAnimation(_character.fallAnimationKey);
+    dashAnimation = AnimationCache::getInstance()->getAnimation(_character.dashAnimationKey);
 
-    CREATE_AND_ADD_ANIMATION_CACHE(preJumpAnimation, _character, preJumpFrame, preJumpFrameDelay,
-                                   "ReimuPreJumpAnimation");
-
-    CREATE_AND_ADD_ANIMATION_CACHE(jumpAnimation, _character, jumpFrame, jumpFrameDelay,
-                                   "ReimuJumpAnimation");
-    // Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
-    jumpAnimation->setLoops(-1);
-
-    CREATE_AND_ADD_ANIMATION_CACHE(preFallAnimation, _character, preFallFrame, preFallFrameDelay,
-                                   "ReimuPreFallAnimation");
-
-    CREATE_AND_ADD_ANIMATION_CACHE(fallAnimation, _character, fallFrame, fallFrameDelay,
-                                   "ReimuFallAnimation");
-    fallAnimation->setLoops(-1);
-
-    CREATE_AND_ADD_ANIMATION_CACHE(dashAnimation, _character, dashFrame, dashFrameDelay,
-                                   "ReimuDashAnimation");
+    this->jumpAnimation->setLoops(-1);
+    this->fallAnimation->setLoops(-1);
 
     // 设置攻击方式
     vector<Character::Attack> selectAttackList =

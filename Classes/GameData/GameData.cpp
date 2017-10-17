@@ -280,6 +280,14 @@ from_json(const json& j, Character& c)
         c.dashFrame.push_back(p);
     }
 
+	c.standAnimationKey = c.tag + ("StandAnimation");
+	c.runAnimationKey = c.tag + ("RunAnimation");
+	c.preJumpAnimationKey = c.tag + ("PreJumpAnimation");
+	c.jumpAnimationKey = c.tag + ("JumpAnimation");
+	c.preFallAnimationKey = c.tag + ("PreFallAnimation");
+	c.fallAnimationKey = c.tag + ("FallAnimation");
+	c.dashAnimationKey = c.tag + ("DashAnimation");
+
     c.standFrameDelay = it->at("standFrameDelay");
     c.runFrameDelay = it->at("runFrameDelay");
     c.preJumpFrameDelay = it->at("preJumpFrameDelay");
@@ -394,6 +402,13 @@ from_json(const json& j, EnemyData& c)
     for (auto const& p : j.at("fallFrame")) {
         c.fallFrame.push_back(p);
     }
+
+	c.standAnimationKey = c.tag+ ("StandAnimation") ;
+	c.runAnimationKey = c.tag + ("RunAnimation");
+	c.preJumpAnimationKey = c.tag + ("PreJumpAnimation");
+	c.jumpAnimationKey = c.tag + ("JumpAnimation");
+	c.preFallAnimationKey = c.tag + ("PreFallAnimation");
+	c.fallAnimationKey = c.tag + ("FallAnimation");
 
     c.standFrameDelay = j.at("standFrameDelay");
     c.runFrameDelay = j.at("runFrameDelay");

@@ -24,6 +24,13 @@ struct EnemyData
     vector<string> preFallFrame;
     vector<string> fallFrame;
 
+	string standAnimationKey;
+	string runAnimationKey;
+	string preJumpAnimationKey;
+	string jumpAnimationKey;
+	string preFallAnimationKey;
+	string fallAnimationKey;
+
     float standFrameDelay;
     float runFrameDelay;
     float preJumpFrameDelay;

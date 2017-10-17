@@ -45,9 +45,15 @@ public:
 
 protected:
     PhysicsBody* body;
-
     Sprite* enemySprite;
+
     Action* currentAnimateAction;
+    Animation* standAnimation;
+    Animation* runAnimation;
+    Animation* jumpAnimation;
+    Animation* preJumpAnimation;
+    Animation* fallAnimation;
+    Animation* preFallAnimation;
 };
 
 #endif
