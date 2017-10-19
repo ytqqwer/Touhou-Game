@@ -13,7 +13,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "妖怪横行的山路，吓跑了不少的参拜者。",
                 "difficulty": "TWO",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             },
             {
                 "tag": "round 2",
@@ -21,7 +21,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "野兽徘徊的林地，当心喜欢恶作剧的小妖精。",
                 "difficulty": "THREE",
-                "TMXMap": "gamedata/locations/L1_rounds/r2.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             },
             {
                 "tag": "round 3",
@@ -29,7 +29,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "请不要在夜晚靠近这片区域。",
                 "difficulty": "FOUR",
-                "TMXMap": "gamedata/locations/L1_rounds/r2.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             }
         ]
     },
@@ -47,7 +47,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L2 round1's description",
                 "difficulty": "TWO",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             },
             {
                 "tag": "L2_2",
@@ -55,7 +55,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L2 round2's description",
                 "difficulty": "FOUR",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             }
         ]
     },
@@ -73,7 +73,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L3 round1's description",
                 "difficulty": "ONE",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             },
             {
                 "tag": "L3_2",
@@ -81,7 +81,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L3 round2's description",
                 "difficulty": "THREE",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             }
         ]
     },
@@ -99,7 +99,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L4 round1's description",
                 "difficulty": "THREE",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             },
             {
                 "tag": "L4_2",
@@ -107,7 +107,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L4 round2's description",
                 "difficulty": "THREE",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             }
         ]
     },
@@ -125,7 +125,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L5 round1's description",
                 "difficulty": "TWO",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             },
             {
                 "tag": "L5_2",
@@ -133,7 +133,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L5 round2's description",
                 "difficulty": "THREE",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             }
         ]
     },
@@ -151,7 +151,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L6 round1's description",
                 "difficulty": "TWO",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             },
             {
                 "tag": "L6_2",
@@ -159,7 +159,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L6 round2's description",
                 "difficulty": "THREE",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             }
         ]
     },
@@ -177,7 +177,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L7 round1's description",
                 "difficulty": "TWO",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             },
             {
                 "tag": "L7_2",
@@ -185,7 +185,7 @@
                 "previewPicture": "place_holder.png",
                 "description": "This is L7 round2's description",
                 "difficulty": "THREE",
-                "TMXMap": "gamedata/locations/L1_rounds/r1.tmx"
+                "TMXMap": "gameplayscene/test.tmx"
             }
         ]
     },

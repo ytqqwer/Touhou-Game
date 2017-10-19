@@ -54,7 +54,7 @@ CtrlPanelLayer::init()
     // 设置按钮
     auto settingsBtn = Button::create("CloseNormal.png");
     settingsBtn->setPosition(Vec2(_visibleSize.width * 0.060, _visibleSize.height * 0.920));
-    settingsBtn->setScale(1.5);
+    settingsBtn->setScale(1.8);
     settingsBtn->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             this->_eventDispatcher->dispatchCustomEvent("settings_key_pressed");
@@ -65,7 +65,7 @@ CtrlPanelLayer::init()
     // dash
     auto dashButton = Button::create("gameplayscene/dashButton.png");
     dashButton->setPosition(Vec2(_visibleSize.width * 0.920, _visibleSize.height * 0.080));
-    dashButton->setScale(0.6);
+    dashButton->setScale(0.8);
     dashButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             this->_eventDispatcher->dispatchCustomEvent("dash_key_pressed");
@@ -124,12 +124,10 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
         }
 
         /*  3. 血条, 蓝条 */
-
-        auto hpManaBar = HpManaBar::create();
-        hpManaBar->setAnchorPoint(Vec2(0, 1));
-        hpManaBar->setPosition(Vec2(_visibleSize.width * 0.090, _visibleSize.height * 0.930));
-        // TODO, 追踪 Player
-        // hpManaBar->setPlayer(Player *);
+		
+        auto hpManaBar = HpManaBar::create(characterTagList[i], characterList[i].healthPointBase, characterList[i].manaBase);
+        hpManaBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        hpManaBar->setPosition(Vec2(_visibleSize.width * 0.270, _visibleSize.height * 0.930));
         panel->addChild(hpManaBar);
 
         /*  4. 切换攻击方式按钮 */
@@ -137,7 +135,7 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
         auto switchAttackTypeBtn = Button::create("gameplayscene/switchAttackType.png");
         switchAttackTypeBtn->setPosition(
             Vec2(_visibleSize.width * 0.840, _visibleSize.height * 0.080));
-        switchAttackTypeBtn->setScale(1.5);
+        switchAttackTypeBtn->setScale(1.8);
         switchAttackTypeBtn->addTouchEventListener(
             [this](Ref* pSender, Widget::TouchEventType type) {
                 if (type == Widget::TouchEventType::ENDED) {

@@ -1641,6 +1641,8 @@ testSelf()
     cout << "  TMXMap: " << get_round_to_play.TMXMap << endl;
 
     log("==================== GameData Test End ====================");
+
+	GameData::getInstance()->newGame();
 }
 
 static void

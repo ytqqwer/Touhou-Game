@@ -55,9 +55,11 @@ public:
     Emitter* emitter;
 
     //生命值
-    int healthPointBase;
+    int baseHP;
+    int currentHP;
     //灵力值
     int manaBase;
+    int currentMana;
 
     //行走相关
     int walkSpeedBase;

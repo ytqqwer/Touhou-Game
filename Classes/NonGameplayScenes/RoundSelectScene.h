@@ -39,6 +39,7 @@ private:
     Sprite* difficult[5];
     Sprite* preViewPic;
     cocos2d::ui::Text* preViewText;
+    std::string selectedMap;
 
     vector<Round> rounds;
 

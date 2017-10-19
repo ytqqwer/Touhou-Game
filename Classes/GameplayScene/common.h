@@ -48,4 +48,10 @@ struct DamageInfo
     int damage;
 };
 
+struct Hp_Mp_Change
+{
+    std::string tag;
+    int value;
+};
+
 #endif

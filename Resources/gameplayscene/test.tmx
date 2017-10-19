@@ -36,8 +36,7 @@
    <polyline points="0,0 128,0"/>
   </object>
   <object id="93" x="0" y="496" width="32" height="624"/>
-  <object id="98" x="0" y="0" width="24" height="368"/>
-  <object id="99" x="24" y="0" width="3108" height="48"/>
+  <object id="98" x="0" y="-256" width="24" height="624"/>
   <object id="105" x="1456" y="672">
    <polyline points="0,0 160,0"/>
   </object>
@@ -69,7 +68,7 @@
   <object id="125" x="548" y="868" width="12" height="28"/>
   <object id="126" x="368" y="372" width="76" height="172"/>
   <object id="127" x="444" y="436" width="180" height="108"/>
-  <object id="128" x="3140" y="4" width="52" height="992"/>
+  <object id="128" x="3140" y="-300" width="52" height="1296"/>
  </objectgroup>
  <objectgroup name="event">
   <object id="141" x="512" y="368" width="32" height="32">

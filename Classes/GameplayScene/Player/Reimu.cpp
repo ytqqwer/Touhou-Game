@@ -36,8 +36,10 @@ Reimu::init(std::string tag)
     spellCardList = GameData::getInstance()->getCharacterSpellCardList(tag);
 
     //设置属性值
-    this->healthPointBase = _character.healthPointBase;
+    this->baseHP = _character.healthPointBase;
+    this->currentHP = _character.healthPointBase;
     this->manaBase = _character.manaBase;
+    this->currentMana = _character.manaBase;
     this->walkSpeedBase = _character.walkSpeedBase;
     this->walkMaxSpeed = _character.walkMaxSpeed;
     this->walkAccelerationTimeBase = _character.walkAccelerationTimeBase;

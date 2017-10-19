@@ -117,14 +117,14 @@ Player::StandAnimation::Enter(Player* player)
     player->playerSprite->schedule(
         [player](float dt) {
             Vec2 velocity = player->body->getVelocity();
-            if (-25 < velocity.y && velocity.y < 25) {
-                if (velocity.x < -25 || 25 < velocity.x) {
+            if (-15 < velocity.y && velocity.y < 15) {
+                if (velocity.x < -15 || 15 < velocity.x) {
                     player->animateStateMachine->changeState(Player::RunAnimation::getInstance());
                 }
             } else {
-                if (25 < velocity.y) {
+                if (15 < velocity.y) {
                     player->animateStateMachine->changeState(Player::JumpAnimation::getInstance());
-                } else if (velocity.y < -25) {
+                } else if (velocity.y < -15) {
                     player->animateStateMachine->changeState(Player::FallAnimation::getInstance());
                 }
             }
@@ -160,14 +160,14 @@ Player::RunAnimation::Enter(Player* player)
     player->playerSprite->schedule(
         [player](float dt) {
             Vec2 velocity = player->body->getVelocity();
-            if (-25 < velocity.y && velocity.y < 25) {
-                if (-25 < velocity.x && velocity.x < 25) {
+            if (-15 < velocity.y && velocity.y < 15) {
+                if (-15 < velocity.x && velocity.x < 15) {
                     player->animateStateMachine->changeState(Player::StandAnimation::getInstance());
                 }
             } else {
-                if (25 < velocity.y) {
+                if (15 < velocity.y) {
                     player->animateStateMachine->changeState(Player::JumpAnimation::getInstance());
-                } else if (velocity.y < -25) {
+                } else if (velocity.y < -15) {
                     player->animateStateMachine->changeState(Player::FallAnimation::getInstance());
                 }
             }
@@ -204,7 +204,7 @@ Player::JumpAnimation::Enter(Player* player)
     player->playerSprite->schedule(
         [player](float dt) {
             Vec2 velocity = player->body->getVelocity();
-            if (velocity.y < -25) {
+            if (velocity.y < 15) {
                 player->animateStateMachine->changeState(Player::FallAnimation::getInstance());
             }
         },
@@ -240,7 +240,7 @@ Player::FallAnimation::Enter(Player* player)
     player->playerSprite->schedule(
         [player](float dt) {
             Vec2 velocity = player->body->getVelocity();
-            if (-25 < velocity.y) {
+            if (-15 < velocity.y) {
                 player->animateStateMachine->changeState(Player::StandAnimation::getInstance());
             }
         },

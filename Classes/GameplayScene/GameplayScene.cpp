@@ -52,6 +52,30 @@ GameplayScene::cleanup()
     AnimationCache::getInstance()->destroyInstance();
 }
 
+GameplayScene*
+GameplayScene::create(std::string map)
+{
+    GameplayScene* pRet = new (std::nothrow) GameplayScene(map);
+    if (pRet && pRet->init()) {
+        pRet->autorelease();
+        return pRet;
+    } else {
+        delete pRet;
+        pRet = nullptr;
+        return nullptr;
+    }
+}
+
+GameplayScene::GameplayScene(std::string map)
+{
+    selectedMap = map;
+}
+
+GameplayScene::~GameplayScene()
+{
+    delete _eventScriptHanding;
+}
+
 bool
 GameplayScene::init()
 {
@@ -99,10 +123,10 @@ GameplayScene::init()
     this->initMap();
     // 加载动画缓存
     this->initAnimationCache();
-    // 初始化控制面板
-    this->initCtrlPanel();
     // 加载角色
     this->initCharacter();
+    // 初始化控制面板
+    this->initCtrlPanel();
     // 加载首个区域
     this->initArea();
     // 加载摄像机
@@ -115,11 +139,6 @@ GameplayScene::init()
     this->scheduleUpdate();
 
     return true;
-}
-
-GameplayScene::~GameplayScene()
-{
-    delete _eventScriptHanding;
 }
 
 void
@@ -153,7 +172,8 @@ void
 GameplayScene::initMap()
 {
     mapLayer = Layer::create();
-    _map = TMXTiledMap::create("gameplayscene/test.tmx");
+    //_map = TMXTiledMap::create("gameplayscene/test.tmx");
+    _map = TMXTiledMap::create(selectedMap);
     //设置地图大小的倍率
     _map->setScale(1.0f);
     mapLayer->addChild(_map);
@@ -845,11 +865,38 @@ GameplayScene::initCustomEventListener()
         _enemy->decreaseHp(_damageInfo->damage);
     });
 
-    _eventDispatcher->addCustomEventListener("bullet_hit_player", [this](EventCustom* e) {
-        auto _damageInfo = (DamageInfo*)e->getUserData();
-        auto _player = (Player*)_damageInfo->target;
-        _player->getHit(_damageInfo, _eventFilterMgr);
+    _eventDispatcher->addCustomEventListener("use_item", [this](EventCustom* e) {
+        string itemTag = (char*)e->getUserData();
+        Hp_Mp_Change hpChange;
+        if (itemTag == "I1") {
+            hpChange.tag = curPlayer->playerTag;
+            hpChange.value = 20;
+        } else if (itemTag == "I2") {
+            hpChange.tag = curPlayer->playerTag;
+            hpChange.value = -40;
+        }
+        EventCustom event("hp_change");
+        event.setUserData((void*)&hpChange);
+        _eventDispatcher->dispatchEvent(&event);
 
+        curPlayer->currentHP += hpChange.value;
+    });
+
+    _eventDispatcher->addCustomEventListener("use_spell_card", [this](EventCustom* e) {
+        string spellTag = (char*)e->getUserData();
+        Hp_Mp_Change mpChange;
+        if (spellTag == "C1") {
+            mpChange.tag = curPlayer->playerTag;
+            mpChange.value = -20;
+        } else if (spellTag == "C2") {
+            mpChange.tag = curPlayer->playerTag;
+            mpChange.value = -30;
+        }
+        EventCustom event("mana_change");
+        event.setUserData((void*)&mpChange);
+        _eventDispatcher->dispatchEvent(&event);
+
+        curPlayer->currentMana += mpChange.value;
     });
 
     scheduleOnce(

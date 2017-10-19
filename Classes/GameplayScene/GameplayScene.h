@@ -19,11 +19,8 @@ class GameplayScene : public cocos2d::Scene
 public:
     friend class EventScriptHanding;
 
-    CREATE_FUNC(GameplayScene);
+    static GameplayScene* create(std::string);
     virtual bool init() override;
-
-    //析构函数，释放事件脚本处理器内存等
-    ~GameplayScene();
 
     //重载场景生命周期中的几个函数
     void onEnter() override;
@@ -69,6 +66,10 @@ private:
     // 在地图中生成静态刚体
     bool createPhysical(float scale);
 
+    GameplayScene(std::string);
+    //析构函数，释放事件脚本处理器内存等
+    ~GameplayScene();
+
 private:
     //实用的全局量
     Size visibleSize;
@@ -84,6 +85,7 @@ private:
     Sprite* camera;
 
     //瓦片地图对象，需要从中读取数据
+    std::string selectedMap;
     TMXTiledMap* _map;
     Rect curArea;
 

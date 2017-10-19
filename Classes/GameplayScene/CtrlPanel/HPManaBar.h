@@ -7,27 +7,30 @@
 
 #include "cocos2d.h"
 
-class Player;
-
 class HpManaBar : public cocos2d::Sprite
 {
 public:
-    CREATE_FUNC(HpManaBar);
+	static HpManaBar* create(const std::string tag,const int maxHpValue,const int maxManaValue);
+
     virtual bool init() override;
-    virtual void update(float) override;
-
-    void setPlayer(Player*);
+	
+private:
+    HpManaBar(const std::string tag, const int maxHpValue, const int maxManaValue);
 
 private:
-    HpManaBar() = default;
+	std::string _tag;
 
-private:
-    Player* _player;
-
+	int _maxHp;
     Sprite* _hpBar;
-    Sprite* _hpBarBlack;
+	Sprite* _hpStencil;
+    Sprite* _hpBarBlack; 
+	cocos2d::ClippingNode* hpClippingNode;
+
+	int _maxMana;
     Sprite* _manaBar;
-    Sprite* _manaBarBlack;
+	Sprite* _manaStencil;
+    Sprite* _manaBarBlack; 
+	cocos2d::ClippingNode* manaClippingNode;
 };
 
 #endif // LIFE_MANA_BAR_H

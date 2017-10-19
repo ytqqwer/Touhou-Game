@@ -93,11 +93,11 @@ RoundSelectScene::onEnter()
     beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
-			AudioController::getInstance()->stopMusic();
+            AudioController::getInstance()->stopMusic();
             NonGameplayScenesCache::getInstance()->removeAllScenes();
             Director::getInstance()->popToRootScene();
             Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
-            Director::getInstance()->replaceScene(GameplayScene::create());
+            Director::getInstance()->replaceScene(GameplayScene::create(this->selectedMap));
         }
     });
     this->addChild(beginButton, 2);
@@ -122,6 +122,8 @@ RoundSelectScene::onEnter()
     difficultText->setPosition(Vec2(Vec2(_visibleSize.width * 0.65, _visibleSize.height * 0.75)));
     difficultText->setFontSize(25);
     this->addChild(difficultText);
+    //设置tmx地图
+    selectedMap = rounds[0].TMXMap;
 
     //设置5颗空星，表示难度，然后根据不同的回合难度换成相应的实心
     for (int i = 0; i < 5; ++i) {
@@ -371,6 +373,7 @@ RoundSelectScene::setRoundInformation(Round round)
     preViewPic->setTexture(round.previewPicture);
     preViewPic->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     preViewText->setText(round.description);
+    selectedMap = round.TMXMap;
 }
 
 void
