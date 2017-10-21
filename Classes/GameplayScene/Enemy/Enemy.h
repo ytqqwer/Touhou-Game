@@ -27,7 +27,7 @@ public:
 
 public:
     virtual void decreaseHp(int damage) = 0;
-    virtual void autoChangeDirection(float dt) = 0;
+    virtual void autoChangeDirection(float dt);
     virtual void setTarget(Player*& player);
     virtual void resetJump();
 
@@ -38,6 +38,8 @@ public:
     int hp;
     bool _canJump = false;
 
+    Sprite* enemySprite;
+
     Direction enemyDirection = Direction::LEFT;
 
     StateMachine<Enemy>* modeStateMachine;
@@ -45,7 +47,6 @@ public:
 
 protected:
     PhysicsBody* body;
-    Sprite* enemySprite;
 
     Action* currentAnimateAction;
     Animation* standAnimation;

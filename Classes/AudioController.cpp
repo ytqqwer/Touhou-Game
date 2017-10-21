@@ -7,6 +7,14 @@ AudioController::AudioController()
 {
 }
 
+void
+AudioController::clearMusic()
+{
+    currentMusic = "";
+    formerMusic = "";
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+}
+
 bool
 AudioController::isPlayingMusic()
 {
@@ -16,15 +24,23 @@ AudioController::isPlayingMusic()
 void
 AudioController::playMusic(std::string music, bool loop)
 {
-    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-    SimpleAudioEngine::getInstance()->playBackgroundMusic(music.c_str(), loop);
-    currentMusic = music;
+    if (currentMusic != music) {
+        SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+        SimpleAudioEngine::getInstance()->playBackgroundMusic(music.c_str(), loop);
+        currentMusic = music;
+    }
 }
 
 void
 AudioController::stopMusic()
 {
     SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+}
+
+void
+AudioController::resumeMusic()
+{
+    SimpleAudioEngine::getInstance()->playBackgroundMusic(currentMusic.c_str(), true);
 }
 
 std::string

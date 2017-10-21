@@ -84,6 +84,9 @@ private:
     //摄像机节点
     Sprite* camera;
 
+    //背景图片
+    Sprite* backgroundPicture;
+
     //瓦片地图对象，需要从中读取数据
     std::string selectedMap;
     TMXTiledMap* _map;
@@ -98,6 +101,7 @@ private:
     /*临时项*/
 
     //游戏场景的几个重要层
+    Layer* backgroundLayer;
     Layer* mapLayer;
     Layer* controlPanel;
 

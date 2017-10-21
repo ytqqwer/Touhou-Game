@@ -8,7 +8,6 @@
    "jumpFrameDelay" : 0.3,
    "preFallFrameDelay" : 0.3,
    "fallFrameDelay" : 0.1,
-   "dashFrameDelay" : 0.1,
    "standFrame" : [],
    "runFrame" : [
        "gameplayscene/Enemy/opossum-1.png", "gameplayscene/Enemy/opossum-2.png",
@@ -31,7 +30,6 @@
    "jumpFrameDelay" : 0.15,
    "preFallFrameDelay" : 0.3,
    "fallFrameDelay" : 0.15,
-   "dashFrameDelay" : 0.1,
    "standFrame" : [
        "gameplayscene/Enemy/frog-idle-1.png", "gameplayscene/Enemy/frog-idle-2.png",
        "gameplayscene/Enemy/frog-idle-3.png", "gameplayscene/Enemy/frog-idle-4.png"
@@ -42,4 +40,28 @@
    "preFallFrame" : [],
    "fallFrame" : ["gameplayscene/Enemy/frog-jump-2.png"],
    "healthPoint" : 100
- }]
+ },
+ {
+   "tag" : "Sakuya",
+   "name" : "Sakuya",
+   "defaultTexture" : "gameplayscene/Sakuya/stand000.png",
+   "standFrameDelay" : 0.25,
+   "runFrameDelay" : 0.15,
+   "preJumpFrameDelay" : 0.15,
+   "jumpFrameDelay" : 0.15,
+   "preFallFrameDelay" : 0.15,
+   "fallFrameDelay" : 0.15,
+   "dashFrameDelay" : 0.15,
+   "standFrame" : [
+       "gameplayscene/Sakuya/stand000.png", "gameplayscene/Sakuya/stand001.png",
+       "gameplayscene/Sakuya/stand002.png", "gameplayscene/Sakuya/stand003.png",
+       "gameplayscene/Sakuya/stand004.png", "gameplayscene/Sakuya/stand005.png"
+   ],
+   "runFrame" : [],
+   "preJumpFrame" : [],
+   "jumpFrame" : [],
+   "preFallFrame" : [],
+   "fallFrame" : [],
+   "healthPoint" : 10000
+ }
+]

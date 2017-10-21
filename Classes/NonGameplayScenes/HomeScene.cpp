@@ -246,9 +246,7 @@ HomeScene::onEnter()
     people_array = gamedata->getAvailableCharacterList();
 
     /*背景音乐*/
-    if (AudioController::getInstance()->getCurrentMusic() != location.backgroundMusic) {
-        AudioController::getInstance()->playMusic(location.backgroundMusic, true);
-    }
+    AudioController::getInstance()->playMusic(location.backgroundMusic, true);
 
     /*背景*/
     backGround->setTexture(location.backgroundPicture);

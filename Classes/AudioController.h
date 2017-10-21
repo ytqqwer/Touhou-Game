@@ -16,9 +16,11 @@ public:
 
     AudioController();
 
+    void clearMusic();
     bool isPlayingMusic();
     void playMusic(std::string, bool);
     void stopMusic();
+    void resumeMusic();
     std::string getCurrentMusic();
     void recordFormerMusic();
     void resumeFormerMusic();

@@ -48,12 +48,7 @@ RoundSelectScene::onEnter()
     Location location = GameData::getInstance()->getCurrentLocation();
 
     /*背景音乐*/
-    if (!AudioController::getInstance()->isPlayingMusic()) {
-        AudioController::getInstance()->playMusic(location.backgroundMusic, true);
-    }
-    if (AudioController::getInstance()->getCurrentMusic() != location.backgroundMusic) {
-        AudioController::getInstance()->playMusic(location.backgroundMusic, true);
-    }
+    AudioController::getInstance()->playMusic(location.backgroundMusic, true);
 
     /*****************静态不会变化的板块.创建大概模型*****************/
     //创建背景
@@ -92,8 +87,9 @@ RoundSelectScene::onEnter()
     beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
     beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            //进入游戏场景前需要做一些清理工作
             AudioController::getInstance()->playClickButtonEffect();
-            AudioController::getInstance()->stopMusic();
+            AudioController::getInstance()->clearMusic();
             NonGameplayScenesCache::getInstance()->removeAllScenes();
             Director::getInstance()->popToRootScene();
             Director::getInstance()->getEventDispatcher()->removeAllEventListeners();

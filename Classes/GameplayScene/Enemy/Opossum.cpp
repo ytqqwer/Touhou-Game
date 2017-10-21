@@ -86,48 +86,6 @@ Opossum::decreaseHp(int damage)
     }
 }
 
-void
-Opossum::alertMode(float dt)
-{
-    this->schedule(CC_SCHEDULE_SELECTOR(Opossum::run));
-}
-
-void
-Opossum::patrolMode(float dt)
-{
-    int weight = random(0, 100);
-    if (weight >= 60) {
-        if (this->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::run))) {
-            this->unschedule(CC_SCHEDULE_SELECTOR(Opossum::run));
-        }
-    } else {
-        if (weight >= 30) {
-            enemySprite->setScaleX(-1);
-            this->enemyDirection = Direction::RIGHT;
-        } else {
-            enemySprite->setScaleX(1);
-            this->enemyDirection = Direction::LEFT;
-        }
-        if (!(this->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::run)))) {
-            this->schedule(CC_SCHEDULE_SELECTOR(Opossum::run));
-        }
-    }
-}
-
-void
-Opossum::autoChangeDirection(float dt)
-{
-    Point enemyPos = this->getPosition();
-    Vec2 playerPos = (*curTarget)->getPosition();
-    if (enemyPos.x > playerPos.x) {
-        this->enemyDirection = Direction::LEFT;
-        enemySprite->setScaleX(1);
-    } else {
-        this->enemyDirection = Direction::RIGHT;
-        enemySprite->setScaleX(-1);
-    }
-}
-
 OpossumAlertState*
 OpossumAlertState::getInstance()
 {
@@ -138,14 +96,14 @@ OpossumAlertState::getInstance()
 void
 OpossumAlertState::Enter(Enemy* entity)
 {
-    entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::alertMode), 0.50);
+    entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::run));
     entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::autoChangeDirection), 0.50);
 }
 
 void
 OpossumAlertState::Exit(Enemy* entity)
 {
-    entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::alertMode));
+    entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::run));
     entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::autoChangeDirection));
 }
 
@@ -164,14 +122,33 @@ OpossumPatrolState::getInstance()
 void
 OpossumPatrolState::Enter(Enemy* entity)
 {
-
-    entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::patrolMode), 1.0);
+    entity->schedule(
+        [entity](float dt) {
+            int weight = random(0, 100);
+            if (weight >= 60) {
+                if (entity->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::run))) {
+                    entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::run));
+                }
+            } else {
+                if (weight >= 30) {
+                    entity->enemySprite->setScaleX(-1);
+                    entity->enemyDirection = Direction::RIGHT;
+                } else {
+                    entity->enemySprite->setScaleX(1);
+                    entity->enemyDirection = Direction::LEFT;
+                }
+                if (!(entity->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::run)))) {
+                    entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::run));
+                }
+            }
+        },
+        1.0, "OpossumPatrolState");
 }
 
 void
 OpossumPatrolState::Exit(Enemy* entity)
 {
-    entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::patrolMode));
+    entity->unschedule("OpossumPatrolState");
 }
 
 void

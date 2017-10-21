@@ -201,9 +201,7 @@ KoumakanLibraryScene::onEnter()
     auto location = GameData::getInstance()->getCurrentLocation();
 
     /*背景音乐*/
-    if (AudioController::getInstance()->getCurrentMusic() != location.backgroundMusic) {
-        AudioController::getInstance()->playMusic(location.backgroundMusic, true);
-    }
+	AudioController::getInstance()->playMusic(location.backgroundMusic, true);
 
     /*钱币*/
     char str[10];

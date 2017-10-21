@@ -179,6 +179,9 @@
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Opossum.cpp">
       <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Sakuya.cpp">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClCompile>
 
     <!-- Classes\GameplayScene\CtrlPanel -->
 
@@ -402,6 +405,9 @@
       <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Opossum.h">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Sakuya.h">
       <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClInclude>
 

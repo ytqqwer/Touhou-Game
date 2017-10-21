@@ -245,9 +245,7 @@ ConversationLayer::changeBgp(const string& bgp)
 void
 ConversationLayer::changeBgm(const string& bgm)
 {
-    if (AudioController::getInstance()->getCurrentMusic() != bgm) {
-        AudioController::getInstance()->playMusic(bgm, true);
-    }
+    AudioController::getInstance()->playMusic(bgm, true);
 }
 
 void

@@ -17,11 +17,6 @@ public:
     void run(float dt);
     void decreaseHp(int damage);
 
-    void alertMode(float dt);
-    void patrolMode(float dt);
-
-    void autoChangeDirection(float dt);
-
 protected:
     class RunAnimation : public State<Enemy>
     {

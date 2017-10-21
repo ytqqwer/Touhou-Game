@@ -69,6 +69,7 @@ GameplayScene::create(std::string map)
 GameplayScene::GameplayScene(std::string map)
 {
     selectedMap = map;
+    visibleSize = Director::getInstance()->getVisibleSize();
 }
 
 GameplayScene::~GameplayScene()
@@ -82,16 +83,12 @@ GameplayScene::init()
     if (!Scene::init()) {
         return false;
     }
+
     //初始化子弹素材
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet1.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet2.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet3.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/laser1.plist");
-
-    //设置背景音乐
-    // AudioController::getInstance()->playMusic("bgm/bgm001.mp3", true);
-
-    visibleSize = Director::getInstance()->getVisibleSize();
 
     this->initWithPhysics();                                                //初始化物理世界
     Vect gravity(0, -gameGravity);                                          //游戏场景的重力
@@ -144,16 +141,13 @@ GameplayScene::init()
 void
 GameplayScene::initBackGround()
 {
-    auto backGroundLayer = Layer::create();
+    backgroundPicture = Sprite::create();
+    backgroundPicture->setAnchorPoint(Point::ZERO);
+    backgroundPicture->setPosition(Point::ZERO);
 
-    Sprite* backGround = Sprite::create("gameplayscene/gbg.png");
-    backGround->setAnchorPoint(Point::ZERO);
-    backGround->setPosition(Point::ZERO);
-    backGround->setScale(1.8);
-
-    backGroundLayer->addChild(backGround);
-
-    this->addChild(backGroundLayer, -100);
+    backgroundLayer = Layer::create();
+    backgroundLayer->addChild(backgroundPicture);
+    this->addChild(backgroundLayer, -100);
 
     scheduleOnce(
         [this](float dt) {
@@ -172,7 +166,6 @@ void
 GameplayScene::initMap()
 {
     mapLayer = Layer::create();
-    //_map = TMXTiledMap::create("gameplayscene/test.tmx");
     _map = TMXTiledMap::create(selectedMap);
     //设置地图大小的倍率
     _map->setScale(1.0f);
@@ -454,6 +447,19 @@ GameplayScene::initArea()
         float height = dict["height"].asFloat();
         curArea.setRect(x, y, width, height);
         if (curArea.containsPoint(playerPos)) {
+            //替换背景图片
+            backgroundPicture->setTexture(dict["background"].asString());
+            auto width = backgroundPicture->getContentSize().width;
+            auto height = backgroundPicture->getContentSize().height;
+            auto bigger = width > height ? width : height;
+            float scale = visibleSize.width / bigger;
+            backgroundPicture->setScale(scale);
+            //替换背景音乐
+            if (dict["bgm"].asString() == "") {
+                AudioController::getInstance()->clearMusic();
+            } else {
+                AudioController::getInstance()->playMusic(dict["bgm"].asString(), true);
+            }
             // 加载发射器
             initLauncher();
             // 加载电梯

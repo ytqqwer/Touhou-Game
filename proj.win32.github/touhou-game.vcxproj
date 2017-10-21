@@ -197,6 +197,7 @@
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Enemy.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Frog.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Opossum.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Sakuya.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp" />
@@ -275,6 +276,7 @@
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Enemy.h" />
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Frog.h" />
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Opossum.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Sakuya.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Bullet.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitter.h" />

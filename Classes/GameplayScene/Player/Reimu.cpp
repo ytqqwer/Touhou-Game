@@ -61,6 +61,8 @@ Reimu::init(std::string tag)
                                                  eventCategory | elevatorCategory);
     this->setPhysicsBody(body);
 
+	body->setPositionOffset(Vec2(-20, -10));
+
     //设置动画
 
     standAnimation = AnimationCache::getInstance()->getAnimation(_character.standAnimationKey);

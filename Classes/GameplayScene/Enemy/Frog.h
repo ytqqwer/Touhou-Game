@@ -16,11 +16,6 @@ public:
     void jump();
     void decreaseHp(int damage);
 
-    void alertMode(float dt);
-    void patrolMode(float dt);
-
-    void autoChangeDirection(float dt);
-
 protected:
     class IdleAnimation : public State<Enemy>
     {

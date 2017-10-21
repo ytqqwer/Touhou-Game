@@ -84,47 +84,6 @@ Frog::decreaseHp(int damage)
     }
 }
 
-void
-Frog::alertMode(float dt)
-{
-    int weight = random(0, 100);
-    if (weight >= 80) {
-        if (_canJump) {
-            jump();
-            this->_canJump = false;
-        }
-    }
-}
-
-void
-Frog::patrolMode(float dt)
-{
-    int scale;
-    int weight = random(0, 100);
-    if (weight >= 50) {
-        scale = 1;
-        this->enemyDirection = Direction::LEFT;
-    } else {
-        scale = -1;
-        this->enemyDirection = Direction::RIGHT;
-    }
-    enemySprite->setScaleX(scale);
-}
-
-void
-Frog::autoChangeDirection(float dt)
-{
-    Point enemyPos = this->getPosition();
-    Vec2 playerPos = (*curTarget)->getPosition();
-    if (enemyPos.x > playerPos.x) {
-        this->enemyDirection = Direction::LEFT;
-        enemySprite->setScaleX(1);
-    } else {
-        this->enemyDirection = Direction::RIGHT;
-        enemySprite->setScaleX(-1);
-    }
-}
-
 FrogAlertState*
 FrogAlertState::getInstance()
 {
@@ -135,14 +94,26 @@ FrogAlertState::getInstance()
 void
 FrogAlertState::Enter(Enemy* entity)
 {
-    entity->schedule(CC_SCHEDULE_SELECTOR(Frog::alertMode), 0.30);
+    auto frog = (Frog*)entity;
+    entity->schedule(
+        [frog](float dt) {
+            int weight = random(0, 100);
+            if (weight >= 80) {
+                if (frog->_canJump) {
+                    frog->jump();
+                    frog->_canJump = false;
+                }
+            }
+        },
+        0.30, "FrogAlertState");
+
     entity->schedule(CC_SCHEDULE_SELECTOR(Frog::autoChangeDirection), 0.50);
 }
 
 void
 FrogAlertState::Exit(Enemy* entity)
 {
-    entity->unschedule(CC_SCHEDULE_SELECTOR(Frog::alertMode));
+    entity->unschedule("FrogAlertState");
     entity->unschedule(CC_SCHEDULE_SELECTOR(Frog::autoChangeDirection));
 }
 
@@ -161,13 +132,26 @@ FrogPatrolState::getInstance()
 void
 FrogPatrolState::Enter(Enemy* entity)
 {
-    entity->schedule(CC_SCHEDULE_SELECTOR(Frog::patrolMode), 1.0);
+    entity->schedule(
+        [entity](float dt) {
+            int scale;
+            int weight = random(0, 100);
+            if (weight >= 50) {
+                scale = 1;
+                entity->enemyDirection = Direction::LEFT;
+            } else {
+                scale = -1;
+                entity->enemyDirection = Direction::RIGHT;
+            }
+            entity->enemySprite->setScaleX(scale);
+        },
+        1.0, "FrogPatrolState");
 }
 
 void
 FrogPatrolState::Exit(Enemy* entity)
 {
-    entity->unschedule(CC_SCHEDULE_SELECTOR(Frog::patrolMode));
+    entity->unschedule("FrogPatrolState");
 }
 
 void
