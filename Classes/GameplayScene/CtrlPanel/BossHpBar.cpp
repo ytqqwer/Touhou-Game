@@ -1,5 +1,5 @@
 ﻿#include "BossHpBar.h"
-#include "gameplayScene/common.h"
+#include "GameplayScene/common.h"
 
 USING_NS_CC;
 using namespace std;

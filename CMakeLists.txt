@@ -118,6 +118,8 @@ include_directories(
   ${COCOS2D_ROOT}/cocos
   ${COCOS2D_ROOT}/cocos/platform
   ${COCOS2D_ROOT}/cocos/audio/include/
+  ${COCOS2D_ROOT}/extensions
+  ${COCOS2D_ROOT}
   Classes
 )
 if ( WIN32 )
@@ -129,6 +131,7 @@ endif( WIN32 )
 
 set(GAME_SRC
   Classes/AppDelegate.cpp
+  Classes/AudioController.cpp
   Classes/JumpTableScene.cpp
   Classes/NonGameplayScenesCache.cpp
   Classes/PlaceHolder.cpp
@@ -146,45 +149,59 @@ set(GAME_SRC
   Classes/NonGameplayScenes/KnowledgeBaseScene.cpp
   Classes/NonGameplayScenes/KoumakanLibraryScene.cpp
   Classes/NonGameplayScenes/KourindouScene.cpp
+  Classes/NonGameplayScenes/KourindouPurchaseScene.cpp
   Classes/NonGameplayScenes/LocationSelectScene.cpp
   Classes/NonGameplayScenes/LogoAndDisclaimerScene.cpp
   Classes/NonGameplayScenes/MainMenuScene.cpp
   Classes/NonGameplayScenes/RoundSelectScene.cpp
   Classes/NonGameplayScenes/SaveScene.cpp
   Classes/NonGameplayScenes/StaffScene.cpp
+  Classes/NonGameplayScenes/ConversationIndicatorButton.cpp
 
   # Layers
   Classes/Layers/ConversationLayer.cpp
+  Classes/Layers/LoadingLayer.cpp
   Classes/Layers/SettingsLayer.cpp
 
   # GameplayScene
   Classes/GameplayScene/GameplayScene.cpp
+  Classes/GameplayScene/EventFilterManager.cpp
+  Classes/GameplayScene/EventScriptHanding.cpp # handling
+  Classes/GameplayScene/Elevator.cpp
+
   Classes/GameplayScene/Player/Player.cpp
+  Classes/GameplayScene/Player/Alice.cpp
   Classes/GameplayScene/Player/Reimu.cpp
   Classes/GameplayScene/Player/Marisa.cpp
-  Classes/GameplayScene/EventFilterManager.cpp
 
   Classes/GameplayScene/CtrlPanel/CtrlPanelLayer.cpp
   Classes/GameplayScene/CtrlPanel/CoolDownButton.cpp
   Classes/GameplayScene/CtrlPanel/ItemButton.cpp
   Classes/GameplayScene/CtrlPanel/SpellCardButton.cpp
   Classes/GameplayScene/CtrlPanel/HPManaBar.cpp
+  Classes/GameplayScene/CtrlPanel/BossHpBar.cpp
 
   Classes/GameplayScene/Enemy/Enemy.cpp
   Classes/GameplayScene/Enemy/Frog.cpp
   Classes/GameplayScene/Enemy/Opossum.cpp
+  Classes/GameplayScene/Enemy/Sakuya.cpp
+
+  Classes/GameplayScene/Shaders/BlendAction.cpp
 
   Classes/GameplayScene/Emitters/Bullet.cpp
   Classes/GameplayScene/Emitters/Emitter.cpp
+  Classes/GameplayScene/Emitters/Style/Laser.cpp
   Classes/GameplayScene/Emitters/Style/Scatter.cpp
   Classes/GameplayScene/Emitters/Style/OddEven.cpp
   Classes/GameplayScene/Emitters/Style/Parabola.cpp
+  Classes/GameplayScene/Emitters/Style/Parallel.cpp
 
   ${PLATFORM_SPECIFIC_SRC}
 )
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
+  Classes/AudioController.h
   Classes/JumpTableScene.h
   Classes/NonGameplayScenesCache.h
   Classes/PlaceHolder.h
@@ -195,6 +212,7 @@ set(GAME_HEADERS
   Classes/GameData/Character.h
   Classes/GameData/Conversation.h
   Classes/GameData/EnemyData.h
+  Classes/GameData/EventData.h
   Classes/GameData/Item.h
   Classes/GameData/Location.h
   Classes/GameData/Round.h
@@ -215,43 +233,57 @@ set(GAME_HEADERS
   Classes/NonGameplayScenes/KnowledgeBaseScene.h
   Classes/NonGameplayScenes/KoumakanLibraryScene.h
   Classes/NonGameplayScenes/KourindouScene.h
+  Classes/NonGameplayScenes/KourindouPurchaseScene.h
   Classes/NonGameplayScenes/LocationSelectScene.h
   Classes/NonGameplayScenes/LogoAndDisclaimerScene.h
   Classes/NonGameplayScenes/MainMenuScene.h
   Classes/NonGameplayScenes/RoundSelectScene.h
   Classes/NonGameplayScenes/SaveScene.h
   Classes/NonGameplayScenes/StaffScene.h
+  Classes/NonGameplayScenes/ConversationIndicatorButton.h
 
   # Layers
   Classes/Layers/ConversationLayer.h
+  Classes/Layers/LoadingLayer.h
   Classes/Layers/SettingsLayer.h
 
   # GameplayScene
   Classes/GameplayScene/GameplayScene.h
-  Classes/GameplayScene/Player/Player.h
-  Classes/GameplayScene/Player/Reimu.h
-  Classes/GameplayScene/Player/Marisa.h
   Classes/GameplayScene/common.h
   Classes/GameplayScene/EventFilterManager.h
+  Classes/GameplayScene/EventScriptHanding.h
+  Classes/GameplayScene/Elevator.h
+  Classes/GameplayScene/State.h
+
+  Classes/GameplayScene/Player/Player.h
+  Classes/GameplayScene/Player/Alice.h
+  Classes/GameplayScene/Player/Reimu.h
+  Classes/GameplayScene/Player/Marisa.h
 
   Classes/GameplayScene/CtrlPanel/CtrlPanelLayer.h
   Classes/GameplayScene/CtrlPanel/CoolDownButton.h
   Classes/GameplayScene/CtrlPanel/ItemButton.h
   Classes/GameplayScene/CtrlPanel/SpellCardButton.h
   Classes/GameplayScene/CtrlPanel/HPManaBar.h
+  Classes/GameplayScene/CtrlPanel/BossHpBar.h
 
   Classes/GameplayScene/Enemy/Enemy.h
   Classes/GameplayScene/Enemy/Frog.h
   Classes/GameplayScene/Enemy/Opossum.h
+  Classes/GameplayScene/Enemy/Sakuya.h
+
+  Classes/GameplayScene/Shaders/BlendAction.h
 
   # Emitter
   Classes/GameplayScene/Emitters/Bullet.h
   Classes/GameplayScene/Emitters/Emitter.h
   Classes/GameplayScene/Emitters/StyleConfig.h
   Classes/GameplayScene/Emitters/Style/EmitterStyle.h
+  Classes/GameplayScene/Emitters/Style/Laser.h
   Classes/GameplayScene/Emitters/Style/Scatter.h
   Classes/GameplayScene/Emitters/Style/OddEven.h
   Classes/GameplayScene/Emitters/Style/Parabola.h
+  Classes/GameplayScene/Emitters/Style/Parallel.h
 
   # external
   Classes/external/json.h

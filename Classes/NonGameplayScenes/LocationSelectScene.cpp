@@ -165,7 +165,7 @@ LocationSelectScene::onEnter()
             rows.push_back(Value(_columnsInRow));
             _size -= _columnsInRow;
         } else {
-            rows.push_back(Value(_size));
+            rows.push_back(Value((double)_size));
             _size = 0;
         }
     }
