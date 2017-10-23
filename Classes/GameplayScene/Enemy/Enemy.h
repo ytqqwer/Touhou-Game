@@ -19,16 +19,13 @@ public:
 
     static Enemy* create(std::string tag);
 
-    ~Enemy()
-    {
-        delete modeStateMachine;
-        delete animateStateMachine;
-    }
+    ~Enemy() { delete stateMachine; }
 
 public:
     virtual void decreaseHp(int damage) = 0;
     virtual void autoChangeDirection(float dt);
     virtual void setTarget(Player*& player);
+    virtual void setEmitter();
     virtual void resetJump();
 
 public:
@@ -40,10 +37,11 @@ public:
 
     Sprite* enemySprite;
 
+    Emitter* emitter;
+
     Direction enemyDirection = Direction::LEFT;
 
-    StateMachine<Enemy>* modeStateMachine;
-    StateMachine<Enemy>* animateStateMachine;
+    StateMachine<Enemy>* stateMachine;
 
 protected:
     PhysicsBody* body;

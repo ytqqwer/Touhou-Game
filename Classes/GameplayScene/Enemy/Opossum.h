@@ -14,39 +14,28 @@ public:
     virtual bool init(std::string tag);
 
 public:
-    void run(float dt);
+    void horizontallyAccelerate(float dt);
     void decreaseHp(int damage);
-
-protected:
-    class RunAnimation : public State<Enemy>
-    {
-    public:
-        static RunAnimation* getInstance();
-        void Enter(Enemy*);
-        void Exit(Enemy*);
-        void changeToState(Enemy*);
-    };
 
 private:
     float timeAccumulation = 0;
-};
 
-class OpossumAlertState : public State<Enemy>
-{
-public:
-    static OpossumAlertState* getInstance();
-    void Enter(Enemy*);
-    void Exit(Enemy*);
-    void changeToState(Enemy*);
-};
+    class Patrol : public State<Enemy>
+    {
+    public:
+        static Patrol* getInstance();
+        void Enter(Enemy*);
+        void Exit(Enemy*);
+        void defaultChangeState(Enemy*);
+    };
 
-class OpossumPatrolState : public State<Enemy>
-{
-public:
-    static OpossumPatrolState* getInstance();
-    void Enter(Enemy*);
-    void Exit(Enemy*);
-    void changeToState(Enemy*);
+    class Alert : public State<Enemy>
+    {
+    public:
+        static Alert* getInstance();
+        void Enter(Enemy*);
+        void Exit(Enemy*);
+        void defaultChangeState(Enemy*);
+    };
 };
-
 #endif

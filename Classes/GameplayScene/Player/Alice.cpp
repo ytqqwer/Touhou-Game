@@ -70,6 +70,8 @@ Alice::init(std::string tag)
     fallAnimation = AnimationCache::getInstance()->getAnimation(_character.fallAnimationKey);
     dashAnimation = AnimationCache::getInstance()->getAnimation(_character.dashAnimationKey);
     // Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
+    this->standAnimation->setLoops(-1);
+    this->runAnimation->setLoops(-1);
     this->jumpAnimation->setLoops(-1);
     this->fallAnimation->setLoops(-1);
 
@@ -92,14 +94,14 @@ Alice::init(std::string tag)
     this->updatePlayerStatus();
 
     //动画更新
-    animateStateMachine = new StateMachine<Player>(this);
-    animateStateMachine->changeState(StandAnimation::getInstance());
+    stateMachine = new StateMachine<Player>(this);
+    stateMachine->changeState(Stand::getInstance());
 
     return true;
 }
 
 void
-Alice::playerRun(float dt)
+Alice::horizontallyAccelerate(float dt)
 {
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
@@ -130,11 +132,8 @@ Alice::playerRun(float dt)
 }
 
 void
-Alice::playerJump()
+Alice::jump()
 {
-    if (this->jumpCounts == 0) {
-        return;
-    }
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
     body->setVelocity(Vec2(velocity.x, 0)); //再次跳跃时，重置Y轴速度为0
@@ -149,13 +148,8 @@ Alice::playerJump()
 }
 
 void
-Alice::playerDash()
+Alice::dash()
 {
-    //留空，阻止连续dash
-
-    if (this->dashCounts == 0) {
-        return;
-    }
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
     body->setVelocity(Vec2(velocity.x, 0)); // dash时，重置Y轴速度为0
@@ -171,8 +165,6 @@ Alice::playerDash()
     }
 
     this->dashCounts--;
-
-    animateStateMachine->changeState(DashAnimation::getInstance());
 }
 
 void

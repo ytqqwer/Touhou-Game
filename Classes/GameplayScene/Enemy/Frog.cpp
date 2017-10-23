@@ -54,13 +54,11 @@ Frog::init(std::string tag)
     standAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.standAnimationKey);
     jumpAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.jumpAnimationKey);
     fallAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.fallAnimationKey);
+    standAnimation->setLoops(-1);
 
-    //行为模式状态机
-    modeStateMachine = new StateMachine<Enemy>(this);
-    modeStateMachine->changeState(FrogPatrolState::getInstance());
-    //动画状态机
-    animateStateMachine = new StateMachine<Enemy>(this);
-    animateStateMachine->changeState(Frog::IdleAnimation::getInstance());
+    //状态机
+    stateMachine = new StateMachine<Enemy>(this);
+    stateMachine->changeState(Patrol::getInstance());
 
     return true;
 }
@@ -69,182 +67,153 @@ void
 Frog::jump()
 {
     if (this->enemyDirection == Direction::LEFT) {
-        body->applyImpulse(Vec2(-250.0f, 600.0f));
+        body->applyImpulse(Vec2(-300.0f, 800.0f));
     } else {
-        body->applyImpulse(Vec2(250.0f, 600.0f));
+        body->applyImpulse(Vec2(300.0f, 800.0f));
     }
 }
 
 void
 Frog::decreaseHp(int damage)
 {
-    this->hp = this->hp - damage;
+    this->hp = this->hp - std::abs(damage);
     if (this->hp < 0) {
         this->removeFromParentAndCleanup(true);
     }
 }
 
-FrogAlertState*
-FrogAlertState::getInstance()
-{
-    static FrogAlertState instance;
-    return &instance;
-}
-
 void
-FrogAlertState::Enter(Enemy* entity)
+Frog::Patrol::Enter(Enemy* enemy)
 {
-    auto frog = (Frog*)entity;
-    entity->schedule(
+    auto frog = (Frog*)enemy;
+    frog->currentAnimateAction = Animate::create(frog->standAnimation);
+    frog->enemySprite->runAction(frog->currentAnimateAction);
+
+    frog->schedule(
         [frog](float dt) {
-            int weight = random(0, 100);
-            if (weight >= 80) {
-                if (frog->_canJump) {
-                    frog->jump();
-                    frog->_canJump = false;
-                }
-            }
-        },
-        0.30, "FrogAlertState");
-
-    entity->schedule(CC_SCHEDULE_SELECTOR(Frog::autoChangeDirection), 0.50);
-}
-
-void
-FrogAlertState::Exit(Enemy* entity)
-{
-    entity->unschedule("FrogAlertState");
-    entity->unschedule(CC_SCHEDULE_SELECTOR(Frog::autoChangeDirection));
-}
-
-void
-FrogAlertState::changeToState(Enemy* entity)
-{
-}
-
-FrogPatrolState*
-FrogPatrolState::getInstance()
-{
-    static FrogPatrolState instance;
-    return &instance;
-}
-
-void
-FrogPatrolState::Enter(Enemy* entity)
-{
-    entity->schedule(
-        [entity](float dt) {
             int scale;
             int weight = random(0, 100);
             if (weight >= 50) {
                 scale = 1;
-                entity->enemyDirection = Direction::LEFT;
+                frog->enemyDirection = Direction::LEFT;
             } else {
                 scale = -1;
-                entity->enemyDirection = Direction::RIGHT;
+                frog->enemyDirection = Direction::RIGHT;
             }
-            entity->enemySprite->setScaleX(scale);
+            frog->enemySprite->setScaleX(scale);
         },
-        1.0, "FrogPatrolState");
+        1.0, "FrogPatrol");
 }
 
 void
-FrogPatrolState::Exit(Enemy* entity)
+Frog::Patrol::Exit(Enemy* enemy)
 {
-    entity->unschedule("FrogPatrolState");
+    auto frog = (Frog*)enemy;
+    frog->unschedule("FrogPatrol");
+    frog->enemySprite->stopAction(frog->currentAnimateAction);
 }
 
 void
-FrogPatrolState::changeToState(Enemy* entity)
+Frog::Patrol::defaultChangeState(Enemy* enemy)
 {
-    entity->modeStateMachine->changeState(FrogAlertState::getInstance());
+    enemy->stateMachine->changeState(Frog::Alert::getInstance());
 }
 
-Frog::IdleAnimation*
-Frog::IdleAnimation::getInstance()
+Frog::Jump*
+Frog::Jump::getInstance()
 {
-    static Frog::IdleAnimation instance;
+    static Frog::Jump instance;
+    return &instance;
+}
+
+Frog::Alert*
+Frog::Alert::getInstance()
+{
+    static Frog::Alert instance;
     return &instance;
 }
 
 void
-Frog::IdleAnimation::Enter(Enemy* enemy)
+Frog::Alert::Enter(Enemy* enemy)
 {
     auto frog = (Frog*)enemy;
-    frog->currentAnimateAction = RepeatForever::create(Animate::create(frog->standAnimation));
+    frog->currentAnimateAction = Animate::create(frog->standAnimation);
     frog->enemySprite->runAction(frog->currentAnimateAction);
 
-    frog->enemySprite->schedule(
+    frog->schedule(
         [frog](float dt) {
-            Vec2 velocity = frog->body->getVelocity();
-            if (velocity.y > 15) {
-                frog->animateStateMachine->changeState(Frog::JumpAnimation::getInstance());
-            } else if (velocity.y < -15) {
-                frog->animateStateMachine->changeState(Frog::FallAnimation::getInstance());
+            int weight = random(0, 100);
+            if (weight >= 80) {
+                if (frog->_canJump) {
+                    frog->stateMachine->changeState(Frog::Jump::getInstance());
+                    frog->_canJump = false;
+                }
             }
         },
-        0.1, "StandAnimationUpdate");
+        0.30, "FrogAlert");
+    frog->schedule(CC_SCHEDULE_SELECTOR(Frog::autoChangeDirection), 0.50);
 }
 
 void
-Frog::IdleAnimation::Exit(Enemy* enemy)
+Frog::Alert::Exit(Enemy* enemy)
 {
     auto frog = (Frog*)enemy;
+    frog->unschedule("FrogAlert");
+    frog->unschedule(CC_SCHEDULE_SELECTOR(Frog::autoChangeDirection));
     frog->enemySprite->stopAction(frog->currentAnimateAction);
-    frog->enemySprite->unschedule("StandAnimationUpdate");
 }
 
 void
-Frog::IdleAnimation::changeToState(Enemy* enemy)
+Frog::Alert::defaultChangeState(Enemy* enemy)
 {
 }
 
-Frog::JumpAnimation*
-Frog::JumpAnimation::getInstance()
+Frog::Patrol*
+Frog::Patrol::getInstance()
 {
-    static Frog::JumpAnimation instance;
+    static Frog::Patrol instance;
     return &instance;
 }
 
 void
-Frog::JumpAnimation::Enter(Enemy* enemy)
+Frog::Jump::Enter(Enemy* enemy)
 {
     auto frog = (Frog*)enemy;
     frog->currentAnimateAction = Animate::create(frog->jumpAnimation);
     frog->enemySprite->runAction(frog->currentAnimateAction);
-
+    frog->jump();
     frog->enemySprite->schedule(
         [frog](float dt) {
             Vec2 velocity = frog->body->getVelocity();
             if (velocity.y < -15) {
-                frog->animateStateMachine->changeState(Frog::FallAnimation::getInstance());
+                frog->stateMachine->changeState(Frog::Fall::getInstance());
             }
         },
-        0.1, "JumpAnimationUpdate");
+        "JumpUpdate");
 }
 
 void
-Frog::JumpAnimation::Exit(Enemy* enemy)
+Frog::Jump::Exit(Enemy* enemy)
 {
     auto frog = (Frog*)enemy;
     frog->enemySprite->stopAction(frog->currentAnimateAction);
-    frog->enemySprite->unschedule("JumpAnimationUpdate");
+    frog->enemySprite->unschedule("JumpUpdate");
 }
 
 void
-Frog::JumpAnimation::changeToState(Enemy* enemy)
+Frog::Jump::defaultChangeState(Enemy* enemy)
 {
 }
 
-Frog::FallAnimation*
-Frog::FallAnimation::getInstance()
+Frog::Fall*
+Frog::Fall::getInstance()
 {
-    static Frog::FallAnimation instance;
+    static Frog::Fall instance;
     return &instance;
 }
 
 void
-Frog::FallAnimation::Enter(Enemy* enemy)
+Frog::Fall::Enter(Enemy* enemy)
 {
     auto frog = (Frog*)enemy;
     frog->currentAnimateAction = Animate::create(frog->fallAnimation);
@@ -254,21 +223,21 @@ Frog::FallAnimation::Enter(Enemy* enemy)
         [frog](float dt) {
             Vec2 velocity = frog->body->getVelocity();
             if (velocity.y > -15) {
-                frog->animateStateMachine->changeState(Frog::IdleAnimation::getInstance());
+                frog->stateMachine->changeState(Frog::Alert::getInstance());
             }
         },
-        0.1, "FallAnimationUpdate");
+        0.1, "FallUpdate");
 }
 
 void
-Frog::FallAnimation::Exit(Enemy* enemy)
+Frog::Fall::Exit(Enemy* enemy)
 {
     auto frog = (Frog*)enemy;
     frog->enemySprite->stopAction(frog->currentAnimateAction);
-    frog->enemySprite->unschedule("FallAnimationUpdate");
+    frog->enemySprite->unschedule("FallUpdate");
 }
 
 void
-Frog::FallAnimation::changeToState(Enemy* enemy)
+Frog::Fall::defaultChangeState(Enemy* enemy)
 {
 }

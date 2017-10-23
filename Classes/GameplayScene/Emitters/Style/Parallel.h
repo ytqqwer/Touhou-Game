@@ -30,16 +30,22 @@ public:
     Parallel(const StyleConfig& sc, Direction* direction);
 
     /* 调度器 */
-    void createBullet();
+    void startShoot();
     void stopShoot();
     void shootBullet(float dt);
+
+    void spawnBullet();
 
 private:
     bool isPlayer;
     Direction* direction; //玩家方向
     Node** target;
-    Vec2 targetPos; //角色位置
-    int counter;    //计数器
+    Vec2 targetPos;       //角色位置
+    unsigned int counter; //计数器
+
+    float timeAccumulation;
+    float elapsed;
+    unsigned int spawnBulletCycleTimes; //发射函数循环次数
 };
 
 #endif

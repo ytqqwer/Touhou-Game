@@ -359,7 +359,27 @@ GameplayScene::initAnimationCache()
                                        _enemy.preFallAnimationKey);
         CREATE_AND_ADD_ANIMATION_CACHE(_enemy.fallFrame, _enemy.fallFrameDelay,
                                        _enemy.fallAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_enemy.dashFrame, _enemy.dashFrameDelay,
+                                       _enemy.dashAnimationKey);
     }
+
+    auto sakuyaAttackA_1 = Animation::create();
+    sakuyaAttackA_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb000.png");
+    sakuyaAttackA_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb001.png");
+    sakuyaAttackA_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb002.png");
+    sakuyaAttackA_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb003.png");
+    sakuyaAttackA_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb004.png");
+    sakuyaAttackA_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb005.png");
+    sakuyaAttackA_1->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(sakuyaAttackA_1, "sakuyaAttackA_1");
+    auto sakuyaAttackA_2 = Animation::create();
+    sakuyaAttackA_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb006.png");
+    sakuyaAttackA_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb007.png");
+    sakuyaAttackA_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb008.png");
+    sakuyaAttackA_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb009.png");
+    sakuyaAttackA_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb010.png");
+    sakuyaAttackA_2->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(sakuyaAttackA_2, "sakuyaAttackA_2");
 
     scheduleOnce(
         [this](float dt) {
@@ -584,7 +604,12 @@ GameplayScene::initEnemy()
             Enemy* _enemy = Enemy::create(tag);
             _enemy->setPosition(x, y);
             mapLayer->addChild(_enemy);
-            _enemy->setTarget(curPlayer); //创建对象还需要手动设置参数，需要封装相关代码
+
+            /*临时项*/
+            _enemy->setTarget(curPlayer);
+            _enemy->setEmitter();
+            /*临时项*/
+
             enemyList.pushBack(_enemy);
         }
     }
@@ -740,7 +765,7 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
                 // 当player碰到了敌人的索敌框
                 if (entityB_shape->getTag() == lockCategoryTag) {
                     auto _enemy = (Enemy*)entityB;
-                    _enemy->modeStateMachine->autoChangeState();
+                    _enemy->stateMachine->autoChangeState();
                 }
                 // 当player碰到了敌人本身
                 else {
@@ -871,6 +896,12 @@ GameplayScene::initCustomEventListener()
         _enemy->decreaseHp(_damageInfo->damage);
     });
 
+    _eventDispatcher->addCustomEventListener("bullet_hit_player", [this](EventCustom* e) {
+        auto _damageInfo = (DamageInfo*)e->getUserData();
+        auto _player = (Player*)_damageInfo->target;
+        _player->getHit(_damageInfo, _eventFilterMgr);
+    });
+
     _eventDispatcher->addCustomEventListener("use_item", [this](EventCustom* e) {
         string itemTag = (char*)e->getUserData();
         Hp_Mp_Change hpChange;
@@ -878,6 +909,9 @@ GameplayScene::initCustomEventListener()
             hpChange.tag = curPlayer->playerTag;
             hpChange.value = 20;
         } else if (itemTag == "I2") {
+            hpChange.tag = curPlayer->playerTag;
+            hpChange.value = -40;
+        } else if (itemTag == "I3") {
             hpChange.tag = curPlayer->playerTag;
             hpChange.value = -40;
         }
@@ -922,7 +956,8 @@ GameplayScene::onEventLeftKeyPressed(EventCustom*)
 {
     curPlayer->playerSprite->setScaleX(-1); //人物翻转
     curPlayer->playerDirection = Direction::LEFT;
-    curPlayer->schedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
+
+    curPlayer->schedule(CC_SCHEDULE_SELECTOR(Player::horizontallyAccelerate));
 }
 
 void
@@ -930,29 +965,40 @@ GameplayScene::onEventRightKeyPressed(EventCustom*)
 {
     curPlayer->playerSprite->setScaleX(1); //人物翻转
     curPlayer->playerDirection = Direction::RIGHT;
-    curPlayer->schedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
+
+    curPlayer->schedule(CC_SCHEDULE_SELECTOR(Player::horizontallyAccelerate));
 }
 
 void
 GameplayScene::onEventMotionKeyReleased(EventCustom*)
 {
-    if (curPlayer->isScheduled(CC_SCHEDULE_SELECTOR(Player::playerRun))) {
-        curPlayer->unschedule(CC_SCHEDULE_SELECTOR(Player::playerRun));
+    if (curPlayer->isScheduled(CC_SCHEDULE_SELECTOR(Player::horizontallyAccelerate))) {
+        curPlayer->unschedule(CC_SCHEDULE_SELECTOR(Player::horizontallyAccelerate));
     }
 
-    //自动减速还没有做
+    if (curPlayer->stateMachine->getCurrentState() == Player::Walk::getInstance()) {
+        //减速
+        auto currentVelocity = curPlayer->getPhysicsBody()->getVelocity();
+        curPlayer->getPhysicsBody()->setVelocity(Vec2(currentVelocity.x / 3.0f, currentVelocity.y));
+    }
 }
 
 void
 GameplayScene::onEventJumpKeyPressed(EventCustom*)
 {
-    curPlayer->playerJump();
+    if (curPlayer->jumpCounts == 0) {
+        return;
+    }
+    curPlayer->stateMachine->changeState(Player::Jump::getInstance());
 }
 
 void
 GameplayScene::onEventDashKeyPressed(EventCustom*)
 {
-    curPlayer->playerDash();
+    if (curPlayer->dashCounts == 0) {
+        return;
+    }
+    curPlayer->stateMachine->changeState(Player::Dash::getInstance());
 }
 
 void

@@ -26,12 +26,12 @@ public:
     virtual bool init(std::string tag) = 0;
     static Player* create(std::string tag);
 
-    ~Player() { delete animateStateMachine; }
+    ~Player() { delete stateMachine; }
 
 public:
-    virtual void playerRun(float dt) = 0;
-    virtual void playerJump() = 0;
-    virtual void playerDash() = 0;
+    virtual void horizontallyAccelerate(float dt) = 0;
+    virtual void jump() = 0;
+    virtual void dash() = 0;
 
     //切换攻击方式
     virtual void changeAttackType(const std::string& startType);
@@ -89,8 +89,8 @@ public:
     //符卡列表
     vector<SpellCard> spellCardList;
 
-    //动画状态机
-    StateMachine<Player>* animateStateMachine;
+    //状态机
+    StateMachine<Player>* stateMachine;
 
 protected:
     PhysicsBody* body;
@@ -104,49 +104,50 @@ protected:
 
     Action* currentAnimateAction;
 
-    class StandAnimation : public State<Player>
+public:
+    class Stand : public State<Player>
     {
     public:
-        static StandAnimation* getInstance();
+        static Stand* getInstance();
         void Enter(Player*);
         void Exit(Player*);
-        void changeToState(Player*);
+        void defaultChangeState(Player*);
     };
 
-    class RunAnimation : public State<Player>
+    class Walk : public State<Player>
     {
     public:
-        static RunAnimation* getInstance();
+        static Walk* getInstance();
         void Enter(Player*);
         void Exit(Player*);
-        void changeToState(Player*);
+        void defaultChangeState(Player*);
     };
 
-    class JumpAnimation : public State<Player>
+    class Jump : public State<Player>
     {
     public:
-        static JumpAnimation* getInstance();
+        static Jump* getInstance();
         void Enter(Player*);
         void Exit(Player*);
-        void changeToState(Player*);
+        void defaultChangeState(Player*);
     };
 
-    class FallAnimation : public State<Player>
+    class Fall : public State<Player>
     {
     public:
-        static FallAnimation* getInstance();
+        static Fall* getInstance();
         void Enter(Player*);
         void Exit(Player*);
-        void changeToState(Player*);
+        void defaultChangeState(Player*);
     };
 
-    class DashAnimation : public State<Player>
+    class Dash : public State<Player>
     {
     public:
-        static DashAnimation* getInstance();
+        static Dash* getInstance();
         void Enter(Player*);
         void Exit(Player*);
-        void changeToState(Player*);
+        void defaultChangeState(Player*);
     };
 };
 

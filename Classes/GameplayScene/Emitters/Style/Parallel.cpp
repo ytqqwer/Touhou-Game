@@ -9,10 +9,13 @@ Parallel::Parallel(Node** target)
     //敌人默认参数
     this->sc.style = StyleType::PARALLEL;
     this->sc.frequency = 0.5f;
-    this->sc.duration = 6.0;
+    this->sc.bulletDuration = 6.0;
     this->sc.count = 1;
     this->sc.number = 4;
-    this->sc.interval = 1.0;
+    this->sc.interval = 1.5;
+
+    this->sc.totalDuration = FLT_MAX;
+    this->sc.cycleTimes = -1;
 
     this->sc.bc.name = "b2_2_1.png";
     this->sc.bc.length = 20;
@@ -24,59 +27,97 @@ Parallel::Parallel(Node** target)
 
     this->isPlayer = false;
     this->target = target;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 Parallel::Parallel(const StyleConfig& sc, Node** target)
 {
+    this->sc = sc;
+
     this->isPlayer = false;
     this->target = target;
-    this->sc = sc;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 Parallel::Parallel(Direction* direction)
 {
     //角色默认参数
+    this->sc.totalDuration = FLT_MAX;
+    this->sc.cycleTimes = -1;
+
     this->sc.style = StyleType::PARALLEL;
-    this->sc.frequency = 0.2f;
-    this->sc.duration = 3.0;
+    this->sc.frequency = 1.0f;
+    this->sc.bulletDuration = 3.0;
     this->sc.count = 0;
     this->sc.number = 2;
     this->sc.interval = 2;
-
     this->sc.bc.name = "b1_3_3.png";
 
     this->isPlayer = true;
     this->direction = direction;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 Parallel::Parallel(const StyleConfig& sc, Direction* direction)
 {
-    this->isPlayer = true;
     this->sc = sc;
+
+    this->isPlayer = true;
     this->direction = direction;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 void
-Parallel::createBullet()
+Parallel::startShoot()
 {
     if (isPlayer == false) {
         this->targetPos = (*target)->getPosition();
     }
-    this->schedule(schedule_selector(Parallel::shootBullet), sc.frequency);
+    this->schedule(CC_SCHEDULE_SELECTOR(Parallel::shootBullet));
 }
 
 void
 Parallel::stopShoot()
 {
-    this->unschedule(schedule_selector(Parallel::shootBullet));
+    this->unschedule(CC_SCHEDULE_SELECTOR(Parallel::shootBullet));
 }
 
 void
 Parallel::shootBullet(float dt)
+{
+    timeAccumulation += dt;
+    elapsed += dt;
+    if (timeAccumulation >= sc.frequency) {
+        spawnBullet();
+        spawnBulletCycleTimes++;
+        timeAccumulation = 0;
+        if (spawnBulletCycleTimes >= sc.cycleTimes) {
+            stopShoot();
+        }
+    }
+    if (elapsed >= sc.totalDuration) {
+        stopShoot();
+    }
+}
+
+void
+Parallel::spawnBullet()
 {
     if (sc.count != 0) {
         if (this->counter == sc.count) {
@@ -137,7 +178,7 @@ Parallel::shootBullet(float dt)
         }
         mapLayer->addChild(spriteBullet);
 
-        auto actionMove = MoveBy::create(sc.duration, deltaP);
+        auto actionMove = MoveBy::create(sc.bulletDuration, deltaP);
         auto actionMoveBy = actionMove;
         if (isPlayer == true) { //建议角色使用中心对称型子弹
             if ((*direction) == Direction::LEFT) {

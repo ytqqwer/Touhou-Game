@@ -124,8 +124,9 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
         }
 
         /*  3. 血条, 蓝条 */
-		
-        auto hpManaBar = HpManaBar::create(characterTagList[i], characterList[i].healthPointBase, characterList[i].manaBase);
+
+        auto hpManaBar = HpManaBar::create(characterTagList[i], characterList[i].healthPointBase,
+                                           characterList[i].manaBase);
         hpManaBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         hpManaBar->setPosition(Vec2(_visibleSize.width * 0.270, _visibleSize.height * 0.930));
         panel->addChild(hpManaBar);
@@ -197,14 +198,18 @@ CtrlPanelLayer::initTouchListener()
     };
 
     listener->onTouchMoved = [this](Touch* touch, Event* e) -> void {
+        auto preLocation = touch->getPreviousLocation();
         auto location = touch->getLocation();
-        if (location.y >= _visibleSize.height / 2) {
+        if (preLocation.y <= _visibleSize.height / 2 && location.y >= _visibleSize.height / 2) {
             _eventDispatcher->dispatchCustomEvent("motion_key_released");
         }
     };
 
     listener->onTouchEnded = [this](Touch* touch, Event* e) -> void {
-        _eventDispatcher->dispatchCustomEvent("motion_key_released");
+        auto location = touch->getLocation();
+        if (location.y <= _visibleSize.height / 2) {
+            _eventDispatcher->dispatchCustomEvent("motion_key_released");
+        }
     };
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);

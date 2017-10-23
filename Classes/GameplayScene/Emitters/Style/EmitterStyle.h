@@ -26,9 +26,11 @@ public:
 
     Vector<Node*>& getBullets() { return bullets; }
 
-    virtual void createBullet() = 0;
+    virtual void startShoot() = 0;
     virtual void stopShoot() = 0;
     virtual void shootBullet(float dt) = 0;
+
+    virtual void spawnBullet() = 0;
 
 protected:
     StyleConfig sc;        // Style参数

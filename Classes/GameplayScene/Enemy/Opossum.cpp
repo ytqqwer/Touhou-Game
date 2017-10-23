@@ -52,19 +52,17 @@ Opossum::init(std::string tag)
 
     //获得动画缓存
     runAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.runAnimationKey);
+    runAnimation->setLoops(-1);
 
-    //行为模式状态机
-    modeStateMachine = new StateMachine<Enemy>(this);
-    modeStateMachine->changeState(OpossumPatrolState::getInstance());
-    //动画状态机
-    animateStateMachine = new StateMachine<Enemy>(this);
-    animateStateMachine->changeState(Opossum::RunAnimation::getInstance());
+    //状态机
+    stateMachine = new StateMachine<Enemy>(this);
+    stateMachine->changeState(Opossum::Patrol::getInstance());
 
     return true;
 }
 
 void
-Opossum::run(float dt)
+Opossum::horizontallyAccelerate(float dt)
 {
     timeAccumulation += dt;
     if (timeAccumulation >= 0.1) {
@@ -86,100 +84,86 @@ Opossum::decreaseHp(int damage)
     }
 }
 
-OpossumAlertState*
-OpossumAlertState::getInstance()
+Opossum::Alert*
+Opossum::Alert::getInstance()
 {
-    static OpossumAlertState instance;
+    static Alert instance;
     return &instance;
 }
 
 void
-OpossumAlertState::Enter(Enemy* entity)
-{
-    entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::run));
-    entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::autoChangeDirection), 0.50);
-}
-
-void
-OpossumAlertState::Exit(Enemy* entity)
-{
-    entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::run));
-    entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::autoChangeDirection));
-}
-
-void
-OpossumAlertState::changeToState(Enemy* entity)
-{
-}
-
-OpossumPatrolState*
-OpossumPatrolState::getInstance()
-{
-    static OpossumPatrolState instance;
-    return &instance;
-}
-
-void
-OpossumPatrolState::Enter(Enemy* entity)
-{
-    entity->schedule(
-        [entity](float dt) {
-            int weight = random(0, 100);
-            if (weight >= 60) {
-                if (entity->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::run))) {
-                    entity->unschedule(CC_SCHEDULE_SELECTOR(Opossum::run));
-                }
-            } else {
-                if (weight >= 30) {
-                    entity->enemySprite->setScaleX(-1);
-                    entity->enemyDirection = Direction::RIGHT;
-                } else {
-                    entity->enemySprite->setScaleX(1);
-                    entity->enemyDirection = Direction::LEFT;
-                }
-                if (!(entity->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::run)))) {
-                    entity->schedule(CC_SCHEDULE_SELECTOR(Opossum::run));
-                }
-            }
-        },
-        1.0, "OpossumPatrolState");
-}
-
-void
-OpossumPatrolState::Exit(Enemy* entity)
-{
-    entity->unschedule("OpossumPatrolState");
-}
-
-void
-OpossumPatrolState::changeToState(Enemy* entity)
-{
-    entity->modeStateMachine->changeState(OpossumAlertState::getInstance());
-}
-
-Opossum::RunAnimation*
-Opossum::RunAnimation::getInstance()
-{
-    static Opossum::RunAnimation instance;
-    return &instance;
-}
-
-void
-Opossum::RunAnimation::Enter(Enemy* enemy)
+Opossum::Alert::Enter(Enemy* enemy)
 {
     auto opossum = (Opossum*)enemy;
-    opossum->currentAnimateAction = RepeatForever::create(Animate::create(opossum->runAnimation));
+    opossum->currentAnimateAction = Animate::create(opossum->runAnimation);
     opossum->enemySprite->runAction(opossum->currentAnimateAction);
+
+    opossum->schedule(CC_SCHEDULE_SELECTOR(Opossum::horizontallyAccelerate));
+    opossum->schedule(CC_SCHEDULE_SELECTOR(Opossum::autoChangeDirection), 0.50);
 }
 
 void
-Opossum::RunAnimation::Exit(Enemy* enemy)
+Opossum::Alert::Exit(Enemy* enemy)
 {
     auto opossum = (Opossum*)enemy;
+    opossum->unschedule(CC_SCHEDULE_SELECTOR(Opossum::horizontallyAccelerate));
+    opossum->unschedule(CC_SCHEDULE_SELECTOR(Opossum::autoChangeDirection));
+
     opossum->enemySprite->stopAction(opossum->currentAnimateAction);
 }
 
 void
-Opossum::RunAnimation::changeToState(Enemy* enemy)
+Opossum::Alert::defaultChangeState(Enemy* enemy)
 {
+}
+
+Opossum::Patrol*
+Opossum::Patrol::getInstance()
+{
+    static Patrol instance;
+    return &instance;
+}
+
+void
+Opossum::Patrol::Enter(Enemy* enemy)
+{
+    auto opossum = (Opossum*)enemy;
+    opossum->currentAnimateAction = RepeatForever::create(Animate::create(opossum->runAnimation));
+    opossum->enemySprite->runAction(opossum->currentAnimateAction);
+
+    enemy->schedule(
+        [enemy](float dt) {
+            int weight = random(0, 100);
+            if (weight >= 60) {
+                if (enemy->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::horizontallyAccelerate))) {
+                    enemy->unschedule(CC_SCHEDULE_SELECTOR(Opossum::horizontallyAccelerate));
+                }
+            } else {
+                if (weight >= 30) {
+                    enemy->enemySprite->setScaleX(-1);
+                    enemy->enemyDirection = Direction::RIGHT;
+                } else {
+                    enemy->enemySprite->setScaleX(1);
+                    enemy->enemyDirection = Direction::LEFT;
+                }
+                if (!(enemy->isScheduled(CC_SCHEDULE_SELECTOR(Opossum::horizontallyAccelerate)))) {
+                    enemy->schedule(CC_SCHEDULE_SELECTOR(Opossum::horizontallyAccelerate));
+                }
+            }
+        },
+        1.0, "OpossumPatrol");
+}
+
+void
+Opossum::Patrol::Exit(Enemy* enemy)
+{
+    auto opossum = (Opossum*)enemy;
+    enemy->unschedule("OpossumPatrol");
+    opossum->enemySprite->stopAction(opossum->currentAnimateAction);
+}
+
+void
+Opossum::Patrol::defaultChangeState(Enemy* enemy)
+{
+    enemy->stateMachine->changeState(Opossum::Alert::getInstance());
 }

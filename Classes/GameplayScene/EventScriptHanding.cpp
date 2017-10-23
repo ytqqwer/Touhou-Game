@@ -73,7 +73,7 @@ EventScriptHanding::eventActionHandling(float delay, float duration)
     Sequence* sequence;
     if (eventList[_curEventIndex].jump) {
         auto moveBy = MoveBy::create(duration, Point(-200, 0));
-        auto jump = CallFuncN::create(CC_CALLBACK_0(Player::playerJump, node->curPlayer));
+        auto jump = CallFuncN::create(CC_CALLBACK_0(Player::jump, node->curPlayer));
         sequence = Sequence::create(DelayTime::create(delay), jump, moveBy, NULL);
     } else {
         auto moveBy = MoveBy::create(duration, Point(300, 0));

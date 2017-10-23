@@ -45,7 +45,7 @@ static const int gameGravity = 1000.0f;
 struct DamageInfo
 {
     Node* target;
-    int damage;
+    unsigned int damage;
 };
 
 struct Hp_Mp_Change

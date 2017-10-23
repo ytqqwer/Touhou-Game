@@ -8,9 +8,12 @@ OddEven::OddEven(Node** target)
 {
     this->sc.style = StyleType::ODDEVEN;
     this->sc.frequency = 0.5f;
-    this->sc.duration = 3.0;
+    this->sc.bulletDuration = 3.0;
     this->sc.count = 3;
     this->sc.number = 5;
+
+    this->sc.totalDuration = FLT_MAX;
+    this->sc.cycleTimes = -1;
 
     this->sc.bc.name = "b2_2_1.png";
     this->sc.bc.length = 10;
@@ -20,20 +23,28 @@ OddEven::OddEven(Node** target)
     this->sc.bc._collisionBitmask = 0;
     this->sc.bc._contactTestBitmask = 0;
 
-    this->target = target;
     this->angle = 10.0;
+    this->target = target;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 OddEven::OddEven(const StyleConfig& sc, Node** target)
 {
     this->sc = sc;
     this->target = target;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 void
-OddEven::createBullet()
+OddEven::startShoot()
 {
     this->targetPos = (*target)->getPosition();
     this->schedule(schedule_selector(OddEven::shootBullet), sc.frequency);
@@ -47,6 +58,12 @@ OddEven::stopShoot()
 
 void
 OddEven::shootBullet(float dt)
+{
+    spawnBullet();
+}
+
+void
+OddEven::spawnBullet()
 {
     auto emitter = this->getParent();
     auto character = emitter->getParent();
@@ -82,7 +99,7 @@ OddEven::shootBullet(float dt)
 
                 Vec2 deltaP = Vec2(distance * cos(CC_DEGREES_TO_RADIANS(90.0 - actualAngle)),
                                    distance * sin(CC_DEGREES_TO_RADIANS(90.0 - actualAngle)));
-                auto actionMoveBy = MoveBy::create(sc.duration, deltaP);
+                auto actionMoveBy = MoveBy::create(sc.bulletDuration, deltaP);
                 auto actionInOut = EaseInOut::create(actionMoveBy, 1.0);
                 auto actionDone = CallFuncN::create(CC_CALLBACK_1(OddEven::removeBullet, this));
                 auto sequence = Sequence::create(actionInOut, actionDone, NULL);

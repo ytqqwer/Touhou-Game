@@ -402,6 +402,9 @@ from_json(const json& j, EnemyData& c)
     for (auto const& p : j.at("fallFrame")) {
         c.fallFrame.push_back(p);
     }
+	for (auto const& p : j.at("dashFrame")) {
+		c.dashFrame.push_back(p);
+	}
 
 	c.standAnimationKey = c.tag+ ("StandAnimation") ;
 	c.runAnimationKey = c.tag + ("RunAnimation");
@@ -409,6 +412,7 @@ from_json(const json& j, EnemyData& c)
 	c.jumpAnimationKey = c.tag + ("JumpAnimation");
 	c.preFallAnimationKey = c.tag + ("PreFallAnimation");
 	c.fallAnimationKey = c.tag + ("FallAnimation");
+	c.dashAnimationKey = c.tag + ("DashAnimation");
 
     c.standFrameDelay = j.at("standFrameDelay");
     c.runFrameDelay = j.at("runFrameDelay");
@@ -416,6 +420,7 @@ from_json(const json& j, EnemyData& c)
     c.jumpFrameDelay = j.at("jumpFrameDelay");
     c.preFallFrameDelay = j.at("preFallFrameDelay");
     c.fallFrameDelay = j.at("fallFrameDelay");
+	c.dashFrameDelay = j.at("dashFrameDelay");
 
     c.healthPoint = j.at("healthPoint");
 }

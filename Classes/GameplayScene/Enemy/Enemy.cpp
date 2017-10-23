@@ -42,6 +42,13 @@ Enemy::setTarget(Player*& player)
 }
 
 void
+Enemy::setEmitter()
+{
+    emitter = Emitter::create(curTarget);
+    this->addChild(emitter);
+}
+
+void
 Enemy::autoChangeDirection(float dt)
 {
     Point enemyPos = this->getPosition();

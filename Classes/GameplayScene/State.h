@@ -13,7 +13,7 @@ class State
 public:
     virtual void Enter(entity_type*) = 0;
     virtual void Exit(entity_type*) = 0;
-    virtual void changeToState(entity_type*) = 0;
+    virtual void defaultChangeState(entity_type*) = 0;
     virtual ~State() {}
 };
 
@@ -43,7 +43,7 @@ public:
         currentState->Enter(owner);
     }
 
-    void autoChangeState() { currentState->changeToState(owner); }
+    void autoChangeState() { currentState->defaultChangeState(owner); }
 
     void RevertToPreviousState() { changeState(previousState); }
 

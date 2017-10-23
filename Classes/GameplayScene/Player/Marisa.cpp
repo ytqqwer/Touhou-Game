@@ -59,6 +59,7 @@ Marisa::init(std::string tag)
     body->getFirstShape()->setContactTestBitmask(groundCategory | enemyCategory | lockCategory |
                                                  eventCategory | elevatorCategory);
     this->setPhysicsBody(body);
+    body->setPositionOffset(Vec2(0, -10));
 
     //设置动画
 
@@ -69,7 +70,8 @@ Marisa::init(std::string tag)
     preFallAnimation = AnimationCache::getInstance()->getAnimation(_character.preFallAnimationKey);
     fallAnimation = AnimationCache::getInstance()->getAnimation(_character.fallAnimationKey);
     dashAnimation = AnimationCache::getInstance()->getAnimation(_character.dashAnimationKey);
-
+    this->standAnimation->setLoops(-1);
+    this->runAnimation->setLoops(-1);
     this->jumpAnimation->setLoops(-1);
     this->fallAnimation->setLoops(-1);
 
@@ -92,14 +94,14 @@ Marisa::init(std::string tag)
     this->updatePlayerStatus();
 
     //动画状态机
-    animateStateMachine = new StateMachine<Player>(this);
-    animateStateMachine->changeState(StandAnimation::getInstance());
+    stateMachine = new StateMachine<Player>(this);
+    stateMachine->changeState(Stand::getInstance());
 
     return true;
 }
 
 void
-Marisa::playerRun(float dt)
+Marisa::horizontallyAccelerate(float dt)
 {
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
@@ -130,11 +132,8 @@ Marisa::playerRun(float dt)
 }
 
 void
-Marisa::playerJump()
+Marisa::jump()
 {
-    if (this->jumpCounts == 0) {
-        return;
-    }
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
     body->setVelocity(Vec2(velocity.x, 0)); //再次跳跃时，重置Y轴速度为0
@@ -149,13 +148,8 @@ Marisa::playerJump()
 }
 
 void
-Marisa::playerDash()
+Marisa::dash()
 {
-    //留空，阻止连续dash
-
-    if (this->dashCounts == 0) {
-        return;
-    }
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
     body->setVelocity(Vec2(velocity.x, 0)); // dash时，重置Y轴速度为0
@@ -163,16 +157,14 @@ Marisa::playerDash()
     //留空，将y轴速度短暂锁定为0，可以使角色不受重力
 
     if (this->playerDirection == Direction::RIGHT) {
-        Vec2 impluse = Vec2(dashAccelerationBase + 200, 0.0f);
+        Vec2 impluse = Vec2(dashAccelerationBase + 300, 0.0f);
         body->applyImpulse(impluse);
     } else {
-        Vec2 impluse = Vec2(-(dashAccelerationBase + 200), 0.0f);
+        Vec2 impluse = Vec2(-(dashAccelerationBase + 300), 0.0f);
         body->applyImpulse(impluse);
     }
 
     this->dashCounts--;
-
-    animateStateMachine->changeState(DashAnimation::getInstance());
 }
 
 void

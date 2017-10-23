@@ -26,9 +26,9 @@ public:
     }
 
 public:
-    void playerRun(float dt);
-    void playerJump();
-    void playerDash();
+    void horizontallyAccelerate(float dt);
+    void jump();
+    void dash();
 
     //更新角色状态
     void updatePlayerStatus();

@@ -16,55 +16,42 @@ public:
     void jump();
     void decreaseHp(int damage);
 
-protected:
-    class IdleAnimation : public State<Enemy>
+private:
+    class Patrol : public State<Enemy>
     {
     public:
-        static IdleAnimation* getInstance();
+        static Patrol* getInstance();
         void Enter(Enemy*);
         void Exit(Enemy*);
-        void changeToState(Enemy*);
+        void defaultChangeState(Enemy*);
     };
 
-    class JumpAnimation : public State<Enemy>
+    class Alert : public State<Enemy>
     {
     public:
-        static JumpAnimation* getInstance();
+        static Alert* getInstance();
         void Enter(Enemy*);
         void Exit(Enemy*);
-        void changeToState(Enemy*);
+        void defaultChangeState(Enemy*);
     };
 
-    class FallAnimation : public State<Enemy>
+    class Jump : public State<Enemy>
     {
     public:
-        static FallAnimation* getInstance();
+        static Jump* getInstance();
         void Enter(Enemy*);
         void Exit(Enemy*);
-        void changeToState(Enemy*);
+        void defaultChangeState(Enemy*);
     };
-};
 
-class FrogAlertState : public State<Enemy>
-{
-public:
-    static FrogAlertState* getInstance();
-    void Enter(Enemy*);
-    void Exit(Enemy*);
-    void changeToState(Enemy*);
-    FrogAlertState() {}
-    ~FrogAlertState() {}
-};
-
-class FrogPatrolState : public State<Enemy>
-{
-public:
-    static FrogPatrolState* getInstance();
-    void Enter(Enemy*);
-    void Exit(Enemy*);
-    void changeToState(Enemy*);
-    FrogPatrolState() {}
-    ~FrogPatrolState() {}
+    class Fall : public State<Enemy>
+    {
+    public:
+        static Fall* getInstance();
+        void Enter(Enemy*);
+        void Exit(Enemy*);
+        void defaultChangeState(Enemy*);
+    };
 };
 
 #endif

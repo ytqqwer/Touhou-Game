@@ -65,7 +65,7 @@ Emitter::playStyle(const StyleConfig& sc)
             } else {
                 style = Laser::create(sc, target);
             }
-            dynamic_cast<Laser*>(style)->createBullet();
+            dynamic_cast<Laser*>(style)->startShoot();
             break;
         case StyleType::ODDEVEN:
             if (isPlayer) {
@@ -73,7 +73,7 @@ Emitter::playStyle(const StyleConfig& sc)
             } else {
                 style = OddEven::create(sc, target);
             }
-            dynamic_cast<OddEven*>(style)->createBullet();
+            dynamic_cast<OddEven*>(style)->startShoot();
             break;
         case StyleType::PARABOLA:
             if (isPlayer) {
@@ -81,7 +81,7 @@ Emitter::playStyle(const StyleConfig& sc)
             } else {
                 return 0;
             }
-            dynamic_cast<Parabola*>(style)->createBullet();
+            dynamic_cast<Parabola*>(style)->startShoot();
             break;
         case StyleType::PARALLEL:
             if (isPlayer) {
@@ -89,7 +89,7 @@ Emitter::playStyle(const StyleConfig& sc)
             } else {
                 style = Parallel::create(sc, target);
             }
-            dynamic_cast<Parallel*>(style)->createBullet();
+            dynamic_cast<Parallel*>(style)->startShoot();
             break;
         case StyleType::SCATTER:
             if (isPlayer) {
@@ -97,7 +97,7 @@ Emitter::playStyle(const StyleConfig& sc)
             } else {
                 style = Scatter::create(sc);
             }
-            dynamic_cast<Scatter*>(style)->createBullet();
+            dynamic_cast<Scatter*>(style)->startShoot();
             break;
         default:
             return false;
@@ -125,7 +125,7 @@ Emitter::playStyle(StyleType st)
             } else {
                 style = Laser::create(target);
             }
-            dynamic_cast<Laser*>(style)->createBullet();
+            dynamic_cast<Laser*>(style)->startShoot();
             break;
         case StyleType::ODDEVEN:
             if (isPlayer) {
@@ -133,7 +133,7 @@ Emitter::playStyle(StyleType st)
             } else {
                 style = OddEven::create(target);
             }
-            dynamic_cast<OddEven*>(style)->createBullet();
+            dynamic_cast<OddEven*>(style)->startShoot();
             break;
         case StyleType::PARABOLA:
             if (isPlayer) {
@@ -141,7 +141,7 @@ Emitter::playStyle(StyleType st)
             } else {
                 return 0;
             }
-            dynamic_cast<Parabola*>(style)->createBullet();
+            dynamic_cast<Parabola*>(style)->startShoot();
             break;
         case StyleType::PARALLEL:
             if (isPlayer) {
@@ -149,7 +149,7 @@ Emitter::playStyle(StyleType st)
             } else {
                 style = Parallel::create(target);
             }
-            dynamic_cast<Parallel*>(style)->createBullet();
+            dynamic_cast<Parallel*>(style)->startShoot();
             break;
         case StyleType::SCATTER:
             if (isPlayer) {
@@ -157,7 +157,7 @@ Emitter::playStyle(StyleType st)
             } else {
                 style = Scatter::create();
             }
-            dynamic_cast<Scatter*>(style)->createBullet();
+            dynamic_cast<Scatter*>(style)->startShoot();
             break;
         default:
             return false;

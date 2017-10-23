@@ -5,11 +5,14 @@ Parabola::Parabola(Direction* direction)
     //默认参数
     this->sc.style = StyleType::PARABOLA;
     this->sc.frequency = 0.2f;
-    this->sc.duration = 1.5;
+    this->sc.bulletDuration = 1.5;
     this->sc.number = 5;
     this->sc.count = 3;
     this->sc.height = 100;
     this->sc.distance = 500;
+
+    this->sc.totalDuration = FLT_MAX;
+    this->sc.cycleTimes = -1;
 
     this->sc.bc.name = "b3_1_3.png";
     this->sc.bc.length = 20;
@@ -20,18 +23,27 @@ Parabola::Parabola(Direction* direction)
     this->sc.bc._contactTestBitmask = 0;
 
     this->direction = direction;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 Parabola::Parabola(const StyleConfig& sc, Direction* direction)
 {
     this->sc = sc;
+
     this->direction = direction;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 void
-Parabola::createBullet()
+Parabola::startShoot()
 {
     this->schedule(schedule_selector(Parabola::shootBullet), sc.frequency);
 }
@@ -44,6 +56,24 @@ Parabola::stopShoot()
 
 void
 Parabola::shootBullet(float dt)
+{
+    timeAccumulation += dt;
+    elapsed += dt;
+    if (timeAccumulation >= sc.frequency) {
+        spawnBullet();
+        spawnBulletCycleTimes++;
+        timeAccumulation = 0;
+        if (spawnBulletCycleTimes >= sc.cycleTimes) {
+            stopShoot();
+        }
+    }
+    if (elapsed >= sc.totalDuration) {
+        stopShoot();
+    }
+}
+
+void
+Parabola::spawnBullet()
 {
     if (this->counter == sc.count) {
         this->counter = 0;
@@ -97,9 +127,9 @@ Parabola::shootBullet(float dt)
         spriteBullet->setPosition(startPoint);
         mapLayer->addChild(spriteBullet);
 
-        auto actionBezierTo = BezierTo::create(sc.duration, cfg);
+        auto actionBezierTo = BezierTo::create(sc.bulletDuration, cfg);
         // auto actionInOut = EaseInOut::create(actionBezierTo, 0.5);
-        auto actionRotate = RotateBy::create(sc.duration, (CCRANDOM_0_1() - 0.5) * 720);
+        auto actionRotate = RotateBy::create(sc.bulletDuration, (CCRANDOM_0_1() - 0.5) * 720);
         auto actionSpawn = Spawn::create(actionBezierTo, actionRotate, nullptr);
         auto actionDone = CallFuncN::create(CC_CALLBACK_1(Parabola::removeBullet, this));
         auto sequence = Sequence::create(actionSpawn, actionDone, NULL);

@@ -22,13 +22,18 @@ public:
     Parabola(const StyleConfig& sc, Direction* direction);
 
     /* 调度器 */
-    void createBullet();
+    void startShoot();
     void stopShoot();
     void shootBullet(float dt);
+    void spawnBullet();
 
 private:
     Direction* direction;
-    int counter;
+    unsigned int counter; //计数器
+
+    float timeAccumulation;
+    float elapsed;
+    unsigned int spawnBulletCycleTimes; //发射函数循环次数
 };
 
 #endif // !PARABOLA_H

@@ -22,15 +22,20 @@ public:
     OddEven(const StyleConfig& sc, Node** target);
 
     /* 调度器 */
-    void createBullet();
+    void startShoot();
     void stopShoot();
     void shootBullet(float dt);
+    void spawnBullet();
 
 private:
     Node** target;
     Vec2 targetPos; //角色位置
     float angle;    //夹角
     int counter;    //计数器
+
+    float timeAccumulation;
+    float elapsed;
+    unsigned int spawnBulletCycleTimes; //发射函数循环次数
 };
 
 #endif // !ODDEVEN_H

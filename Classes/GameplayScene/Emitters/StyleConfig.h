@@ -36,10 +36,13 @@ struct StyleConfig
     StyleType style;
 
     /* 公共参数 */
-    float duration;  //持续时间
-    float frequency; //频率
-    int count;       //子弹连发数
-    int number;      //条数
+    float bulletDuration; //子弹飞行时间
+    float frequency;      //发射频率
+    unsigned int count;   //子弹连发数
+    unsigned int number;  //条数
+
+    float totalDuration;     //总持续时间
+    unsigned int cycleTimes; //总发射次数
 
     /* 子弹参数 */
     BulletConfig bc;
@@ -49,7 +52,7 @@ struct StyleConfig
     int distance; // 距离
 
     /* Parallel参数 */
-    float interval; //间距
+    float interval; //间距，以36像素为单位
 
     /* Scatter参数 */
     int startAngle; //起始角度

@@ -60,8 +60,7 @@ Reimu::init(std::string tag)
     body->getFirstShape()->setContactTestBitmask(groundCategory | enemyCategory | lockCategory |
                                                  eventCategory | elevatorCategory);
     this->setPhysicsBody(body);
-
-	body->setPositionOffset(Vec2(-20, -10));
+    body->setPositionOffset(Vec2(0, -10));
 
     //设置动画
 
@@ -72,7 +71,8 @@ Reimu::init(std::string tag)
     preFallAnimation = AnimationCache::getInstance()->getAnimation(_character.preFallAnimationKey);
     fallAnimation = AnimationCache::getInstance()->getAnimation(_character.fallAnimationKey);
     dashAnimation = AnimationCache::getInstance()->getAnimation(_character.dashAnimationKey);
-
+    this->standAnimation->setLoops(-1);
+    this->runAnimation->setLoops(-1);
     this->jumpAnimation->setLoops(-1);
     this->fallAnimation->setLoops(-1);
 
@@ -95,14 +95,14 @@ Reimu::init(std::string tag)
     this->updatePlayerStatus();
 
     //动画更新
-    animateStateMachine = new StateMachine<Player>(this);
-    animateStateMachine->changeState(StandAnimation::getInstance());
+    stateMachine = new StateMachine<Player>(this);
+    stateMachine->changeState(Stand::getInstance());
 
     return true;
 }
 
 void
-Reimu::playerRun(float dt)
+Reimu::horizontallyAccelerate(float dt)
 {
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
@@ -133,11 +133,8 @@ Reimu::playerRun(float dt)
 }
 
 void
-Reimu::playerJump()
+Reimu::jump()
 {
-    if (this->jumpCounts == 0) {
-        return;
-    }
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
     body->setVelocity(Vec2(velocity.x, 0)); //再次跳跃时，重置Y轴速度为0
@@ -152,13 +149,8 @@ Reimu::playerJump()
 }
 
 void
-Reimu::playerDash()
+Reimu::dash()
 {
-    //留空，阻止连续dash
-
-    if (this->dashCounts == 0) {
-        return;
-    }
     auto body = this->getPhysicsBody();
     auto velocity = body->getVelocity();
     body->setVelocity(Vec2(velocity.x, 0)); // dash时，重置Y轴速度为0
@@ -174,8 +166,6 @@ Reimu::playerDash()
     }
 
     this->dashCounts--;
-
-    animateStateMachine->changeState(DashAnimation::getInstance());
 }
 
 void

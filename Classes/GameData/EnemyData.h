@@ -23,6 +23,7 @@ struct EnemyData
     vector<string> jumpFrame;
     vector<string> preFallFrame;
     vector<string> fallFrame;
+	vector<string> dashFrame;
 
 	string standAnimationKey;
 	string runAnimationKey;
@@ -30,6 +31,7 @@ struct EnemyData
 	string jumpAnimationKey;
 	string preFallAnimationKey;
 	string fallAnimationKey;
+	string dashAnimationKey;
 
     float standFrameDelay;
     float runFrameDelay;
@@ -37,6 +39,7 @@ struct EnemyData
     float jumpFrameDelay;
     float preFallFrameDelay;
     float fallFrameDelay;
+	float dashFrameDelay;
 
     //属性
     int healthPoint;

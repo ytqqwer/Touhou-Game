@@ -9,9 +9,12 @@ Scatter::Scatter()
     //敌人默认参数
     this->sc.style = StyleType::SCATTER;
     this->sc.frequency = 0.5f;
-    this->sc.duration = 6.0;
+    this->sc.bulletDuration = 6.0;
     this->sc.count = 3;
     this->sc.number = 20;
+
+    this->sc.totalDuration = FLT_MAX;
+    this->sc.cycleTimes = -1;
 
     this->sc.bc.name = "b2_2_1.png";
     this->sc.bc.length = 20;
@@ -23,43 +26,66 @@ Scatter::Scatter()
 
     this->sc.startAngle = 90;
     this->sc.endAngle = 180;
+
     this->isPlayer = false;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 Scatter::Scatter(const StyleConfig& sc)
 {
-    this->isPlayer = false;
     this->sc = sc;
+
+    this->isPlayer = false;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 Scatter::Scatter(Direction* direction)
 {
     //角色默认参数
+    this->sc.totalDuration = FLT_MAX;
+    this->sc.cycleTimes = -1;
+
     this->sc.style = StyleType::SCATTER;
     this->sc.frequency = 0.2f;
-    this->sc.duration = 3.0;
+    this->sc.bulletDuration = 3.0;
     this->sc.count = 0;
     this->sc.number = 2;
     this->sc.bc.name = "b1_3_3.png";
     this->sc.startAngle = 269;
     this->sc.endAngle = 271;
     this->isPlayer = true;
+
     this->direction = direction;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 Scatter::Scatter(const StyleConfig& sc, Direction* direction)
 {
-    this->isPlayer = true;
     this->sc = sc;
+
+    this->isPlayer = true;
     this->direction = direction;
+
     this->counter = 0;
+    this->spawnBulletCycleTimes = 0;
+    this->timeAccumulation = 0;
+    this->elapsed = 0;
 }
 
 void
-Scatter::createBullet()
+Scatter::startShoot()
 {
     this->schedule(schedule_selector(Scatter::shootBullet), sc.frequency);
 }
@@ -72,6 +98,24 @@ Scatter::stopShoot()
 
 void
 Scatter::shootBullet(float dt)
+{
+    timeAccumulation += dt;
+    elapsed += dt;
+    if (timeAccumulation >= sc.frequency) {
+        spawnBullet();
+        spawnBulletCycleTimes++;
+        timeAccumulation = 0;
+        if (spawnBulletCycleTimes >= sc.cycleTimes) {
+            stopShoot();
+        }
+    }
+    if (elapsed >= sc.totalDuration) {
+        stopShoot();
+    }
+}
+
+void
+Scatter::spawnBullet()
 {
     if (sc.count != 0) {
         if (this->counter == sc.count) {
@@ -103,7 +147,7 @@ Scatter::shootBullet(float dt)
 
         Vec2 deltaP = Vec2(distance * cos(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle),
                            distance * sin(CC_DEGREES_TO_RADIANS(sc.startAngle + 90) + i * angle));
-        auto actionMove = MoveBy::create(sc.duration, deltaP);
+        auto actionMove = MoveBy::create(sc.bulletDuration, deltaP);
         auto actionMoveBy = actionMove;
         if (isPlayer == true) { //强烈建议角色使用中心对称型子弹
             if ((*direction) == Direction::LEFT) {

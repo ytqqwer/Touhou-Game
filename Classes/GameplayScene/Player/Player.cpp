@@ -44,9 +44,11 @@ Player::changeAttackType(const std::string& startType)
         StyleConfig sc1;
         sc1.style = StyleType::PARABOLA;
         sc1.frequency = 0.15f;
-        sc1.duration = 2;
+        sc1.bulletDuration = 2;
         sc1.number = 7;
         sc1.count = 4;
+        sc1.cycleTimes = -1;
+        sc1.totalDuration = FLT_MAX;
         sc1.height = 150;
         sc1.distance = 600;
         sc1.bc.name = "b3_1_3.png";
@@ -79,10 +81,18 @@ Player::resetJump()
 void
 Player::getHit(DamageInfo* damageInfo, EventFilterManager* eventFilterManager)
 {
-    //暂时代替受损
+    //小跳
     auto velocity = body->getVelocity();
     Vec2 impluse = Vec2(0.0f, 300.0f);
     body->applyImpulse(impluse);
+
+    //更新血条
+    Hp_Mp_Change hpChange;
+    hpChange.tag = this->playerTag;
+    hpChange.value = -(damageInfo->damage); //此处取反，因为伤害值总是正数
+    EventCustom event("hp_change");
+    event.setUserData((void*)&hpChange);
+    _eventDispatcher->dispatchEvent(&event);
 
     //应用着色器
     auto rColor = BlendAction::create(0.1f, Color4B::RED);
@@ -101,17 +111,17 @@ Player::getHit(DamageInfo* damageInfo, EventFilterManager* eventFilterManager)
         1, "bullet_hit_player");
 }
 
-Player::StandAnimation*
-Player::StandAnimation::getInstance()
+Player::Stand*
+Player::Stand::getInstance()
 {
-    static StandAnimation instance;
+    static Stand instance;
     return &instance;
 }
 
 void
-Player::StandAnimation::Enter(Player* player)
+Player::Stand::Enter(Player* player)
 {
-    player->currentAnimateAction = RepeatForever::create(Animate::create(player->standAnimation));
+    player->currentAnimateAction = Animate::create(player->standAnimation);
     player->playerSprite->runAction(player->currentAnimateAction);
 
     player->playerSprite->schedule(
@@ -119,42 +129,38 @@ Player::StandAnimation::Enter(Player* player)
             Vec2 velocity = player->body->getVelocity();
             if (-15 < velocity.y && velocity.y < 15) {
                 if (velocity.x < -15 || 15 < velocity.x) {
-                    player->animateStateMachine->changeState(Player::RunAnimation::getInstance());
+                    player->stateMachine->changeState(Player::Walk::getInstance());
                 }
-            } else {
-                if (15 < velocity.y) {
-                    player->animateStateMachine->changeState(Player::JumpAnimation::getInstance());
-                } else if (velocity.y < -15) {
-                    player->animateStateMachine->changeState(Player::FallAnimation::getInstance());
-                }
+            } else if (velocity.y < -15) {
+                player->stateMachine->changeState(Player::Fall::getInstance());
             }
         },
-        0.1, "StandAnimationUpdate");
+        0.1, "StandUpdate");
 }
 
 void
-Player::StandAnimation::Exit(Player* player)
+Player::Stand::Exit(Player* player)
 {
     player->playerSprite->stopAction(player->currentAnimateAction);
-    player->playerSprite->unschedule("StandAnimationUpdate");
+    player->playerSprite->unschedule("StandUpdate");
 }
 
 void
-Player::StandAnimation::changeToState(Player* player)
+Player::Stand::defaultChangeState(Player* player)
 {
 }
 
-Player::RunAnimation*
-Player::RunAnimation::getInstance()
+Player::Walk*
+Player::Walk::getInstance()
 {
-    static RunAnimation instance;
+    static Walk instance;
     return &instance;
 }
 
 void
-Player::RunAnimation::Enter(Player* player)
+Player::Walk::Enter(Player* player)
 {
-    player->currentAnimateAction = RepeatForever::create(Animate::create(player->runAnimation));
+    player->currentAnimateAction = Animate::create(player->runAnimation);
     player->playerSprite->runAction(player->currentAnimateAction);
 
     player->playerSprite->schedule(
@@ -162,41 +168,39 @@ Player::RunAnimation::Enter(Player* player)
             Vec2 velocity = player->body->getVelocity();
             if (-15 < velocity.y && velocity.y < 15) {
                 if (-15 < velocity.x && velocity.x < 15) {
-                    player->animateStateMachine->changeState(Player::StandAnimation::getInstance());
+                    player->stateMachine->changeState(Player::Stand::getInstance());
                 }
-            } else {
-                if (15 < velocity.y) {
-                    player->animateStateMachine->changeState(Player::JumpAnimation::getInstance());
-                } else if (velocity.y < -15) {
-                    player->animateStateMachine->changeState(Player::FallAnimation::getInstance());
-                }
+            } else if (velocity.y < -15) {
+                player->stateMachine->changeState(Player::Fall::getInstance());
             }
         },
-        0.1, "RunAnimationUpdate");
+        0.1, "WalkUpdate");
 }
 
 void
-Player::RunAnimation::Exit(Player* player)
+Player::Walk::Exit(Player* player)
 {
     player->playerSprite->stopAction(player->currentAnimateAction);
-    player->playerSprite->unschedule("RunAnimationUpdate");
+    player->playerSprite->unschedule("WalkUpdate");
 }
 
 void
-Player::RunAnimation::changeToState(Player* player)
+Player::Walk::defaultChangeState(Player* player)
 {
+    player->stateMachine->changeState(Player::Stand::getInstance());
 }
 
-Player::JumpAnimation*
-Player::JumpAnimation::getInstance()
+Player::Jump*
+Player::Jump::getInstance()
 {
-    static JumpAnimation instance;
+    static Jump instance;
     return &instance;
 }
 
 void
-Player::JumpAnimation::Enter(Player* player)
+Player::Jump::Enter(Player* player)
 {
+    player->jump();
     player->currentAnimateAction = Sequence::create(Animate::create(player->preJumpAnimation),
                                                     Animate::create(player->jumpAnimation), NULL);
     player->playerSprite->runAction(player->currentAnimateAction);
@@ -204,34 +208,34 @@ Player::JumpAnimation::Enter(Player* player)
     player->playerSprite->schedule(
         [player](float dt) {
             Vec2 velocity = player->body->getVelocity();
-            if (velocity.y < 15) {
-                player->animateStateMachine->changeState(Player::FallAnimation::getInstance());
+            if (velocity.y <= 0) {
+                player->stateMachine->changeState(Player::Fall::getInstance());
             }
         },
-        0.1, "JumpAnimationUpdate");
+        0.1, "JumpUpdate");
 }
 
 void
-Player::JumpAnimation::Exit(Player* player)
+Player::Jump::Exit(Player* player)
 {
     player->playerSprite->stopAction(player->currentAnimateAction);
-    player->playerSprite->unschedule("JumpAnimationUpdate");
+    player->playerSprite->unschedule("JumpUpdate");
 }
 
 void
-Player::JumpAnimation::changeToState(Player* player)
+Player::Jump::defaultChangeState(Player* player)
 {
 }
 
-Player::FallAnimation*
-Player::FallAnimation::getInstance()
+Player::Fall*
+Player::Fall::getInstance()
 {
-    static FallAnimation instance;
+    static Fall instance;
     return &instance;
 }
 
 void
-Player::FallAnimation::Enter(Player* player)
+Player::Fall::Enter(Player* player)
 {
     player->currentAnimateAction = Sequence::create(Animate::create(player->preFallAnimation),
                                                     Animate::create(player->fallAnimation), NULL);
@@ -241,48 +245,61 @@ Player::FallAnimation::Enter(Player* player)
         [player](float dt) {
             Vec2 velocity = player->body->getVelocity();
             if (-15 < velocity.y) {
-                player->animateStateMachine->changeState(Player::StandAnimation::getInstance());
+                auto preState = player->stateMachine->getPreviousState();
+                if (preState == Player::Stand::getInstance() ||
+                    preState == Player::Walk::getInstance()) {
+                    player->stateMachine->RevertToPreviousState();
+                } else {
+                    player->stateMachine->changeState(Player::Stand::getInstance());
+                }
             }
         },
-        0.1, "FallAnimationUpdate");
+        0.1, "FallUpdate");
 }
 
 void
-Player::FallAnimation::Exit(Player* player)
+Player::Fall::Exit(Player* player)
 {
     player->playerSprite->stopAction(player->currentAnimateAction);
-    player->playerSprite->unschedule("FallAnimationUpdate");
+    player->playerSprite->unschedule("FallUpdate");
 }
 
 void
-Player::FallAnimation::changeToState(Player* player)
+Player::Fall::defaultChangeState(Player* player)
 {
+    player->stateMachine->changeState(Player::Stand::getInstance());
 }
 
-Player::DashAnimation*
-Player::DashAnimation::getInstance()
+Player::Dash*
+Player::Dash::getInstance()
 {
-    static DashAnimation instance;
+    static Dash instance;
     return &instance;
 }
 
 void
-Player::DashAnimation::Enter(Player* player)
+Player::Dash::Enter(Player* player)
 {
+    player->dash();
+
     auto animate = Animate::create(player->dashAnimation);
-    auto actionDone = CallFuncN::create(CC_CALLBACK_0(DashAnimation::changeToState, this, player));
+    auto actionDone = CallFuncN::create(CC_CALLBACK_0(Dash::defaultChangeState, this, player));
     player->currentAnimateAction = Sequence::create(animate, actionDone, NULL);
     player->playerSprite->runAction(player->currentAnimateAction);
 }
 
 void
-Player::DashAnimation::Exit(Player* player)
+Player::Dash::Exit(Player* player)
 {
     player->playerSprite->stopAction(player->currentAnimateAction);
+
+    //减速
+    auto currentVelocity = player->body->getVelocity();
+    player->body->setVelocity(Vec2(currentVelocity.x / 3.0f, currentVelocity.y));
 }
 
 void
-Player::DashAnimation::changeToState(Player* player)
+Player::Dash::defaultChangeState(Player* player)
 {
-    player->animateStateMachine->changeState(Player::StandAnimation::getInstance());
+    player->stateMachine->changeState(Player::Stand::getInstance());
 }
