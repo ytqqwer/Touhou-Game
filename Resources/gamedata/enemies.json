@@ -2,6 +2,7 @@
    "tag" : "Opossum",
    "name" : "Opossum",
    "defaultTexture" : "gameplayscene/Enemy/opossum-1.png",
+   "face" : "",
    "standFrameDelay" : 0.1,
    "runFrameDelay" : 0.15,
    "preJumpFrameDelay" : 0.3,
@@ -25,6 +26,7 @@
  {
    "tag" : "Frog",
    "name" : "Frog",
+   "face" : "",
    "defaultTexture" : "gameplayscene/Enemy/frog-idle-1.png",
    "standFrameDelay" : 0.25,
    "runFrameDelay" : 0.15,
@@ -48,6 +50,7 @@
  {
    "tag" : "Sakuya",
    "name" : "Sakuya",
+   "face" : "gameplayscene/Sakuya/face000.png",
    "defaultTexture" : "gameplayscene/Sakuya/stand000.png",
    "standFrameDelay" : 0.12,
    "runFrameDelay" : 0.10,
@@ -88,6 +91,6 @@
     "gameplayscene/Sakuya/dashFront004.png", "gameplayscene/Sakuya/dashFront005.png",
     "gameplayscene/Sakuya/dashFront006.png", "gameplayscene/Sakuya/dashFront007.png"
    ],
-   "healthPoint" : 10000
+   "healthPoint" : 1000
  }
 ]

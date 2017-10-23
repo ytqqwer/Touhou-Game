@@ -4,10 +4,31 @@
 
 #include "Layers/LoadingLayer.h"
 #include "GameplayScene/common.h"
+#include "NonGameplayScenesCache.h"
 #include "ui/CocosGUI.h"
 #include <string>
 
 using namespace std;
+
+LoadingLayer*
+LoadingLayer::create(std::string map)
+{
+    LoadingLayer* pRet = new (std::nothrow) LoadingLayer(map);
+    if (pRet && pRet->init()) {
+        pRet->autorelease();
+        return pRet;
+    } else {
+        delete pRet;
+        pRet = nullptr;
+        return nullptr;
+    }
+}
+
+LoadingLayer::LoadingLayer(std::string map)
+{
+    _map = map;
+    progress = 0;
+}
 
 bool
 LoadingLayer::init()
@@ -64,24 +85,135 @@ LoadingLayer::init()
     text->setBMFontSize(20);
     this->addChild(text);
 
-    /* 5.初始化监听器 */
+    return true;
+}
 
-    ELC = Director::getInstance()->getEventDispatcher()->addCustomEventListener(
-        "loading_event", [this](EventCustom* e) {
-            auto _loadingInfo = (LoadingInfo*)e->getUserData();
-            progress = progress + _loadingInfo->progress;
+void
+LoadingLayer::onEnter()
+{
+    /* 重要！必须首先重载父类的初始化函数 */
+    Layer::onEnter();
+
+    gameplayScene = GameplayScene::create(this->_map);
+    //避免后续初始化过程中被释放
+    gameplayScene->retain();
+
+    this->initBackGround();
+    this->initMap();
+    this->initAnimationCache();
+    this->initCharacter();
+    this->initCtrlPanel();
+    this->initArea();
+    this->initCamera();
+    this->initPhysicsContactListener();
+    this->initCustomEventListener();
+    gameplayScene->scheduleUpdate();
+}
+
+void
+LoadingLayer::initBackGround()
+{
+    gameplayScene->initBackGround();
+
+    //由于加载十分迅速，如果不延迟几乎察觉不到有读取界面的存在
+    this->scheduleOnce(
+        [this](float dt) {
+            progress = progress + 10;
             loadingProgress->setPercentage(progress);
-            text->setString(_loadingInfo->information);
+            text->setString("加载背景");
+
+        },
+        0.1, "bg");
+}
+
+void
+LoadingLayer::initMap()
+{
+    gameplayScene->initMap();
+
+    this->scheduleOnce(
+        [this](float dt) {
+            progress = progress + 40;
+            loadingProgress->setPercentage(progress);
+            text->setString("加载地图");
+        },
+        0.4, "map");
+}
+
+void
+LoadingLayer::initAnimationCache()
+{
+    gameplayScene->initAnimationCache();
+
+    this->scheduleOnce(
+        [this](float dt) {
+            progress = progress + 30;
+            loadingProgress->setPercentage(progress);
+            text->setString("加载动画缓存");
+        },
+        0.7, "animationCache");
+}
+
+void
+LoadingLayer::initCharacter()
+{
+    gameplayScene->initCharacter();
+
+    this->scheduleOnce(
+        [this](float dt) {
+            progress = progress + 10;
+            loadingProgress->setPercentage(progress);
+            text->setString("加载角色");
+        },
+        0.8, "character");
+}
+
+void
+LoadingLayer::initCtrlPanel()
+{
+    gameplayScene->initCtrlPanel();
+}
+
+void
+LoadingLayer::initArea()
+{
+    gameplayScene->initArea();
+}
+
+void
+LoadingLayer::initCamera()
+{
+    gameplayScene->initCamera();
+}
+
+void
+LoadingLayer::initPhysicsContactListener()
+{
+    gameplayScene->initPhysicsContactListener();
+}
+
+void
+LoadingLayer::initCustomEventListener()
+{
+    gameplayScene->initCustomEventListener();
+
+    this->scheduleOnce(
+        [this](float dt) {
+            progress = progress + 10;
+            loadingProgress->setPercentage(progress);
+            text->setString("加载事件");
+
             if (progress >= 100) {
-                std::function<void(Ref*)> delayRemove = [&](Ref*) {
-                    _eventDispatcher->removeEventListener(ELC);
-                    this->removeFromParentAndCleanup(true);
-                };
-                this->runAction(Sequence::create(DelayTime::create(0.50),
-                                                 CallFuncN::create(delayRemove), NULL));
+                Scene* scene = this->gameplayScene;
+                this->removeFromParentAndCleanup(true);
+                //"this"已经被销毁，故需要提前保存其中的指向游戏场景的指针
+                Director::getInstance()->popToRootScene();
+                NonGameplayScenesCache::getInstance()->removeAllScenes();
+                Director::getInstance()->replaceScene(scene);
+                //先前手动retain一次，再配合使用一次release
+                scene->release();
             }
 
-        });
-
-    return true;
+        },
+        1.0, "customEvent");
 }

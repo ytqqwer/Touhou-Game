@@ -11,6 +11,9 @@ using namespace cocos2d::extension;
 bool
 Elevator::init()
 {
+    if (!Node::init())
+        return false;
+
     this->setTag(elevatorCategoryTag);
 
     auto _elevator = Scale9Sprite::create("gameplayscene/elevator.png");

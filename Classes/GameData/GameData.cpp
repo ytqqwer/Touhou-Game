@@ -381,7 +381,7 @@ from_json(const json& j, EnemyData& c)
 {
     c.tag = j.at("tag");
     c.name = j.at("name");
-
+	c.face = j.at("face");
     c.defaultTexture = j.at("defaultTexture");
 
     for (auto const& p : j.at("standFrame")) {

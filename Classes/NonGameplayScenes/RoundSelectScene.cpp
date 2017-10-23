@@ -10,7 +10,7 @@
 // #include "resources.h.dir/main_menu.h"
 
 #include "GameData/GameData.h"
-#include "GameplayScene/GameplayScene.h"
+#include "Layers/LoadingLayer.h"
 
 #include "AudioController.h"
 
@@ -90,10 +90,8 @@ RoundSelectScene::onEnter()
             //进入游戏场景前需要做一些清理工作
             AudioController::getInstance()->playClickButtonEffect();
             AudioController::getInstance()->clearMusic();
-            NonGameplayScenesCache::getInstance()->removeAllScenes();
-            Director::getInstance()->popToRootScene();
-            Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
-            Director::getInstance()->replaceScene(GameplayScene::create(this->selectedMap));
+            auto loadingLayer = LoadingLayer::create(this->selectedMap);
+            this->addChild(loadingLayer);
         }
     });
     this->addChild(beginButton, 2);

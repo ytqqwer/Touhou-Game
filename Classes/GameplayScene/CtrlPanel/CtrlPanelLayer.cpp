@@ -4,6 +4,7 @@
 
 #include "GameplayScene/CtrlPanel/CtrlPanelLayer.h"
 #include "GameData/GameData.h"
+#include "GameplayScene/CtrlPanel/BossHpBar.h"
 #include "GameplayScene/CtrlPanel/CoolDownButton.h"
 #include "GameplayScene/CtrlPanel/HPManaBar.h"
 #include "GameplayScene/CtrlPanel/ItemButton.h"
@@ -246,4 +247,22 @@ CtrlPanelLayer::initKeyboardListener()
     };
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+}
+
+void
+CtrlPanelLayer::createBossHpBar(const std::string tag, const int maxHpValue, const std::string face)
+{
+    auto bossHpBar = BossHpBar::create(tag, maxHpValue, face);
+    bossHpBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+
+    bossHpBar->setPosition(_visibleSize.width * 0.800, _visibleSize.height * 0.910);
+
+    this->addChild(bossHpBar);
+    bossHpBar->setTag(998);
+}
+
+void
+CtrlPanelLayer::removeBossHpBar()
+{
+    this->removeChildByTag(998);
 }

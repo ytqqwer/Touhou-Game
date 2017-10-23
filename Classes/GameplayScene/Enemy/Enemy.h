@@ -30,6 +30,7 @@ public:
 
 public:
     std::string enemyTag;
+    std::string face;
     Node** curTarget;
 
     int hp;

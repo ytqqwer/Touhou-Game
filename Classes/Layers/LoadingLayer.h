@@ -8,22 +8,35 @@
 #include "cocos2d.h"
 USING_NS_CC;
 
-struct LoadingInfo
-{
-    float progress;
-    std::string information;
-};
+#include "GameplayScene/GameplayScene.h"
 
 class LoadingLayer : public Layer
 {
 public:
     bool init();
+    void onEnter() override;
 
-    CREATE_FUNC(LoadingLayer);
+    static LoadingLayer* create(std::string);
 
+private:
+    LoadingLayer(std::string);
+
+    void initBackGround();
+    void initMap();
+    void initAnimationCache();
+    void initCharacter();
+    void initCtrlPanel();
+    void initArea();
+    void initCamera();
+    void initPhysicsContactListener();
+    void initCustomEventListener();
+
+private:
     ProgressTimer* loadingProgress;
-    int progress = 0;
-    EventListenerCustom* ELC;
+    int progress;
     Label* text;
+
+    GameplayScene* gameplayScene;
+    std::string _map;
 };
 #endif

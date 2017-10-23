@@ -14,7 +14,6 @@
 #include "GameplayScene/common.h"
 
 #include "Layers/ConversationLayer.h"
-#include "Layers/LoadingLayer.h"
 #include "Layers/SettingsLayer.h"
 
 #include "AudioController.h"
@@ -101,40 +100,6 @@ GameplayScene::init()
 
     _eventScriptHanding = new EventScriptHanding(this);
 
-    auto loadingLayer = LoadingLayer::create();
-    this->addChild(loadingLayer);
-
-    // 不要在场景初始化的时候执行任何需要获取当前运行场景的代码
-    // 初始化的时候场景还没有被替换上
-    // 否则就需要使用下列代码延迟初始化动作
-    // 将初始化动作延迟执行，保证在后续初始化工作中当前scene已经准备完毕
-    // std::function<void(Ref*)> delayInit = [&](Ref*) {
-    //;
-    //};
-    // auto init = CallFuncN::create(delayInit);
-    // this->runAction(Sequence::create(DelayTime::create(1.2), init, NULL));
-
-    // 初始化地图背景层
-    this->initBackGround();
-    // 初始化地图层
-    this->initMap();
-    // 加载动画缓存
-    this->initAnimationCache();
-    // 加载角色
-    this->initCharacter();
-    // 初始化控制面板
-    this->initCtrlPanel();
-    // 加载首个区域
-    this->initArea();
-    // 加载摄像机
-    this->initCamera();
-    // 加载物理碰撞监听器
-    this->initPhysicsContactListener();
-    // 加载自定义事件监听器
-    this->initCustomEventListener();
-    // 启动帧调度器
-    this->scheduleUpdate();
-
     return true;
 }
 
@@ -148,18 +113,6 @@ GameplayScene::initBackGround()
     backgroundLayer = Layer::create();
     backgroundLayer->addChild(backgroundPicture);
     this->addChild(backgroundLayer, -100);
-
-    scheduleOnce(
-        [this](float dt) {
-            EventCustom event("loading_event");
-            LoadingInfo loadingInfo;
-            loadingInfo.progress = 10;
-            loadingInfo.information = "加载背景";
-            event.setUserData((void*)&loadingInfo);
-            event.retain();
-            _eventDispatcher->dispatchEvent(&event);
-        },
-        0.1, "bg");
 }
 
 void
@@ -175,17 +128,6 @@ GameplayScene::initMap()
 
     //创建静态刚体墙
     createPhysical(1);
-
-    scheduleOnce(
-        [this](float dt) {
-            EventCustom event("loading_event");
-            LoadingInfo loadingInfo;
-            loadingInfo.progress = 30;
-            loadingInfo.information = "加载地图";
-            event.setUserData((void*)&loadingInfo);
-            _eventDispatcher->dispatchEvent(&event);
-        },
-        0.4, "map");
 }
 
 //创建静态刚体，接受参数设置刚体大小倍率
@@ -380,18 +322,6 @@ GameplayScene::initAnimationCache()
     sakuyaAttackA_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb010.png");
     sakuyaAttackA_2->setDelayPerUnit(0.10);
     AnimationCache::getInstance()->addAnimation(sakuyaAttackA_2, "sakuyaAttackA_2");
-
-    scheduleOnce(
-        [this](float dt) {
-
-            EventCustom event("loading_event");
-            LoadingInfo loadingInfo;
-            loadingInfo.progress = 30;
-            loadingInfo.information = "加载动画缓存";
-            event.setUserData((void*)&loadingInfo);
-            _eventDispatcher->dispatchEvent(&event);
-        },
-        0.7, "animationCache");
 }
 
 void
@@ -417,18 +347,6 @@ GameplayScene::initCharacter()
     mapLayer->addChild(p1Player);
 
     curPlayer->changeAttackType(p1Player->currentAttackType);
-
-    scheduleOnce(
-        [this](float dt) {
-
-            EventCustom event("loading_event");
-            LoadingInfo loadingInfo;
-            loadingInfo.progress = 10;
-            loadingInfo.information = "加载角色";
-            event.setUserData((void*)&loadingInfo);
-            _eventDispatcher->dispatchEvent(&event);
-        },
-        0.8, "character");
 }
 
 void
@@ -437,18 +355,6 @@ GameplayScene::initCtrlPanel()
     controlPanel = CtrlPanelLayer::create();
 
     this->addChild(controlPanel);
-
-    scheduleOnce(
-        [this](float dt) {
-            EventCustom event("loading_event");
-            LoadingInfo loadingInfo;
-            loadingInfo.progress = 10;
-            loadingInfo.information = "加载控制面板";
-            event.setUserData((void*)&loadingInfo);
-            event.retain();
-            _eventDispatcher->dispatchEvent(&event);
-        },
-        0.9, "controlPanel");
 }
 
 void
@@ -611,6 +517,12 @@ GameplayScene::initEnemy()
             /*临时项*/
 
             enemyList.pushBack(_enemy);
+
+            if (dict["type"].asString() == "boss") {
+                _hasBoss = true;
+                auto ctrlLayer = (CtrlPanelLayer*)controlPanel;
+                ctrlLayer->createBossHpBar(tag, _enemy->hp, _enemy->face);
+            }
         }
     }
 }
@@ -938,17 +850,6 @@ GameplayScene::initCustomEventListener()
 
         curPlayer->currentMana += mpChange.value;
     });
-
-    scheduleOnce(
-        [this](float dt) {
-            EventCustom event("loading_event");
-            LoadingInfo loadingInfo;
-            loadingInfo.progress = 10;
-            loadingInfo.information = "加载事件";
-            event.setUserData((void*)&loadingInfo);
-            _eventDispatcher->dispatchEvent(&event);
-        },
-        1.0, "customEvent");
 }
 
 void
@@ -1074,6 +975,11 @@ GameplayScene::update(float dt)
         }
         for (auto v : elevatorList) {
             v->removeFromParentAndCleanup(true);
+        }
+        if (_hasBoss) {
+            auto ctrlLayer = (CtrlPanelLayer*)controlPanel;
+            ctrlLayer->removeBossHpBar();
+            _hasBoss = false;
         }
 
         initArea();

@@ -14,6 +14,8 @@ struct EnemyData
     string tag;  //敌人标签
     string name; //敌人名字
 
+	string face; 
+
     /* 动画 */
 
     string defaultTexture;

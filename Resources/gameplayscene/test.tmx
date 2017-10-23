@@ -150,31 +150,36 @@
   <object id="64" x="2048" y="1656" width="48" height="44">
    <properties>
     <property name="tag" value="Opossum"/>
+    <property name="type" value=""/>
    </properties>
   </object>
   <object id="65" x="2400" y="1656" width="52" height="40">
    <properties>
     <property name="tag" value="Opossum"/>
+    <property name="type" value=""/>
    </properties>
   </object>
   <object id="66" x="76" y="1012" width="48" height="44">
    <properties>
     <property name="tag" value="Frog"/>
+    <property name="type" value=""/>
    </properties>
   </object>
   <object id="110" x="2824" y="1652" width="40" height="36">
    <properties>
     <property name="tag" value="Frog"/>
+    <property name="type" value=""/>
    </properties>
   </object>
   <object id="185" x="5720" y="1616" width="40" height="40">
    <properties>
     <property name="tag" value="Sakuya"/>
+    <property name="type" value="boss"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="25" name="birthPoint" x="264" y="492" width="24" height="24"/>
+  <object id="25" name="birthPoint" x="2652" y="536" width="24" height="24"/>
  </objectgroup>
  <layer name="mapchip001" width="390" height="120">
   <data encoding="base64" compression="zlib">

@@ -92,6 +92,9 @@ private:
     TMXTiledMap* _map;
     Rect curArea;
 
+    //是否有boss
+    bool _hasBoss;
+
     Vector<Node*> eventPoint;
     Vector<Node*> enemyList;
 

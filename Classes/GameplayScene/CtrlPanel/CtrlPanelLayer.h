@@ -18,6 +18,9 @@ public:
 
     bool init() override;
 
+    void createBossHpBar(const std::string tag, const int maxHpValue, const std::string face);
+    void removeBossHpBar();
+
 private:
     CtrlPanelLayer() = default;
 

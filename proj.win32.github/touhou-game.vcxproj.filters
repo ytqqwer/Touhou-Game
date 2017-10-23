@@ -200,6 +200,9 @@
     <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\HpManaBar.cpp">
       <Filter>Classes\GameplayScene\CtrlPanel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\CtrlPanel\BossHpBar.cpp">
+      <Filter>Classes\GameplayScene\CtrlPanel</Filter>
+    </ClCompile>
 
     <!-- Classes\GameplayScene\Emitters -->
 
@@ -426,6 +429,9 @@
       <Filter>Classes\GameplayScene\CtrlPanel</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\HpManaBar.h">
+      <Filter>Classes\GameplayScene\CtrlPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\CtrlPanel\BossHpBar.h">
       <Filter>Classes\GameplayScene\CtrlPanel</Filter>
     </ClInclude>
 

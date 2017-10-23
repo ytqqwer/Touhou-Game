@@ -21,6 +21,9 @@ Sakuya::init(std::string tag)
     enemySprite = Sprite::create(_enemyData.defaultTexture);
     this->addChild(enemySprite);
 
+    //设置头像
+    this->face = _enemyData.face;
+
     //设置属性值
     this->hp = _enemyData.healthPoint;
 
@@ -108,6 +111,13 @@ Sakuya::decreaseHp(int damage)
     if (this->hp < 0) {
         this->removeFromParentAndCleanup(true);
     }
+
+    Hp_Mp_Change hpChange;
+    hpChange.tag = this->enemyTag;
+    hpChange.value = -(std::abs(damage)); //此处取反，因为伤害值总是正数
+    EventCustom event("hp_change");
+    event.setUserData((void*)&hpChange);
+    _eventDispatcher->dispatchEvent(&event);
 }
 
 void
