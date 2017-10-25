@@ -15,7 +15,7 @@
     AnimationCache::getInstance()->addAnimation(animation, key);
 
 bool
-Alice::init(std::string tag)
+Alice::init(const std::string& tag)
 {
     if (!Node::init())
         return false;

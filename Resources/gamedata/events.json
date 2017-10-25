@@ -32,5 +32,21 @@
                 "jump" : "true"
             }
         ]
+    },
+    {
+        "eventTag": "E3",
+        "eventList": [
+            {
+                "eventType": "conversation",
+                "conversationTag" : "C4"
+            },
+            {
+                "eventType": "update",
+                "updateTag" : "U1"
+            },
+            {
+                "eventType": "end"
+            }
+        ]
     }
 ]

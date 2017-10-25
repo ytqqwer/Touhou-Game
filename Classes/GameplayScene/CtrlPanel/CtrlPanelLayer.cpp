@@ -65,8 +65,8 @@ CtrlPanelLayer::init()
 
     // dash
     auto dashButton = Button::create("gameplayscene/dashButton.png");
-    dashButton->setPosition(Vec2(_visibleSize.width * 0.920, _visibleSize.height * 0.080));
-    dashButton->setScale(0.8);
+    dashButton->setPosition(Vec2(_visibleSize.width * 0.920, _visibleSize.height * 0.090));
+    dashButton->setScale(0.9);
     dashButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             this->_eventDispatcher->dispatchCustomEvent("dash_key_pressed");
@@ -136,8 +136,8 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
 
         auto switchAttackTypeBtn = Button::create("gameplayscene/switchAttackType.png");
         switchAttackTypeBtn->setPosition(
-            Vec2(_visibleSize.width * 0.840, _visibleSize.height * 0.080));
-        switchAttackTypeBtn->setScale(1.8);
+            Vec2(_visibleSize.width * 0.820, _visibleSize.height * 0.090));
+        switchAttackTypeBtn->setScale(2.0);
         switchAttackTypeBtn->addTouchEventListener(
             [this](Ref* pSender, Widget::TouchEventType type) {
                 if (type == Widget::TouchEventType::ENDED) {
@@ -250,7 +250,8 @@ CtrlPanelLayer::initKeyboardListener()
 }
 
 void
-CtrlPanelLayer::createBossHpBar(const std::string tag, const int maxHpValue, const std::string face)
+CtrlPanelLayer::createBossHpBar(const std::string& tag, const int maxHpValue,
+                                const std::string face)
 {
     auto bossHpBar = BossHpBar::create(tag, maxHpValue, face);
     bossHpBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -264,5 +265,5 @@ CtrlPanelLayer::createBossHpBar(const std::string tag, const int maxHpValue, con
 void
 CtrlPanelLayer::removeBossHpBar()
 {
-    this->removeChildByTag(998);
+    this->removeChildByTag(998, true);
 }

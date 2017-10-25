@@ -15,7 +15,7 @@
     AnimationCache::getInstance()->addAnimation(animation, key);
 
 bool
-Marisa::init(std::string tag)
+Marisa::init(const std::string& tag)
 {
     if (!Node::init())
         return false;

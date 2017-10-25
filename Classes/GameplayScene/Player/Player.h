@@ -23,8 +23,8 @@ using namespace cocos2d;
 class Player : public Node
 {
 public:
-    virtual bool init(std::string tag) = 0;
-    static Player* create(std::string tag);
+    virtual bool init(const std::string& tag) = 0;
+    static Player* create(const std::string& tag);
 
     ~Player() { delete stateMachine; }
 

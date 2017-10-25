@@ -7,7 +7,7 @@
 #include "GameData/GameData.h"
 
 bool
-Frog::init(std::string tag)
+Frog::init(const std::string& tag)
 {
     if (!Node::init())
         return false;

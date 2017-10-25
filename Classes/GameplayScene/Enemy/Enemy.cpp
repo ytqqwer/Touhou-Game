@@ -8,7 +8,7 @@
 #include "GameplayScene/Enemy/Sakuya.h"
 
 Enemy*
-Enemy::create(std::string tag)
+Enemy::create(const std::string& tag)
 {
     Enemy* pRet;
     if (tag == "Frog") {

@@ -10,9 +10,9 @@
 class Marisa : public Player
 {
 public:
-    virtual bool init(std::string tag);
+    virtual bool init(const std::string& tag);
 
-    static Marisa* create(std::string tag)
+    static Marisa* create(const std::string& tag)
     {
         Marisa* pRet = new (std::nothrow) Marisa();
         if (pRet && pRet->init(tag)) {

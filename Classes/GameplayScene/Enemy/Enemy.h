@@ -15,9 +15,9 @@ using namespace cocos2d;
 class Enemy : public Node
 {
 public:
-    virtual bool init(std::string tag) = 0;
+    virtual bool init(const std::string& tag) = 0;
 
-    static Enemy* create(std::string tag);
+    static Enemy* create(const std::string& tag);
 
     ~Enemy() { delete stateMachine; }
 

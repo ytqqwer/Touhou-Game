@@ -16,10 +16,10 @@ public:
     bool init();
     void onEnter() override;
 
-    static LoadingLayer* create(std::string);
+    static LoadingLayer* create(const std::string&);
 
 private:
-    LoadingLayer(std::string);
+    LoadingLayer(const std::string&);
 
     void initBackGround();
     void initMap();

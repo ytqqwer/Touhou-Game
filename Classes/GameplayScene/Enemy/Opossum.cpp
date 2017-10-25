@@ -7,7 +7,7 @@
 #include "GameData/GameData.h"
 
 bool
-Opossum::init(std::string tag)
+Opossum::init(const std::string& tag)
 {
     if (!Node::init())
         return false;

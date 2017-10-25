@@ -28,8 +28,8 @@ private:
     RoundSelectScene();
 
     void setRoundInformation(Round round);
-    void setSpellCard(std::string, Vector<Sprite*>&, float);
-    void setItem(std::string, Vector<Sprite*>&, float);
+    void setSpellCard(const std::string&, Vector<Sprite*>&, float);
+    void setItem(const std::string&, Vector<Sprite*>&, float);
 
 private:
     static const std::string TAG;

@@ -169,20 +169,19 @@ EquipScene::loadCharacterProperty(const Character& character)
     addChild(portrait, 1, ++tagSum);
 
     /*生命*/
-    auto text_1 = Label::createWithTTF(
-        getNumber(character.healthPointBase, character.healthPointInc), "fonts/dengxian.ttf", 18);
+    auto text_1 = Label::createWithTTF(getNumber(character.healthPointBase, 0),
+                                       "fonts/dengxian.ttf", 18); //属性加成暂时使用0代替
     text_1->setPosition(Vec2(_visibleSize.width * 0.47, _visibleSize.height * 0.81));
     text_1->setColor(Color3B::BLACK);
     addChild(text_1, 0, ++tagSum);
     /*灵力*/
-    auto text_2 = Label::createWithTTF(getNumber(character.manaBase, character.manaInc),
-                                       "fonts/dengxian.ttf", 18);
+    auto text_2 = Label::createWithTTF(getNumber(character.manaBase, 0), "fonts/dengxian.ttf", 18);
     text_2->setPosition(Vec2(_visibleSize.width * 0.47, _visibleSize.height * 0.74));
     text_2->setColor(Color3B::BLACK);
     addChild(text_2, 0, ++tagSum);
     /*速度*/
-    auto text_3 = Label::createWithTTF(getNumber(character.walkSpeedBase, character.walkSpeedInc),
-                                       "fonts/dengxian.ttf", 18);
+    auto text_3 =
+        Label::createWithTTF(getNumber(character.walkSpeedBase, 0), "fonts/dengxian.ttf", 18);
     text_3->setPosition(Vec2(_visibleSize.width * 0.47, _visibleSize.height * 0.67));
     text_3->setColor(Color3B::BLACK);
     addChild(text_3, 0, ++tagSum);

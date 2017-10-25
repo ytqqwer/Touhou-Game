@@ -10,12 +10,12 @@
 class BossHpBar : public cocos2d::Sprite
 {
 public:
-    static BossHpBar* create(const std::string tag, const int maxHpValue, const std::string face);
+    static BossHpBar* create(const std::string& tag, const int maxHpValue, const std::string face);
 
     virtual bool init() override;
 
 private:
-    BossHpBar(const std::string tag, const int maxHpValue, const std::string face);
+    BossHpBar(const std::string& tag, const int maxHpValue, const std::string face);
 
 private:
     std::string _tag;

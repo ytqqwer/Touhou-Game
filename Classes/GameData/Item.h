@@ -31,12 +31,6 @@ struct Item
     int manaCost;        //灵力消耗
     float cooldown;      //冷却时间
 
-    int healthPointInc;
-    int manaInc;
-    int walkSpeedInc;
-    int walkAccelerationInc;
-    int dashAccelerationInc;
-
     int price; //售价
 };
 

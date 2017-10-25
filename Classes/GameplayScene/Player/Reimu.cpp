@@ -15,7 +15,7 @@
     AnimationCache::getInstance()->addAnimation(animation, key);
 
 bool
-Reimu::init(std::string tag)
+Reimu::init(const std::string& tag)
 {
     if (!Node::init())
         return false;

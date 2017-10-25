@@ -44,7 +44,7 @@ void
 GameplayScene::cleanup()
 {
     Scene::cleanup();
-    AudioController::getInstance()->stopMusic();
+    AudioController::getInstance()->clearMusic();
     Director::getInstance()->getEventDispatcher()->removeEventListenersForTarget(this);
     _eventFilterMgr->removeAllEventFilters();
 
@@ -52,7 +52,7 @@ GameplayScene::cleanup()
 }
 
 GameplayScene*
-GameplayScene::create(std::string map)
+GameplayScene::create(const std::string& map)
 {
     GameplayScene* pRet = new (std::nothrow) GameplayScene(map);
     if (pRet && pRet->init()) {
@@ -65,7 +65,7 @@ GameplayScene::create(std::string map)
     }
 }
 
-GameplayScene::GameplayScene(std::string map)
+GameplayScene::GameplayScene(const std::string& map)
 {
     selectedMap = map;
     visibleSize = Director::getInstance()->getVisibleSize();
@@ -244,7 +244,7 @@ GameplayScene::createPhysical(float scale)
 #define CREATE_AND_ADD_ANIMATION_CACHE(frames, delayPerUnit, key)                                  \
     if (frames.size() > 0) {                                                                       \
         auto animation = Animation::create();                                                      \
-        for (auto v : frames) {                                                                    \
+        for (auto& v : frames) {                                                                   \
             animation->addSpriteFrameWithFile(v);                                                  \
         }                                                                                          \
         animation->setDelayPerUnit(delayPerUnit);                                                  \
@@ -267,7 +267,7 @@ GameplayScene::initAnimationCache()
         enemyTags.insert(tag);
     }
 
-    for (auto s : characterTags) {
+    for (auto& s : characterTags) {
         Character _character = GameData::getInstance()->getCharacterByTag(s);
 
         CREATE_AND_ADD_ANIMATION_CACHE(_character.standFrame, _character.standFrameDelay,
@@ -286,7 +286,7 @@ GameplayScene::initAnimationCache()
                                        _character.dashAnimationKey);
     }
 
-    for (auto s : enemyTags) {
+    for (auto& s : enemyTags) {
         EnemyData _enemy = GameData::getInstance()->getEnemyByTag(s);
 
         CREATE_AND_ADD_ANIMATION_CACHE(_enemy.standFrame, _enemy.standFrameDelay,
@@ -496,6 +496,7 @@ GameplayScene::initEnemy()
     auto objects = group->getObjects();
     // Value objectsVal = Value(objects);
     // log("%s", objectsVal.getDescription().c_str());
+    _hasBoss = false;
 
     for (auto v : objects) {
         auto dict = v.asValueMap();
@@ -850,6 +851,28 @@ GameplayScene::initCustomEventListener()
 
         curPlayer->currentMana += mpChange.value;
     });
+
+    _eventDispatcher->addCustomEventListener("kill_boss", [this](EventCustom* e) {
+        auto ctrlLayer = (CtrlPanelLayer*)controlPanel;
+        ctrlLayer->removeBossHpBar();
+        this->_hasBoss = false;
+
+        auto sequence =
+            Sequence::create(DelayTime::create(3.0f),
+                             CallFuncN::create(CC_CALLBACK_0(GameplayScene::endGame, this)), NULL);
+        this->runAction(sequence);
+    });
+}
+
+void
+GameplayScene::endGame()
+{
+    auto roundInformation = this->_map->getObjectGroup("RoundInformation");
+    auto endEvent = roundInformation->getProperty("onExitTriggerEvent").asString();
+
+    EventCustom event("trigger_event");
+    event.setUserData((void*)endEvent.c_str());
+    _eventDispatcher->dispatchEvent(&event);
 }
 
 void

@@ -13,7 +13,7 @@
 #include "GameplayScene/Shaders/BlendAction.h"
 
 Player*
-Player::create(std::string tag)
+Player::create(const std::string& tag)
 {
     Player* pRet;
     if (tag == "Reimu") {

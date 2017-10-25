@@ -67,21 +67,13 @@ struct Character
     int spellCardSlotNum; //符卡栏数量
 
     int healthPointBase; //基础属性
-    int healthPointInc;  //增量属性，可为负
-
     int manaBase;
-    int manaInc;
-
     int walkSpeedBase;
     int walkMaxSpeed;
     float walkAccelerationTimeBase;
     float walkAccelerationBase;
-
     float dashAccelerationBase;
 
-    int walkSpeedInc;
-    float walkAccelerationInc;
-    float dashAccelerationInc;
 };
 
 #endif

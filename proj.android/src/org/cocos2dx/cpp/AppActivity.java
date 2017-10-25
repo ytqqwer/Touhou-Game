@@ -93,6 +93,7 @@ public class AppActivity extends Cocos2dxActivity {
                 "conversations.json",
                 "enemies.json",
                 "events.json",
+                "update.json",
                 "items.json",
                 "locations.json",
                 "saves.json",

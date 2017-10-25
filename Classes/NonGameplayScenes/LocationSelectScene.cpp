@@ -183,8 +183,8 @@ LocationSelectScene::onExit()
     LocationList->removeFromParentAndCleanup(true);
 }
 
-SelectLocationMenuItem*
-SelectLocationMenuItem::create(const Location& i)
+LocationSelectScene::SelectLocationMenuItem*
+LocationSelectScene::SelectLocationMenuItem::create(const Location& i)
 {
     SelectLocationMenuItem* pRet;
     pRet = new (std::nothrow) SelectLocationMenuItem(i);
@@ -198,13 +198,13 @@ SelectLocationMenuItem::create(const Location& i)
     }
 }
 
-SelectLocationMenuItem::SelectLocationMenuItem(const Location& i)
+LocationSelectScene::SelectLocationMenuItem::SelectLocationMenuItem(const Location& i)
 {
     location = i;
 }
 
 bool
-SelectLocationMenuItem::init()
+LocationSelectScene::SelectLocationMenuItem::init()
 {
     if (!MenuItemSprite::init())
         return false;
@@ -233,7 +233,7 @@ SelectLocationMenuItem::init()
 }
 
 void
-SelectLocationMenuItem::callBack()
+LocationSelectScene::SelectLocationMenuItem::callBack()
 {
     AudioController::getInstance()->playClickButtonEffect();
     GameData::getInstance()->switchLocation(location.tag);

@@ -10,9 +10,9 @@
 class Alice : public Player
 {
 public:
-    virtual bool init(std::string tag);
+    virtual bool init(const std::string& tag);
 
-    static Alice* create(std::string tag)
+    static Alice* create(const std::string& tag)
     {
         Alice* pRet = new (std::nothrow) Alice();
         if (pRet && pRet->init(tag)) {

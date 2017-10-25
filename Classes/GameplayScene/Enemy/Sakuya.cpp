@@ -8,7 +8,7 @@
 #include "GameplayScene/Emitters/Emitter.h"
 
 bool
-Sakuya::init(std::string tag)
+Sakuya::init(const std::string& tag)
 {
     if (!Node::init())
         return false;
@@ -110,6 +110,9 @@ Sakuya::decreaseHp(int damage)
     this->hp = this->hp - damage;
     if (this->hp < 0) {
         this->removeFromParentAndCleanup(true);
+
+        EventCustom event("kill_boss");
+        _eventDispatcher->dispatchEvent(&event);
     }
 
     Hp_Mp_Change hpChange;

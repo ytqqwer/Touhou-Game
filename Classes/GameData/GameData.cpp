@@ -61,6 +61,7 @@ static json awardListDom;
 
 static json enemyListDom;
 static json eventListDom;
+static json updateDom;
 
 // 用于支持玩 A 存档时，想存至 B 存档上
 // 我们需要记录更改到其他地方，而不能直接记录到 A 上
@@ -280,13 +281,13 @@ from_json(const json& j, Character& c)
         c.dashFrame.push_back(p);
     }
 
-	c.standAnimationKey = c.tag + ("StandAnimation");
-	c.runAnimationKey = c.tag + ("RunAnimation");
-	c.preJumpAnimationKey = c.tag + ("PreJumpAnimation");
-	c.jumpAnimationKey = c.tag + ("JumpAnimation");
-	c.preFallAnimationKey = c.tag + ("PreFallAnimation");
-	c.fallAnimationKey = c.tag + ("FallAnimation");
-	c.dashAnimationKey = c.tag + ("DashAnimation");
+    c.standAnimationKey = c.tag + ("StandAnimation");
+    c.runAnimationKey = c.tag + ("RunAnimation");
+    c.preJumpAnimationKey = c.tag + ("PreJumpAnimation");
+    c.jumpAnimationKey = c.tag + ("JumpAnimation");
+    c.preFallAnimationKey = c.tag + ("PreFallAnimation");
+    c.fallAnimationKey = c.tag + ("FallAnimation");
+    c.dashAnimationKey = c.tag + ("DashAnimation");
 
     c.standFrameDelay = it->at("standFrameDelay");
     c.runFrameDelay = it->at("runFrameDelay");
@@ -305,22 +306,6 @@ from_json(const json& j, Character& c)
     c.walkAccelerationBase = it->at("walkAccelerationBase");
 
     c.dashAccelerationBase = it->at("dashAccelerationBase");
-
-    /* 2. savesDom 中的信息 */
-    //属性增量没有必要存在存档中
-
-    for (it = cachedSave.at("characterList").begin(); it != cachedSave.at("characterList").end();
-         ++it) {
-        if (it->at("tag").get<string>() == c.tag) {
-            break;
-        }
-    }
-
-    c.healthPointInc = it->at("healthPointInc");
-    c.manaInc = it->at("manaInc");
-    c.walkSpeedInc = it->at("walkSpeedInc");
-    c.walkAccelerationInc = it->at("walkAccelerationInc");
-    c.dashAccelerationInc = it->at("dashAccelerationInc");
 }
 
 // characterListDom[n]["attackList"][n] -> Character::Attack
@@ -352,12 +337,6 @@ from_json(const json& j, Item& i)
     i.manaCost = j.at("manaCost");
     i.cooldown = j.at("coolDown");
 
-    i.healthPointInc = j.at("healthPointInc");
-    i.manaInc = j.at("manaInc");
-    i.walkSpeedInc = j.at("walkSpeedInc");
-    i.walkAccelerationInc = j.at("walkAccelerationInc");
-    i.dashAccelerationInc = j.at("dashAccelerationInc");
-
     i.price = j.at("price");
 }
 
@@ -381,7 +360,7 @@ from_json(const json& j, EnemyData& c)
 {
     c.tag = j.at("tag");
     c.name = j.at("name");
-	c.face = j.at("face");
+    c.face = j.at("face");
     c.defaultTexture = j.at("defaultTexture");
 
     for (auto const& p : j.at("standFrame")) {
@@ -402,17 +381,17 @@ from_json(const json& j, EnemyData& c)
     for (auto const& p : j.at("fallFrame")) {
         c.fallFrame.push_back(p);
     }
-	for (auto const& p : j.at("dashFrame")) {
-		c.dashFrame.push_back(p);
-	}
+    for (auto const& p : j.at("dashFrame")) {
+        c.dashFrame.push_back(p);
+    }
 
-	c.standAnimationKey = c.tag+ ("StandAnimation") ;
-	c.runAnimationKey = c.tag + ("RunAnimation");
-	c.preJumpAnimationKey = c.tag + ("PreJumpAnimation");
-	c.jumpAnimationKey = c.tag + ("JumpAnimation");
-	c.preFallAnimationKey = c.tag + ("PreFallAnimation");
-	c.fallAnimationKey = c.tag + ("FallAnimation");
-	c.dashAnimationKey = c.tag + ("DashAnimation");
+    c.standAnimationKey = c.tag + ("StandAnimation");
+    c.runAnimationKey = c.tag + ("RunAnimation");
+    c.preJumpAnimationKey = c.tag + ("PreJumpAnimation");
+    c.jumpAnimationKey = c.tag + ("JumpAnimation");
+    c.preFallAnimationKey = c.tag + ("PreFallAnimation");
+    c.fallAnimationKey = c.tag + ("FallAnimation");
+    c.dashAnimationKey = c.tag + ("DashAnimation");
 
     c.standFrameDelay = j.at("standFrameDelay");
     c.runFrameDelay = j.at("runFrameDelay");
@@ -420,7 +399,7 @@ from_json(const json& j, EnemyData& c)
     c.jumpFrameDelay = j.at("jumpFrameDelay");
     c.preFallFrameDelay = j.at("preFallFrameDelay");
     c.fallFrameDelay = j.at("fallFrameDelay");
-	c.dashFrameDelay = j.at("dashFrameDelay");
+    c.dashFrameDelay = j.at("dashFrameDelay");
 
     c.healthPoint = j.at("healthPoint");
 }
@@ -429,15 +408,18 @@ from_json(const json& j, EnemyData& c)
 static void
 from_json(const json& j, EventData& c)
 {
+    c.eventType = j.at("eventType");
+
     if (j.value("eventType", "") == "conversation") {
-        c.eventType = j.at("eventType");
         c.conversationTag = j.at("conversationTag");
 
     } else if (j.value("eventType", "") == "action") {
-        c.eventType = j.at("eventType");
         c.jump = (j.at("jump") == "true") ? true : false;
         c.delay = j.at("delay");
         c.duration = j.at("duration");
+    } else if (j.value("eventType", "") == "update") {
+        c.updateTag = j.at("updateTag");
+    } else if (j.value("eventType", "") == "end") {
     }
 }
 
@@ -491,6 +473,7 @@ GameData::init()
 
     ifstream enemies_json(prefix + "gamedata/enemies.json");
     ifstream events_json(prefix + "gamedata/events.json");
+    ifstream update_json(prefix + "gamedata/update.json");
 
 #else
     ifstream saves_json(fileUtil->fullPathForFilename("gamedata/saves.json"));
@@ -503,6 +486,7 @@ GameData::init()
 
     ifstream enemies_json(fileUtil->fullPathForFilename("gamedata/enemies.json"));
     ifstream events_json(fileUtil->fullPathForFilename("gamedata/events.json"));
+    ifstream update_json(fileUtil->fullPathForFilename("gamedata/update.json"));
 
 #endif
 
@@ -518,6 +502,7 @@ GameData::init()
 
     enemies_json >> enemyListDom;
     events_json >> eventListDom;
+    update_json >> updateDom;
 
     /* 3. 关闭文件流 */
 
@@ -531,6 +516,7 @@ GameData::init()
 
     enemies_json.close();
     events_json.close();
+    update_json.close();
 
 #ifndef NDEBUG
     // 若使用 DEBUG mode 来生成项目
@@ -656,6 +642,77 @@ GameData::switchSave(int saveTag)
     log("  time: %s", cachedSave["time"].get<string>().c_str());
     log("  characterList[0][\"tag\"]: %s",
         cachedSave["characterList"][0]["tag"].get<string>().c_str());
+}
+
+void
+GameData::updateSave(const std::string& updateTag)
+{
+    json::const_iterator elementUpdateDom =
+        find_if(updateDom.cbegin(), updateDom.cend(), [&updateTag](const json& cToPred) -> bool {
+            return cToPred.at("updateTag") == updateTag;
+        });
+
+    //更新钱
+    increaseMoney(elementUpdateDom->at("money"));
+
+    //更新道具
+    const json& Items = elementUpdateDom->at("getItems");
+    json& availItemListDom = cachedSave["availableItemList"];
+    for (auto const& item : Items) {
+        json newItemRecord = { { "tag", item.at("tag") } };
+        availItemListDom.push_back(newItemRecord);
+    }
+
+    //更新符卡
+    const json& SpellCards = elementUpdateDom->at("getSpellCards");
+    json& availSpellCardListDom = cachedSave["availableSpellCardList"];
+    for (auto const& card : SpellCards) {
+        json newCardRecord = { { "tag", card.at("tag") } };
+        availSpellCardListDom.push_back(newCardRecord);
+    }
+
+    //更新地点以及对话信息
+    const json& Locations = elementUpdateDom->at("unlockLocations");
+    json& unlockedLocsDom = cachedSave["unlockedLocationList"];
+    for (auto const& location : Locations) {
+        bool isExist = false;
+        //若此地点已存在，则只追加新的对话
+        for (auto& ul : unlockedLocsDom) {
+            if (ul["tag"] == location["tag"]) {
+                json& indicatorsDom =
+                    ul["conversationIndicators"]; //将当前遍历对象的c..Indi..ors转化为json对象
+                const json& indicators = location.at("conversationIndicators");
+                for (auto& tag : indicators) {
+                    json newIndicatorRecord = { tag };
+                    indicatorsDom.push_back(newIndicatorRecord); //追加新的对话tag
+                }
+                isExist = true;
+                break;
+            }
+        }
+        //若地点不存在，追加新地点以及对话
+        if (!isExist) {
+            json newLocationRecord = { { "tag", location.at("tag") },
+                                       { "passedRound", 0 },
+                                       { "conversationIndicators",
+                                         location.at("conversationIndicators") } };
+            unlockedLocsDom.push_back(newLocationRecord);
+        }
+    }
+
+    //更新可选角色
+    const json& Characters = elementUpdateDom->at("newCharacters");
+    json& charactersDom = cachedSave["characterList"];
+    for (auto const& character : Characters) {
+        json newLocationRecord = { { "tag", character.at("tag") },
+                                   { "itemSlotNum", character.at("itemSlotNum") },
+                                   { "spellCardSlotNum", character.at("spellCardSlotNum") },
+                                   { "equipedItemList", character.at("equipedItemList") },
+                                   { "equipedSpellCardList", character.at("equipedSpellCardList") },
+                                   { "preferedAttackType", character.at("preferedAttackType") },
+                                   { "selectedAttackType", character.at("selectedAttackType") } };
+        charactersDom.push_back(newLocationRecord);
+    }
 }
 
 // 音量（Volume）/ 对话速度（ConversationSpedd） 类接口有类似的内部实现。
@@ -1036,22 +1093,22 @@ GameData::changeItem(const string& characterTag, int slot, const string& newItem
             // 没有最佳匹配，会引起 ambiguous
 
             // 旧装备加成
-            c["healthPointInc"] =
-                c["healthPointInc"].get<int>() - oldItemIt->at("healthPointInc").get<int>();
-            c["manaInc"] = c["manaInc"].get<int>() - oldItemIt->at("manaInc").get<int>();
-            c["walkSpeedInc"] =
-                c["walkSpeedInc"].get<int>() - oldItemIt->at("walkSpeedInc").get<int>();
-            c["dashAccelerationInc"] = c["dashAccelerationInc"].get<int>() -
-                                       oldItemIt->at("dashAccelerationInc").get<int>();
+            // c["healthPointInc"] =
+            //    c["healthPointInc"].get<int>() - oldItemIt->at("healthPointInc").get<int>();
+            // c["manaInc"] = c["manaInc"].get<int>() - oldItemIt->at("manaInc").get<int>();
+            // c["walkSpeedInc"] =
+            //    c["walkSpeedInc"].get<int>() - oldItemIt->at("walkSpeedInc").get<int>();
+            // c["dashAccelerationInc"] = c["dashAccelerationInc"].get<int>() -
+            //                           oldItemIt->at("dashAccelerationInc").get<int>();
 
-            // 新装备加成
-            c["healthPointInc"] =
-                c["healthPointInc"].get<int>() + newItemIt->at("healthPointInc").get<int>();
-            c["manaInc"] = c["manaInc"].get<int>() + newItemIt->at("manaInc").get<int>();
-            c["walkSpeedInc"] =
-                c["walkSpeedInc"].get<int>() + newItemIt->at("walkSpeedInc").get<int>();
-            c["dashAccelerationInc"] = c["dashAccelerationInc"].get<int>() -
-                                       newItemIt->at("dashAccelerationInc").get<int>();
+            //// 新装备加成
+            // c["healthPointInc"] =
+            //    c["healthPointInc"].get<int>() + newItemIt->at("healthPointInc").get<int>();
+            // c["manaInc"] = c["manaInc"].get<int>() + newItemIt->at("manaInc").get<int>();
+            // c["walkSpeedInc"] =
+            //    c["walkSpeedInc"].get<int>() + newItemIt->at("walkSpeedInc").get<int>();
+            // c["dashAccelerationInc"] = c["dashAccelerationInc"].get<int>() -
+            //                           newItemIt->at("dashAccelerationInc").get<int>();
             break;
         }
     }
@@ -1390,14 +1447,7 @@ GameData::buyItem(const string& itemTag)
 {
     json& availItemListDom = cachedSave["availableItemList"];
 
-    /* 注意：GameData.h 文件中注释说 `符卡和道具本身并没有数量的概念，
-     *  全部独一无二，因此数量是没有意义的属性'，
-     *  所以，此处也假定游戏逻辑不会将已经拥有的道具再购买一次
-     *
-     * 若修正 GameData.h 文件中注释所说的那个 `与设定不符的地方'，
-     *  不要忘记修改此处并删除此注释
-     */
-    json newItemRecord = { { "tag", itemTag }, { "amount", 1 } };
+    json newItemRecord = { { "tag", itemTag } };
     availItemListDom.push_back(newItemRecord);
 }
 
@@ -1406,7 +1456,7 @@ GameData::buySpellCard(const string& cardTag)
 {
     json& availSpellCardListDom = cachedSave["availableSpellCardList"];
 
-    json newCardRecord = { { "tag", cardTag }, { "amount", 1 } };
+    json newCardRecord = { { "tag", cardTag } };
     availSpellCardListDom.push_back(newCardRecord);
 }
 
@@ -1549,9 +1599,7 @@ testSelf()
         cout << "  itemSlotNum: " << c.itemSlotNum << endl;
         cout << "  spellCardSlotNum: " << c.spellCardSlotNum << endl;
         cout << "  healthPointBase: " << c.healthPointBase << endl;
-        cout << "  healthPointInc: " << c.healthPointInc << endl;
         cout << "  manaBase: " << c.manaBase << endl;
-        cout << "  manaInc: " << c.manaInc << endl;
         cout << "  ..." << endl;
     }
 
@@ -1576,11 +1624,6 @@ testSelf()
         cout << "  healthPointCost: " << i.healthPointCost << endl;
         cout << "  manaCost: " << i.manaCost << endl;
         cout << "  coolDown: " << i.cooldown << endl;
-        cout << "  healthPointInc: " << i.healthPointInc << endl;
-        cout << "  manaInc: " << i.manaInc << endl;
-        cout << "  walkSpeedInc: " << i.walkSpeedInc << endl;
-        cout << "  walkAccelerationInc: " << i.walkAccelerationInc << endl;
-        cout << "  dashAccelerationInc: " << i.dashAccelerationInc << endl;
         cout << "  price: " << i.price << endl;
     }
 
@@ -1647,7 +1690,7 @@ testSelf()
 
     log("==================== GameData Test End ====================");
 
-	GameData::getInstance()->newGame();
+    GameData::getInstance()->newGame();
 }
 
 static void

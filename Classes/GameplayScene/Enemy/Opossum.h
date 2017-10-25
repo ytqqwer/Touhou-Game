@@ -11,7 +11,7 @@
 class Opossum : public Enemy
 {
 public:
-    virtual bool init(std::string tag);
+    virtual bool init(const std::string& tag);
 
 public:
     void horizontallyAccelerate(float dt);

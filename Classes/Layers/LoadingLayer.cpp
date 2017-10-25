@@ -11,7 +11,7 @@
 using namespace std;
 
 LoadingLayer*
-LoadingLayer::create(std::string map)
+LoadingLayer::create(const std::string& map)
 {
     LoadingLayer* pRet = new (std::nothrow) LoadingLayer(map);
     if (pRet && pRet->init()) {
@@ -24,7 +24,7 @@ LoadingLayer::create(std::string map)
     }
 }
 
-LoadingLayer::LoadingLayer(std::string map)
+LoadingLayer::LoadingLayer(const std::string& map)
 {
     _map = map;
     progress = 0;

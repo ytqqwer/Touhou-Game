@@ -32,18 +32,18 @@ private:
     Menu* LocationList;
     Sprite* backGround;
     vector<Location> locations;
-};
 
-class SelectLocationMenuItem : public MenuItemSprite
-{
-public:
-    static SelectLocationMenuItem* create(const Location& i);
-    SelectLocationMenuItem(const Location& i);
-    virtual bool init();
-    void callBack();
+    class SelectLocationMenuItem : public MenuItemSprite
+    {
+    public:
+        static SelectLocationMenuItem* create(const Location& i);
+        SelectLocationMenuItem(const Location& i);
+        virtual bool init();
+        void callBack();
 
-private:
-    Location location;
+    private:
+        Location location;
+    };
 };
 
 #endif

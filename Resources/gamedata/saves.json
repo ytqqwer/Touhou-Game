@@ -10,11 +10,6 @@
                   "tag" : "Reimu",
                   "itemSlotNum" : 2,
                   "spellCardSlotNum" : 3,
-                  "healthPointInc" : 3,
-                  "manaInc" : 3,
-                  "walkSpeedInc" : 3,
-                  "walkAccelerationInc" : 3,
-                  "dashAccelerationInc" : 3,
                   "equipedItemList" : [ "I1", "I3" ],
                   "equipedSpellCardList" : [ "C1", "C3", "C5" ],
                   "preferedAttackType" : "FOCUS",
@@ -24,29 +19,10 @@
                   "tag" : "Marisa",
                   "itemSlotNum" : 1,
                   "spellCardSlotNum" : 2,
-                  "healthPointInc" : 4,
-                  "manaInc" : 4,
-                  "walkSpeedInc" : 4,
-                  "walkAccelerationInc" : 4,
-                  "dashAccelerationInc" : 4,
                   "equipedItemList" : ["I2"],
                   "equipedSpellCardList" : [ "C2" ],
                   "preferedAttackType" : "SPLIT",
                   "selectedAttackType" : [ "marisa focus attack 2", "marisa split attack 2" ]
-                },
-                {
-                  "tag" : "Alice",
-                  "itemSlotNum" : 1,
-                  "spellCardSlotNum" : 1,
-                  "healthPointInc" : 3,
-                  "manaInc" : 3,
-                  "walkSpeedInc" : 3,
-                  "walkAccelerationInc" : 3,
-                  "dashAccelerationInc" : 3,
-                  "equipedItemList" : ["I4"],
-                  "equipedSpellCardList" : [ "C3" ],
-                  "preferedAttackType" : "SPLIT",
-                  "selectedAttackType" : [ "alice focus attack 1", "alice split attack 1" ]
                 }
             ],
             "onStageCharacterList" : [ "Marisa", "Reimu" ],
@@ -60,11 +36,6 @@
                     "tag": "Forest of Magic",
                     "passedRound": 0,
                     "conversationIndicators": []
-                },
-                {
-                    "tag": "Misty Lake",
-                    "passedRound": 0,
-                    "conversationIndicators": ["C2","C3"]
                 },
                 {
                     "tag": "Bamboo Forest of the Lost",

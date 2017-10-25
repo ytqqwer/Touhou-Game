@@ -371,7 +371,7 @@ RoundSelectScene::setRoundInformation(Round round)
 }
 
 void
-RoundSelectScene::setSpellCard(std::string characterTag, Vector<Sprite*>& sprites, float pos)
+RoundSelectScene::setSpellCard(const std::string& characterTag, Vector<Sprite*>& sprites, float pos)
 {
     for (auto i : sprites) {
         i->removeFromParentAndCleanup(true);
@@ -388,7 +388,7 @@ RoundSelectScene::setSpellCard(std::string characterTag, Vector<Sprite*>& sprite
 }
 
 void
-RoundSelectScene::setItem(std::string characterTag, Vector<Sprite*>& sprites, float pos)
+RoundSelectScene::setItem(const std::string& characterTag, Vector<Sprite*>& sprites, float pos)
 {
     for (auto i : sprites) {
         i->removeFromParentAndCleanup(true);

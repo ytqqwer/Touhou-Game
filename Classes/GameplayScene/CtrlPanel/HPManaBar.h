@@ -10,27 +10,27 @@
 class HpManaBar : public cocos2d::Sprite
 {
 public:
-	static HpManaBar* create(const std::string tag,const int maxHpValue,const int maxManaValue);
+    static HpManaBar* create(const std::string& tag, const int maxHpValue, const int maxManaValue);
 
     virtual bool init() override;
-	
-private:
-    HpManaBar(const std::string tag, const int maxHpValue, const int maxManaValue);
 
 private:
-	std::string _tag;
+    HpManaBar(const std::string& tag, const int maxHpValue, const int maxManaValue);
 
-	int _maxHp;
+private:
+    std::string _tag;
+
+    int _maxHp;
     Sprite* _hpBar;
-	Sprite* _hpStencil;
-    Sprite* _hpBarBlack; 
-	cocos2d::ClippingNode* hpClippingNode;
+    Sprite* _hpStencil;
+    Sprite* _hpBarBlack;
+    cocos2d::ClippingNode* hpClippingNode;
 
-	int _maxMana;
+    int _maxMana;
     Sprite* _manaBar;
-	Sprite* _manaStencil;
-    Sprite* _manaBarBlack; 
-	cocos2d::ClippingNode* manaClippingNode;
+    Sprite* _manaStencil;
+    Sprite* _manaBarBlack;
+    cocos2d::ClippingNode* manaClippingNode;
 };
 
 #endif // LIFE_MANA_BAR_H

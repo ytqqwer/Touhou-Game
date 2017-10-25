@@ -59,6 +59,21 @@ MainMenuScene::init()
         }
     });
     addChild(JTButton);
+
+    auto UpdateButton = Button::create();
+    UpdateButton->setTitleText("更新");
+    UpdateButton->setTitleFontName("fonts/dengxian.ttf");
+    UpdateButton->setTitleColor(Color3B(194, 134, 11));
+    UpdateButton->setTitleFontSize(30);
+    UpdateButton->setAnchorPoint(Vec2(0, 0));
+    UpdateButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.08));
+    UpdateButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playClickButtonEffect();
+            GameData::getInstance()->updateSave("U1");
+        }
+    });
+    addChild(UpdateButton);
 #endif
 
     /*  3. init background */

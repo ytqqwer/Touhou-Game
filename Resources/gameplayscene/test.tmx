@@ -10,6 +10,11 @@
   <image source="props.png" trans="00788c" width="416" height="224"/>
  </tileset>
  <tileset firstgid="1526" source="mapchip001.tsx"/>
+ <objectgroup name="RoundInformation">
+  <properties>
+   <property name="onExitTriggerEvent" value="E3"/>
+  </properties>
+ </objectgroup>
  <objectgroup name="area">
   <object id="132" x="0" y="800" width="1728" height="1120">
    <properties>

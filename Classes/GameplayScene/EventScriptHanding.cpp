@@ -7,6 +7,8 @@
 #include "GameplayScene/Player/Player.h"
 #include "Layers/ConversationLayer.h"
 
+#include "NonGameplayScenes/HomeScene.h"
+
 EventScriptHanding::EventScriptHanding(Node* node)
 {
     Director::getInstance()->getEventDispatcher()->addCustomEventListener(
@@ -41,7 +43,6 @@ EventScriptHanding::nextEvent()
         node->mapLayer->onExit();
         node->addChild(layer, 1000);
         _curEventIndex++;
-        return;
     } else if (eventList[_curEventIndex].eventType == "action") {
         float totalTime = 0;
         while (_curEventIndex < eventList.size()) {
@@ -62,8 +63,17 @@ EventScriptHanding::nextEvent()
         Sequence* sequence = Sequence::create(DelayTime::create(totalTime), done, NULL);
         auto node = (GameplayScene*)owner;
         node->runAction(sequence);
-        return;
+    } else if (eventList[_curEventIndex].eventType == "update") {
+        GameData::getInstance()->updateSave(eventList[_curEventIndex].updateTag);
+        _curEventIndex++;
+        nextEvent();
+    } else if (eventList[_curEventIndex].eventType == "end") {
+        Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+        Director::getInstance()->popToRootScene();
+        Director::getInstance()->replaceScene(HomeScene::create());
     }
+
+    return;
 }
 
 void

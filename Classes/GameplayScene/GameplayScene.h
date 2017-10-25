@@ -19,7 +19,7 @@ class GameplayScene : public cocos2d::Scene
 public:
     friend class EventScriptHanding;
 
-    static GameplayScene* create(std::string);
+    static GameplayScene* create(const std::string&);
     virtual bool init() override;
 
     //重载场景生命周期中的几个函数
@@ -52,6 +52,9 @@ public:
     bool contactBegin(const PhysicsContact& contact);
     bool contactSeparate(const PhysicsContact& contact);
 
+    //
+    void endGame();
+
 public:
     void onEventLeftKeyPressed(EventCustom*);
     void onEventRightKeyPressed(EventCustom*);
@@ -66,7 +69,7 @@ private:
     // 在地图中生成静态刚体
     bool createPhysical(float scale);
 
-    GameplayScene(std::string);
+    GameplayScene(const std::string&);
     //析构函数，释放事件脚本处理器内存等
     ~GameplayScene();
 

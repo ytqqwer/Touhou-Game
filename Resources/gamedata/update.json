@@ -1,0 +1,44 @@
+[
+    {
+        "updateTag": "U1",
+        "newCharacters": [
+            {
+                "tag": "Alice",
+                "itemSlotNum": 1,
+                "spellCardSlotNum": 1,
+                "equipedItemList": [],
+                "equipedSpellCardList": [],
+                "preferedAttackType": "SPLIT",
+                "selectedAttackType": [
+                    "alice focus attack 1",
+                    "alice split attack 1"
+                ]
+            }
+        ],
+        "unlockLocations": [
+            {
+                "tag": "Hakurei Jinja",
+                "conversationIndicators": ["C4"]
+            },
+            {
+                "tag": "Forest of Magic",
+                "conversationIndicators": ["C3"]
+            },
+            {
+                "tag": "Misty Lake",
+                "conversationIndicators": ["C2","C3"]
+            }
+        ],
+        "getItems": [
+            {"tag": "I10"},{"tag": "I13"}
+        ],
+        "getSpellCards": [
+            { "tag": "C6"},{"tag": "C7"}
+        ],
+        "money": 99000
+    },
+
+    {
+        "updateTag": "U2"
+    }
+]

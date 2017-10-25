@@ -49,6 +49,8 @@ public:
     void saveSave(int saveTag);
     void switchSave(int saveTag);
 
+    void updateSave(const std::string& updateTag);
+
     ////////////////////////////////////////////////////////////////////////////////
     // 背景音乐、特效音量大小 BGM / Effect
 

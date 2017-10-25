@@ -48,5 +48,25 @@
         "coolDown": 5,
         "price": 5,
         "inStore": "ArmsStore"
+    },
+    {
+        "tag": "C6",
+        "name": "spell card 6",
+        "icon": "gamedata/spell_cards/c5.png",
+        "description": "This is spell card6's description",
+        "manaCost": 6,
+        "coolDown": 6,
+        "price": 6,
+        "inStore": ""
+    },
+    {
+        "tag": "C7",
+        "name": "spell card 7",
+        "icon": "gamedata/spell_cards/c5.png",
+        "description": "This is spell card7's description",
+        "manaCost": 7,
+        "coolDown": 7,
+        "price": 7,
+        "inStore": "ArmsStore"
     }
 ]

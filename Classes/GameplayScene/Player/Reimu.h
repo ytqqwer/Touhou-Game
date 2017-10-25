@@ -10,9 +10,9 @@
 class Reimu : public Player
 {
 public:
-    virtual bool init(std::string tag);
+    virtual bool init(const std::string& tag);
 
-    static Reimu* create(std::string tag)
+    static Reimu* create(const std::string& tag)
     {
         Reimu* pRet = new (std::nothrow) Reimu();
         if (pRet && pRet->init(tag)) {
