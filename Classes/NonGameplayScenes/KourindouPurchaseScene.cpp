@@ -144,7 +144,7 @@ Size
 KourindouPurchaseScene::tableCellSizeForIndex(TableView* table, ssize_t idx)
 {
     if (currentType == Item::Type::OTHER)
-        return Size(750, 180);
+        return Size(750, 170);
     else
         return Size(750, 100);
 }
@@ -163,7 +163,7 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
     if (currentType == Item::Type::OTHER) {
         auto characters = gamedata->getAvailableCharacterList();
         if (characters.size() > 0) {
-            auto box = PlaceHolder::createRect(Size(720, 160), "", 16, Color3B(91, 155, 213));
+            auto box = PlaceHolder::createRect(Size(720, 150), "", 16, Color3B(91, 155, 213));
             box->setPosition(Vec2(0, 100));
             box->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
             cell->addChild(box);
@@ -176,16 +176,16 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
             auto portrait = Sprite::create();
             portrait->runAction(RepeatForever::create(Animate::create(standAnimation)));
             portrait->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            portrait->setPosition(Vec2(50, 90));
+            portrait->setPosition(Vec2(50, 85));
             cell->addChild(portrait);
 
             auto name = Label::createWithTTF(characters[idx].name, "fonts/dengxian.ttf", 20);
             name->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            name->setPosition(Vec2(180, 90));
+            name->setPosition(Vec2(180, 85));
             name->setColor(Color3B::BLACK);
             cell->addChild(name);
 
-            //栏位
+            //解锁栏位
         }
     } else if (currentType == Item::Type::NORMAL) {
         vector<Item> currentItems;
@@ -195,6 +195,8 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
             currentItems = normalItems;
 
         if (currentItems.size() > 0) {
+            cell->setName(currentItems[idx].tag);
+
             auto box = PlaceHolder::createRect(Size(720, 90), "", 16, Color3B(91, 155, 213));
             box->setPosition(Vec2(0, 50));
             box->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -256,5 +258,13 @@ KourindouPurchaseScene::numberOfCellsInTableView(TableView* table)
 void
 KourindouPurchaseScene::tableCellTouched(TableView* table, TableViewCell* cell)
 {
-    // TODO
+    if (currentType == Item::Type::NORMAL) {
+        string tag = cell->getName();
+        gamedata->buyItem(tag);
+    } else if (currentType == Item::Type::STRENGTHEN) {
+        string tag = cell->getName();
+        gamedata->buyItem(tag);
+    } else if (currentType == Item::Type::OTHER) {
+        //解锁栏位
+    }
 }

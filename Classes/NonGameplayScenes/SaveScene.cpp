@@ -4,11 +4,12 @@
 
 #include "NonGameplayScenes/SaveScene.h"
 #include "NonGameplayScenes/MainMenuScene.h"
-#include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 // #include "resources.h.dir/save.h"
 
 #include "AudioController.h"
+#include "GameData/GameData.h"
+#include "NonGameplayScenes/HomeScene.h"
 
 #include "ui/CocosGUI.h"
 using namespace ui;
@@ -27,18 +28,9 @@ SaveScene::SaveScene(bool isSaveAction)
 Scene*
 SaveScene::create(bool isSaveAction)
 {
-    /*  1 if found cache */
-
-    auto cached = NonGameplayScenesCache::getInstance()->getScene(TAG);
-    if (cached)
-        return cached;
-
-    /*  2 if not found cache */
-
     auto pRet = new (std::nothrow) SaveScene(isSaveAction);
     if (pRet && pRet->init()) {
         pRet->autorelease();
-        NonGameplayScenesCache::getInstance()->addScene(TAG, pRet);
         return pRet;
     } else {
         delete pRet;
@@ -66,12 +58,6 @@ SaveScene::init()
     this->addChild(sceneTag);
 #endif
 
-    /*  3. PlaceHolder */
-
-    auto p = PlaceHolder::createCircle(100, "SaveScene");
-    p->setPosition(_visibleSize / 2);
-    this->addChild(p);
-
     auto BackButton = Button::create();
     BackButton->setTitleText("返回");
     BackButton->setTitleFontName("fonts/dengxian.ttf");
@@ -88,4 +74,83 @@ SaveScene::init()
     addChild(BackButton);
 
     return true;
+}
+
+void
+SaveScene::onEnter()
+{
+    Scene::onEnter();
+
+    if (_isSaveAction) {
+        auto saveList = GameData::getInstance()->getSaveList();
+        for (int index = 1; index <= 4; index++) {
+            auto button = Button::create();
+            button->setTitleFontName("fonts/dengxian.ttf");
+            button->setTitleColor(Color3B(194, 134, 11));
+            button->setTitleFontSize(40);
+            button->setAnchorPoint(Vec2(0, 0));
+            button->setPosition(
+                Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.99 - index * 0.2)));
+            button->setTag(998);
+            this->addChild(button);
+
+            button->setTitleText("None");
+            for (auto& v : saveList) {
+                if (v.tag == index) {
+                    button->setTitleText(v.name + "   " + v.locationTag + "   " + v.time);
+                }
+            }
+            button->addTouchEventListener(
+                [index, button](Ref* pSender, Widget::TouchEventType type) {
+                    if (type == Widget::TouchEventType::ENDED) {
+                        AudioController::getInstance()->playClickButtonEffect();
+
+                        GameData::getInstance()->saveSave(index);
+
+                        button->setTitleText("");
+                    }
+                });
+        }
+
+    } else {
+        auto saveList = GameData::getInstance()->getSaveList();
+        for (int index = 1; index <= 4; index++) {
+            auto button = Button::create();
+            button->setTitleFontName("fonts/dengxian.ttf");
+            button->setTitleColor(Color3B(194, 134, 11));
+            button->setTitleFontSize(40);
+            button->setAnchorPoint(Vec2(0, 0));
+            button->setPosition(
+                Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.99 - index * 0.2)));
+            button->setTag(998);
+            this->addChild(button);
+
+            button->setTitleText("None");
+            for (auto& v : saveList) {
+                if (v.tag == index) {
+                    button->setTitleText(v.name + "   " + v.locationTag + "   " + v.time);
+                    button->addTouchEventListener(
+                        [index](Ref* pSender, Widget::TouchEventType type) {
+                            if (type == Widget::TouchEventType::ENDED) {
+                                AudioController::getInstance()->playClickButtonEffect();
+                                GameData::getInstance()->switchSave(index);
+                                AudioController::getInstance()->stopMusic();
+                                TransitionScene* transition =
+                                    TransitionFade::create(1.0f, HomeScene::create());
+                                Director::getInstance()->replaceScene(transition);
+                            }
+                        });
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void
+SaveScene::onExit()
+{
+    Scene::onExit();
+
+    this->removeChildByTag(998);
 }

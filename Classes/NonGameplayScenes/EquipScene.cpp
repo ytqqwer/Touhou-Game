@@ -143,8 +143,8 @@ EquipScene::onEnter()
         auto button = EquipScene::SelectCharacterButton::create(characterList[i], this);
         button->setPosition(Vec2(_visibleSize.width * 0.17, _visibleSize.height * dis));
         dis -= 0.13;
-        addChild(button);
-
+        this->addChild(button);
+        SCButton.pushBack(button);
         if (i == 0)
             loadCharacterProperty(characterList[0]);
     }
@@ -269,6 +269,10 @@ void
 EquipScene::onExit()
 {
     Scene::onExit();
+
+    for (auto& button : SCButton) {
+        button->removeFromParentAndCleanup(true);
+    }
 }
 
 Sprite*

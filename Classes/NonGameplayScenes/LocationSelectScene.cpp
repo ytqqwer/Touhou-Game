@@ -75,7 +75,6 @@ LocationSelectScene::init()
     koumakanLibrary->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
-            GameData::getInstance()->switchLocation("KoumakanLibrary");
             TransitionScene* transition =
                 TransitionFade::create(0.5f, KoumakanLibraryScene::create());
             Director::getInstance()->popToRootScene();
@@ -94,7 +93,6 @@ LocationSelectScene::init()
     Kourindou->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
-            GameData::getInstance()->switchLocation("Kourindou");
             TransitionScene* transition = TransitionFade::create(0.5f, KourindouScene::create());
             Director::getInstance()->popToRootScene();
             Director::getInstance()->replaceScene(transition);
@@ -112,7 +110,6 @@ LocationSelectScene::init()
     ArmsStore->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
-            GameData::getInstance()->switchLocation("ArmsStore");
             TransitionScene* transition = TransitionFade::create(0.5f, ArmsStoreScene::create());
             Director::getInstance()->popToRootScene();
             Director::getInstance()->replaceScene(transition);

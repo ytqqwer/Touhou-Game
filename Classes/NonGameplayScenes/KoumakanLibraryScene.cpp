@@ -48,7 +48,7 @@ KoumakanLibraryScene::init()
     this->addChild(sceneTag);
 #endif
 
-    auto location = GameData::getInstance()->getCurrentLocation();
+    auto location = GameData::getInstance()->getLocationByTag("KoumakanLibrary");
     /*背景*/
     auto bg_1 = Sprite::create(location.backgroundPicture);
     bg_1->setContentSize(_visibleSize);
@@ -198,10 +198,15 @@ KoumakanLibraryScene::onEnter()
 {
     Scene::onEnter();
 
-    auto location = GameData::getInstance()->getCurrentLocation();
+    //每次进入此场景都指定tag获取地点信息，因为此场景的locationTag总是不变的，也是为了解决一个BUG
+    //如果从LocationSelectScene选择3个特殊地点并进入，同时切换地点，存档中的当前地点被重设为特殊地点
+    //但是如果在特殊地点中退出游戏并保存，存档中的当前地点就成了特殊地点
+    //下次进入游戏时，默认载入HomeScene，并依照当前locationTag加载内容，使HomeScene载入了不属于HomeScene的内容
+    //故简化处理，不需要每次重新进入游戏时判断应该切换到哪些场景
+    auto location = GameData::getInstance()->getLocationByTag("KoumakanLibrary");
 
     /*背景音乐*/
-	AudioController::getInstance()->playMusic(location.backgroundMusic, true);
+    AudioController::getInstance()->playMusic(location.backgroundMusic, true);
 
     /*钱币*/
     char str[10];

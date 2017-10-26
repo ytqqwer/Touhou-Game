@@ -45,6 +45,30 @@ HomeScene::init()
         return false;
     }
 
+/*  2. debug info */
+
+#ifndef NDEBUG
+    auto UpdateButton = Button::create();
+    UpdateButton->setTitleText("新增数据");
+    UpdateButton->setTitleFontName("fonts/dengxian.ttf");
+    UpdateButton->setTitleColor(Color3B(194, 134, 11));
+    UpdateButton->setTitleFontSize(30);
+    UpdateButton->setAnchorPoint(Vec2(0, 0));
+    UpdateButton->setPosition(Vec2(_visibleSize.width * 0.50, _visibleSize.height * 0.50));
+    UpdateButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            auto tag = GameData::getInstance()->getCurrentSaveTag();
+            if (tag == 0) {
+                return;
+            }
+            AudioController::getInstance()->playClickButtonEffect();
+            GameData::getInstance()->updateSave("U1");
+        }
+    });
+    addChild(UpdateButton);
+
+#endif
+
     /* 返回按钮*/
     auto ret = Button::create("", "", "");
     ret->setTitleText("返回");

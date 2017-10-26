@@ -156,6 +156,8 @@ ArmsStorePurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
     if (currentType == Item::Type::NORMAL) {
         vector<Item> currentItems = normalItems;
         if (currentItems.size() > 0) {
+            cell->setName(currentItems[idx].tag);
+
             auto box = PlaceHolder::createRect(Size(720, 90), "", 16, Color3B(91, 155, 213));
             box->setPosition(Vec2(0, 50));
             box->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -201,6 +203,8 @@ ArmsStorePurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
     } else if (currentType == Item::Type::OTHER) {
         vector<SpellCard> currentCards = spellCards;
         if (currentCards.size() > 0) {
+            cell->setName(currentCards[idx].tag);
+
             auto box = PlaceHolder::createRect(Size(720, 90), "", 16, Color3B(91, 155, 213));
             box->setPosition(Vec2(0, 50));
             box->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -260,5 +264,12 @@ ArmsStorePurchaseScene::numberOfCellsInTableView(TableView* table)
 void
 ArmsStorePurchaseScene::tableCellTouched(TableView* table, TableViewCell* cell)
 {
-    // TODO
+    if (currentType == Item::Type::OTHER) {
+        string tag = cell->getName();
+        gamedata->buySpellCard(tag);
+
+    } else if (currentType == Item::Type::NORMAL) {
+        string tag = cell->getName();
+        gamedata->buyItem(tag);
+    }
 }

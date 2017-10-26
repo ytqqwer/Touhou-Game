@@ -52,7 +52,7 @@ ArmsStoreScene::init()
     this->addChild(sceneTag);
 #endif
 
-    auto location = GameData::getInstance()->getCurrentLocation();
+    auto location = GameData::getInstance()->getLocationByTag("ArmsStore");
     /*背景*/
     auto bg_1 = Sprite::create(location.backgroundPicture);
     bg_1->setContentSize(_visibleSize);
@@ -205,7 +205,7 @@ ArmsStoreScene::onEnter()
 {
     Scene::onEnter();
 
-    auto location = GameData::getInstance()->getCurrentLocation();
+    auto location = GameData::getInstance()->getLocationByTag("ArmsStore");
 
     /*背景音乐*/
     AudioController::getInstance()->playMusic(location.backgroundMusic, true);

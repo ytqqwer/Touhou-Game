@@ -32,23 +32,26 @@ public:
     static GameData* getInstance();
 
     ////////////////////////////////////////////////////////////////////////////////
-    // 存档读取、删除、切换 Save
+    // 存档读取、切换、覆盖 Save
+    // 不提供删除存档功能
 
     int getCurrentSaveTag();
     vector<Save> getSaveList();
 
     // 在 MainMenuScene 中由【新游戏】按钮使用。现有存档数已满时【新游戏】失败
     bool newGame();
+    // 在 MainMenuScene 中使用
     void continueGame();
 
     // 返回新存档的 tag
     // 存档数量有上限，若现有存档数已满，创建新存档的操作会失败，返回 -1
     int newSave();
 
-    void deleteSave(int saveTag);
+    //将当前存档缓存保存至指定栏位中，并写入文件
     void saveSave(int saveTag);
+    //切换存档，用指定存档替换当前的存档缓存
     void switchSave(int saveTag);
-
+    //更新当前的存档缓存
     void updateSave(const std::string& updateTag);
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -83,6 +86,9 @@ public:
     // 获取当前所处地点的详情
     // 在 HomeScene RoundSelectScene 中使用
     Location getCurrentLocation();
+
+    // 获取指定地点的详情
+    Location getLocationByTag(const string& locationTag);
 
     // 返回所有的地点
     // 在 LocationSelectScene 中使用

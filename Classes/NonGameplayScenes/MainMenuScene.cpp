@@ -60,20 +60,6 @@ MainMenuScene::init()
     });
     addChild(JTButton);
 
-    auto UpdateButton = Button::create();
-    UpdateButton->setTitleText("更新");
-    UpdateButton->setTitleFontName("fonts/dengxian.ttf");
-    UpdateButton->setTitleColor(Color3B(194, 134, 11));
-    UpdateButton->setTitleFontSize(30);
-    UpdateButton->setAnchorPoint(Vec2(0, 0));
-    UpdateButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.08));
-    UpdateButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
-        if (type == Widget::TouchEventType::ENDED) {
-            AudioController::getInstance()->playClickButtonEffect();
-            GameData::getInstance()->updateSave("U1");
-        }
-    });
-    addChild(UpdateButton);
 #endif
 
     /*  3. init background */
@@ -92,23 +78,42 @@ MainMenuScene::init()
     NGButton->setTitleColor(Color3B(194, 134, 11));
     NGButton->setTitleFontSize(50);
     NGButton->setAnchorPoint(Vec2(0, 0));
-    NGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.57));
+    NGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.71));
     NGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
+            auto canNew = GameData::getInstance()->newGame();
+            if (canNew) {
+                AudioController::getInstance()->stopMusic();
+                AudioController::getInstance()->playClickButtonEffect();
+                TransitionScene* transition = TransitionFade::create(1.0f, HomeScene::create());
+                Director::getInstance()->replaceScene(transition);
+            }
+        }
+    });
+    addChild(NGButton);
+
+    /*继续上次游戏*/
+    auto CButton = Button::create("", "", "");
+    CButton->setTitleText("继续游戏");
+    CButton->setTitleFontName("fonts/dengxian.ttf");
+    CButton->setTitleColor(Color3B(194, 134, 11));
+    CButton->setTitleFontSize(50);
+    CButton->setAnchorPoint(Vec2(0, 0));
+    CButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.57));
+    CButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            auto tag = GameData::getInstance()->getCurrentSaveTag();
+            if (tag == 0) {
+                return;
+            }
+            GameData::getInstance()->continueGame();
             AudioController::getInstance()->stopMusic();
             AudioController::getInstance()->playClickButtonEffect();
-            // auto canNew = GameData::getInstance()->newGame();
-            //有不能创建新存档的BUG，暂时注释掉
-            // if (canNew) {
-            //    Director::getInstance()->pushScene(HomeScene::create());
-            //}
-            // Director::getInstance()->replaceScene(HomeScene::create());
-
             TransitionScene* transition = TransitionFade::create(1.0f, HomeScene::create());
             Director::getInstance()->replaceScene(transition);
         }
     });
-    addChild(NGButton);
+    addChild(CButton);
 
     /*载入游戏*/
     auto LGButton = Button::create("", "", "");
@@ -121,7 +126,7 @@ MainMenuScene::init()
     LGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
-            TransitionScene* transition = TransitionFade::create(1.0f, SaveScene::create());
+            TransitionScene* transition = TransitionFade::create(1.0f, SaveScene::create(false));
             Director::getInstance()->pushScene(transition);
         }
     });

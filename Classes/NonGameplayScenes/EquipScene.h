@@ -24,6 +24,7 @@ public:
     virtual void onEnter();
     virtual void onExit();
 
+private:
     class SelectCharacterButton : public Button
     {
     public:
@@ -50,6 +51,8 @@ private:
     Size _visibleSize;
     GameData* gamedata;
     int tagSum;
+
+    Vector<SelectCharacterButton*> SCButton;
 };
 
 #endif // EQUIP_SCENE_H

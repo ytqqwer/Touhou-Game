@@ -57,7 +57,7 @@
         "manaCost": 6,
         "coolDown": 6,
         "price": 6,
-        "inStore": ""
+        "inStore": "ArmsStore"
     },
     {
         "tag": "C7",
@@ -67,6 +67,16 @@
         "manaCost": 7,
         "coolDown": 7,
         "price": 7,
+        "inStore": "ArmsStore"
+    },
+    {
+        "tag": "C8",
+        "name": "spell card 8",
+        "icon": "gamedata/spell_cards/c3.png",
+        "description": "This is spell card8's description",
+        "manaCost": 8,
+        "coolDown": 8,
+        "price": 8,
         "inStore": "ArmsStore"
     }
 ]

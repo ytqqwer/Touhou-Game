@@ -555,6 +555,7 @@ GameData::newGame()
     return (newSave() >= 0) ? true : false;
 }
 
+//继续游戏？
 void
 GameData::continueGame()
 {
@@ -568,50 +569,38 @@ GameData::newSave()
     /*  1. 判断存档个数是否已满 */
 
     int saveCnt = savesDom["saveList"].size();
-    if (saveCnt == 4) {
+    if (saveCnt == 5) { //存档模板+四个存档
         return -1;
     }
 
-    /*  2. 新建存档，新存档的编号是最后一个存档的编号 + 1 */
+    /*  2. 新建存档，新存档的编号是按序排列的 */
 
-    int newSaveTag = savesDom["saveList"].back()["tag"].get<int>() + 1;
-    savesDom["saveList"].push_back(savesDom["saveList"][0]);
-
-    auto& newSave = savesDom["saveList"].back();
-    newSave["tag"] = newSaveTag;
-    newSave["name"] = string("save ") + to_string(newSaveTag);
-    newSave["time"] = getCurrentTime();
-
-    switchSave(newSaveTag);
-    syncSaveChangesToFile();
-
-    return newSaveTag;
-}
-
-void
-GameData::deleteSave(int saveTag)
-{
-    // TODO 玩家要是删除自己正在玩的存档怎么办
-
-    /* 1. DOM 操作 */
-
-    bool found = false;
-    json::const_iterator it;
-
-    for (it = savesDom["saveList"].begin(); it != savesDom["saveList"].end(); ++it) {
-        if (it->at("tag") == saveTag) {
-            found = true;
+    //找到第一个符合升序排列的下标，因为存档可以保存至任意位置
+    //例如存档中已有tag分别为0,1,4的存档，那么就需要创建一个tag为2的存档并插入正确的位置
+    //有没有更好的算法？
+    int index = 1;
+    auto saveList = getSaveList();
+    auto it = savesDom["saveList"].begin();
+    it++;
+    for (auto& v : saveList) {
+        if (index >= v.tag) {
+            index++;
+            it++;
+        } else if (index < v.tag) {
             break;
         }
     }
 
-    if (found) {
-        savesDom["saveList"].erase(it); // 危险，待测试
-    }
+    savesDom["saveList"].insert(it, savesDom["saveList"][0]);
+    auto& newSave = savesDom["saveList"].at(index);
+    newSave["tag"] = index;
+    newSave["name"] = string("save ") + to_string(index);
+    newSave["time"] = getCurrentTime();
 
-    /* 2. 同步至文件 */
-
+    switchSave(index);
     syncSaveChangesToFile();
+
+    return index;
 }
 
 void
@@ -619,8 +608,41 @@ GameData::saveSave(int saveTag)
 {
     /* 1. 更改 DOM 树 */
 
-    cachedSave["time"] = getCurrentTime();
-    savesDom["saveList"][saveTag] = cachedSave;
+    bool isInsert = false;
+    int index = 1;
+    auto saveList = getSaveList();
+    auto it = savesDom["saveList"].begin();
+    it++;
+    for (auto& v : saveList) {
+        if (saveTag == v.tag) {
+            isInsert = false;
+            break;
+        } else if (saveTag < v.tag) {
+            isInsert = true;
+            break;
+        } else if (saveTag > v.tag) {
+            index++;
+            it++;
+        }
+    }
+
+    if (isInsert) {
+        savesDom["saveList"].insert(it, savesDom["saveList"][0]);
+        auto& newSave = savesDom["saveList"].at(index);
+        newSave = cachedSave;
+        newSave["tag"] = saveTag;
+        newSave["name"] = string("save ") + to_string(saveTag);
+        newSave["time"] = getCurrentTime();
+    } else {
+        savesDom["saveList"][index] = cachedSave;
+        auto& save = savesDom["saveList"].at(index);
+        save["tag"] = saveTag;
+        save["name"] = string("save ") + to_string(saveTag);
+        save["time"] = getCurrentTime();
+    }
+
+    //一般而言，玩家存档后，期望以后能够默认进入新存档
+    savesDom["currentSaveTag"] = saveTag;
 
     /* 2. 写入文件 */
 
@@ -633,7 +655,17 @@ GameData::switchSave(int saveTag)
     // 不保存对当前存档的更改，用户不明确表示保存就不保存
 
     savesDom["currentSaveTag"] = saveTag;
-    cachedSave = savesDom["saveList"][saveTag];
+
+    auto saveList = getSaveList();
+    int index = 1;
+    for (auto& v : saveList) {
+        if (v.tag != saveTag) {
+            index++;
+        } else {
+            break;
+        }
+    }
+    cachedSave = savesDom["saveList"][index];
 
     // TODO
     // TEST
@@ -806,6 +838,19 @@ GameData::getCurrentLocation()
     }
 
     // *it -> Location
+    return *it;
+}
+
+Location
+GameData::getLocationByTag(const string& locationTag)
+{
+    json::const_iterator it;
+    for (it = locationListDom.begin(); it != locationListDom.end(); ++it) {
+        if (it->at("tag") == locationTag) {
+            break;
+        }
+    }
+
     return *it;
 }
 
@@ -1445,19 +1490,35 @@ GameData::getAvailableSpellCards()
 void
 GameData::buyItem(const string& itemTag)
 {
-    json& availItemListDom = cachedSave["availableItemList"];
-
-    json newItemRecord = { { "tag", itemTag } };
-    availItemListDom.push_back(newItemRecord);
+    auto items = getAvailableItems();
+    bool found = false;
+    for (auto& item : items) {
+        if (item.tag == itemTag) {
+            found = true;
+        }
+    }
+    if (!found) {
+        json& availItemListDom = cachedSave["availableItemList"];
+        json newItemRecord = { { "tag", itemTag } };
+        availItemListDom.push_back(newItemRecord);
+    }
 }
 
 void
 GameData::buySpellCard(const string& cardTag)
 {
-    json& availSpellCardListDom = cachedSave["availableSpellCardList"];
-
-    json newCardRecord = { { "tag", cardTag } };
-    availSpellCardListDom.push_back(newCardRecord);
+    auto spellCards = getAvailableSpellCards();
+    bool found = false;
+    for (auto& card : spellCards) {
+        if (card.tag == cardTag) {
+            found = true;
+        }
+    }
+    if (!found) {
+        json& availSpellCardListDom = cachedSave["availableSpellCardList"];
+        json newCardRecord = { { "tag", cardTag } };
+        availSpellCardListDom.push_back(newCardRecord);
+    }
 }
 
 void
@@ -1689,8 +1750,6 @@ testSelf()
     cout << "  TMXMap: " << get_round_to_play.TMXMap << endl;
 
     log("==================== GameData Test End ====================");
-
-    GameData::getInstance()->newGame();
 }
 
 static void
