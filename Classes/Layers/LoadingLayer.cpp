@@ -45,12 +45,11 @@ LoadingLayer::init()
     /* 2. 触摸截断 */
     this->setLocalZOrder(8888);
     this->setTouchEnabled(true);
-    EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
     auto listener = EventListenerTouchOneByOne::create();
     listener->setSwallowTouches(true);
     listener->onTouchBegan = [](Touch* t, Event* e) { return true; };
-    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener,
-                                                                                          this);
+    EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
+    eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     /* 3.创建背景 */
     auto background = Sprite::create("settings_layer/background.png");

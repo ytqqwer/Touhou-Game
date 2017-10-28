@@ -11,7 +11,7 @@
         "healthPointCost": 1,
         "manaCost": 1,
         "coolDown": 1,
-        "price": 1,
+        "price": 111,
         "inStore": "Kourindou"
     },
     {
@@ -26,7 +26,7 @@
         "healthPointCost": 2,
         "manaCost": 2,
         "coolDown": 2,
-        "price": 2,
+        "price": 222,
         "inStore": "ArmsStore"
     },
     {
@@ -41,7 +41,7 @@
         "healthPointCost": 3,
         "manaCost": 3,
         "coolDown": 3,
-        "price": 3,
+        "price": 333,
         "inStore": ""
     },
     {
@@ -56,7 +56,7 @@
         "healthPointCost": 4,
         "manaCost": 4,
         "coolDown": 4,
-        "price": 4,
+        "price": 444,
         "inStore": ""
     },
     {
@@ -71,7 +71,7 @@
         "healthPointCost": 5,
         "manaCost": 5,
         "coolDown": 5,
-        "price": 5,
+        "price": 555,
         "inStore": "Kourindou"
     },
     {
@@ -86,7 +86,7 @@
         "healthPointCost": 6,
         "manaCost": 6,
         "coolDown": 6,
-        "price": 6,
+        "price": 66,
         "inStore": "ArmsStore"
     },
     {
@@ -101,7 +101,7 @@
         "healthPointCost": 7,
         "manaCost": 7,
         "coolDown": 7,
-        "price": 7,
+        "price": 777,
         "inStore": "Kourindou"
     },
     {
@@ -116,7 +116,7 @@
         "healthPointCost": 8,
         "manaCost": 8,
         "coolDown": 8,
-        "price": 8,
+        "price": 888,
         "inStore": "ArmsStore"
     },
     {
@@ -131,7 +131,7 @@
         "healthPointCost": 9,
         "manaCost": 9,
         "coolDown": 9,
-        "price": 9,
+        "price": 999,
         "inStore": "Kourindou"
     },
     {
@@ -146,7 +146,7 @@
         "healthPointCost": 10,
         "manaCost": 10,
         "coolDown": 10,
-        "price": 10,
+        "price": 1000,
         "inStore": "ArmsStore"
     },
     {
@@ -161,7 +161,7 @@
         "healthPointCost": 11,
         "manaCost": 11,
         "coolDown": 11,
-        "price": 11,
+        "price": 1111,
         "inStore": "Kourindou"
     },
     {
@@ -176,7 +176,7 @@
         "healthPointCost": 12,
         "manaCost": 12,
         "coolDown": 12,
-        "price": 12,
+        "price": 1212,
         "inStore": "ArmsStore"
     },
     {
@@ -191,7 +191,7 @@
         "healthPointCost": 13,
         "manaCost": 13,
         "coolDown": 13,
-        "price": 13,
+        "price": 1313,
         "inStore": "Kourindou"
     },
     {

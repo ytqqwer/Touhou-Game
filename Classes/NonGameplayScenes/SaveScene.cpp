@@ -3,13 +3,14 @@
 #endif
 
 #include "NonGameplayScenes/SaveScene.h"
+#include "NonGameplayScenes/HomeScene.h"
 #include "NonGameplayScenes/MainMenuScene.h"
 #include "PlaceHolder.h"
 // #include "resources.h.dir/save.h"
 
 #include "AudioController.h"
 #include "GameData/GameData.h"
-#include "NonGameplayScenes/HomeScene.h"
+#include "Layers/ConfirmButton.h"
 
 #include "ui/CocosGUI.h"
 using namespace ui;
@@ -81,16 +82,16 @@ SaveScene::onEnter()
 {
     Scene::onEnter();
 
-    if (_isSaveAction) {
+    if (_isSaveAction) { //保存
         auto saveList = GameData::getInstance()->getSaveList();
-        for (int index = 1; index <= 4; index++) {
+        for (int index = 1; index <= 9; index++) {
             auto button = Button::create();
             button->setTitleFontName("fonts/dengxian.ttf");
             button->setTitleColor(Color3B(194, 134, 11));
-            button->setTitleFontSize(40);
+            button->setTitleFontSize(25);
             button->setAnchorPoint(Vec2(0, 0));
             button->setPosition(
-                Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.99 - index * 0.2)));
+                Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.99 - index * 0.1)));
             button->setTag(998);
             this->addChild(button);
 
@@ -98,30 +99,41 @@ SaveScene::onEnter()
             for (auto& v : saveList) {
                 if (v.tag == index) {
                     button->setTitleText(v.name + "   " + v.locationTag + "   " + v.time);
+                    break;
                 }
             }
+
+            auto gamedata = GameData::getInstance();
+            std::function<void()> callBack = [index, button]() {
+                auto newList = GameData::getInstance()->getSaveList();
+                for (auto& v : newList) {
+                    if (v.tag == index) {
+                        button->setTitleText(v.name + "   " + v.locationTag + "   " + v.time);
+                        break;
+                    }
+                }
+            };
+            std::function<void()> func = std::bind(&GameData::saveSave, gamedata, index);
+
             button->addTouchEventListener(
-                [index, button](Ref* pSender, Widget::TouchEventType type) {
+                [this, func, callBack](Ref* pSender, Widget::TouchEventType type) {
                     if (type == Widget::TouchEventType::ENDED) {
                         AudioController::getInstance()->playClickButtonEffect();
-
-                        GameData::getInstance()->saveSave(index);
-
-                        button->setTitleText("");
+                        this->addChild(ConfirmButton::create(func, callBack));
                     }
                 });
         }
 
-    } else {
+    } else { //载入
         auto saveList = GameData::getInstance()->getSaveList();
-        for (int index = 1; index <= 4; index++) {
+        for (int index = 1; index <= 9; index++) {
             auto button = Button::create();
             button->setTitleFontName("fonts/dengxian.ttf");
             button->setTitleColor(Color3B(194, 134, 11));
-            button->setTitleFontSize(40);
+            button->setTitleFontSize(25);
             button->setAnchorPoint(Vec2(0, 0));
             button->setPosition(
-                Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.99 - index * 0.2)));
+                Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.99 - index * 0.1)));
             button->setTag(998);
             this->addChild(button);
 

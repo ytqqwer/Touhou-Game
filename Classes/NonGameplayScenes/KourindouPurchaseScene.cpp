@@ -7,6 +7,7 @@
 #include "PlaceHolder.h"
 
 #include "AudioController.h"
+#include "Layers/ConfirmButton.h"
 
 #include "ui/CocosGUI.h"
 using namespace ui;
@@ -107,7 +108,7 @@ KourindouPurchaseScene::init()
             itemTable->reloadData();
         }
     });
-    addChild(unlockColumn, 0, 7);
+    addChild(unlockColumn, 0);
 
     /*道具列表控件*/
     itemTable = TableView::create(this, Size(750, 500));
@@ -187,7 +188,7 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
 
             //解锁栏位
         }
-    } else if (currentType == Item::Type::NORMAL) {
+    } else if (currentType == Item::Type::NORMAL || currentType == Item::Type::STRENGTHEN) {
         vector<Item> currentItems;
         if (currentType == Item::Type::STRENGTHEN)
             currentItems = strengthenItems;
@@ -220,24 +221,25 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
             description->setColor(Color3B::BLACK);
             cell->addChild(description);
 
-            string status = "";
+            string temp = "";
             string money;
             stringstream ss;
             ss << currentItems[idx].price;
             ss >> money;
-            status = money + "钱币";
+            temp = money + "钱币";
             auto availableItems = gamedata->getAvailableItems();
             for (int i = 0; i < availableItems.size(); i++) {
                 if (currentItems[idx].tag == availableItems[i].tag) {
-                    status = "已购买";
+                    temp = "已购买";
                     break;
                 }
             }
-            auto price = Label::createWithTTF(status, "fonts/dengxian.ttf", 20);
-            price->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            price->setPosition(Vec2(600, 50));
-            price->setColor(Color3B::BLACK);
-            cell->addChild(price);
+            auto status = Label::createWithTTF(temp, "fonts/dengxian.ttf", 20);
+            status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            status->setPosition(Vec2(600, 50));
+            status->setColor(Color3B::BLACK);
+            status->setName("status");
+            cell->addChild(status);
         }
     }
 
@@ -258,12 +260,28 @@ KourindouPurchaseScene::numberOfCellsInTableView(TableView* table)
 void
 KourindouPurchaseScene::tableCellTouched(TableView* table, TableViewCell* cell)
 {
-    if (currentType == Item::Type::NORMAL) {
+    auto gamedata = GameData::getInstance();
+    if (currentType == Item::Type::NORMAL || currentType == Item::Type::STRENGTHEN) {
+        auto status = (Label*)cell->getChildByName("status");
+        if (status->getString() == "已购买") {
+            return;
+        }
+
         string tag = cell->getName();
-        gamedata->buyItem(tag);
-    } else if (currentType == Item::Type::STRENGTHEN) {
-        string tag = cell->getName();
-        gamedata->buyItem(tag);
+        auto item = gamedata->getItemByTag(tag);
+        auto money = gamedata->getMoneyNum();
+        if (item.price > money) {
+            status->setString("余额不足");
+            return;
+        }
+
+        std::function<void()> refreshCell = [cell]() {
+            auto status = (Label*)cell->getChildByName("status");
+            status->setString("已购买");
+        };
+        std::function<void()> func = std::bind(&GameData::buyItem, gamedata, tag);
+        this->addChild(ConfirmButton::create(func, refreshCell));
+
     } else if (currentType == Item::Type::OTHER) {
         //解锁栏位
     }

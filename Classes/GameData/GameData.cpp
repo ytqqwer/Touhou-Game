@@ -569,7 +569,7 @@ GameData::newSave()
     /*  1. 判断存档个数是否已满 */
 
     int saveCnt = savesDom["saveList"].size();
-    if (saveCnt == 5) { //存档模板+四个存档
+    if (saveCnt == 9) { //存档模板+8个存档
         return -1;
     }
 
@@ -1487,38 +1487,53 @@ GameData::getAvailableSpellCards()
     return listRet;
 }
 
+SpellCard
+GameData::getSpellCardByTag(const string& cardTag)
+{
+    SpellCard card;
+    for (auto const& iToPred : spellCardListDom) {
+        if (iToPred.at("tag") == cardTag) {
+            card = iToPred;
+        }
+    }
+    return card;
+}
+
+Item
+GameData::getItemByTag(const string& itemTag)
+{
+    Item item;
+    for (auto const& iToPred : itemListDom) {
+        if (iToPred.at("tag") == itemTag) {
+            item = iToPred;
+            break;
+        }
+    }
+    return item;
+}
+
 void
 GameData::buyItem(const string& itemTag)
 {
-    auto items = getAvailableItems();
-    bool found = false;
-    for (auto& item : items) {
-        if (item.tag == itemTag) {
-            found = true;
-        }
-    }
-    if (!found) {
-        json& availItemListDom = cachedSave["availableItemList"];
-        json newItemRecord = { { "tag", itemTag } };
-        availItemListDom.push_back(newItemRecord);
-    }
+    Item item = getItemByTag(itemTag);
+    int price = item.price;
+
+    json& availItemListDom = cachedSave["availableItemList"];
+    json newItemRecord = { { "tag", itemTag } };
+    availItemListDom.push_back(newItemRecord);
+    increaseMoney(-price);
 }
 
 void
 GameData::buySpellCard(const string& cardTag)
 {
-    auto spellCards = getAvailableSpellCards();
-    bool found = false;
-    for (auto& card : spellCards) {
-        if (card.tag == cardTag) {
-            found = true;
-        }
-    }
-    if (!found) {
-        json& availSpellCardListDom = cachedSave["availableSpellCardList"];
-        json newCardRecord = { { "tag", cardTag } };
-        availSpellCardListDom.push_back(newCardRecord);
-    }
+    SpellCard card = getSpellCardByTag(cardTag);
+    int price = card.price;
+
+    json& availSpellCardListDom = cachedSave["availableSpellCardList"];
+    json newCardRecord = { { "tag", cardTag } };
+    availSpellCardListDom.push_back(newCardRecord);
+    increaseMoney(-price);
 }
 
 void
@@ -1762,5 +1777,5 @@ inDevelop()
         g->continueGame();
     }
 
-    testSelf();
+    // testSelf();
 }

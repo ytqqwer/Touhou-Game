@@ -177,6 +177,9 @@ public:
 
     vector<SpellCard> getAvailableSpellCards();
 
+    SpellCard getSpellCardByTag(const string& cardTag);
+    Item getItemByTag(const string& itemTag);
+
     void buyItem(const string& itemTag);
     void buySpellCard(const string& cardTag);
 

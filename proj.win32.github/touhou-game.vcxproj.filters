@@ -139,6 +139,9 @@
     <ClCompile Include="..\Classes\Layers\LoadingLayer.cpp">
       <Filter>Classes\Layers</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Layers\ConfirmButton.cpp">
+      <Filter>Classes\Layers</Filter>
+    </ClCompile>
 
     <!-- Classes\GameplayScene -->
 
@@ -359,6 +362,9 @@
       <Filter>Classes\Layers</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Layers\LoadingLayer.h">
+      <Filter>Classes\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Layers\ConfirmButton.h">
       <Filter>Classes\Layers</Filter>
     </ClInclude>
 

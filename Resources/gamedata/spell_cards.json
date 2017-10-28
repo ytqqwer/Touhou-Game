@@ -76,7 +76,7 @@
         "description": "This is spell card8's description",
         "manaCost": 8,
         "coolDown": 8,
-        "price": 8,
+        "price": 888,
         "inStore": "ArmsStore"
     }
 ]

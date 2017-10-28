@@ -57,7 +57,7 @@ KnowledgeBaseScene::init()
     BackButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
-            Director::getInstance()->replaceScene(HomeScene::create());
+            Director::getInstance()->popScene();
         }
     });
     addChild(BackButton);

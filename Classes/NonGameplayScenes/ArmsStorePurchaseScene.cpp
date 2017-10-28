@@ -7,6 +7,7 @@
 #include "PlaceHolder.h"
 
 #include "AudioController.h"
+#include "Layers/ConfirmButton.h"
 
 #include "ui/CocosGUI.h"
 using namespace ui;
@@ -181,24 +182,26 @@ ArmsStorePurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
             description->setColor(Color3B::BLACK);
             cell->addChild(description);
 
-            string status = "";
+            string temp = "";
             string money;
             stringstream ss;
             ss << currentItems[idx].price;
             ss >> money;
-            status = money + "钱币";
+            temp = money + "钱币";
             auto availableItems = gamedata->getAvailableItems();
             for (int i = 0; i < availableItems.size(); i++) {
                 if (currentItems[idx].tag == availableItems[i].tag) {
-                    status = "已购买";
+                    temp = "已购买";
                     break;
                 }
             }
-            auto price = Label::createWithTTF(status, "fonts/dengxian.ttf", 20);
-            price->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            price->setPosition(Vec2(600, 50));
-            price->setColor(Color3B::BLACK);
-            cell->addChild(price);
+
+            auto status = Label::createWithTTF(temp, "fonts/dengxian.ttf", 20);
+            status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            status->setPosition(Vec2(600, 50));
+            status->setColor(Color3B::BLACK);
+            status->setName("status");
+            cell->addChild(status);
         }
     } else if (currentType == Item::Type::OTHER) {
         vector<SpellCard> currentCards = spellCards;
@@ -228,24 +231,25 @@ ArmsStorePurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
             description->setColor(Color3B::BLACK);
             cell->addChild(description);
 
-            string status = "";
+            string temp = "";
             string money;
             stringstream ss;
             ss << currentCards[idx].price;
             ss >> money;
-            status = money + "钱币";
+            temp = money + "钱币";
             auto availableCards = gamedata->getAvailableSpellCards();
             for (int i = 0; i < availableCards.size(); i++) {
                 if (currentCards[idx].tag == availableCards[i].tag) {
-                    status = "已购买";
+                    temp = "已购买";
                     break;
                 }
             }
-            auto price = Label::createWithTTF(status, "fonts/dengxian.ttf", 20);
-            price->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            price->setPosition(Vec2(600, 50));
-            price->setColor(Color3B::BLACK);
-            cell->addChild(price);
+            auto status = Label::createWithTTF(temp, "fonts/dengxian.ttf", 20);
+            status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            status->setPosition(Vec2(600, 50));
+            status->setColor(Color3B::BLACK);
+            status->setName("status");
+            cell->addChild(status);
         }
     }
 
@@ -264,12 +268,39 @@ ArmsStorePurchaseScene::numberOfCellsInTableView(TableView* table)
 void
 ArmsStorePurchaseScene::tableCellTouched(TableView* table, TableViewCell* cell)
 {
-    if (currentType == Item::Type::OTHER) {
-        string tag = cell->getName();
-        gamedata->buySpellCard(tag);
+    auto status = (Label*)cell->getChildByName("status");
+    if (status->getString() == "已购买") {
+        return;
+    }
+    auto gamedata = GameData::getInstance();
+    string tag = cell->getName();
+    auto money = gamedata->getMoneyNum();
 
-    } else if (currentType == Item::Type::NORMAL) {
-        string tag = cell->getName();
-        gamedata->buyItem(tag);
+    if (currentType == Item::Type::NORMAL) {
+        auto item = gamedata->getItemByTag(tag);
+        if (item.price > money) {
+            status->setString("余额不足");
+            return;
+        }
+
+        std::function<void()> refreshCell = [cell]() {
+            auto status = (Label*)cell->getChildByName("status");
+            status->setString("已购买");
+        };
+        std::function<void()> func = std::bind(&GameData::buyItem, gamedata, tag);
+        this->addChild(ConfirmButton::create(func, refreshCell));
+    } else if (currentType == Item::Type::OTHER) {
+        auto card = gamedata->getSpellCardByTag(tag);
+        if (card.price > money) {
+            status->setString("余额不足");
+            return;
+        }
+
+        std::function<void()> refreshCell = [cell]() {
+            auto status = (Label*)cell->getChildByName("status");
+            status->setString("已购买");
+        };
+        std::function<void()> func = std::bind(&GameData::buySpellCard, gamedata, tag);
+        this->addChild(ConfirmButton::create(func, refreshCell));
     }
 }

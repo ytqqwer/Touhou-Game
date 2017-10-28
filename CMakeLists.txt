@@ -162,6 +162,7 @@ set(GAME_SRC
   Classes/Layers/ConversationLayer.cpp
   Classes/Layers/LoadingLayer.cpp
   Classes/Layers/SettingsLayer.cpp
+  Classes/Layers/ConfirmButton.cpp
 
   # GameplayScene
   Classes/GameplayScene/GameplayScene.cpp
@@ -246,6 +247,7 @@ set(GAME_HEADERS
   Classes/Layers/ConversationLayer.h
   Classes/Layers/LoadingLayer.h
   Classes/Layers/SettingsLayer.h
+  Classes/Layers/ConfirmButton.h
 
   # GameplayScene
   Classes/GameplayScene/GameplayScene.h

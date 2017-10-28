@@ -177,6 +177,7 @@
     <ClCompile Include="..\Classes\Layers\ConversationLayer.cpp" />
     <ClCompile Include="..\Classes\Layers\SettingsLayer.cpp" />
     <ClCompile Include="..\Classes\Layers\LoadingLayer.cpp" />
+    <ClCompile Include="..\Classes\Layers\ConfirmButton.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\EventFilterManager.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="..\Classes\Layers\ConversationLayer.h" />
     <ClInclude Include="..\Classes\Layers\SettingsLayer.h" />
     <ClInclude Include="..\Classes\Layers\LoadingLayer.h" />
+    <ClInclude Include="..\Classes\Layers\ConfirmButton.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\common.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.h" />
