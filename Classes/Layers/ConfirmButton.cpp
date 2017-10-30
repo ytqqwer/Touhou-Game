@@ -88,7 +88,7 @@ ConfirmButton::init()
     cancelButton->setPosition(Vec2(layoutSize.width * 3.0 / 4.0, layoutSize.height / 2.0));
     cancelButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
-            AudioController::getInstance()->playClickButtonEffect();
+            AudioController::getInstance()->playReturnButtonEffect();
             this->removeFromParentAndCleanup(true);
         }
     });

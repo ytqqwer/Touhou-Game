@@ -376,7 +376,7 @@ RoundSelectScene::setSpellCard(const std::string& characterTag, Vector<Sprite*>&
     for (auto i : sprites) {
         i->removeFromParentAndCleanup(true);
     }
-    vector<SpellCard> cards = GameData::getInstance()->getCharacterSpellCardList(characterTag);
+    vector<SpellCard> cards = GameData::getInstance()->getCharacterEquipedSpellCards(characterTag);
     for (int i = 0; i < cards.size(); ++i) {
         auto cardIcon = Sprite::create(cards.at(i).icon);
         cardIcon->setPosition(
@@ -393,7 +393,7 @@ RoundSelectScene::setItem(const std::string& characterTag, Vector<Sprite*>& spri
     for (auto i : sprites) {
         i->removeFromParentAndCleanup(true);
     }
-    vector<Item> items = GameData::getInstance()->getCharacterItemList(characterTag);
+    vector<Item> items = GameData::getInstance()->getCharacterActiveItems(characterTag);
     for (int i = 0; i < items.size(); ++i) {
         auto itemIcon = Sprite::create(items.at(i).icon);
         itemIcon->setPosition(

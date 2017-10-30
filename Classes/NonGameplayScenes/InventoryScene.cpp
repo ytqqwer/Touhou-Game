@@ -183,6 +183,7 @@ InventoryScene::tableCellAtIndex(TableView* table, ssize_t idx)
         currentItems = specialItems;
 
     if (currentItems.size() > 0) {
+        cell->setName(currentItems[idx].tag);
 
         auto box = PlaceHolder::createRect(Size(720, 90), "", 16, Color3B(91, 155, 213));
         box->setPosition(Vec2(0, 50));
@@ -211,9 +212,9 @@ InventoryScene::tableCellAtIndex(TableView* table, ssize_t idx)
         string userName = "无";
         bool _canBreak = false;
         for (int k = 0; k < characters.size(); k++) {
-            auto equipedItems = gamedata->getCharacterItemList(characters[k].tag);
-            for (int j = 0; j < equipedItems.size(); j++) {
-                if (currentItems[idx].tag == equipedItems[j].tag) {
+            vector<Item> allItems = gamedata->getCharacterEquipedItems(characters[k].tag);
+            for (int j = 0; j < allItems.size(); j++) {
+                if (currentItems[idx].tag == allItems[j].tag) {
                     userName = characters[k].name;
                     _canBreak = true;
                     break;
@@ -223,11 +224,18 @@ InventoryScene::tableCellAtIndex(TableView* table, ssize_t idx)
                 break;
             }
         }
-        auto user = Label::createWithTTF("使用者: " + userName, "fonts/dengxian.ttf", 20);
-        user->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        user->setPosition(Vec2(600, 50));
-        user->setColor(Color3B::BLACK);
-        cell->addChild(user);
+        auto userLabel = Label::createWithTTF("使用者: ", "fonts/dengxian.ttf", 20);
+        userLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        userLabel->setPosition(Vec2(600, 60));
+        userLabel->setColor(Color3B::BLACK);
+        cell->addChild(userLabel);
+
+        auto status = Label::createWithTTF(userName, "fonts/dengxian.ttf", 20);
+        status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        status->setPosition(Vec2(600, 40));
+        status->setColor(Color3B::BLACK);
+        status->setName("status");
+        cell->addChild(status);
     }
     return cell;
 }
@@ -246,5 +254,106 @@ InventoryScene::numberOfCellsInTableView(TableView* table)
 void
 InventoryScene::tableCellTouched(TableView* table, TableViewCell* cell)
 {
-    // TODO
+    if (currentType == Item::Type::STRENGTHEN) {
+
+        std::function<void(std::string)> func = std::bind(&GameData::equipStrengthenItem, gamedata,
+                                                          cell->getName(), std::placeholders::_1);
+        std::function<void(std::string)> callBack = [cell](std::string characterTag) {
+            auto status = (Label*)cell->getChildByName("status");
+            auto character = GameData::getInstance()->getCharacterByTag(characterTag);
+            status->setString(character.name);
+        };
+        this->addChild(InventoryScene::characterMenu::create(func, callBack));
+    }
+}
+
+InventoryScene::characterMenu*
+InventoryScene::characterMenu::create(std::function<void(std::string)> func,
+                                      std::function<void(std::string)> callBack)
+{
+    characterMenu* pRet = new (std::nothrow) characterMenu();
+    if (pRet && pRet->init(func, callBack)) {
+        pRet->autorelease();
+        return pRet;
+    } else {
+        delete pRet;
+        pRet = nullptr;
+        return nullptr;
+    }
+}
+
+bool
+InventoryScene::characterMenu::init(std::function<void(std::string)> func,
+                                    std::function<void(std::string)> callBack)
+{
+    if (!Layer::init()) {
+        return false;
+    }
+
+    _visibleSize = _director->getVisibleSize();
+
+    //触摸截断
+    this->setLocalZOrder(8888);
+    this->setTouchEnabled(true);
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->setSwallowTouches(true);
+    listener->onTouchBegan = [](Touch* t, Event* e) { return true; };
+    _director->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+
+    /* 构建界面背景 */
+    auto layout = Layout::create();
+    layout->setContentSize(Size(_visibleSize.width / 2.0, _visibleSize.height / 2.0));
+    layout->setBackGroundColorType(Layout::BackGroundColorType::SOLID);
+    layout->setBackGroundColor(Color3B(255, 255, 255));
+    layout->setBackGroundColorOpacity(90);
+    layout->setAnchorPoint(Vec2(0.5, 0.5));
+    layout->setPosition(Vec2(_visibleSize.width / 2.0, _visibleSize.height / 2.0));
+
+    /* 按钮组*/
+    auto layoutSize = layout->getSize();
+
+    auto characters = GameData::getInstance()->getAvailableCharacterList();
+    int index = 0;
+    for (auto const& c : characters) {
+        auto selectButton = Button::create();
+        auto characterTag = c.tag;
+        selectButton->setTitleText(characterTag);
+        selectButton->setTitleFontSize(36);
+        selectButton->loadTextures("settings_layer/buttonNormal.png",
+                                   "settings_layer/buttonPressed.png");
+        selectButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        selectButton->setScale(0.7);
+        selectButton->setPosition(
+            Vec2(layoutSize.width * (1.0 + index) / 4.0, layoutSize.height * 3.0 / 4.0));
+        selectButton->addTouchEventListener(
+            [this, func, characterTag, callBack](Ref* pSender, Widget::TouchEventType type) {
+                if (type == Widget::TouchEventType::ENDED) {
+                    AudioController::getInstance()->playClickButtonEffect();
+                    func(characterTag);
+                    callBack(characterTag);
+                    this->removeFromParentAndCleanup(true);
+                }
+            });
+        layout->addChild(selectButton);
+        index++;
+    }
+
+    auto cancelButton = Button::create();
+    cancelButton->setTitleText("取消");
+    cancelButton->setTitleFontSize(36);
+    cancelButton->loadTextures("settings_layer/buttonNormal.png",
+                               "settings_layer/buttonPressed.png");
+    cancelButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    cancelButton->setScale(0.7);
+    cancelButton->setPosition(Vec2(layoutSize.width / 2.0, layoutSize.height / 4.0));
+    cancelButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playReturnButtonEffect();
+            this->removeFromParentAndCleanup(true);
+        }
+    });
+    layout->addChild(cancelButton);
+
+    addChild(layout);
+    return true;
 }

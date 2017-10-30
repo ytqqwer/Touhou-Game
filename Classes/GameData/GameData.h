@@ -127,17 +127,32 @@ public:
     // 获得指定角色的信息
     Character getCharacterByTag(const string& characterTag);
 
-    // 获得指定角色使用或装备的道具列表
-    vector<Item> getCharacterItemList(const string& characterTag);
+    // 获得指定角色使用或装备的全部道具
+    vector<Item> getCharacterEquipedItems(const string& characterTag);
+    // 获得指定角色装备的主动道具
+    vector<Item> getCharacterActiveItems(const string& characterTag);
+    // 获得指定角色装备的主动道具，带槽位指示信息
+    vector<pair<Item, int>> getCharacterActiveItemsInPair(const string& characterTag);
+    // 获得指定角色使用的强化道具
+    vector<Item> getCharacterStrengthenItems(const string& characterTag);
 
-    // 获得指定的道具列表后，更换角色装备的道具
-    bool changeItem(const string& characterTag, int slot, const string& itemTag);
+    //装备主动道具
+    void equipActiveItem(const string& characterTag, const string& itemTag, int slot);
+    //装备强化道具
+    void equipStrengthenItem(const string& characterTag, const string& itemTag);
 
-    // 获得指定角色的符卡列表，包括专属符卡和购买的通用符卡
-    vector<SpellCard> getCharacterSpellCardList(const string& characterTag);
+    // 获得指定角色的符卡列表
+    // 包括专属符卡和购买的通用符卡(暂未加以区分)
+    vector<SpellCard> getCharacterEquipedSpellCards(const string& characterTag);
+    vector<pair<SpellCard, int>> getCharacterEquipedSpellCardsInPair(const string& characterTag);
 
-    // 获得角色的符卡列表后，传入角色标签，符卡标签和栏位，更换该栏位的符卡
-    bool changeSpellCard(const string& characterTag, int slot, const string& spellCardTag);
+    //装备符卡
+    void equipSpellCard(const string& characterTag, const string& cardTag, int slot);
+
+    //// 获得指定的道具列表后，更换角色装备的道具
+    // bool changeItem(const string& characterTag, int slot, const string& itemTag);
+    //// 获得角色的符卡列表后，传入角色标签，符卡标签和栏位，更换该栏位的符卡
+    // bool changeSpellCard(const string& characterTag, int slot, const string& spellCardTag);
 
     // 获得指定角色的攻击方式列表，包括集中和发散两种攻击方式
     vector<Character::Attack> getAttackList(const string& characterTag);
@@ -151,6 +166,9 @@ public:
     // num 可为正可为负，为正时增加钱币数，为负时减少钱币数
     void increaseMoney(long num);
 
+    void unlockItemSlot(const string& characterTag);
+    void unlockSpellCardSlot(const string& characterTag);
+
     ////////////////////////////////////////////////////////////////////////////////
     // 敌人 Enemy
 
@@ -163,11 +181,12 @@ public:
     // 符卡和道具本身并没有数量的概念，全部独一无二，因此数量是没有意义的属性
     // 换句话说，即使有数量，那么数量的值也只能是1
 
-    // pair.first 是符卡， pair.second 是符卡数量
     vector<Item> getAvailableItems();
     vector<Item> getAvailableNormalItems();
     vector<Item> getAvailableStrengthenItems();
     vector<Item> getAvailableSpecialItems();
+
+    vector<Item> getAvailableActiveItems();
 
     vector<Item> getItemsInStore(const string& storeTag);
     vector<Item> getNormalItemsInStore(const string& storeTag);

@@ -739,8 +739,9 @@ GameData::updateSave(const std::string& updateTag)
         json newLocationRecord = { { "tag", character.at("tag") },
                                    { "itemSlotNum", character.at("itemSlotNum") },
                                    { "spellCardSlotNum", character.at("spellCardSlotNum") },
-                                   { "equipedItemList", character.at("equipedItemList") },
-                                   { "equipedSpellCardList", character.at("equipedSpellCardList") },
+                                   { "activeItems", character.at("activeItems") },
+                                   { "strengthenItems", character.at("strengthenItems") },
+                                   { "spellCards", character.at("spellCards") },
                                    { "preferedAttackType", character.at("preferedAttackType") },
                                    { "selectedAttackType", character.at("selectedAttackType") } };
         charactersDom.push_back(newLocationRecord);
@@ -1052,27 +1053,98 @@ GameData::getCharacterByTag(const string& characterTag)
 }
 
 vector<Item>
-GameData::getCharacterItemList(const string& characterTag)
+GameData::getCharacterEquipedItems(const string& characterTag)
 {
-    /* 1. 找到人，并取其装备 tag 列表 */
+    auto activeItems = getCharacterActiveItems(characterTag);
+    auto strengthenItems = getCharacterStrengthenItems(characterTag);
+    vector<Item> allItems;
+    allItems.insert(allItems.end(), activeItems.begin(), activeItems.end());
+    allItems.insert(allItems.end(), strengthenItems.begin(), strengthenItems.end());
+    return allItems;
+}
 
+vector<Item>
+GameData::getCharacterActiveItems(const string& characterTag)
+{
+    /* 1. 找到人，并取其装备 tag */
     const json& characterListDom = cachedSave["characterList"];
-
-    const json* equipedItemListDomPtr;
+    const json* activeItemsDomPtr;
     for (auto const& c : characterListDom) {
         if (c["tag"] == characterTag) {
-            equipedItemListDomPtr = &c["equipedItemList"];
+            activeItemsDomPtr = &c["activeItems"];
+            break;
         }
     }
-    const json& equipedListDom = *equipedItemListDomPtr;
+    const json& activeItemsDom = *activeItemsDomPtr;
+
+    /* 2. 根据装备列表取得装备详细信息 */
+    vector<Item> listRet;
+
+    for (auto const& iTagToFind : activeItemsDom) {
+        auto it = find_if(itemListDom.begin(), itemListDom.end(),
+                          [&iTagToFind](const json& item) -> bool {
+                              if (item.at("tag") == iTagToFind.at("tag")) {
+                                  return true;
+                              } else {
+                                  return false;
+                              }
+                          });
+        listRet.push_back(*it);
+    }
+    return listRet;
+}
+
+vector<pair<Item, int>>
+GameData::getCharacterActiveItemsInPair(const string& characterTag)
+{
+    const json& characterListDom = cachedSave["characterList"];
+    const json* activeItemsDomPtr;
+    for (auto const& c : characterListDom) {
+        if (c["tag"] == characterTag) {
+            activeItemsDomPtr = &c["activeItems"];
+            break;
+        }
+    }
+    const json& activeItemsDom = *activeItemsDomPtr;
+
+    vector<pair<Item, int>> listRet;
+
+    for (auto const& iToPred : itemListDom) {
+        auto it = find_if(activeItemsDom.begin(), activeItemsDom.end(),
+                          [&iToPred](const json& activeItem) -> bool {
+                              if (activeItem.at("tag") == iToPred.at("tag")) {
+                                  return true;
+                              } else {
+                                  return false;
+                              }
+                          });
+        if (it != activeItemsDom.end()) {
+            listRet.push_back(make_pair<Item, int>(iToPred, it->at("slot")));
+        }
+    }
+
+    return listRet;
+}
+
+vector<Item>
+GameData::getCharacterStrengthenItems(const string& characterTag)
+{
+    /* 1. 找到人，并取其装备 tag */
+    const json& characterListDom = cachedSave["characterList"];
+
+    const json* ItemsDomPtr;
+    for (auto const& c : characterListDom) {
+        if (c["tag"] == characterTag) {
+            ItemsDomPtr = &c["strengthenItems"];
+        }
+    }
+    const json& dom = *ItemsDomPtr;
 
     /* 2. 根据装备列表取得装备详细信息 */
 
     vector<Item> listRet;
-
-    listRet.reserve(equipedListDom.size());
-
-    for (auto const& iTagToFind : equipedListDom) {
+    listRet.reserve(dom.size());
+    for (auto const& iTagToFind : dom) {
         auto it = find_if(itemListDom.begin(), itemListDom.end(),
                           [&iTagToFind](const json& item) -> bool {
                               if (item.at("tag") == iTagToFind) {
@@ -1088,90 +1160,173 @@ GameData::getCharacterItemList(const string& characterTag)
     return listRet;
 }
 
-bool
-GameData::changeItem(const string& characterTag, int slot, const string& newItemTag)
+// bool
+// GameData::changeItem(const string& characterTag, int slot, const string& newItemTag)
+//{
+//
+//    /* 1. 更改已装备道具的记录列表，同时记下旧装备的 tag */
+//
+//    string oldItemTag;
+//
+//    json& characterListDom = cachedSave["characterList"];
+//
+//    for (auto& c : characterListDom) {
+//        if (c["tag"] == characterTag) {
+//            oldItemTag = c["equipedItemList"][slot];
+//            c["equipedItemList"][slot] = newItemTag;
+//            break;
+//        }
+//    }
+//
+//    /* 2. 根据上一步找到的旧装备 tag，找到旧装备的属性记录 */
+//
+//    auto oldItemIt =
+//        find_if(itemListDom.begin(), itemListDom.end(), [&oldItemTag](const json& iToPred) -> bool
+//        {
+//            if (iToPred["tag"] == oldItemTag) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        });
+//
+//    /* 3. 根据传递进来的新装备 tag 形参，找到新装备的属性记录 */
+//
+//    auto newItemIt =
+//        find_if(itemListDom.begin(), itemListDom.end(), [&newItemTag](const json& iToPred) -> bool
+//        {
+//            if (iToPred["tag"] == newItemTag) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        });
+//
+//    /* 4. 减去旧装备加成，加上新装备加成 */
+//
+//    for (auto& c : characterListDom) {
+//        if (c["tag"] == characterTag) {
+//            // 此处不能使用 -= 或者 +=，因为 nlohmann::json 没有重载 -= 和 += 运算符
+//
+//            // - 运算符两边的 json 对象都需要显式指定转换成的类型，不能依赖隐式类型转换。
+//            // 没有最佳匹配，会引起 ambiguous
+//
+//            // 旧装备加成
+//            // c["healthPointInc"] =
+//            //    c["healthPointInc"].get<int>() - oldItemIt->at("healthPointInc").get<int>();
+//            // c["manaInc"] = c["manaInc"].get<int>() - oldItemIt->at("manaInc").get<int>();
+//            // c["walkSpeedInc"] =
+//            //    c["walkSpeedInc"].get<int>() - oldItemIt->at("walkSpeedInc").get<int>();
+//            // c["dashAccelerationInc"] = c["dashAccelerationInc"].get<int>() -
+//            //                           oldItemIt->at("dashAccelerationInc").get<int>();
+//
+//            //// 新装备加成
+//            // c["healthPointInc"] =
+//            //    c["healthPointInc"].get<int>() + newItemIt->at("healthPointInc").get<int>();
+//            // c["manaInc"] = c["manaInc"].get<int>() + newItemIt->at("manaInc").get<int>();
+//            // c["walkSpeedInc"] =
+//            //    c["walkSpeedInc"].get<int>() + newItemIt->at("walkSpeedInc").get<int>();
+//            // c["dashAccelerationInc"] = c["dashAccelerationInc"].get<int>() -
+//            //                           newItemIt->at("dashAccelerationInc").get<int>();
+//            break;
+//        }
+//    }
+//
+//    return true;
+//}
+
+void
+GameData::equipActiveItem(const string& characterTag, const string& itemTag, int slot)
 {
-
-    /* 1. 更改已装备道具的记录列表，同时记下旧装备的 tag */
-
-    string oldItemTag;
-
-    json& characterListDom = cachedSave["characterList"];
-
-    for (auto& c : characterListDom) {
-        if (c["tag"] == characterTag) {
-            oldItemTag = c["equipedItemList"][slot];
-            c["equipedItemList"][slot] = newItemTag;
-            break;
+    //先卸除所有角色装备的该道具
+    json& charactersDom = cachedSave["characterList"];
+    for (auto& c : charactersDom) {
+        json& activeItemsDom = c["activeItems"];
+        vector<pair<string, int>> remain;
+        bool found = false;
+        for (auto& activeItem : activeItemsDom) {
+            if (activeItem.at("tag") == itemTag) {
+                found = true;
+            } else {
+                remain.push_back(
+                    make_pair<string, int>(activeItem.at("tag"), activeItem.at("slot")));
+            }
+        }
+        if (found) {
+            activeItemsDom.clear();
+            for (auto& activeItem : remain) {
+                json newRecord = { { "tag", activeItem.first }, { "slot", activeItem.second } };
+                activeItemsDom.push_back(newRecord);
+            }
         }
     }
 
-    /* 2. 根据上一步找到的旧装备 tag，找到旧装备的属性记录 */
-
-    auto oldItemIt =
-        find_if(itemListDom.begin(), itemListDom.end(), [&oldItemTag](const json& iToPred) -> bool {
-            if (iToPred["tag"] == oldItemTag) {
-                return true;
-            } else {
-                return false;
-            }
-        });
-
-    /* 3. 根据传递进来的新装备 tag 形参，找到新装备的属性记录 */
-
-    auto newItemIt =
-        find_if(itemListDom.begin(), itemListDom.end(), [&newItemTag](const json& iToPred) -> bool {
-            if (iToPred["tag"] == newItemTag) {
-                return true;
-            } else {
-                return false;
-            }
-        });
-
-    /* 4. 减去旧装备加成，加上新装备加成 */
-
-    for (auto& c : characterListDom) {
+    //将该物品装配给指定角色
+    for (auto& c : charactersDom) {
         if (c["tag"] == characterTag) {
-            // 此处不能使用 -= 或者 +=，因为 nlohmann::json 没有重载 -= 和 += 运算符
+            json& activeItemsDom = c["activeItems"];
+            bool found = false;
+            for (auto& activeItem : activeItemsDom) {
+                if (activeItem["slot"] == slot) {
+                    activeItem["tag"] = itemTag;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                json newRecord = { { "tag", itemTag }, { "slot", slot } };
+                activeItemsDom.push_back(newRecord);
+                break;
+            }
+        }
+    }
+}
 
-            // - 运算符两边的 json 对象都需要显式指定转换成的类型，不能依赖隐式类型转换。
-            // 没有最佳匹配，会引起 ambiguous
-
-            // 旧装备加成
-            // c["healthPointInc"] =
-            //    c["healthPointInc"].get<int>() - oldItemIt->at("healthPointInc").get<int>();
-            // c["manaInc"] = c["manaInc"].get<int>() - oldItemIt->at("manaInc").get<int>();
-            // c["walkSpeedInc"] =
-            //    c["walkSpeedInc"].get<int>() - oldItemIt->at("walkSpeedInc").get<int>();
-            // c["dashAccelerationInc"] = c["dashAccelerationInc"].get<int>() -
-            //                           oldItemIt->at("dashAccelerationInc").get<int>();
-
-            //// 新装备加成
-            // c["healthPointInc"] =
-            //    c["healthPointInc"].get<int>() + newItemIt->at("healthPointInc").get<int>();
-            // c["manaInc"] = c["manaInc"].get<int>() + newItemIt->at("manaInc").get<int>();
-            // c["walkSpeedInc"] =
-            //    c["walkSpeedInc"].get<int>() + newItemIt->at("walkSpeedInc").get<int>();
-            // c["dashAccelerationInc"] = c["dashAccelerationInc"].get<int>() -
-            //                           newItemIt->at("dashAccelerationInc").get<int>();
-            break;
+void
+GameData::equipStrengthenItem(const string& itemTag, const string& characterTag)
+{
+    //先卸除所有角色装备的该道具
+    json& charactersDom = cachedSave["characterList"];
+    for (auto& c : charactersDom) {
+        json& equipedItemsDom = c["strengthenItems"];
+        // json对象的erase方法需要提供关键字，删除一整个键值对，但在此只是需要移除“值”里的某些成员
+        vector<std::string> remain;
+        bool found = false;
+        for (auto& tag : equipedItemsDom) {
+            if (tag == itemTag) {
+                found = true;
+            } else if (tag != itemTag) {
+                remain.push_back(tag);
+            }
+        }
+        if (found) {
+            equipedItemsDom.clear();
+            for (auto& tag : remain) {
+                equipedItemsDom.push_back(tag);
+            }
         }
     }
 
-    return true;
+    //将该物品装配给指定角色
+    for (auto& c : charactersDom) {
+        if (c["tag"] == characterTag) {
+            c["strengthenItems"].push_back(itemTag);
+            break;
+        }
+    }
 }
 
 vector<SpellCard>
-GameData::getCharacterSpellCardList(const string& characterTag)
+GameData::getCharacterEquipedSpellCards(const string& characterTag)
 {
-    /* 1. 找到人，并取其装备 tag 列表 */
+    /* 1. 找到人，并取其 tag 列表 */
 
     const json& characterListDom = cachedSave["characterList"];
 
     const json* equipedCardListDomPtr;
     for (auto const& c : characterListDom) {
         if (c["tag"] == characterTag) {
-            equipedCardListDomPtr = &c["equipedSpellCardList"];
+            equipedCardListDomPtr = &c["spellCards"];
         }
     }
     const json& equipedListDom = *equipedCardListDomPtr;
@@ -1183,8 +1338,8 @@ GameData::getCharacterSpellCardList(const string& characterTag)
 
     for (auto const& cTagToFind : equipedListDom) {
         auto it = find_if(spellCardListDom.begin(), spellCardListDom.end(),
-                          [&cTagToFind](const json& item) -> bool {
-                              if (item.at("tag") == cTagToFind) {
+                          [&cTagToFind](const json& card) -> bool {
+                              if (card.at("tag") == cTagToFind.at("tag")) {
                                   return true;
                               } else {
                                   return false;
@@ -1197,20 +1352,99 @@ GameData::getCharacterSpellCardList(const string& characterTag)
     return listRet;
 }
 
-bool
-GameData::changeSpellCard(const string& characterTag, int slot, const string& spellCardTag)
+vector<pair<SpellCard, int>>
+GameData::getCharacterEquipedSpellCardsInPair(const string& characterTag)
 {
-    json& characterListDom = cachedSave["characterList"];
+    const json& characterListDom = cachedSave["characterList"];
 
-    for (auto& c : characterListDom) {
+    const json* equipedCardListDomPtr;
+    for (auto const& c : characterListDom) {
         if (c["tag"] == characterTag) {
-            c["equipedSpellCardList"][slot] = spellCardTag;
-            break;
+            equipedCardListDomPtr = &c["spellCards"];
+        }
+    }
+    const json& equipedListDom = *equipedCardListDomPtr;
+
+    vector<pair<SpellCard, int>> listRet;
+    listRet.reserve(equipedListDom.size());
+
+    for (auto const& cardToFind : spellCardListDom) {
+        auto it = find_if(equipedListDom.begin(), equipedListDom.end(),
+                          [&cardToFind](const json& card) -> bool {
+                              if (card.at("tag") == cardToFind.at("tag")) {
+                                  return true;
+                              } else {
+                                  return false;
+                              }
+                          });
+        if (it != equipedListDom.end()) {
+            listRet.push_back(make_pair<SpellCard, int>(cardToFind, it->at("slot")));
         }
     }
 
-    return true;
+    return listRet;
 }
+
+void
+GameData::equipSpellCard(const string& characterTag, const string& cardTag, int slot)
+{
+    //先卸除所有角色装备的该符卡
+    json& charactersDom = cachedSave["characterList"];
+    for (auto& c : charactersDom) {
+        json& spellCardsDom = c["spellCards"];
+        vector<pair<string, int>> remain;
+        bool found = false;
+        for (auto& card : spellCardsDom) {
+            if (card.at("tag") == cardTag) {
+                found = true;
+            } else {
+                remain.push_back(make_pair<string, int>(card.at("tag"), card.at("slot")));
+            }
+        }
+        if (found) {
+            spellCardsDom.clear();
+            for (auto& card : remain) {
+                json newRecord = { { "tag", card.first }, { "slot", card.second } };
+                spellCardsDom.push_back(newRecord);
+            }
+        }
+    }
+
+    //将该符卡装配给指定角色
+    for (auto& c : charactersDom) {
+        if (c["tag"] == characterTag) {
+            json& spellCardsDom = c["spellCards"];
+            bool found = false;
+            for (auto& card : spellCardsDom) {
+                if (card["slot"] == slot) {
+                    card["tag"] = cardTag;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                json newRecord = { { "tag", cardTag }, { "slot", slot } };
+                spellCardsDom.push_back(newRecord);
+                break;
+            }
+        }
+    }
+}
+
+// bool
+// GameData::changeSpellCard(const string& characterTag, int slot, const string& spellCardTag)
+//{
+//    json& characterListDom = cachedSave["characterList"];
+//
+//    for (auto& c : characterListDom) {
+//        if (c["tag"] == characterTag) {
+//            c["equipedSpellCardList"][slot] = spellCardTag;
+//            break;
+//        }
+//    }
+//
+//    return true;
+//}
 
 vector<Character::Attack>
 GameData::getAttackList(const string& characterTag)
@@ -1308,6 +1542,30 @@ GameData::increaseMoney(long num)
     cachedSave["money"] = cachedSave["money"].get<long>() + num;
 }
 
+void
+GameData::unlockItemSlot(const string& characterTag)
+{
+    json& dom = cachedSave["characterList"];
+    for (auto& c : dom) {
+        if (c["tag"] == characterTag) {
+            c["itemSlotNum"] = c["itemSlotNum"].get<int>() + 1;
+            break;
+        }
+    }
+}
+
+void
+GameData::unlockSpellCardSlot(const string& characterTag)
+{
+    json& dom = cachedSave["characterList"];
+    for (auto& c : dom) {
+        if (c["tag"] == characterTag) {
+            c["spellCardSlotNum"] = c["spellCardSlotNum"].get<int>() + 1;
+            break;
+        }
+    }
+}
+
 EnemyData
 GameData::getEnemyByTag(const string& enemyTag)
 {
@@ -1379,6 +1637,17 @@ GameData::getAvailableItems()
 APP_IMPLEMENT_GET_AVAIL_TYPE_ITEMS(NormalItems, "NORMAL");
 APP_IMPLEMENT_GET_AVAIL_TYPE_ITEMS(StrengthenItems, "STRENGTHEN");
 APP_IMPLEMENT_GET_AVAIL_TYPE_ITEMS(SpecialItems, "SPECIAL");
+
+vector<Item>
+GameData::getAvailableActiveItems()
+{
+    auto normalItems = getAvailableNormalItems();
+    auto specialItems = getAvailableSpecialItems();
+    vector<Item> allItems;
+    allItems.insert(allItems.end(), normalItems.begin(), normalItems.end());
+    allItems.insert(allItems.end(), specialItems.begin(), specialItems.end());
+    return allItems;
+}
 
 vector<Item>
 GameData::getItemsInStore(const string& storeTag)
@@ -1580,13 +1849,13 @@ testSelf()
     ptr->switchOnStageCharacter(1, "Marisa");
     ptr->switchOnStageCharacter(2, "Reimu");
     auto get_onstage_char_list = ptr->getOnStageCharacterTagList();
-    ptr->changeItem("Reimu", 0, "I2"); // two same items in one character
-    ptr->changeSpellCard("Reimu", 0, "C2");
+    // ptr->changeItem("Reimu", 0, "I2"); // two same items in one character
+    // ptr->changeSpellCard("Reimu", 0, "C2");
 
     get_avail_characters = ptr->getAvailableCharacterList();
 
-    auto get_character_item_list = ptr->getCharacterItemList("Reimu");
-    auto get_character_card_list = ptr->getCharacterSpellCardList("Reimu");
+    auto get_character_item_list = ptr->getCharacterActiveItems("Reimu");
+    auto get_character_card_list = ptr->getCharacterEquipedSpellCards("Reimu");
     auto get_attack_list = ptr->getAttackList("Reimu");
     ptr->switchAttackType("Reimu", Character::Attack::Type::FOCUS);
     auto get_money_num = ptr->getMoneyNum();
@@ -1684,7 +1953,7 @@ testSelf()
         cout << "  tag: " << c << endl;
     }
 
-    log(">> getCharacterItemList: ");
+    log(">> getCharacterActiveItems: ");
     for (auto const& i : get_character_item_list) {
         cout << "  tag: " << i.tag << endl;
         cout << "  name: " << i.name << endl;
@@ -1703,7 +1972,7 @@ testSelf()
         cout << "  price: " << i.price << endl;
     }
 
-    log(">> getCharacterSpellCardList: ");
+    log(">> getCharacterEquipedSpellCards: ");
     for (auto const& c : get_character_card_list) {
         cout << "  tag: " << c.tag << endl;
         cout << "  ..." << endl;

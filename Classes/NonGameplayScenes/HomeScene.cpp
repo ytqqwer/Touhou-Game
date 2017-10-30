@@ -324,7 +324,7 @@ HomeScene::getPeople()
     personPortrait->setTexture(people_array.at(people_order).portrait);
 
     /*卡片*/
-    card = gamedata->getCharacterSpellCardList(people_array[people_order].tag);
+    card = gamedata->getCharacterEquipedSpellCards(people_array[people_order].tag);
     string img;
     double width = 0.041, height = 0.065;
     for (int i = 0; i < 3; i++) {

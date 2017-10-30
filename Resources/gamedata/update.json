@@ -6,8 +6,9 @@
                 "tag": "Alice",
                 "itemSlotNum": 1,
                 "spellCardSlotNum": 1,
-                "equipedItemList": [],
-                "equipedSpellCardList": [],
+                "activeItems" : [],
+                "strengthenItems" : [],
+                "spellCards" : [],
                 "preferedAttackType": "SPLIT",
                 "selectedAttackType": [
                     "alice focus attack 1",

@@ -97,7 +97,7 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
         /*  1. 道具 Item */
 
         int increment = 0;
-        auto itemList = _gamedata->getCharacterItemList(characterTagList[i]);
+        auto itemList = _gamedata->getCharacterActiveItems(characterTagList[i]);
         for (int j = 0; j < itemList.size(); j++) {
             Item item = itemList[j];
             CoolDownButton* btn = ItemButton::create(item);
@@ -112,7 +112,7 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
         /*  2. 符卡 SpellCard */
 
         increment = 0;
-        auto spellCardList = _gamedata->getCharacterSpellCardList(characterTagList[0]);
+        auto spellCardList = _gamedata->getCharacterEquipedSpellCards(characterTagList[0]);
         for (int j = 0; j < spellCardList.size(); j++) {
             SpellCard card = spellCardList[j];
             CoolDownButton* btn = SpellCardButton::create(card);

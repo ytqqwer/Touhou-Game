@@ -29,12 +29,6 @@ Reimu::init(const std::string& tag)
     playerSprite = Sprite::create(_character.defaultTexture);
     this->addChild(playerSprite);
 
-    // 设置道具
-    itemList = GameData::getInstance()->getCharacterItemList(tag);
-
-    // 设置符卡
-    spellCardList = GameData::getInstance()->getCharacterSpellCardList(tag);
-
     //设置属性值
     this->baseHP = _character.healthPointBase;
     this->currentHP = _character.healthPointBase;

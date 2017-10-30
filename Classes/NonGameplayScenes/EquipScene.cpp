@@ -205,63 +205,149 @@ EquipScene::loadCharacterProperty(const Character& character)
     }
 
     /*符卡*/
-    high = 0.51;
-    Sprite* card;
-    auto cards = gamedata->getCharacterSpellCardList(character.tag);
+    auto equipedSpellCards = gamedata->getCharacterEquipedSpellCardsInPair(character.tag);
     for (int i = 0; i < 3; i++) {
-        if (i < cards.size()) {
-            card = Sprite::create(cards[i].icon);
-            card->setContentSize(
-                Size(_visibleSize.width * 0.045, _visibleSize.width * 0.045 * 65 / 41));
-            char k1[10], k2[10];
-            sprintf(k1, "%d", cards[i].manaCost);
-            sprintf(k2, "%.1f", cards[i].cooldown);
-            auto card_text = Label::create(cards[i].name + "\n" + "消耗灵力:" + k1 + "\n" +
-                                               "冷却时间:" + k2 + "s",
-                                           "fonts/dengxian.ttf", 20);
-            card_text->setPosition(
-                Vec2(_visibleSize.width * 0.45, _visibleSize.height * (high + 0.01)));
-            card_text->setLineSpacing(10);
-            card_text->setAlignment(TextHAlignment::CENTER);
-            addChild(card_text, 1, ++tagSum);
-        } else {
-            card = Sprite::create("equipscene/p3.png");
-            card->setContentSize(Size(_visibleSize.width * 0.07, _visibleSize.width * 0.07));
+        Button* button = Button::create();
+        button->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+
+        button->isIgnoreContentAdaptWithSize();
+        button->setScale9Enabled(true);
+        button->setContentSize(Size(380, 100));
+        auto buttonSize = Size(380, 100);
+
+        bool found = false;
+        for (auto const& pair : equipedSpellCards) {
+            if (pair.second == i) {
+                Sprite* icon = Sprite::create(pair.first.icon);
+                icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                icon->setPosition(buttonSize.width / 6.0, buttonSize.height / 2.0);
+                button->addChild(icon);
+
+                string manaCost;
+                string cooldownTime;
+                stringstream ss;
+                ss << pair.first.manaCost;
+                ss >> manaCost;
+                ss.clear();
+                ss << pair.first.cooldown;
+                ss >> cooldownTime;
+                auto text = Label::create(pair.first.name + "\n" + "消耗灵力:" + manaCost + "\n" +
+                                              "冷却时间:" + cooldownTime + "s",
+                                          "fonts/dengxian.ttf", 20);
+                text->setAlignment(TextHAlignment::CENTER);
+                text->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                text->setPosition(Vec2(buttonSize.width * 3.0 / 5.0, buttonSize.height / 2.0));
+                button->addChild(text);
+
+                found = true;
+                break;
+            }
         }
-        card->setColor(Color3B::WHITE);
-        card->setPosition(Vec2(_visibleSize.width * 0.32, _visibleSize.height * high));
-        addChild(card, 1, ++tagSum);
-        high -= 0.14;
+        if (!found) {
+            Sprite* none = Sprite::create("equipscene/p3.png");
+
+            auto width = none->getContentSize().width;
+            auto height = none->getContentSize().height;
+            auto bigger = width > height ? width : height;
+            float scale = 61.0 / bigger;
+            none->setScale(scale);
+
+            none->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            none->setPosition(buttonSize.width / 5.0, buttonSize.height / 2.0);
+            button->addChild(none);
+        }
+
+        std::function<void(std::string)> func =
+            std::bind(&GameData::equipSpellCard, gamedata, character.tag, std::placeholders::_1, i);
+        std::function<void()> callBack =
+            std::bind(&EquipScene::loadCharacterProperty, this, character);
+        button->addTouchEventListener(
+            [this, func, callBack](Ref* pSender, Widget::TouchEventType type) {
+                if (type == Widget::TouchEventType::ENDED) {
+                    AudioController::getInstance()->playClickButtonEffect();
+                    this->addChild(EquipScene::SpellCardMenu::create(func, callBack));
+                }
+            });
+
+        button->setPosition(
+            Vec2(_visibleSize.width * 0.280, _visibleSize.height * (0.46 - i * 0.15)));
+        this->addChild(button, 1, ++tagSum);
     }
 
     /*道具*/
-    high = 0.51;
-    Sprite* tool;
-    auto tools = gamedata->getCharacterItemList(character.tag);
-    for (int i = 0; i < 3; i++) {
-        if (i < tools.size()) {
-            tool = Sprite::create(tools[i].icon);
-            tool->setContentSize(
-                Size(_visibleSize.width * 0.045, _visibleSize.width * 0.045 * 61 / 43));
-            char k1[10], k2[10];
-            sprintf(k1, "%d", tools[i].maxUseCount);
-            sprintf(k2, "%.1f", tools[i].cooldown);
-            auto tool_text = Label::create(tools[i].name + "\n" + tools[i].description + "\n使用" +
-                                               k1 + "次\n" + "冷却时间:" + k2 + "s",
-                                           "fonts/dengxian.ttf", 20);
-            tool_text->setPosition(
-                Vec2(_visibleSize.width * 0.76, _visibleSize.height * (high + 0.01)));
-            tool_text->setLineSpacing(2);
-            tool_text->setAlignment(TextHAlignment::CENTER);
-            addChild(tool_text, 1, ++tagSum);
-        } else {
-            tool = Sprite::create("equipscene/p3.png");
-            tool->setContentSize(Size(_visibleSize.width * 0.07, _visibleSize.width * 0.07));
+    auto activeItems = gamedata->getCharacterActiveItemsInPair(character.tag);
+    for (int i = 0; i < 3; i++) { // i代表当前槽位
+        Button* button = Button::create();
+        button->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+
+        //忽视纹理大小缩放，使得按钮上的非纹理位置也可以点击
+        //也只有这样setContentSize才会起作用
+        button->isIgnoreContentAdaptWithSize();
+        button->setScale9Enabled(true);
+        button->setContentSize(Size(380, 100));
+        auto buttonSize = Size(380, 100);
+
+        bool found = false;
+        for (auto const& pair : activeItems) {
+            if (pair.second == i) {
+
+                Sprite* icon = Sprite::create(pair.first.icon);
+                icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                icon->setPosition(buttonSize.width / 6.0, buttonSize.height / 2.0);
+                button->addChild(icon);
+
+                string maxUseCounts;
+                string cooldownTime;
+                stringstream ss;
+                ss << pair.first.maxUseCount;
+                ss >> maxUseCounts;
+                ss.clear();
+                ss << pair.first.cooldown;
+                ss >> cooldownTime;
+                auto text =
+                    Label::create(pair.first.name + "\n" + pair.first.description + "\n使用" +
+                                      maxUseCounts + "次\n" + "冷却时间:" + cooldownTime + "s",
+                                  "fonts/dengxian.ttf", 20);
+                text->setAlignment(TextHAlignment::CENTER);
+                text->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                text->setPosition(Vec2(buttonSize.width * 3.0 / 5.0, buttonSize.height / 2.0));
+                button->addChild(text);
+
+                found = true;
+                break;
+            }
         }
-        tool->setColor(Color3B::WHITE);
-        tool->setPosition(Vec2(_visibleSize.width * 0.628, _visibleSize.height * high));
-        addChild(tool, 1, ++tagSum);
-        high -= 0.14;
+        if (!found) {
+            Sprite* none = Sprite::create("equipscene/p3.png");
+
+            //正常来说所有素材的图片像素都是一致的，所以根本不需要下列代码手动设置缩放大小
+            //缩放参照一个像素为43×61的图片
+            auto width = none->getContentSize().width;
+            auto height = none->getContentSize().height;
+            auto bigger = width > height ? width : height;
+            float scale = 61.0 / bigger;
+            none->setScale(scale);
+
+            none->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            none->setPosition(buttonSize.width / 5.0, buttonSize.height / 2.0);
+            button->addChild(none);
+        }
+
+        std::function<void(std::string)> func = std::bind(&GameData::equipActiveItem, gamedata,
+                                                          character.tag, std::placeholders::_1, i);
+        std::function<void()> callBack =
+            std::bind(&EquipScene::loadCharacterProperty, this, character);
+        button->addTouchEventListener(
+            [this, func, callBack](Ref* pSender, Widget::TouchEventType type) {
+                if (type == Widget::TouchEventType::ENDED) {
+                    AudioController::getInstance()->playClickButtonEffect();
+                    this->addChild(EquipScene::ItemMenu::create(func, callBack));
+                }
+            });
+
+        button->setPosition(
+            Vec2(_visibleSize.width * 0.580, _visibleSize.height * (0.46 - i * 0.15)));
+        this->addChild(button, 1, ++tagSum);
     }
 }
 
@@ -345,4 +431,338 @@ EquipScene::SelectCharacterButton::init()
     });
 
     return true;
+}
+
+//////////////////////////////////////////////
+//以下是菜单项
+
+EquipScene::ItemMenu::ItemMenu(std::function<void(std::string)> func,
+                               std::function<void()> callBack)
+{
+    _visibleSize = Director::getInstance()->getVisibleSize();
+    items = GameData::getInstance()->getAvailableActiveItems();
+    this->func = func;
+    this->callBack = callBack;
+}
+
+EquipScene::ItemMenu*
+EquipScene::ItemMenu::create(std::function<void(std::string)> func, std::function<void()> callBack)
+{
+    ItemMenu* pRet = new (std::nothrow) ItemMenu(func, callBack);
+    if (pRet && pRet->init()) {
+        pRet->autorelease();
+        return pRet;
+    } else {
+        delete pRet;
+        pRet = nullptr;
+        return nullptr;
+    }
+}
+
+bool
+EquipScene::ItemMenu::init()
+{
+    if (!Layer::init()) {
+        return false;
+    }
+
+    //触摸截断
+    this->setLocalZOrder(8888);
+    this->setTouchEnabled(true);
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->setSwallowTouches(true);
+    listener->onTouchBegan = [](Touch* t, Event* e) { return true; };
+    _director->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+
+    /* 构建界面背景 */
+    auto layout = Layout::create();
+    layout->setContentSize(Size(_visibleSize.width / 3.0, _visibleSize.height));
+    layout->setBackGroundColorType(Layout::BackGroundColorType::SOLID);
+    layout->setBackGroundColor(Color3B(255, 255, 255));
+    layout->setBackGroundColorOpacity(50);
+    layout->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+    layout->setPosition(Vec2(_visibleSize.width, 0));
+
+    /*道具列表控件*/
+    itemTable = TableView::create(this, Size(300, 600));
+    itemTable->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    itemTable->setPosition(Vec2(65, 120)); //上移一些位置
+    itemTable->setDirection(cocos2d::extension::ScrollView::Direction::VERTICAL); //纵向
+    itemTable->setVerticalFillOrder(TableView::VerticalFillOrder::TOP_DOWN); //从小到大排列
+    itemTable->setDelegate(this);                                            //委托代理
+    layout->addChild(itemTable);
+    itemTable->reloadData();
+
+    /* 按钮 */
+    auto cancelButton = Button::create();
+    cancelButton->setTitleText("取消");
+    cancelButton->setTitleFontSize(36);
+    cancelButton->loadTextures("settings_layer/buttonNormal.png",
+                               "settings_layer/buttonPressed.png");
+    cancelButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    cancelButton->setPosition(Vec2(layout->getSize().width / 2.0, layout->getSize().height / 10.0));
+    cancelButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playReturnButtonEffect();
+            this->removeFromParentAndCleanup(true);
+        }
+    });
+    layout->addChild(cancelButton);
+
+    addChild(layout);
+
+    return true;
+}
+
+Size
+EquipScene::ItemMenu::tableCellSizeForIndex(TableView* table, ssize_t idx)
+{
+    return Size(300, 100);
+}
+
+TableViewCell*
+EquipScene::ItemMenu::tableCellAtIndex(TableView* table, ssize_t idx)
+{
+    TableViewCell* cell = table->dequeueCell();
+    if (!cell) {
+        cell = new TableViewCell();
+        cell->autorelease();
+    } else {
+        cell->removeAllChildren();
+    }
+
+    if (items.size() > 0) {
+        cell->setName(items[idx].tag);
+
+        auto box = PlaceHolder::createRect(Size(300, 90), "", 16, Color3B(91, 155, 213));
+        box->setPosition(Vec2(0, 50));
+        box->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+        cell->addChild(box);
+
+        auto icon = Sprite::create(items[idx].icon);
+        icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        icon->setPosition(Vec2(30, 50));
+        cell->addChild(icon);
+
+        auto name = Label::createWithTTF(items[idx].name, "fonts/dengxian.ttf", 20);
+        name->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        name->setPosition(Vec2(120, 50));
+        name->setColor(Color3B::BLACK);
+        cell->addChild(name);
+
+        auto characters = GameData::getInstance()->getAvailableCharacterList();
+        string userName = "无";
+        bool _canBreak = false;
+        for (int k = 0; k < characters.size(); k++) {
+            vector<Item> allItems =
+                GameData::getInstance()->getCharacterEquipedItems(characters[k].tag);
+            for (int j = 0; j < allItems.size(); j++) {
+                if (items[idx].tag == allItems[j].tag) {
+                    userName = characters[k].name;
+                    _canBreak = true;
+                    break;
+                }
+            }
+            if (_canBreak) {
+                break;
+            }
+        }
+        auto userLabel = Label::createWithTTF("使用者: ", "fonts/dengxian.ttf", 20);
+        userLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        userLabel->setPosition(Vec2(210, 60));
+        userLabel->setColor(Color3B::BLACK);
+        cell->addChild(userLabel);
+
+        auto status = Label::createWithTTF(userName, "fonts/dengxian.ttf", 20);
+        status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        status->setPosition(Vec2(210, 40));
+        status->setColor(Color3B::BLACK);
+        status->setName("status");
+        cell->addChild(status);
+    }
+    return cell;
+}
+
+ssize_t
+EquipScene::ItemMenu::numberOfCellsInTableView(TableView* table)
+{
+    return items.size();
+}
+
+void
+EquipScene::ItemMenu::tableCellTouched(TableView* table, TableViewCell* cell)
+{
+    AudioController::getInstance()->playClickButtonEffect();
+    func(cell->getName());
+    callBack();
+
+    table->reloadData();
+}
+
+///////////////////////////////////////////////////////////////////
+//上下两个类可以很简单的合并成为一个
+//然而我把它们写成了两个，因为复制粘贴很方便
+
+EquipScene::SpellCardMenu::SpellCardMenu(std::function<void(std::string)> func,
+                                         std::function<void()> callBack)
+{
+    _visibleSize = Director::getInstance()->getVisibleSize();
+    spellCards = GameData::getInstance()->getAvailableSpellCards();
+    this->func = func;
+    this->callBack = callBack;
+}
+
+EquipScene::SpellCardMenu*
+EquipScene::SpellCardMenu::create(std::function<void(std::string)> func,
+                                  std::function<void()> callBack)
+{
+    SpellCardMenu* pRet = new (std::nothrow) SpellCardMenu(func, callBack);
+    if (pRet && pRet->init()) {
+        pRet->autorelease();
+        return pRet;
+    } else {
+        delete pRet;
+        pRet = nullptr;
+        return nullptr;
+    }
+}
+
+bool
+EquipScene::SpellCardMenu::init()
+{
+    if (!Layer::init()) {
+        return false;
+    }
+
+    //触摸截断
+    this->setLocalZOrder(8888);
+    this->setTouchEnabled(true);
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->setSwallowTouches(true);
+    listener->onTouchBegan = [](Touch* t, Event* e) { return true; };
+    _director->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+
+    /* 构建界面背景 */
+    auto layout = Layout::create();
+    layout->setContentSize(Size(_visibleSize.width / 3.0, _visibleSize.height));
+    layout->setBackGroundColorType(Layout::BackGroundColorType::SOLID);
+    layout->setBackGroundColor(Color3B(255, 255, 255));
+    layout->setBackGroundColorOpacity(50);
+    layout->setAnchorPoint(Vec2::ANCHOR_BOTTOM_RIGHT);
+    layout->setPosition(Vec2(_visibleSize.width, 0));
+
+    /*道具列表控件*/
+    spellCardTable = TableView::create(this, Size(300, 600));
+    spellCardTable->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    spellCardTable->setPosition(Vec2(65, 120));
+    spellCardTable->setDirection(cocos2d::extension::ScrollView::Direction::VERTICAL); //纵向
+    spellCardTable->setVerticalFillOrder(TableView::VerticalFillOrder::TOP_DOWN); //从小到大排列
+    spellCardTable->setDelegate(this);                                            //委托代理
+    layout->addChild(spellCardTable);
+    spellCardTable->reloadData();
+
+    /* 按钮 */
+    auto cancelButton = Button::create();
+    cancelButton->setTitleText("取消");
+    cancelButton->setTitleFontSize(36);
+    cancelButton->loadTextures("settings_layer/buttonNormal.png",
+                               "settings_layer/buttonPressed.png");
+    cancelButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    cancelButton->setPosition(Vec2(layout->getSize().width / 2.0, layout->getSize().height / 10.0));
+    cancelButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playReturnButtonEffect();
+            this->removeFromParentAndCleanup(true);
+        }
+    });
+    layout->addChild(cancelButton);
+
+    addChild(layout);
+
+    return true;
+}
+
+Size
+EquipScene::SpellCardMenu::tableCellSizeForIndex(TableView* table, ssize_t idx)
+{
+    return Size(300, 100);
+}
+
+TableViewCell*
+EquipScene::SpellCardMenu::tableCellAtIndex(TableView* table, ssize_t idx)
+{
+    TableViewCell* cell = table->dequeueCell();
+    if (!cell) {
+        cell = new TableViewCell();
+        cell->autorelease();
+    } else {
+        cell->removeAllChildren();
+    }
+
+    if (spellCards.size() > 0) {
+        cell->setName(spellCards[idx].tag);
+
+        auto box = PlaceHolder::createRect(Size(300, 90), "", 16, Color3B(91, 155, 213));
+        box->setPosition(Vec2(0, 50));
+        box->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+        cell->addChild(box);
+
+        auto icon = Sprite::create(spellCards[idx].icon);
+        icon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        icon->setPosition(Vec2(30, 50));
+        cell->addChild(icon);
+
+        auto name = Label::createWithTTF(spellCards[idx].name, "fonts/dengxian.ttf", 20);
+        name->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        name->setPosition(Vec2(120, 50));
+        name->setColor(Color3B::BLACK);
+        cell->addChild(name);
+
+        auto characters = GameData::getInstance()->getAvailableCharacterList();
+        string userName = "无";
+        bool _canBreak = false;
+        for (int k = 0; k < characters.size(); k++) {
+            vector<SpellCard> cards =
+                GameData::getInstance()->getCharacterEquipedSpellCards(characters[k].tag);
+            for (int j = 0; j < cards.size(); j++) {
+                if (spellCards[idx].tag == cards[j].tag) {
+                    userName = characters[k].name;
+                    _canBreak = true;
+                    break;
+                }
+            }
+            if (_canBreak) {
+                break;
+            }
+        }
+        auto userLabel = Label::createWithTTF("使用者: ", "fonts/dengxian.ttf", 20);
+        userLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        userLabel->setPosition(Vec2(210, 60));
+        userLabel->setColor(Color3B::BLACK);
+        cell->addChild(userLabel);
+
+        auto status = Label::createWithTTF(userName, "fonts/dengxian.ttf", 20);
+        status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        status->setPosition(Vec2(210, 40));
+        status->setColor(Color3B::BLACK);
+        status->setName("status");
+        cell->addChild(status);
+    }
+    return cell;
+}
+
+ssize_t
+EquipScene::SpellCardMenu::numberOfCellsInTableView(TableView* table)
+{
+    return spellCards.size();
+}
+
+void
+EquipScene::SpellCardMenu::tableCellTouched(TableView* table, TableViewCell* cell)
+{
+    AudioController::getInstance()->playClickButtonEffect();
+    func(cell->getName());
+    callBack();
+
+    table->reloadData();
 }

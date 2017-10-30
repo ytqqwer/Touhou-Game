@@ -83,12 +83,6 @@ public:
     int type1Tag;
     int type2Tag;
 
-    //道具列表
-    vector<Item> itemList;
-
-    //符卡列表
-    vector<SpellCard> spellCardList;
-
     //状态机
     StateMachine<Player>* stateMachine;
 

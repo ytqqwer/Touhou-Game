@@ -9,9 +9,32 @@
                 {
                   "tag" : "Reimu",
                   "itemSlotNum" : 2,
-                  "spellCardSlotNum" : 3,
-                  "equipedItemList" : [ "I1", "I3" ],
-                  "equipedSpellCardList" : [ "C1", "C3", "C5" ],
+                  "spellCardSlotNum" : 2,
+                  "activeItems": [
+                    {
+                        "tag": "I1",
+                        "slot": 0
+                    },
+                    {
+                        "tag": "I6",
+                        "slot": 1
+                    },
+                    {
+                        "tag": "I3",
+                        "slot": 2
+                    }
+                ],
+                "strengthenItems": ["I5"],
+                "spellCards": [
+                    {
+                        "tag": "C1",
+                        "slot": 0
+                    },
+                    {
+                        "tag": "C3",
+                        "slot": 1
+                    }
+                ],
                   "preferedAttackType" : "FOCUS",
                   "selectedAttackType" : [ "reimu focus attack 1", "reimu split attack 1" ]
                 },
@@ -19,8 +42,19 @@
                   "tag" : "Marisa",
                   "itemSlotNum" : 1,
                   "spellCardSlotNum" : 2,
-                  "equipedItemList" : ["I2"],
-                  "equipedSpellCardList" : [ "C2" ],
+                "activeItems": [
+                    {
+                        "tag": "I4",
+                        "slot": 1
+                    }
+                ],
+                  "strengthenItems" : [ "I9" ],
+                "spellCards": [
+                    {
+                        "tag": "C2",
+                        "slot": 0
+                    }
+                ],
                   "preferedAttackType" : "SPLIT",
                   "selectedAttackType" : [ "marisa focus attack 2", "marisa split attack 2" ]
                 }
@@ -63,7 +97,8 @@
                 { "tag" : "I3" }, { "tag" : "I4" },
                 { "tag" : "I5" }, { "tag" : "I6" },
                 { "tag" : "I7" }, { "tag" : "I8" },
-                { "tag" : "I9" }
+                { "tag" : "I9" }, { "tag" : "I10" },
+                { "tag" : "I11" }
             ],
             "availableSpellCardList" : [
                 { "tag" : "C1" }, { "tag" : "C2" },

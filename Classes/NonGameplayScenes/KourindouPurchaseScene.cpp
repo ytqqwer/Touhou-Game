@@ -164,6 +164,8 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
     if (currentType == Item::Type::OTHER) {
         auto characters = gamedata->getAvailableCharacterList();
         if (characters.size() > 0) {
+            auto characterTag = characters[idx].tag;
+
             auto box = PlaceHolder::createRect(Size(720, 150), "", 16, Color3B(91, 155, 213));
             box->setPosition(Vec2(0, 100));
             box->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
@@ -180,13 +182,134 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
             portrait->setPosition(Vec2(50, 85));
             cell->addChild(portrait);
 
-            auto name = Label::createWithTTF(characters[idx].name, "fonts/dengxian.ttf", 20);
-            name->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            name->setPosition(Vec2(180, 85));
-            name->setColor(Color3B::BLACK);
-            cell->addChild(name);
+            /*道具栏解锁相关*/
+            do {
+                auto itemSlotLabel = Label::createWithTTF("道具栏", "fonts/dengxian.ttf", 20);
+                itemSlotLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                itemSlotLabel->setPosition(Vec2(150, 100));
+                itemSlotLabel->setColor(Color3B::BLACK);
+                cell->addChild(itemSlotLabel);
 
-            //解锁栏位
+                string temp;
+                stringstream ss;
+                ss << characters[idx].itemSlotNum;
+                ss >> temp;
+                auto itemSlotNumerLabel =
+                    Label::createWithTTF(temp + "/3", "fonts/dengxian.ttf", 20);
+                itemSlotNumerLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                itemSlotNumerLabel->setPosition(Vec2(150, 70));
+                itemSlotNumerLabel->setColor(Color3B::BLACK);
+                cell->addChild(itemSlotNumerLabel);
+
+                auto unlockItemSlotButton = Button::create("InventoryScene/p2.png", "", "");
+                unlockItemSlotButton->setPosition(Vec2(300, 85));
+                unlockItemSlotButton->setTitleFontSize(30);
+                unlockItemSlotButton->setTitleColor(Color3B::BLACK);
+                unlockItemSlotButton->setTitleText("已满");
+                cell->addChild(unlockItemSlotButton);
+                if (characters[idx].itemSlotNum < 3) {
+                    unlockItemSlotButton->setTitleText("5000钱币");
+                    unlockItemSlotButton->addTouchEventListener(
+                        [this, characterTag, itemSlotNumerLabel,
+                         unlockItemSlotButton](Ref* pSender, Widget::TouchEventType type) {
+                            if (type == Widget::TouchEventType::ENDED) {
+                                if (gamedata->getMoneyNum() < 5000) {
+                                    unlockItemSlotButton->setTitleText("余额不足");
+                                    return;
+                                }
+                                auto character =
+                                    GameData::getInstance()->getCharacterByTag(characterTag);
+                                if (character.itemSlotNum >= 3) {
+                                    //栏位解锁完毕后，再次点击将无效
+                                    return;
+                                }
+
+                                std::function<void()> func =
+                                    std::bind(&GameData::unlockItemSlot, gamedata, characterTag);
+                                std::function<void()> callBack =
+                                    [itemSlotNumerLabel, unlockItemSlotButton, characterTag]() {
+                                        auto character = GameData::getInstance()->getCharacterByTag(
+                                            characterTag); //获得新数据
+                                        string temp;
+                                        stringstream ss;
+                                        ss << character.itemSlotNum;
+                                        ss >> temp;
+                                        itemSlotNumerLabel->setString(temp + "/3");
+
+                                        if (character.itemSlotNum >= 3) {
+                                            unlockItemSlotButton->setTitleText("已满");
+                                        }
+                                    };
+                                this->addChild(ConfirmButton::create(func, callBack));
+                            }
+                        });
+                }
+            } while (0);
+
+            /*符卡栏解锁相关*/
+            do {
+                auto cardSlotLabel = Label::createWithTTF("符卡栏", "fonts/dengxian.ttf", 20);
+                cardSlotLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                cardSlotLabel->setPosition(Vec2(450, 100));
+                cardSlotLabel->setColor(Color3B::BLACK);
+                cell->addChild(cardSlotLabel);
+
+                string temp;
+                stringstream ss;
+                ss << characters[idx].spellCardSlotNum;
+                ss >> temp;
+                auto cardSlotNumerLabel =
+                    Label::createWithTTF(temp + "/3", "fonts/dengxian.ttf", 20);
+                cardSlotNumerLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+                cardSlotNumerLabel->setPosition(Vec2(450, 70));
+                cardSlotNumerLabel->setColor(Color3B::BLACK);
+                cell->addChild(cardSlotNumerLabel);
+
+                auto unlockCardSlotButton = Button::create("InventoryScene/p2.png", "", "");
+                unlockCardSlotButton->setPosition(Vec2(600, 85));
+                unlockCardSlotButton->setTitleFontSize(30);
+                unlockCardSlotButton->setTitleColor(Color3B::BLACK);
+                unlockCardSlotButton->setTitleText("已满");
+                cell->addChild(unlockCardSlotButton);
+                if (characters[idx].spellCardSlotNum < 3) {
+                    unlockCardSlotButton->setTitleText("5000钱币");
+                    unlockCardSlotButton->addTouchEventListener(
+                        [this, characterTag, cardSlotNumerLabel,
+                         unlockCardSlotButton](Ref* pSender, Widget::TouchEventType type) {
+                            if (type == Widget::TouchEventType::ENDED) {
+                                if (gamedata->getMoneyNum() < 5000) {
+                                    unlockCardSlotButton->setTitleText("余额不足");
+                                    return;
+                                }
+                                auto character =
+                                    GameData::getInstance()->getCharacterByTag(characterTag);
+                                if (character.spellCardSlotNum >= 3) {
+                                    //栏位解锁完毕后，再次点击将无效
+                                    return;
+                                }
+
+                                std::function<void()> func = std::bind(
+                                    &GameData::unlockSpellCardSlot, gamedata, characterTag);
+                                std::function<void()> callBack =
+                                    [cardSlotNumerLabel, unlockCardSlotButton, characterTag]() {
+                                        auto character = GameData::getInstance()->getCharacterByTag(
+                                            characterTag); //获得新数据
+                                        string temp;
+                                        stringstream ss;
+                                        ss << character.spellCardSlotNum;
+                                        ss >> temp;
+                                        cardSlotNumerLabel->setString(temp + "/3");
+
+                                        if (character.spellCardSlotNum >= 3) {
+                                            unlockCardSlotButton->setTitleText("已满");
+                                        }
+                                    };
+                                this->addChild(ConfirmButton::create(func, callBack));
+                            }
+                        });
+                }
+
+            } while (0);
         }
     } else if (currentType == Item::Type::NORMAL || currentType == Item::Type::STRENGTHEN) {
         vector<Item> currentItems;

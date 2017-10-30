@@ -57,6 +57,19 @@ private:
     vector<Item> specialItems;
 
     TableView* itemTable;
+
+    class characterMenu : public Layer
+    {
+    public:
+        static characterMenu* create(std::function<void(std::string)> func,
+                                     std::function<void(std::string)> callBack);
+        virtual bool init(std::function<void(std::string)> func,
+                          std::function<void(std::string)> callBack);
+
+    private:
+        characterMenu(){};
+        Size _visibleSize;
+    };
 };
 
 #endif // INVENTORY_SCENE_H
