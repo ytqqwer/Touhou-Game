@@ -46,7 +46,7 @@ Player::changeAttackType(const std::string& startType)
         sc1.frequency = 0.15f;
         sc1.bulletDuration = 2;
         sc1.number = 7;
-        sc1.count = 4;
+        sc1.countThenChangePos = 4;
         sc1.cycleTimes = -1;
         sc1.totalDuration = FLT_MAX;
         sc1.height = 150;

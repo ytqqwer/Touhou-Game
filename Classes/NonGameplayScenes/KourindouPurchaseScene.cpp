@@ -203,6 +203,7 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
 
                 auto unlockItemSlotButton = Button::create("InventoryScene/p2.png", "", "");
                 unlockItemSlotButton->setPosition(Vec2(300, 85));
+                unlockItemSlotButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 unlockItemSlotButton->setTitleFontSize(30);
                 unlockItemSlotButton->setTitleColor(Color3B::BLACK);
                 unlockItemSlotButton->setTitleText("已满");
@@ -266,6 +267,7 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
                 cell->addChild(cardSlotNumerLabel);
 
                 auto unlockCardSlotButton = Button::create("InventoryScene/p2.png", "", "");
+                unlockCardSlotButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 unlockCardSlotButton->setPosition(Vec2(600, 85));
                 unlockCardSlotButton->setTitleFontSize(30);
                 unlockCardSlotButton->setTitleColor(Color3B::BLACK);

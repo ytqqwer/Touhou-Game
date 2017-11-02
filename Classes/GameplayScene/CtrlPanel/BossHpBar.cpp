@@ -5,9 +5,9 @@ USING_NS_CC;
 using namespace std;
 
 BossHpBar*
-BossHpBar::create(const std::string& tag, const int maxHpValue, const std::string face)
+BossHpBar::create(const Node* target, const int maxHpValue, const std::string face)
 {
-    auto bar = new (std::nothrow) BossHpBar(tag, maxHpValue, face);
+    auto bar = new (std::nothrow) BossHpBar(target, maxHpValue, face);
     if (bar && bar->init()) {
         bar->autorelease();
         return bar;
@@ -18,9 +18,9 @@ BossHpBar::create(const std::string& tag, const int maxHpValue, const std::strin
     }
 }
 
-BossHpBar::BossHpBar(const std::string& tag, const int maxHpValue, const std::string face)
+BossHpBar::BossHpBar(const Node* target, const int maxHpValue, const std::string face)
 {
-    this->_tag = tag;
+    this->_target = target;
     this->_maxHp = maxHpValue;
     this->_face = face;
 }
@@ -73,7 +73,7 @@ BossHpBar::init()
     Director::getInstance()->getEventDispatcher()->addCustomEventListener(
         "hp_change", [this](EventCustom* e) {
             auto change = (Hp_Mp_Change*)e->getUserData();
-            if (this->_tag == change->tag) {
+            if (this->_target == change->target) {
                 auto currentWidth = _hpStencil->getContentSize().width;
                 auto originWidth = this->_hpBar->getContentSize().width;
 

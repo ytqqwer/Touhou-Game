@@ -33,7 +33,8 @@ public:
     std::string face;
     Node** curTarget;
 
-    int hp;
+    int CurrentHp;
+    int BaseHp;
     bool _canJump = false;
 
     Sprite* enemySprite;

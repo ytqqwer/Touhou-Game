@@ -22,7 +22,7 @@ AudioController::isPlayingMusic()
 }
 
 void
-AudioController::playMusic(std::string music, bool loop)
+AudioController::playMusic(const std::string& music, bool loop)
 {
     if (currentMusic != music) {
         SimpleAudioEngine::getInstance()->stopBackgroundMusic();
@@ -64,7 +64,7 @@ AudioController::resumeFormerMusic()
 }
 
 unsigned int
-AudioController::playEffect(std::string effect)
+AudioController::playEffect(const std::string& effect)
 {
     return SimpleAudioEngine::getInstance()->playEffect(effect.c_str());
 }

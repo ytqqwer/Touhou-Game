@@ -49,12 +49,12 @@ HomeScene::init()
 
 #ifndef NDEBUG
     auto UpdateButton = Button::create();
-    UpdateButton->setTitleText("新增数据");
+    UpdateButton->setTitleText("新增测试数据");
     UpdateButton->setTitleFontName("fonts/dengxian.ttf");
-    UpdateButton->setTitleColor(Color3B(194, 134, 11));
+    UpdateButton->setTitleColor(Color3B::BLACK);
     UpdateButton->setTitleFontSize(30);
-    UpdateButton->setAnchorPoint(Vec2(0, 0));
-    UpdateButton->setPosition(Vec2(_visibleSize.width * 0.50, _visibleSize.height * 0.50));
+    UpdateButton->setAnchorPoint(Vec2(0, 1));
+    UpdateButton->setPosition(Vec2(_visibleSize.width * 0.03, _visibleSize.height));
     UpdateButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             auto tag = GameData::getInstance()->getCurrentSaveTag();
@@ -67,9 +67,6 @@ HomeScene::init()
     });
     addChild(UpdateButton);
 
-#endif
-
-    /* 返回按钮*/
     auto ret = Button::create("", "", "");
     ret->setTitleText("返回");
     ret->setTitleColor(Color3B(0, 0, 0));
@@ -82,6 +79,8 @@ HomeScene::init()
         }
     });
     addChild(ret, 2);
+
+#endif
 
     /*出发按钮*/
     auto button_start = Button::create("homescene/p1.png");

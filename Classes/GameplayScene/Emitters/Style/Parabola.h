@@ -29,7 +29,7 @@ public:
 
 private:
     Direction* direction;
-    unsigned int counter; //计数器
+    unsigned int counterInside; //计数器
 
     float timeAccumulation;
     float elapsed;

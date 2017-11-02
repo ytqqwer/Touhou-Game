@@ -708,7 +708,7 @@ GameData::updateSave(const std::string& updateTag)
     json& unlockedLocsDom = cachedSave["unlockedLocationList"];
     for (auto const& location : Locations) {
         bool isExist = false;
-        //若此地点已存在，则只追加新的对话
+        //若此地点已存在，则追加新的对话
         for (auto& ul : unlockedLocsDom) {
             if (ul["tag"] == location["tag"]) {
                 json& indicatorsDom =
@@ -729,6 +729,17 @@ GameData::updateSave(const std::string& updateTag)
                                        { "conversationIndicators",
                                          location.at("conversationIndicators") } };
             unlockedLocsDom.push_back(newLocationRecord);
+        }
+    }
+    //增加通过的关卡数
+    const json& passedRoundIncrease = elementUpdateDom->at("passedRoundIncrease");
+    for (auto const& location : passedRoundIncrease) {
+        for (auto& ul : unlockedLocsDom) {
+            if (ul["tag"] == location["tag"]) {
+                ul["passedRound"] =
+                    ul["passedRound"].get<int>() + location["passedRoundIncrease"].get<int>();
+                break;
+            }
         }
     }
 

@@ -7,7 +7,7 @@ Parabola::Parabola(Direction* direction)
     this->sc.frequency = 0.2f;
     this->sc.bulletDuration = 1.5;
     this->sc.number = 5;
-    this->sc.count = 3;
+    this->sc.countThenChangePos = 3;
     this->sc.height = 100;
     this->sc.distance = 500;
 
@@ -24,7 +24,7 @@ Parabola::Parabola(Direction* direction)
 
     this->direction = direction;
 
-    this->counter = 0;
+    this->counterInside = 0;
     this->spawnBulletCycleTimes = 0;
     this->timeAccumulation = 0;
     this->elapsed = 0;
@@ -36,7 +36,7 @@ Parabola::Parabola(const StyleConfig& sc, Direction* direction)
 
     this->direction = direction;
 
-    this->counter = 0;
+    this->counterInside = 0;
     this->spawnBulletCycleTimes = 0;
     this->timeAccumulation = 0;
     this->elapsed = 0;
@@ -75,11 +75,11 @@ Parabola::shootBullet(float dt)
 void
 Parabola::spawnBullet()
 {
-    if (this->counter == sc.count) {
-        this->counter = 0;
+    if (this->counterInside == sc.countThenChangePos) {
+        this->counterInside = 0;
         return;
     } else {
-        this->counter++;
+        this->counterInside++;
     }
 
     auto emitter = this->getParent();

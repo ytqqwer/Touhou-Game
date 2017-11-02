@@ -30,6 +30,12 @@
                 "conversationIndicators": ["C2","C3"]
             }
         ],
+        "passedRoundIncrease": [
+            {
+                "tag": "Hakurei Jinja",
+                "passedRoundIncrease": 1 
+            }
+        ],
         "getItems": [
             {"tag": "I10"},{"tag": "I13"}
         ],

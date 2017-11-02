@@ -51,6 +51,7 @@ struct DamageInfo
 struct Hp_Mp_Change
 {
     std::string tag;
+    Node* target;
     int value;
 };
 

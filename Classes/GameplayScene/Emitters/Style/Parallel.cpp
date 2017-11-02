@@ -10,7 +10,7 @@ Parallel::Parallel(Node** target)
     this->sc.style = StyleType::PARALLEL;
     this->sc.frequency = 0.5f;
     this->sc.bulletDuration = 6.0;
-    this->sc.count = 1;
+    this->sc.countThenChangePos = 1;
     this->sc.number = 4;
     this->sc.interval = 1.5;
 
@@ -28,7 +28,7 @@ Parallel::Parallel(Node** target)
     this->isPlayer = false;
     this->target = target;
 
-    this->counter = 0;
+    this->counterInside = 0;
     this->spawnBulletCycleTimes = 0;
     this->timeAccumulation = 0;
     this->elapsed = 0;
@@ -41,7 +41,7 @@ Parallel::Parallel(const StyleConfig& sc, Node** target)
     this->isPlayer = false;
     this->target = target;
 
-    this->counter = 0;
+    this->counterInside = 0;
     this->spawnBulletCycleTimes = 0;
     this->timeAccumulation = 0;
     this->elapsed = 0;
@@ -56,7 +56,7 @@ Parallel::Parallel(Direction* direction)
     this->sc.style = StyleType::PARALLEL;
     this->sc.frequency = 1.0f;
     this->sc.bulletDuration = 3.0;
-    this->sc.count = 0;
+    this->sc.countThenChangePos = 0;
     this->sc.number = 2;
     this->sc.interval = 2;
     this->sc.bc.name = "b1_3_3.png";
@@ -64,7 +64,7 @@ Parallel::Parallel(Direction* direction)
     this->isPlayer = true;
     this->direction = direction;
 
-    this->counter = 0;
+    this->counterInside = 0;
     this->spawnBulletCycleTimes = 0;
     this->timeAccumulation = 0;
     this->elapsed = 0;
@@ -77,7 +77,7 @@ Parallel::Parallel(const StyleConfig& sc, Direction* direction)
     this->isPlayer = true;
     this->direction = direction;
 
-    this->counter = 0;
+    this->counterInside = 0;
     this->spawnBulletCycleTimes = 0;
     this->timeAccumulation = 0;
     this->elapsed = 0;
@@ -119,15 +119,15 @@ Parallel::shootBullet(float dt)
 void
 Parallel::spawnBullet()
 {
-    if (sc.count != 0) {
-        if (this->counter == sc.count) {
-            this->counter = 0;
+    if (sc.countThenChangePos != 0) {
+        if (this->counterInside == sc.countThenChangePos) {
+            this->counterInside = 0;
             if (isPlayer == false) {
                 this->targetPos = (*target)->getPosition(); //更新目标位置
             }
-            return;
+            // return;
         } else {
-            this->counter++;
+            this->counterInside++;
         }
     }
 

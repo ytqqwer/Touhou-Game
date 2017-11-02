@@ -21,7 +21,8 @@ Frog::init(const std::string& tag)
     this->addChild(enemySprite);
 
     //设置属性值
-    this->hp = _enemyData.healthPoint;
+    this->CurrentHp = _enemyData.healthPoint;
+    this->BaseHp = CurrentHp;
 
     //设置刚体
     body = PhysicsBody::createBox(
@@ -76,8 +77,8 @@ Frog::jump()
 void
 Frog::decreaseHp(int damage)
 {
-    this->hp = this->hp - std::abs(damage);
-    if (this->hp < 0) {
+    this->CurrentHp = this->CurrentHp - std::abs(damage);
+    if (this->CurrentHp < 0) {
         this->removeFromParentAndCleanup(true);
     }
 }

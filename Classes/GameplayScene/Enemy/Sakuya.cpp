@@ -7,6 +7,8 @@
 #include "GameData/GameData.h"
 #include "GameplayScene/Emitters/Emitter.h"
 
+#include "AudioController.h"
+
 bool
 Sakuya::init(const std::string& tag)
 {
@@ -25,7 +27,8 @@ Sakuya::init(const std::string& tag)
     this->face = _enemyData.face;
 
     //设置属性值
-    this->hp = _enemyData.healthPoint;
+    this->CurrentHp = _enemyData.healthPoint;
+    this->BaseHp = CurrentHp;
 
     //设置刚体
     body = PhysicsBody::createBox(Size(55, 90));
@@ -107,9 +110,9 @@ Sakuya::decreaseHp(int damage)
 {
     damageAccumulation += damage;
 
-    this->hp = this->hp - damage;
-    if (this->hp < 0) {
-        this->removeFromParentAndCleanup(true);
+    this->CurrentHp = this->CurrentHp - damage;
+    if (this->CurrentHp < 0) {
+        stateMachine->changeState(Sakuya::Knockdown::getInstance());
 
         EventCustom event("kill_boss");
         _eventDispatcher->dispatchEvent(&event);
@@ -117,6 +120,7 @@ Sakuya::decreaseHp(int damage)
 
     Hp_Mp_Change hpChange;
     hpChange.tag = this->enemyTag;
+    hpChange.target = this;
     hpChange.value = -(std::abs(damage)); //此处取反，因为伤害值总是正数
     EventCustom event("hp_change");
     event.setUserData((void*)&hpChange);
@@ -155,12 +159,15 @@ Sakuya::StandAndChooseAction::Enter(Enemy* enemy)
     sakuya->schedule(
         [sakuya](float dt) {
             int weight = random(0, 100);
-
-            if (weight >= 60) {
+            if (sakuya->CurrentHp <= sakuya->BaseHp * 0.5 && weight >= 60) {
+                sakuya->stateMachine->changeState(Sakuya::UseSpellCard::getInstance());
+            } else if (weight >= 60) {
+                sakuya->stateMachine->changeState(Sakuya::ShootB::getInstance());
+            } else if (weight >= 40) {
                 sakuya->stateMachine->changeState(Sakuya::ShootA::getInstance());
-            } else if (weight >= 50) {
+            } else if (weight >= 30) {
                 sakuya->stateMachine->changeState(Sakuya::Walk::getInstance());
-            } else if (weight >= 25) {
+            } else if (weight >= 15) {
                 sakuya->stateMachine->changeState(Sakuya::Jump::getInstance());
             } else if (weight >= 0) {
                 sakuya->stateMachine->changeState(Sakuya::Dash::getInstance());
@@ -175,8 +182,8 @@ Sakuya::StandAndChooseAction::Exit(Enemy* enemy)
 {
     auto sakuya = (Sakuya*)enemy;
     sakuya->enemySprite->stopAction(sakuya->currentAnimateAction);
-    sakuya->unschedule(CC_SCHEDULE_SELECTOR(Sakuya::autoChangeDirection));
     sakuya->unschedule("StandAndChooseAction");
+    sakuya->unschedule(CC_SCHEDULE_SELECTOR(Sakuya::autoChangeDirection));
 }
 
 void
@@ -363,8 +370,8 @@ Sakuya::ShootA::Enter(Enemy* enemy)
         sc1.style = StyleType::PARALLEL;
         sc1.frequency = 0.0f;
         sc1.bulletDuration = 4.0f;
-        sc1.number = 4;
-        sc1.count = 1;
+        sc1.number = 5;
+        sc1.countThenChangePos = 1;
         sc1.interval = 2.0f;
         sc1.cycleTimes = 1;
         sc1.totalDuration = 1.0;
@@ -387,14 +394,12 @@ Sakuya::ShootA::Exit(Enemy* enemy)
 {
     auto sakuya = (Sakuya*)enemy;
     sakuya->enemySprite->stopAction(sakuya->currentAnimateAction);
-
-    sakuya->emitter->stopAllStyle();
 }
 
 void
 Sakuya::ShootA::defaultChangeState(Enemy* enemy)
 {
-    enemy->stateMachine->RevertToPreviousState();
+    enemy->stateMachine->changeState(Sakuya::StandAndChooseAction::getInstance());
 }
 
 Sakuya::ShootB*
@@ -408,18 +413,46 @@ void
 Sakuya::ShootB::Enter(Enemy* enemy)
 {
     auto sakuya = (Sakuya*)enemy;
+    auto animate1 = Animate::create(AnimationCache::getInstance()->getAnimation("sakuyaAttackB_1"));
+    auto animate2 = Animate::create(AnimationCache::getInstance()->getAnimation("sakuyaAttackB_2"));
+    auto actionDone =
+        CallFuncN::create(CC_CALLBACK_0(Sakuya::ShootB::defaultChangeState, this, sakuya));
+    std::function<void(Ref*)> shoot = [sakuya](Ref*) {
+        StyleConfig sc;
+
+        sc.style = StyleType::ODDEVEN;
+        sc.frequency = 0.0f;
+        sc.bulletDuration = 5.0;
+        sc.number = 7;
+        sc.countThenChangePos = 1;
+        sc.totalDuration = 1.0;
+        sc.cycleTimes = 1;
+        sc.bc.name = "b2_2_1.png";
+        sc.bc.length = 10;
+        sc.bc.width = 20;
+        sc.bc.harm = 10;
+        sc.bc._categoryBitmask = 0;
+        sc.bc._collisionBitmask = 0;
+        sc.bc._contactTestBitmask = 0;
+
+        sakuya->emitter->playStyle(sc);
+    };
+    sakuya->currentAnimateAction =
+        Sequence::create(animate1, CallFuncN::create(shoot), animate2, actionDone, NULL);
+    sakuya->enemySprite->runAction(sakuya->currentAnimateAction);
 }
 
 void
 Sakuya::ShootB::Exit(Enemy* enemy)
 {
     auto sakuya = (Sakuya*)enemy;
+    sakuya->enemySprite->stopAction(sakuya->currentAnimateAction);
 }
 
 void
 Sakuya::ShootB::defaultChangeState(Enemy* enemy)
 {
-    enemy->stateMachine->RevertToPreviousState();
+    enemy->stateMachine->changeState(Sakuya::StandAndChooseAction::getInstance());
 }
 
 Sakuya::UseSpellCard*
@@ -430,13 +463,64 @@ Sakuya::UseSpellCard::getInstance()
 }
 
 void
-Sakuya::UseSpellCard::Enter(Enemy*)
+Sakuya::UseSpellCard::Enter(Enemy* enemy)
 {
+    auto sakuya = (Sakuya*)enemy;
+
+    AudioController::getInstance()->playEffect("se/use_spell_card.wav");
+
+    auto portrait = Sprite::create("gameplayscene/Sakuya/useSpellCard.png");
+    sakuya->addChild(portrait);
+    portrait->setOpacity(50);
+    portrait->runAction(
+        Sequence::create(MoveBy::create(0.8, Vec2(0, 150)), FadeOut::create(0.3f), NULL));
+    portrait->scheduleOnce([portrait](float dt) { portrait->removeFromParent(); }, 1.5, "remove");
+
+    auto useSpellCardAnimate =
+        Animate::create(AnimationCache::getInstance()->getAnimation("sakuyaUseSpellCard"));
+    auto animateA1 =
+        Animate::create(AnimationCache::getInstance()->getAnimation("sakuyaAttackA_1"));
+    auto animateA2 =
+        Animate::create(AnimationCache::getInstance()->getAnimation("sakuyaAttackA_2"));
+    auto animateB1 =
+        Animate::create(AnimationCache::getInstance()->getAnimation("sakuyaAttackB_1"));
+    auto animateB2 =
+        Animate::create(AnimationCache::getInstance()->getAnimation("sakuyaAttackB_2"));
+
+    std::function<void(Ref*)> shoot = [sakuya](Ref*) {
+        StyleConfig sc;
+        sc.style = StyleType::ODDEVEN;
+        sc.frequency = 0.1f;
+        sc.bulletDuration = 4.0;
+        sc.number = 15;
+        sc.countThenChangePos = 5;
+        sc.totalDuration = 1.0;
+        sc.cycleTimes = 5;
+        sc.bc.name = "b2_2_1.png";
+        sc.bc.length = 10;
+        sc.bc.width = 20;
+        sc.bc.harm = 10;
+        sc.bc._categoryBitmask = 0;
+        sc.bc._collisionBitmask = 0;
+        sc.bc._contactTestBitmask = 0;
+        sakuya->emitter->playStyle(sc);
+    };
+
+    auto actionDone =
+        CallFuncN::create(CC_CALLBACK_0(Sakuya::UseSpellCard::defaultChangeState, this, sakuya));
+    sakuya->currentAnimateAction =
+        Sequence::create(useSpellCardAnimate, animateA1, CallFuncN::create(shoot), animateB1,
+                         animateA1, CallFuncN::create(shoot), animateA2, actionDone, NULL);
+    sakuya->enemySprite->runAction(sakuya->currentAnimateAction);
 }
 
 void
-Sakuya::UseSpellCard::Exit(Enemy*)
+Sakuya::UseSpellCard::Exit(Enemy* enemy)
 {
+    auto sakuya = (Sakuya*)enemy;
+    sakuya->enemySprite->stopAction(sakuya->currentAnimateAction);
+
+    // sakuya->emitter->stopAllStyle();
 }
 
 void
@@ -453,12 +537,21 @@ Sakuya::Knockdown::getInstance()
 }
 
 void
-Sakuya::Knockdown::Enter(Enemy*)
+Sakuya::Knockdown::Enter(Enemy* enemy)
 {
+    auto sakuya = (Sakuya*)enemy;
+    auto animate = Animate::create(AnimationCache::getInstance()->getAnimation("sakuyaKnockdown"));
+    sakuya->enemySprite->runAction(animate);
+
+    //使人物能倒在地上
+    sakuya->body->getFirstShape()->setCategoryBitmask(enemyCategory);
+    sakuya->body->getFirstShape()->setCollisionBitmask(groundCategory);
+    sakuya->body->getFirstShape()->setContactTestBitmask(groundCategory);
+    sakuya->body->setPositionOffset(Vec2(0, 40));
 }
 
 void
-Sakuya::Knockdown::Exit(Enemy*)
+Sakuya::Knockdown::Exit(Enemy* enemy)
 {
 }
 

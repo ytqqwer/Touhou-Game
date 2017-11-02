@@ -206,7 +206,7 @@ EquipScene::loadCharacterProperty(const Character& character)
 
     /*符卡*/
     auto equipedSpellCards = gamedata->getCharacterEquipedSpellCardsInPair(character.tag);
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < character.spellCardSlotNum; i++) {
         Button* button = Button::create();
         button->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
 
@@ -276,7 +276,7 @@ EquipScene::loadCharacterProperty(const Character& character)
 
     /*道具*/
     auto activeItems = gamedata->getCharacterActiveItemsInPair(character.tag);
-    for (int i = 0; i < 3; i++) { // i代表当前槽位
+    for (int i = 0; i < character.itemSlotNum; i++) { // i代表当前槽位
         Button* button = Button::create();
         button->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
 

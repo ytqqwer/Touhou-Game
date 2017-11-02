@@ -40,8 +40,8 @@ private:
     bool isPlayer;
     Direction* direction; //玩家方向
     Node** target;
-    Vec2 targetPos;       //角色位置
-    unsigned int counter; //计数器
+    Vec2 targetPos;             //角色位置
+    unsigned int counterInside; //计数器
 
     float timeAccumulation;
     float elapsed;

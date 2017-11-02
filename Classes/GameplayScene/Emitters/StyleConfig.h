@@ -36,10 +36,10 @@ struct StyleConfig
     StyleType style;
 
     /* 公共参数 */
-    float bulletDuration; //子弹飞行时间
-    float frequency;      //发射频率
-    unsigned int count;   //子弹连发数
-    unsigned int number;  //条数
+    float bulletDuration;            //子弹飞行时间
+    float frequency;                 //发射频率
+    unsigned int countThenChangePos; //连发后更新位置
+    unsigned int number;             //条数
 
     float totalDuration;     //总持续时间
     unsigned int cycleTimes; //总发射次数

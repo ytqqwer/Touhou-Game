@@ -21,7 +21,8 @@ Opossum::init(const std::string& tag)
     this->addChild(enemySprite);
 
     //设置属性值
-    this->hp = _enemyData.healthPoint;
+    this->CurrentHp = _enemyData.healthPoint;
+    this->BaseHp = CurrentHp;
 
     //设置刚体
     body = PhysicsBody::createBox(
@@ -78,8 +79,8 @@ Opossum::horizontallyAccelerate(float dt)
 void
 Opossum::decreaseHp(int damage)
 {
-    this->hp = this->hp - damage;
-    if (this->hp < 0) {
+    this->CurrentHp = this->CurrentHp - damage;
+    if (this->CurrentHp < 0) {
         this->removeFromParentAndCleanup(true);
     }
 }

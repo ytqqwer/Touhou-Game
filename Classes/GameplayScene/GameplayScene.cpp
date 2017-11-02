@@ -150,7 +150,6 @@ GameplayScene::createPhysical(float scale)
         // 读取所有形状的起始点
         float x = dict["x"].asFloat() * scale;
         float y = dict["y"].asFloat() * scale;
-        // log("x:%f\ny:%f", x, y);
 
         //多边形polygonPoints
         if (dict.find("points") != dict.end()) {
@@ -322,6 +321,50 @@ GameplayScene::initAnimationCache()
     sakuyaAttackA_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAb010.png");
     sakuyaAttackA_2->setDelayPerUnit(0.10);
     AnimationCache::getInstance()->addAnimation(sakuyaAttackA_2, "sakuyaAttackA_2");
+
+    auto sakuyaAttackB_1 = Animation::create();
+    sakuyaAttackB_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa000.png");
+    sakuyaAttackB_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa001.png");
+    sakuyaAttackB_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa002.png");
+    sakuyaAttackB_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa003.png");
+    sakuyaAttackB_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa004.png");
+    sakuyaAttackB_1->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa005.png");
+    sakuyaAttackB_1->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(sakuyaAttackB_1, "sakuyaAttackB_1");
+    auto sakuyaAttackB_2 = Animation::create();
+    sakuyaAttackB_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa006.png");
+    sakuyaAttackB_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa007.png");
+    sakuyaAttackB_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa008.png");
+    sakuyaAttackB_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa009.png");
+    sakuyaAttackB_2->addSpriteFrameWithFile("gameplayscene/Sakuya/shotAa010.png");
+    sakuyaAttackB_2->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(sakuyaAttackB_2, "sakuyaAttackB_2");
+
+    auto sakuyaUseSpellCard = Animation::create();
+    sakuyaUseSpellCard->addSpriteFrameWithFile("gameplayscene/Sakuya/spellDa000.png");
+    sakuyaUseSpellCard->addSpriteFrameWithFile("gameplayscene/Sakuya/spellDa001.png");
+    sakuyaUseSpellCard->addSpriteFrameWithFile("gameplayscene/Sakuya/spellDa002.png");
+    sakuyaUseSpellCard->addSpriteFrameWithFile("gameplayscene/Sakuya/spellDa003.png");
+    sakuyaUseSpellCard->addSpriteFrameWithFile("gameplayscene/Sakuya/spellDa004.png");
+    sakuyaUseSpellCard->addSpriteFrameWithFile("gameplayscene/Sakuya/spellDa005.png");
+    sakuyaUseSpellCard->addSpriteFrameWithFile("gameplayscene/Sakuya/spellDa006.png");
+    sakuyaUseSpellCard->addSpriteFrameWithFile("gameplayscene/Sakuya/spellDa007.png");
+    sakuyaUseSpellCard->addSpriteFrameWithFile("gameplayscene/Sakuya/spellDa008.png");
+    sakuyaUseSpellCard->addSpriteFrameWithFile("gameplayscene/Sakuya/spellDa009.png");
+    sakuyaUseSpellCard->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(sakuyaUseSpellCard, "sakuyaUseSpellCard");
+
+    auto sakuyaKnockdown = Animation::create();
+    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down000.png");
+    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down001.png");
+    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down002.png");
+    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down003.png");
+    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down004.png");
+    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down005.png");
+    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down006.png");
+    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down007.png");
+    sakuyaKnockdown->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(sakuyaKnockdown, "sakuyaKnockdown");
 }
 
 void
@@ -329,7 +372,6 @@ GameplayScene::initCharacter()
 {
     TMXObjectGroup* temp = _map->getObjectGroup("player");
     auto ts = temp->getObject("birthPoint");
-    // log("%s", Value(ts).getDescription().c_str());
 
     float x = ts["x"].asFloat();
     float y = ts["y"].asFloat();
@@ -403,7 +445,6 @@ void
 GameplayScene::initCamera()
 {
     auto mapSize = _map->getMapSize();
-    auto mapTileSize = _map->getTileSize();
     camera = Sprite::create();
     mapLayer->addChild(camera);
 
@@ -494,9 +535,8 @@ GameplayScene::initEnemy()
 {
     TMXObjectGroup* group = _map->getObjectGroup("enemy");
     auto objects = group->getObjects();
-    // Value objectsVal = Value(objects);
-    // log("%s", objectsVal.getDescription().c_str());
-    _hasBoss = false;
+
+    _bosses = 0;
 
     for (auto v : objects) {
         auto dict = v.asValueMap();
@@ -520,9 +560,9 @@ GameplayScene::initEnemy()
             enemyList.pushBack(_enemy);
 
             if (dict["type"].asString() == "boss") {
-                _hasBoss = true;
+                _bosses++;
                 auto ctrlLayer = (CtrlPanelLayer*)controlPanel;
-                ctrlLayer->createBossHpBar(tag, _enemy->hp, _enemy->face);
+                ctrlLayer->createBossHpBar(_enemy, _enemy->CurrentHp, _enemy->face);
             }
         }
     }
@@ -853,14 +893,16 @@ GameplayScene::initCustomEventListener()
     });
 
     _eventDispatcher->addCustomEventListener("kill_boss", [this](EventCustom* e) {
-        auto ctrlLayer = (CtrlPanelLayer*)controlPanel;
-        ctrlLayer->removeBossHpBar();
-        this->_hasBoss = false;
+        _bosses--;
+        if (_bosses == 0) {
+            auto ctrlLayer = (CtrlPanelLayer*)controlPanel;
+            ctrlLayer->removeBossHpBar();
 
-        auto sequence =
-            Sequence::create(DelayTime::create(3.0f),
-                             CallFuncN::create(CC_CALLBACK_0(GameplayScene::endGame, this)), NULL);
-        this->runAction(sequence);
+            auto sequence = Sequence::create(
+                DelayTime::create(3.0f),
+                CallFuncN::create(CC_CALLBACK_0(GameplayScene::endGame, this)), NULL);
+            this->runAction(sequence);
+        }
     });
 }
 
@@ -928,6 +970,8 @@ GameplayScene::onEventDashKeyPressed(EventCustom*)
 void
 GameplayScene::onEventSwitchCharacter(EventCustom*)
 {
+    AudioController::getInstance()->playClickButtonEffect();
+
     Player* theOther = nullptr;
 
     if (curPlayer == p1Player) {
@@ -969,6 +1013,8 @@ GameplayScene::onEventSwitchAttackType(EventCustom*)
 void
 GameplayScene::onEventSettingsKeyPressed(EventCustom*)
 {
+    AudioController::getInstance()->playClickButtonEffect();
+
     auto layer = SettingsLayer::create("GameplayScene");
     layer->setPauseNode(mapLayer);
     mapLayer->onExit();
@@ -999,10 +1045,9 @@ GameplayScene::update(float dt)
         for (auto v : elevatorList) {
             v->removeFromParentAndCleanup(true);
         }
-        if (_hasBoss) {
+        if (_bosses != 0) {
             auto ctrlLayer = (CtrlPanelLayer*)controlPanel;
             ctrlLayer->removeBossHpBar();
-            _hasBoss = false;
         }
 
         initArea();
@@ -1012,6 +1057,4 @@ GameplayScene::update(float dt)
         cameraFollow->setTag(cameraTag);
         mapLayer->runAction(cameraFollow);
     }
-
-    //留空，更新界面状态
 }

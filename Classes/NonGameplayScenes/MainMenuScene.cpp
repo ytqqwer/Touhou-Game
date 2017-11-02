@@ -69,6 +69,17 @@ MainMenuScene::init()
     backGround->setPosition(_visibleSize / 2);
     addChild(backGround, -1);
 
+    auto test1 = Sprite::create("comboLimit.png");
+    test1->setPosition(_visibleSize.width * 0.2, _visibleSize.height * 0.13);
+    BlendFunc cbl = { GL_SRC_ALPHA, GL_ONE };
+    test1->setBlendFunc(cbl);
+    addChild(test1);
+    auto test2 = Sprite::create("comboLimit.png");
+    test2->setPosition(_visibleSize.width * 0.4, _visibleSize.height * 0.33);
+    BlendFunc cb2 = { GL_ONE, GL_SRC_ALPHA };
+    test2->setBlendFunc(cb2);
+    addChild(test2);
+
     /*  4. init button */
 
     /*新游戏*/

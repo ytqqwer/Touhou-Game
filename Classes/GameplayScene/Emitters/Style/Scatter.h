@@ -37,8 +37,8 @@ public:
 
 private:
     bool isPlayer;
-    Direction* direction; //玩家方向
-    unsigned int counter; //计数器
+    Direction* direction;       //玩家方向
+    unsigned int counterInside; //计数器
 
     float timeAccumulation;
     float elapsed;

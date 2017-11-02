@@ -29,9 +29,9 @@ public:
 
 private:
     Node** target;
-    Vec2 targetPos; //角色位置
-    float angle;    //夹角
-    int counter;    //计数器
+    Vec2 targetPos;    //角色位置
+    float angle;       //夹角
+    int counterInside; //计数器
 
     float timeAccumulation;
     float elapsed;

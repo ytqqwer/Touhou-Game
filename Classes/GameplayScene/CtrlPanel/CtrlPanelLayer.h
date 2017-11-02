@@ -18,7 +18,7 @@ public:
 
     bool init() override;
 
-    void createBossHpBar(const std::string& tag, const int maxHpValue, const std::string face);
+    void createBossHpBar(const Node* target, const int maxHpValue, const std::string face);
     void removeBossHpBar();
 
 private:
@@ -33,7 +33,8 @@ private:
     Size _visibleSize;
 
     Layer* _characterCtrlPanel[2];
-    int _currCharacterIdx;
+    unsigned int _currCharacterIdx;
+    unsigned int _hpBarCounts = 0;
 };
 
 #endif // CTRL_PANEL_LAYER_H

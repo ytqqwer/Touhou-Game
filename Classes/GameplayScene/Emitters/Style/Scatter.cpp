@@ -10,7 +10,6 @@ Scatter::Scatter()
     this->sc.style = StyleType::SCATTER;
     this->sc.frequency = 0.5f;
     this->sc.bulletDuration = 6.0;
-    this->sc.count = 3;
     this->sc.number = 20;
 
     this->sc.totalDuration = FLT_MAX;
@@ -29,7 +28,7 @@ Scatter::Scatter()
 
     this->isPlayer = false;
 
-    this->counter = 0;
+    this->counterInside = 0;
     this->spawnBulletCycleTimes = 0;
     this->timeAccumulation = 0;
     this->elapsed = 0;
@@ -41,7 +40,7 @@ Scatter::Scatter(const StyleConfig& sc)
 
     this->isPlayer = false;
 
-    this->counter = 0;
+    this->counterInside = 0;
     this->spawnBulletCycleTimes = 0;
     this->timeAccumulation = 0;
     this->elapsed = 0;
@@ -56,7 +55,6 @@ Scatter::Scatter(Direction* direction)
     this->sc.style = StyleType::SCATTER;
     this->sc.frequency = 0.2f;
     this->sc.bulletDuration = 3.0;
-    this->sc.count = 0;
     this->sc.number = 2;
     this->sc.bc.name = "b1_3_3.png";
     this->sc.startAngle = 269;
@@ -65,7 +63,7 @@ Scatter::Scatter(Direction* direction)
 
     this->direction = direction;
 
-    this->counter = 0;
+    this->counterInside = 0;
     this->spawnBulletCycleTimes = 0;
     this->timeAccumulation = 0;
     this->elapsed = 0;
@@ -78,7 +76,7 @@ Scatter::Scatter(const StyleConfig& sc, Direction* direction)
     this->isPlayer = true;
     this->direction = direction;
 
-    this->counter = 0;
+    this->counterInside = 0;
     this->spawnBulletCycleTimes = 0;
     this->timeAccumulation = 0;
     this->elapsed = 0;
@@ -117,15 +115,6 @@ Scatter::shootBullet(float dt)
 void
 Scatter::spawnBullet()
 {
-    if (sc.count != 0) {
-        if (this->counter == sc.count) {
-            this->counter = 0;
-            return;
-        } else {
-            this->counter++;
-        }
-    }
-
     auto emitter = this->getParent();
     auto character = emitter->getParent();
     auto mapLayer = character->getParent();
