@@ -52,7 +52,7 @@ LoadingLayer::init()
     eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     /* 3.创建背景 */
-    auto background = Sprite::create("settings_layer/background.png");
+    auto background = Sprite::create("background/blue_moon.png");
     background->setAnchorPoint(Vec2(0.5, 0.5));
     background->setScale(1.3);
     background->setPosition(visibleSize.width / 2, visibleSize.height / 2);

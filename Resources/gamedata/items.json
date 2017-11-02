@@ -2,7 +2,7 @@
     {
         "tag": "I1",
         "name": "item 1",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item1's description",
         "type": "NORMAL",
         "isCarriable": false,
@@ -17,7 +17,7 @@
     {
         "tag": "I2",
         "name": "item 2",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item2's description",
         "type": "NORMAL",
         "isCarriable": true,
@@ -32,7 +32,7 @@
     {
         "tag": "I3",
         "name": "item 3",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item3's description",
         "type": "SPECIAL",
         "isCarriable": false,
@@ -47,7 +47,7 @@
     {
         "tag": "I4",
         "name": "item 4",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item4's description",
         "type": "SPECIAL",
         "isCarriable": true,
@@ -62,7 +62,7 @@
     {
         "tag": "I5",
         "name": "item 5",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item5's description",
         "type": "STRENGTHEN",
         "isCarriable": false,
@@ -77,7 +77,7 @@
     {
         "tag": "I6",
         "name": "item 6",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item6's description",
         "type": "NORMAL",
         "isCarriable": false,
@@ -92,7 +92,7 @@
     {
         "tag": "I7",
         "name": "item 7",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item7's description",
         "type": "NORMAL",
         "isCarriable": true,
@@ -107,7 +107,7 @@
     {
         "tag": "I8",
         "name": "item 8",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item8's description",
         "type": "NORMAL",
         "isCarriable": true,
@@ -122,7 +122,7 @@
     {
         "tag": "I9",
         "name": "item 9",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item9's description",
         "type": "STRENGTHEN",
         "isCarriable": false,
@@ -137,7 +137,7 @@
     {
         "tag": "I10",
         "name": "item 10",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item10's description",
         "type": "STRENGTHEN",
         "isCarriable": true,
@@ -152,7 +152,7 @@
     {
         "tag": "I11",
         "name": "item 11",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item11's description",
         "type": "STRENGTHEN",
         "isCarriable": false,
@@ -167,7 +167,7 @@
     {
         "tag": "I12",
         "name": "item 12",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item12's description",
         "type": "NORMAL",
         "isCarriable": false,
@@ -182,7 +182,7 @@
     {
         "tag": "I13",
         "name": "item 13",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item13's description",
         "type": "NORMAL",
         "isCarriable": false,
@@ -197,7 +197,7 @@
     {
         "tag": "I14",
         "name": "item 14",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item14's description",
         "type": "STRENGTHEN",
         "isCarriable": false,
@@ -212,7 +212,7 @@
     {
         "tag": "I15",
         "name": "item 15",
-        "icon": "gamedata/items/magic_bottle.png",
+        "icon": "item/magic_bottle.png",
         "description": "This is item15's description",
         "type": "STRENGTHEN",
         "isCarriable": false,

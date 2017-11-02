@@ -7,7 +7,8 @@
 #include "NonGameplayScenes/MainMenuScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
-// #include "resources.h.dir/background_intro.h"
+
+#include "resources.h.dir/background_introduce.h"
 
 #include "AudioController.h"
 
@@ -56,7 +57,7 @@ BackgroundIntroScene::onEnter()
     background->addChild(label);
 
     std::function<void(Ref*)> step1 = [&](Ref*) {
-        background->setTexture("BackgroundIntroScene/seq_1.jpg");
+        background->setTexture(IMG_BACKGROUND_INTRODUCE_SEQUENCE_1);
         background->setContentSize(_visibleSize * 1.2);
         background->setPosition(_visibleSize / 2);
         label->setString("Test1");
@@ -66,7 +67,7 @@ BackgroundIntroScene::onEnter()
     };
 
     std::function<void(Ref*)> step2 = [&](Ref*) {
-        background->setTexture("BackgroundIntroScene/seq_2.jpg");
+        background->setTexture(IMG_BACKGROUND_INTRODUCE_SEQUENCE_2);
         background->setContentSize(_visibleSize * 1.2);
         background->setPosition(_visibleSize / 2);
         label->setString("Test2");
@@ -76,7 +77,7 @@ BackgroundIntroScene::onEnter()
     };
 
     std::function<void(Ref*)> step3 = [&](Ref*) {
-        background->setTexture("BackgroundIntroScene/seq_3.jpg");
+        background->setTexture(IMG_BACKGROUND_INTRODUCE_SEQUENCE_3);
         background->setContentSize(_visibleSize * 1.3);
         background->setPosition(_visibleSize / 2);
         label->setString("Test3");

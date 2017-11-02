@@ -58,14 +58,14 @@ Marisa::init(const std::string& tag)
     //设置动画
 
     standAnimation = AnimationCache::getInstance()->getAnimation(_character.standAnimationKey);
-    runAnimation = AnimationCache::getInstance()->getAnimation(_character.runAnimationKey);
+    moveAnimation = AnimationCache::getInstance()->getAnimation(_character.runAnimationKey);
     preJumpAnimation = AnimationCache::getInstance()->getAnimation(_character.preJumpAnimationKey);
     jumpAnimation = AnimationCache::getInstance()->getAnimation(_character.jumpAnimationKey);
     preFallAnimation = AnimationCache::getInstance()->getAnimation(_character.preFallAnimationKey);
     fallAnimation = AnimationCache::getInstance()->getAnimation(_character.fallAnimationKey);
     dashAnimation = AnimationCache::getInstance()->getAnimation(_character.dashAnimationKey);
     this->standAnimation->setLoops(-1);
-    this->runAnimation->setLoops(-1);
+    this->moveAnimation->setLoops(-1);
     this->jumpAnimation->setLoops(-1);
     this->fallAnimation->setLoops(-1);
 

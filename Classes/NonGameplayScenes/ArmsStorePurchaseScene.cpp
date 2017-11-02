@@ -45,7 +45,7 @@ ArmsStorePurchaseScene::init()
 #endif
 
     /*background*/
-    auto backGround = Sprite::create("InventoryScene/bg.png");
+    auto backGround = Sprite::create("background/blue_moon.png");
     backGround->setContentSize(Size(_visibleSize.width, _visibleSize.height));
     backGround->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
     addChild(backGround, 0, 1);
@@ -63,7 +63,7 @@ ArmsStorePurchaseScene::init()
     addChild(bg_3, 0, 3);
 
     /*返回按钮*/
-    auto backButton = Button::create("InventoryScene/p1.png", "", "");
+    auto backButton = Button::create("menu/p1.png", "", "");
     backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     backButton->setTitleText("返回");
     backButton->setTitleFontSize(20);
@@ -77,7 +77,7 @@ ArmsStorePurchaseScene::init()
     addChild(backButton, 0);
 
     /*普通道具*/
-    auto normalProps = Button::create("InventoryScene/p2.png", "", "");
+    auto normalProps = Button::create("menu/white.png", "", "");
     normalProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.75));
     normalProps->setTitleText("普通道具");
     normalProps->setTitleFontSize(20);
@@ -92,7 +92,7 @@ ArmsStorePurchaseScene::init()
     addChild(normalProps, 0);
 
     /*符卡*/
-    auto strongProps = Button::create("InventoryScene/p2.png", "", "");
+    auto strongProps = Button::create("menu/white.png", "", "");
     strongProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.6));
     strongProps->setTitleText("符卡");
     strongProps->setTitleFontSize(20);

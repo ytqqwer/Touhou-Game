@@ -169,6 +169,8 @@ ConversationLayer::nextDialogue()
 
     } else {
         quitConversation();
+        //不要忘了使i归位
+        i = 0;
     }
 }
 

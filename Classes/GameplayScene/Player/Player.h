@@ -89,7 +89,7 @@ public:
 protected:
     PhysicsBody* body;
     Animation* standAnimation;
-    Animation* runAnimation;
+    Animation* moveAnimation;
     Animation* preJumpAnimation;
     Animation* jumpAnimation;
     Animation* preFallAnimation;

@@ -20,10 +20,7 @@ public:
     void autoChangeDirection(float dt) override;
 
 private:
-    Animation* dashAnimation;
-
     float timeAccumulation = 0;
-    float damageAccumulation = 0;
 
     class StandAndChooseAction : public State<Enemy>
     {
@@ -92,6 +89,15 @@ private:
     {
     public:
         static UseSpellCard* getInstance();
+        void Enter(Enemy*);
+        void Exit(Enemy*);
+        void defaultChangeState(Enemy*);
+    };
+
+    class Hit : public State<Enemy>
+    {
+    public:
+        static Hit* getInstance();
         void Enter(Enemy*);
         void Exit(Enemy*);
         void defaultChangeState(Enemy*);

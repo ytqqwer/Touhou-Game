@@ -57,7 +57,7 @@ Alice::init(const std::string& tag)
     //设置动画
 
     standAnimation = AnimationCache::getInstance()->getAnimation(_character.standAnimationKey);
-    runAnimation = AnimationCache::getInstance()->getAnimation(_character.runAnimationKey);
+    moveAnimation = AnimationCache::getInstance()->getAnimation(_character.runAnimationKey);
     preJumpAnimation = AnimationCache::getInstance()->getAnimation(_character.preJumpAnimationKey);
     jumpAnimation = AnimationCache::getInstance()->getAnimation(_character.jumpAnimationKey);
     preFallAnimation = AnimationCache::getInstance()->getAnimation(_character.preFallAnimationKey);
@@ -65,7 +65,7 @@ Alice::init(const std::string& tag)
     dashAnimation = AnimationCache::getInstance()->getAnimation(_character.dashAnimationKey);
     // Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
     this->standAnimation->setLoops(-1);
-    this->runAnimation->setLoops(-1);
+    this->moveAnimation->setLoops(-1);
     this->jumpAnimation->setLoops(-1);
     this->fallAnimation->setLoops(-1);
 

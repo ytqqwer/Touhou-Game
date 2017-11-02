@@ -33,7 +33,6 @@
       <UniqueIdentifier>{4e3f5bc7-5be0-4356-bdad-60d302cc49e7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Classes\Layers">
-      <UniqueIdentifier>{2f1e71b1-979a-4923-aa88-c6931bc59bb4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Classes\external">
       <UniqueIdentifier>{44ebef1d-7ba3-4a5d-b67f-fe080383c4bf}</UniqueIdentifier>
@@ -144,10 +143,10 @@
     <ClCompile Include="..\Classes\Layers\SettingsLayer.cpp">
       <Filter>Classes\Layers</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Layers\LoadingLayer.cpp">
+    <ClCompile Include="..\Classes\Layers\ConfirmButton.cpp">
       <Filter>Classes\Layers</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Layers\ConfirmButton.cpp">
+    <ClCompile Include="..\Classes\Layers\LoadingLayer.cpp">
       <Filter>Classes\Layers</Filter>
     </ClCompile>
 
@@ -191,6 +190,9 @@
       <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Sakuya.cpp">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Stump.cpp">
       <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClCompile>
 
@@ -374,10 +376,10 @@
     <ClInclude Include="..\Classes\Layers\SettingsLayer.h">
       <Filter>Classes\Layers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Layers\LoadingLayer.h">
+    <ClInclude Include="..\Classes\Layers\ConfirmButton.h">
       <Filter>Classes\Layers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Layers\ConfirmButton.h">
+    <ClInclude Include="..\Classes\Layers\LoadingLayer.h">
       <Filter>Classes\Layers</Filter>
     </ClInclude>
 
@@ -430,6 +432,9 @@
       <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Sakuya.h">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Stump.h">
       <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClInclude>
 

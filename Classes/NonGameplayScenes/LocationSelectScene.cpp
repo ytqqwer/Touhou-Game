@@ -42,16 +42,16 @@ LocationSelectScene::init()
     backGround->setPosition(_visibleSize / 2);
     addChild(backGround);
 
-    auto under = Sprite::create("location_select/under.png");
+    auto under = Sprite::create("menu/location_select_under.png");
     under->setPosition(_visibleSize / 2);
     addChild(under);
 
-    auto up = Sprite::create("location_select/up.png");
+    auto up = Sprite::create("menu/location_select_up.png");
     up->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height * 0.55));
     addChild(up);
 
     /*返回*/
-    auto ret = Button::create("homescene/p1.png");
+    auto ret = Button::create("menu/p1.png");
     ret->setTitleFontName("fonts/dengxian.ttf");
     ret->setTitleText("返回");
     ret->setTitleFontSize(30);
@@ -66,7 +66,7 @@ LocationSelectScene::init()
     addChild(ret, 2);
 
     /*特殊地点   红魔馆大图书馆*/
-    auto koumakanLibrary = Button::create("homescene/p1.png");
+    auto koumakanLibrary = Button::create("menu/p1.png");
     koumakanLibrary->setTitleFontName("fonts/dengxian.ttf");
     koumakanLibrary->setTitleText("红魔馆大图书馆");
     koumakanLibrary->setTitleFontSize(30);
@@ -84,7 +84,7 @@ LocationSelectScene::init()
     addChild(koumakanLibrary, 2);
 
     /*特殊地点   香霖堂*/
-    auto Kourindou = Button::create("homescene/p1.png");
+    auto Kourindou = Button::create("menu/p1.png");
     Kourindou->setTitleFontName("fonts/dengxian.ttf");
     Kourindou->setTitleText("香霖堂");
     Kourindou->setTitleFontSize(30);
@@ -101,7 +101,7 @@ LocationSelectScene::init()
     addChild(Kourindou, 2);
 
     /*特殊地点   军火店*/
-    auto ArmsStore = Button::create("homescene/p1.png");
+    auto ArmsStore = Button::create("menu/p1.png");
     ArmsStore->setTitleFontName("fonts/dengxian.ttf");
     ArmsStore->setTitleText("夜雀烤鳗店");
     ArmsStore->setTitleFontSize(30);

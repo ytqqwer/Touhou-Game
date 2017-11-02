@@ -160,7 +160,7 @@ Player::Walk::getInstance()
 void
 Player::Walk::Enter(Player* player)
 {
-    player->currentAnimateAction = Animate::create(player->runAnimation);
+    player->currentAnimateAction = Animate::create(player->moveAnimation);
     player->playerSprite->runAction(player->currentAnimateAction);
 
     player->playerSprite->schedule(

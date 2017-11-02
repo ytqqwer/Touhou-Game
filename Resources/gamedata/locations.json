@@ -2,10 +2,10 @@
     {
         "tag": "Hakurei Jinja",
         "name": "博丽神社",
-        "wordArt": "gamedata/locations/L1_word_art.png",
-        "previewPicture": "gamedata/locations/L1_prev.png",
-        "backgroundPicture": "gamedata/locations/L1_bgp.jpg",
-        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "wordArt": "wordArt/Hakurei_Jinja.png",
+        "previewPicture": "background/Hakurei_Jinja_Prev.png",
+        "backgroundPicture": "background/Hakurei_Jinja.jpg",
+        "backgroundMusic": "bgm/sample.mp3",
         "roundList": [
             {
                 "tag": "round 1",
@@ -36,10 +36,10 @@
     {
         "tag": "Misty Lake",
         "name": "雾之湖",
-        "wordArt": "gamedata/locations/L2_word_art.png",
-        "previewPicture": "gamedata/locations/L2_prev.png",
-        "backgroundPicture": "gamedata/locations/L2_bgp.jpg",
-        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "wordArt": "wordArt/Misty_Lake.png",
+        "previewPicture": "background/Misty_Lake_Prev.png",
+        "backgroundPicture": "background/Misty_Lake.jpg",
+        "backgroundMusic": "bgm/sample.mp3",
         "roundList": [
             {
                 "tag": "L2_1",
@@ -62,9 +62,9 @@
     {
         "tag": "Bamboo Forest of the Lost",
         "name": "迷途竹林",
-        "wordArt": "gamedata/locations/L3_word_art.png",
-        "previewPicture": "gamedata/locations/L3_prev.png",
-        "backgroundPicture": "gamedata/locations/L3_bgp.jpg",
+        "wordArt": "wordArt/Bamboo_Forest_of_the_Lost.png",
+        "previewPicture": "background/Bamboo_Forest_of_the_Lost_Prev.png",
+        "backgroundPicture": "background/Bamboo_Forest_of_the_Lost.jpg",
         "backgroundMusic": "bgm/bgm002.mp3",
         "roundList": [
             {
@@ -88,9 +88,9 @@
     {
         "tag": "Forest of Magic",
         "name": "魔法森林",
-        "wordArt": "gamedata/locations/L4_word_art.png",
-        "previewPicture": "gamedata/locations/L4_prev.png",
-        "backgroundPicture": "gamedata/locations/L4_bgp.png",
+        "wordArt": "wordArt/Forest_of_Magic.png",
+        "previewPicture": "background/Forest_of_Magic_Prev.png",
+        "backgroundPicture": "background/Forest_of_Magic.png",
         "backgroundMusic": "bgm/bgm003.mp3",
         "roundList": [
             {
@@ -114,10 +114,10 @@
     {
         "tag": "L5",
         "name": "有顶天",
-        "wordArt": "gamedata/locations/L5_word_art.png",
-        "previewPicture": "gamedata/locations/L5_prev.png",
-        "backgroundPicture": "gamedata/locations/L5_bgp.png",
-        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "wordArt": "wordArt/L5_word_art.png",
+        "previewPicture": "background/L5_prev.png",
+        "backgroundPicture": "background/L5_bgp.png",
+        "backgroundMusic": "bgm/sample.mp3",
         "roundList": [
             {
                 "tag": "L5_1",
@@ -140,10 +140,10 @@
     {
         "tag": "L6",
         "name": "玄武川",
-        "wordArt": "gamedata/locations/L6_word_art.png",
-        "previewPicture": "gamedata/locations/L6_prev.png",
-        "backgroundPicture": "gamedata/locations/L6_bgp.png",
-        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "wordArt": "wordArt/L6_word_art.png",
+        "previewPicture": "background/L6_prev.png",
+        "backgroundPicture": "background/L6_bgp.png",
+        "backgroundMusic": "bgm/sample.mp3",
         "roundList": [
             {
                 "tag": "L6_1",
@@ -164,12 +164,12 @@
         ]
     },
     {
-        "tag": "L7",
+        "tag": "Koumakan Library",
         "name": "红魔馆大图书馆",
-        "wordArt": "gamedata/locations/L7_word_art.png",
-        "previewPicture": "gamedata/locations/L7_prev.png",
-        "backgroundPicture": "gamedata/locations/L7_bgp.jpg",
-        "backgroundMusic": "gamedata/locations/sample.mp3",
+        "wordArt": "wordArt/Koumakan_Library.png",
+        "previewPicture": "background/Koumakan_Library_Prev.png",
+        "backgroundPicture": "background/Koumakan_Library.jpg",
+        "backgroundMusic": "bgm/sample.mp3",
         "roundList": [
             {
                 "tag": "L7_1",
@@ -194,16 +194,16 @@
         "name": "香霖堂",
         "wordArt": "",
         "previewPicture": "",
-        "backgroundPicture": "KourindouScene/kourindou.jpg",
+        "backgroundPicture": "background/kourindou.jpg",
         "backgroundMusic": "bgm/bgm014.mp3",
         "roundList": []
     },
     {
         "tag": "KoumakanLibrary",
         "name": "红魔馆大图书馆",
-        "wordArt": "",
+        "wordArt": "wordArt/Koumakan_Library.png",
         "previewPicture": "",
-        "backgroundPicture": "KoumakanLibraryScene/library.jpg",
+        "backgroundPicture": "background/library.jpg",
         "backgroundMusic": "bgm/bgm015.mp3",
         "roundList": []
     },
@@ -212,7 +212,7 @@
         "name": "夜雀烤鳗店",
         "wordArt": "",
         "previewPicture": "",
-        "backgroundPicture": "ArmsStore/store.jpg",
+        "backgroundPicture": "background/ArmsStore.jpg",
         "backgroundMusic": "bgm/bgm016.mp3",
         "roundList": []
     }

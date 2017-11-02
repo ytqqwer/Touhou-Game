@@ -52,8 +52,8 @@ Opossum::init(const std::string& tag)
     body->setVelocityLimit(500);
 
     //获得动画缓存
-    runAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.runAnimationKey);
-    runAnimation->setLoops(-1);
+    moveAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.runAnimationKey);
+    moveAnimation->setLoops(-1);
 
     //状态机
     stateMachine = new StateMachine<Enemy>(this);
@@ -96,7 +96,7 @@ void
 Opossum::Alert::Enter(Enemy* enemy)
 {
     auto opossum = (Opossum*)enemy;
-    opossum->currentAnimateAction = Animate::create(opossum->runAnimation);
+    opossum->currentAnimateAction = Animate::create(opossum->moveAnimation);
     opossum->enemySprite->runAction(opossum->currentAnimateAction);
 
     opossum->schedule(CC_SCHEDULE_SELECTOR(Opossum::horizontallyAccelerate));
@@ -129,7 +129,7 @@ void
 Opossum::Patrol::Enter(Enemy* enemy)
 {
     auto opossum = (Opossum*)enemy;
-    opossum->currentAnimateAction = RepeatForever::create(Animate::create(opossum->runAnimation));
+    opossum->currentAnimateAction = Animate::create(opossum->moveAnimation);
     opossum->enemySprite->runAction(opossum->currentAnimateAction);
 
     enemy->schedule(

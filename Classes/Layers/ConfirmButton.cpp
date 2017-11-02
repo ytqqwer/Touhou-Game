@@ -63,8 +63,7 @@ ConfirmButton::init()
     auto confirmButton = Button::create();
     confirmButton->setTitleText("确定");
     confirmButton->setTitleFontSize(36);
-    confirmButton->loadTextures("settings_layer/buttonNormal.png",
-                                "settings_layer/buttonPressed.png");
+    confirmButton->loadTextures("menu/buttonNormal.png", "menu/buttonPressed.png");
     confirmButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     confirmButton->setScale(0.7);
     confirmButton->setPosition(Vec2(layoutSize.width / 4.0, layoutSize.height / 2.0));
@@ -81,8 +80,7 @@ ConfirmButton::init()
     auto cancelButton = Button::create();
     cancelButton->setTitleText("取消");
     cancelButton->setTitleFontSize(36);
-    cancelButton->loadTextures("settings_layer/buttonNormal.png",
-                               "settings_layer/buttonPressed.png");
+    cancelButton->loadTextures("menu/buttonNormal.png", "menu/buttonPressed.png");
     cancelButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     cancelButton->setScale(0.7);
     cancelButton->setPosition(Vec2(layoutSize.width * 3.0 / 4.0, layoutSize.height / 2.0));

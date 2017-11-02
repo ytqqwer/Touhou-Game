@@ -1,11 +1,11 @@
 [{
    "tag" : "Reimu",
    "name" : "Hakurei Reimu",
-   "rectAvatar" : "gamedata/characters/reimu_avatar_rect.png",
-   "circularAvatar" : "gamedata/characters/reimu_avatar.png",
-   "protrait" : "gamedata/characters/reimu_pro.png",
+   "rectAvatar" : "avatar/reimu_avatar_rect.png",
+   "circularAvatar" : "avatar/reimu_avatar.png",
+   "protrait" : "avatar/reimu_pro.png",
    "preview" : ["place_holder.png"],
-   "defaultTexture" : "gameplayscene/Reimu/walkFront000.png",
+   "defaultTexture" : "character/Reimu/walkFront000.png",
    "standFrameDelay" : 0.1,
    "runFrameDelay" : 0.15,
    "preJumpFrameDelay" : 0.3,
@@ -14,30 +14,30 @@
    "fallFrameDelay" : 0.2,
    "dashFrameDelay" : 0.1,
    "standFrame" : [
-       "gameplayscene/Reimu/stand000.png", "gameplayscene/Reimu/stand001.png",
-       "gameplayscene/Reimu/stand002.png", "gameplayscene/Reimu/stand003.png",
-       "gameplayscene/Reimu/stand004.png", "gameplayscene/Reimu/stand005.png",
-       "gameplayscene/Reimu/stand006.png", "gameplayscene/Reimu/stand007.png",
-       "gameplayscene/Reimu/stand008.png", "gameplayscene/Reimu/stand009.png"
+       "character/Reimu/stand000.png", "character/Reimu/stand001.png",
+       "character/Reimu/stand002.png", "character/Reimu/stand003.png",
+       "character/Reimu/stand004.png", "character/Reimu/stand005.png",
+       "character/Reimu/stand006.png", "character/Reimu/stand007.png",
+       "character/Reimu/stand008.png", "character/Reimu/stand009.png"
    ],
    "runFrame" : [
-       "gameplayscene/Reimu/walkFront000.png", "gameplayscene/Reimu/walkFront001.png",
-       "gameplayscene/Reimu/walkFront002.png", "gameplayscene/Reimu/walkFront003.png",
-       "gameplayscene/Reimu/walkFront004.png", "gameplayscene/Reimu/walkFront005.png",
-       "gameplayscene/Reimu/walkFront006.png", "gameplayscene/Reimu/walkFront007.png"
+       "character/Reimu/walkFront000.png", "character/Reimu/walkFront001.png",
+       "character/Reimu/walkFront002.png", "character/Reimu/walkFront003.png",
+       "character/Reimu/walkFront004.png", "character/Reimu/walkFront005.png",
+       "character/Reimu/walkFront006.png", "character/Reimu/walkFront007.png"
    ],
-   "preJumpFrame" : ["gameplayscene/Reimu/jump000.png"],
-   "jumpFrame" : ["gameplayscene/Reimu/jump001.png"],
-   "preFallFrame" : ["gameplayscene/Reimu/jump001.png"],
+   "preJumpFrame" : ["character/Reimu/jump000.png"],
+   "jumpFrame" : ["character/Reimu/jump001.png"],
+   "preFallFrame" : ["character/Reimu/jump001.png"],
    "fallFrame" : [
-       "gameplayscene/Reimu/jump002.png", "gameplayscene/Reimu/jump003.png",
-       "gameplayscene/Reimu/jump004.png"
+       "character/Reimu/jump002.png", "character/Reimu/jump003.png",
+       "character/Reimu/jump004.png"
    ],
    "dashFrame" : [
-       "gameplayscene/Reimu/dashFront000.png", "gameplayscene/Reimu/dashFront001.png",
-       "gameplayscene/Reimu/dashFront002.png", "gameplayscene/Reimu/dashFront003.png",
-       "gameplayscene/Reimu/dashFront004.png", "gameplayscene/Reimu/dashFront005.png",
-       "gameplayscene/Reimu/dashFront006.png", "gameplayscene/Reimu/dashFront007.png"
+       "character/Reimu/dashFront000.png", "character/Reimu/dashFront001.png",
+       "character/Reimu/dashFront002.png", "character/Reimu/dashFront003.png",
+       "character/Reimu/dashFront004.png", "character/Reimu/dashFront005.png",
+       "character/Reimu/dashFront006.png", "character/Reimu/dashFront007.png"
    ],
    "healthPointBase" : 100,
    "manaBase" : 140,
@@ -72,11 +72,11 @@
  {
    "tag" : "Marisa",
    "name" : "Kirisame Marisa",
-   "rectAvatar" : "gamedata/characters/marisa_avatar_rect.png",
-   "circularAvatar" : "gamedata/characters/marisa_avatar.png",
-   "protrait" : "gamedata/characters/marisa_pro.png",
+   "rectAvatar" : "avatar/marisa_avatar_rect.png",
+   "circularAvatar" : "avatar/marisa_avatar.png",
+   "protrait" : "avatar/marisa_pro.png",
    "preview" : ["place_holder.png"],
-   "defaultTexture" : "gameplayscene/Marisa/walkFront000.png",
+   "defaultTexture" : "character/Marisa/walkFront000.png",
    "standFrameDelay" : 0.1,
    "runFrameDelay" : 0.15,
    "preJumpFrameDelay" : 0.08,
@@ -85,34 +85,34 @@
    "fallFrameDelay" : 0.15,
    "dashFrameDelay" : 0.08,
    "standFrame" : [
-       "gameplayscene/Marisa/stand000.png", "gameplayscene/Marisa/stand001.png",
-       "gameplayscene/Marisa/stand002.png", "gameplayscene/Marisa/stand003.png",
-       "gameplayscene/Marisa/stand004.png", "gameplayscene/Marisa/stand005.png",
-       "gameplayscene/Marisa/stand006.png", "gameplayscene/Marisa/stand007.png",
-       "gameplayscene/Marisa/stand008.png", "gameplayscene/Marisa/stand009.png"
+       "character/Marisa/stand000.png", "character/Marisa/stand001.png",
+       "character/Marisa/stand002.png", "character/Marisa/stand003.png",
+       "character/Marisa/stand004.png", "character/Marisa/stand005.png",
+       "character/Marisa/stand006.png", "character/Marisa/stand007.png",
+       "character/Marisa/stand008.png", "character/Marisa/stand009.png"
    ],
    "runFrame" : [
-       "gameplayscene/Marisa/walkFront000.png", "gameplayscene/Marisa/walkFront001.png",
-       "gameplayscene/Marisa/walkFront002.png", "gameplayscene/Marisa/walkFront003.png",
-       "gameplayscene/Marisa/walkFront004.png", "gameplayscene/Marisa/walkFront005.png",
-       "gameplayscene/Marisa/walkFront006.png", "gameplayscene/Marisa/walkFront007.png"
+       "character/Marisa/walkFront000.png", "character/Marisa/walkFront001.png",
+       "character/Marisa/walkFront002.png", "character/Marisa/walkFront003.png",
+       "character/Marisa/walkFront004.png", "character/Marisa/walkFront005.png",
+       "character/Marisa/walkFront006.png", "character/Marisa/walkFront007.png"
    ],
    "preJumpFrame" : [
-       "gameplayscene/Marisa/jump001.png", "gameplayscene/Marisa/jump002.png",
-       "gameplayscene/Marisa/jump003.png", "gameplayscene/Marisa/jump004.png"
+       "character/Marisa/jump001.png", "character/Marisa/jump002.png",
+       "character/Marisa/jump003.png", "character/Marisa/jump004.png"
    ],
-   "jumpFrame" : ["gameplayscene/Marisa/jump005.png"],
+   "jumpFrame" : ["character/Marisa/jump005.png"],
    "preFallFrame" : [
-       "gameplayscene/Marisa/jump006.png", "gameplayscene/Marisa/jump007.png",
-       "gameplayscene/Marisa/jump008.png", "gameplayscene/Marisa/jump009.png"
+       "character/Marisa/jump006.png", "character/Marisa/jump007.png",
+       "character/Marisa/jump008.png", "character/Marisa/jump009.png"
    ],
-   "fallFrame" : [ "gameplayscene/Marisa/jump010.png", "gameplayscene/Marisa/jump011.png" ],
+   "fallFrame" : [ "character/Marisa/jump010.png", "character/Marisa/jump011.png" ],
    "dashFrame" : [
-       "gameplayscene/Marisa/dashFront000.png", "gameplayscene/Marisa/dashFront001.png",
-       "gameplayscene/Marisa/dashFront002.png", "gameplayscene/Marisa/dashFront003.png",
-       "gameplayscene/Marisa/dashFront004.png", "gameplayscene/Marisa/dashFront005.png",
-       "gameplayscene/Marisa/dashFront006.png", "gameplayscene/Marisa/dashFront007.png",
-       "gameplayscene/Marisa/dashFront008.png"
+       "character/Marisa/dashFront000.png", "character/Marisa/dashFront001.png",
+       "character/Marisa/dashFront002.png", "character/Marisa/dashFront003.png",
+       "character/Marisa/dashFront004.png", "character/Marisa/dashFront005.png",
+       "character/Marisa/dashFront006.png", "character/Marisa/dashFront007.png",
+       "character/Marisa/dashFront008.png"
    ],
    "healthPointBase" : 120,
    "manaBase" : 120,
@@ -147,9 +147,9 @@
  {
    "tag" : "Alice",
    "name" : "Alice Margatroid",
-   "rectAvatar" : "gamedata/characters/alice_avatar_rect.png",
-   "circularAvatar" : "gamedata/characters/alice_avatar.png",
-   "protrait" : "gamedata/characters/alice_pro.png",
+   "rectAvatar" : "avatar/alice_avatar_rect.png",
+   "circularAvatar" : "avatar/alice_avatar.png",
+   "protrait" : "avatar/alice_pro.png",
    "preview" : ["place_holder.png"],
    "defaultTexture" : "place_holder.png",
    "standFrameDelay" : 0.1,
@@ -160,28 +160,28 @@
    "fallFrameDelay" : 0.1,
    "dashFrameDelay" : 0.1,
    "standFrame" : [
-    "gameplayscene/Alice/stand000.png", "gameplayscene/Alice/stand001.png",
-    "gameplayscene/Alice/stand002.png", "gameplayscene/Alice/stand003.png",
-    "gameplayscene/Alice/stand004.png", "gameplayscene/Alice/stand005.png",
-    "gameplayscene/Alice/stand006.png", "gameplayscene/Alice/stand007.png",
-    "gameplayscene/Alice/stand008.png", "gameplayscene/Alice/stand009.png",
-    "gameplayscene/Alice/stand010.png", "gameplayscene/Alice/stand011.png",
-    "gameplayscene/Alice/stand012.png", "gameplayscene/Alice/stand013.png",
-    "gameplayscene/Alice/stand014.png", "gameplayscene/Alice/stand015.png"
+    "character/Alice/stand000.png", "character/Alice/stand001.png",
+    "character/Alice/stand002.png", "character/Alice/stand003.png",
+    "character/Alice/stand004.png", "character/Alice/stand005.png",
+    "character/Alice/stand006.png", "character/Alice/stand007.png",
+    "character/Alice/stand008.png", "character/Alice/stand009.png",
+    "character/Alice/stand010.png", "character/Alice/stand011.png",
+    "character/Alice/stand012.png", "character/Alice/stand013.png",
+    "character/Alice/stand014.png", "character/Alice/stand015.png"
     ],
    "runFrame" : [
-    "gameplayscene/Alice/walkFront000.png", "gameplayscene/Alice/walkFront001.png",
-    "gameplayscene/Alice/walkFront002.png", "gameplayscene/Alice/walkFront003.png",
-    "gameplayscene/Alice/walkFront004.png", "gameplayscene/Alice/walkFront005.png",
-    "gameplayscene/Alice/walkFront006.png", "gameplayscene/Alice/walkFront007.png",
-    "gameplayscene/Alice/walkFront008.png", "gameplayscene/Alice/walkFront009.png"],
-   "preJumpFrame" : ["gameplayscene/Alice/jump000.png","gameplayscene/Alice/jump001.png","gameplayscene/Alice/jump002.png"],
-   "jumpFrame" : ["gameplayscene/Alice/jump003.png","gameplayscene/Alice/jump004.png","gameplayscene/Alice/jump005.png"],
-   "preFallFrame" : ["gameplayscene/Alice/jump006.png"],
-   "fallFrame" : ["gameplayscene/Alice/jump007.png","gameplayscene/Alice/jump008.png"],
-   "dashFrame" : ["gameplayscene/Alice/dashFront000.png","gameplayscene/Alice/dashFront001.png","gameplayscene/Alice/dashFront002.png","gameplayscene/Alice/dashFront003.png","gameplayscene/Alice/dashFront004.png","gameplayscene/Alice/dashFront005.png","gameplayscene/Alice/dashFront006.png"],
-   "healthPointBase" : 100,
-   "manaBase" : 100,
+    "character/Alice/walkFront000.png", "character/Alice/walkFront001.png",
+    "character/Alice/walkFront002.png", "character/Alice/walkFront003.png",
+    "character/Alice/walkFront004.png", "character/Alice/walkFront005.png",
+    "character/Alice/walkFront006.png", "character/Alice/walkFront007.png",
+    "character/Alice/walkFront008.png", "character/Alice/walkFront009.png"],
+   "preJumpFrame" : ["character/Alice/jump000.png","character/Alice/jump001.png","character/Alice/jump002.png"],
+   "jumpFrame" : ["character/Alice/jump003.png","character/Alice/jump004.png","character/Alice/jump005.png"],
+   "preFallFrame" : ["character/Alice/jump006.png"],
+   "fallFrame" : ["character/Alice/jump007.png","character/Alice/jump008.png"],
+   "dashFrame" : ["character/Alice/dashFront000.png","character/Alice/dashFront001.png","character/Alice/dashFront002.png","character/Alice/dashFront003.png","character/Alice/dashFront004.png","character/Alice/dashFront005.png","character/Alice/dashFront006.png"],
+   "healthPointBase" : 120,
+   "manaBase" : 120,
    "walkMaxSpeed" : 400,
    "walkSppedBase" : 20,
    "walkAccelerationTimeBase" : 1,

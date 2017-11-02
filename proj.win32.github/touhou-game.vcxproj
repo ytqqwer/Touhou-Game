@@ -180,8 +180,8 @@
 
     <ClCompile Include="..\Classes\Layers\ConversationLayer.cpp" />
     <ClCompile Include="..\Classes\Layers\SettingsLayer.cpp" />
-    <ClCompile Include="..\Classes\Layers\LoadingLayer.cpp" />
     <ClCompile Include="..\Classes\Layers\ConfirmButton.cpp" />
+    <ClCompile Include="..\Classes\Layers\LoadingLayer.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\EventFilterManager.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\GameplayScene.cpp" />
@@ -204,6 +204,7 @@
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Frog.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Opossum.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Sakuya.cpp" />
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Stump.cpp" />
 
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Bullet.cpp" />
     <ClCompile Include="..\Classes\GameplayScene\Emitters\Emitter.cpp" />
@@ -260,8 +261,8 @@
 
     <ClInclude Include="..\Classes\Layers\ConversationLayer.h" />
     <ClInclude Include="..\Classes\Layers\SettingsLayer.h" />
-    <ClInclude Include="..\Classes\Layers\LoadingLayer.h" />
     <ClInclude Include="..\Classes\Layers\ConfirmButton.h" />
+    <ClInclude Include="..\Classes\Layers\LoadingLayer.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\common.h" />
     <ClInclude Include="..\Classes\GameplayScene\EventFilterManager.h" />
@@ -287,6 +288,7 @@
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Frog.h" />
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Opossum.h" />
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Sakuya.h" />
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Stump.h" />
 
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Bullet.h" />
     <ClInclude Include="..\Classes\GameplayScene\Emitters\Emitter.h" />

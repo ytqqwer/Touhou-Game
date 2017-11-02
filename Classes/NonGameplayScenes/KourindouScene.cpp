@@ -16,7 +16,7 @@
 #include "GameData/GameData.h"
 #include "GameData/Location.h"
 
-// #include "resources.h.dir/kourindou.h"
+#include "resources.h.dir/kourindou.h"
 
 #include "AudioController.h"
 
@@ -60,7 +60,7 @@ KourindouScene::init()
     addChild(bg_1);
 
     /*地点,进度...等背景*/
-    auto info_bg = Sprite::create("homescene/p3.png");
+    auto info_bg = Sprite::create(IMG_KOURINDOU_LITTLE_BUTTON_LAYOUT);
     info_bg->setAnchorPoint(Vec2(0, 1));
     info_bg->setPosition(Vec2(_visibleSize.width * 0.52, _visibleSize.height));
     info_bg->setContentSize(Size(_visibleSize.width * 580 / 1280, _visibleSize.height * 106 / 720));
@@ -86,7 +86,7 @@ KourindouScene::init()
     addChild(money_text);
 
     /*购买按钮*/
-    auto button_start = Button::create("homescene/p1.png");
+    auto button_start = Button::create(IMG_KOURINDOU_BIG_BUTTON);
     button_start->setTitleFontName("fonts/dengxian.ttf");
     button_start->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.705));
     button_start->setTitleText("购买");
@@ -102,7 +102,7 @@ KourindouScene::init()
     addChild(button_start);
 
     /*整备按钮*/
-    auto button_equip = Button::create("homescene/p1.png");
+    auto button_equip = Button::create(IMG_KOURINDOU_BIG_BUTTON);
     button_equip->setTitleFontName("fonts/dengxian.ttf");
     button_equip->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.525));
     button_equip->setTitleText("整备");
@@ -117,7 +117,7 @@ KourindouScene::init()
     addChild(button_equip);
 
     /*道具库按钮*/
-    auto button_inventory = Button::create("homescene/p1.png");
+    auto button_inventory = Button::create(IMG_KOURINDOU_BIG_BUTTON);
     button_inventory->setTitleFontName("fonts/dengxian.ttf");
     button_inventory->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.345));
     button_inventory->setTitleText("道具库");
@@ -132,7 +132,7 @@ KourindouScene::init()
     addChild(button_inventory);
 
     /*其他地图按钮*/
-    auto button_map = Button::create("homescene/p1.png");
+    auto button_map = Button::create(IMG_KOURINDOU_BIG_BUTTON);
     button_map->setTitleFontName("fonts/dengxian.ttf");
     button_map->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.165));
     button_map->setTitleText("前往其他地图");
@@ -148,7 +148,7 @@ KourindouScene::init()
     addChild(button_map);
 
     /*资料库按钮*/
-    auto know_button = Button::create("homescene/p5.png");
+    auto know_button = Button::create(IMG_KOURINDOU_LITTLE_BUTTON);
     know_button->setTitleFontName("fonts/dengxian.ttf");
     know_button->setAnchorPoint(Vec2(0, 1));
     know_button->setPosition(Vec2(_visibleSize.width * 0.84, _visibleSize.height * 0.99));
@@ -166,7 +166,7 @@ KourindouScene::init()
     addChild(know_button);
 
     /*系统商店*/
-    auto store_button = Button::create("homescene/p5.png");
+    auto store_button = Button::create(IMG_KOURINDOU_LITTLE_BUTTON);
     store_button->setTitleFontName("fonts/dengxian.ttf");
     store_button->setAnchorPoint(Vec2(0, 1));
     store_button->setPosition(Vec2(_visibleSize.width * 0.774, _visibleSize.height * 0.99));
@@ -181,7 +181,7 @@ KourindouScene::init()
     addChild(store_button);
 
     /*设置按钮*/
-    auto set_button = Button::create("homescene/p5.png");
+    auto set_button = Button::create(IMG_KOURINDOU_LITTLE_BUTTON);
     set_button->setTitleFontName("fonts/dengxian.ttf");
     set_button->setAnchorPoint(Vec2(0, 1));
     set_button->setPosition(Vec2(_visibleSize.width * 0.905, _visibleSize.height * 0.99));

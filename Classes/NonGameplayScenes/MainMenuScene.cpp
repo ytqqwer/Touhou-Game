@@ -14,7 +14,7 @@
 
 #include "AudioController.h"
 
-// #include "resources.h.dir/main_menu.h"
+#include "resources.h.dir/main_menu.h"
 
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
@@ -64,7 +64,7 @@ MainMenuScene::init()
 
     /*  3. init background */
 
-    backGround = Sprite::create("mainmenuscene/begin.png");
+    backGround = Sprite::create(IMG_MAIN_MENU_BACKGROUND);
     backGround->setScale(1.35);
     backGround->setPosition(_visibleSize / 2);
     addChild(backGround, -1);

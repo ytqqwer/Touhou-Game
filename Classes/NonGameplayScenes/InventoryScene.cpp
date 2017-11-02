@@ -44,7 +44,7 @@ InventoryScene::init()
 #endif
 
     /*background*/
-    auto backGround = Sprite::create("InventoryScene/bg.png");
+    auto backGround = Sprite::create("background/blue_moon.png");
     backGround->setContentSize(Size(_visibleSize.width, _visibleSize.height));
     backGround->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
     addChild(backGround, 0);
@@ -62,7 +62,7 @@ InventoryScene::init()
     addChild(bg_3, 0);
 
     /*返回按钮*/
-    auto backButton = Button::create("InventoryScene/p1.png", "", "");
+    auto backButton = Button::create("menu/p1.png", "", "");
     backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     backButton->setTitleText("返回");
     backButton->setTitleFontSize(20);
@@ -76,7 +76,7 @@ InventoryScene::init()
     addChild(backButton, 0);
 
     /*普通道具*/
-    auto normalProps = Button::create("InventoryScene/p2.png", "", "");
+    auto normalProps = Button::create("menu/white.png", "", "");
     normalProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.75));
     normalProps->setTitleText("普通道具");
     normalProps->setTitleFontSize(20);
@@ -91,7 +91,7 @@ InventoryScene::init()
     addChild(normalProps, 0);
 
     /*强化道具*/
-    auto strongProps = Button::create("InventoryScene/p2.png", "", "");
+    auto strongProps = Button::create("menu/white.png", "", "");
     strongProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.6));
     strongProps->setTitleText("强化道具");
     strongProps->setTitleFontSize(20);
@@ -106,7 +106,7 @@ InventoryScene::init()
     addChild(strongProps, 0);
 
     /*特殊道具*/
-    auto specialProps = Button::create("InventoryScene/p2.png", "", "");
+    auto specialProps = Button::create("menu/white.png", "", "");
     specialProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.45));
     specialProps->setTitleText("特殊道具");
     specialProps->setTitleFontSize(20);
@@ -319,8 +319,7 @@ InventoryScene::characterMenu::init(std::function<void(std::string)> func,
         auto characterTag = c.tag;
         selectButton->setTitleText(characterTag);
         selectButton->setTitleFontSize(36);
-        selectButton->loadTextures("settings_layer/buttonNormal.png",
-                                   "settings_layer/buttonPressed.png");
+        selectButton->loadTextures("menu/buttonNormal.png", "menu/buttonPressed.png");
         selectButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         selectButton->setScale(0.7);
         selectButton->setPosition(
@@ -341,8 +340,7 @@ InventoryScene::characterMenu::init(std::function<void(std::string)> func,
     auto cancelButton = Button::create();
     cancelButton->setTitleText("取消");
     cancelButton->setTitleFontSize(36);
-    cancelButton->loadTextures("settings_layer/buttonNormal.png",
-                               "settings_layer/buttonPressed.png");
+    cancelButton->loadTextures("menu/buttonNormal.png", "menu/buttonPressed.png");
     cancelButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     cancelButton->setScale(0.7);
     cancelButton->setPosition(Vec2(layoutSize.width / 2.0, layoutSize.height / 4.0));

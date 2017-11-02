@@ -51,15 +51,17 @@ Sakuya::init(const std::string& tag)
 
     //获得动画缓存
     standAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.standAnimationKey);
-    runAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.runAnimationKey);
+    moveAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.runAnimationKey);
     preJumpAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.preJumpAnimationKey);
     jumpAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.jumpAnimationKey);
     preFallAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.preFallAnimationKey);
     fallAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.fallAnimationKey);
     dashAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.dashAnimationKey);
+    hitAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.hitAnimationKey);
+    downAnimation = AnimationCache::getInstance()->getAnimation(_enemyData.downAnimationKey);
 
     standAnimation->setLoops(-1);
-    runAnimation->setLoops(-1);
+    moveAnimation->setLoops(-1);
     jumpAnimation->setLoops(-1);
     fallAnimation->setLoops(-1);
 
@@ -116,6 +118,10 @@ Sakuya::decreaseHp(int damage)
 
         EventCustom event("kill_boss");
         _eventDispatcher->dispatchEvent(&event);
+    }
+    if (damageAccumulation >= 400) {
+        this->stateMachine->changeState(Sakuya::Hit::getInstance());
+        damageAccumulation = 0;
     }
 
     Hp_Mp_Change hpChange;
@@ -202,7 +208,7 @@ void
 Sakuya::Walk::Enter(Enemy* enemy)
 {
     auto sakuya = (Sakuya*)enemy;
-    sakuya->currentAnimateAction = Animate::create(sakuya->runAnimation);
+    sakuya->currentAnimateAction = Animate::create(sakuya->moveAnimation);
     sakuya->enemySprite->runAction(sakuya->currentAnimateAction);
 
     auto target = *(sakuya->curTarget);
@@ -469,7 +475,7 @@ Sakuya::UseSpellCard::Enter(Enemy* enemy)
 
     AudioController::getInstance()->playEffect("se/use_spell_card.wav");
 
-    auto portrait = Sprite::create("gameplayscene/Sakuya/useSpellCard.png");
+    auto portrait = Sprite::create("character/Sakuya/useSpellCard.png");
     sakuya->addChild(portrait);
     portrait->setOpacity(50);
     portrait->runAction(
@@ -529,6 +535,37 @@ Sakuya::UseSpellCard::defaultChangeState(Enemy* enemy)
     enemy->stateMachine->changeState(Sakuya::StandAndChooseAction::getInstance());
 }
 
+Sakuya::Hit*
+Sakuya::Hit::getInstance()
+{
+    static Hit instance;
+    return &instance;
+}
+
+void
+Sakuya::Hit::Enter(Enemy* enemy)
+{
+    auto sakuya = (Sakuya*)enemy;
+    auto actionDone =
+        CallFuncN::create(CC_CALLBACK_0(Sakuya::Hit::defaultChangeState, this, sakuya));
+    sakuya->currentAnimateAction =
+        Sequence::create(Animate::create(sakuya->hitAnimation), actionDone, NULL);
+    sakuya->enemySprite->runAction(sakuya->currentAnimateAction);
+}
+
+void
+Sakuya::Hit::Exit(Enemy* enemy)
+{
+    auto sakuya = (Sakuya*)enemy;
+    sakuya->enemySprite->stopAction(sakuya->currentAnimateAction);
+}
+
+void
+Sakuya::Hit::defaultChangeState(Enemy* enemy)
+{
+    enemy->stateMachine->changeState(Sakuya::StandAndChooseAction::getInstance());
+}
+
 Sakuya::Knockdown*
 Sakuya::Knockdown::getInstance()
 {
@@ -540,7 +577,7 @@ void
 Sakuya::Knockdown::Enter(Enemy* enemy)
 {
     auto sakuya = (Sakuya*)enemy;
-    auto animate = Animate::create(AnimationCache::getInstance()->getAnimation("sakuyaKnockdown"));
+    auto animate = Animate::create(sakuya->downAnimation);
     sakuya->enemySprite->runAction(animate);
 
     //使人物能倒在地上

@@ -8,10 +8,11 @@
 #include "NonGameplayScenes/BackgroundIntroScene.h"
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
-#include "resources.h.dir/logo.h"
 #include <iostream>
 #include <string>
 using namespace std;
+
+#include "resources.h.dir/logo.h"
 
 LogoAndDisclaimerScene::LogoAndDisclaimerScene()
 {

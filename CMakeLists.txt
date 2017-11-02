@@ -194,6 +194,7 @@ set(GAME_SRC
   Classes/GameplayScene/Enemy/Frog.cpp
   Classes/GameplayScene/Enemy/Opossum.cpp
   Classes/GameplayScene/Enemy/Sakuya.cpp
+  Classes/GameplayScene/Enemy/Stump.cpp
 
   Classes/GameplayScene/Shaders/BlendAction.cpp
 
@@ -284,6 +285,7 @@ set(GAME_HEADERS
   Classes/GameplayScene/Enemy/Frog.h
   Classes/GameplayScene/Enemy/Opossum.h
   Classes/GameplayScene/Enemy/Sakuya.h
+  Classes/GameplayScene/Enemy/Stump.h
 
   Classes/GameplayScene/Shaders/BlendAction.h
 

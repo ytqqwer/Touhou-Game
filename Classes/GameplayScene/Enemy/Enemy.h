@@ -34,7 +34,10 @@ public:
     Node** curTarget;
 
     int CurrentHp;
-    int BaseHp;
+    unsigned int BaseHp;
+
+    unsigned int damageAccumulation = 0;
+
     bool _canJump = false;
 
     Sprite* enemySprite;
@@ -50,11 +53,14 @@ protected:
 
     Action* currentAnimateAction;
     Animation* standAnimation;
-    Animation* runAnimation;
+    Animation* moveAnimation;
     Animation* jumpAnimation;
     Animation* preJumpAnimation;
     Animation* fallAnimation;
     Animation* preFallAnimation;
+    Animation* dashAnimation;
+    Animation* hitAnimation;
+    Animation* downAnimation;
 };
 
 #endif

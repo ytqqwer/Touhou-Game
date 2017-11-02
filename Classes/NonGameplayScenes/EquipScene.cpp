@@ -40,7 +40,7 @@ EquipScene::init()
     }
 
     /*背景*/
-    auto bg_1 = Sprite::create("equipscene/p1.png");
+    auto bg_1 = Sprite::create("background/equip_scene.png");
     bg_1->setContentSize(_visibleSize);
     bg_1->setPosition(_visibleSize / 2);
     addChild(bg_1);
@@ -60,7 +60,7 @@ EquipScene::init()
     addChild(bg_3);
 
     /*返回按钮*/
-    auto ret = Button::create("equipscene/p4.png");
+    auto ret = Button::create("menu/p1.png");
     ret->setTitleText("返回");
     ret->setTitleColor(Color3B::WHITE);
     ret->setTitleFontSize(20);
@@ -109,13 +109,13 @@ EquipScene::init()
     }
 
     /*攻击方式切换箭头*/
-    auto deco_1 = Sprite::create("equipscene/p2.png");
+    auto deco_1 = Sprite::create("menu/euqip_scene_replace.png");
     deco_1->setContentSize(Size(_visibleSize.width * 0.04, _visibleSize.height * 0.055));
     deco_1->setPosition(
         Vec2(box_4->getContentSize().width * 0.9, box_4->getContentSize().height * 0.5));
     box_4->addChild(deco_1);
 
-    auto deco_2 = Sprite::create("equipscene/p2.png");
+    auto deco_2 = Sprite::create("menu/euqip_scene_replace.png");
     deco_2->setContentSize(Size(_visibleSize.width * 0.04, _visibleSize.height * 0.055));
     deco_2->setPosition(
         Vec2(box_4->getContentSize().width * 0.9, box_3->getContentSize().height * 0.162));
@@ -244,7 +244,7 @@ EquipScene::loadCharacterProperty(const Character& character)
             }
         }
         if (!found) {
-            Sprite* none = Sprite::create("equipscene/p3.png");
+            Sprite* none = Sprite::create("menu/equip_scene_forbid.png");
 
             auto width = none->getContentSize().width;
             auto height = none->getContentSize().height;
@@ -318,7 +318,7 @@ EquipScene::loadCharacterProperty(const Character& character)
             }
         }
         if (!found) {
-            Sprite* none = Sprite::create("equipscene/p3.png");
+            Sprite* none = Sprite::create("menu/equip_scene_forbid.png");
 
             //正常来说所有素材的图片像素都是一致的，所以根本不需要下列代码手动设置缩放大小
             //缩放参照一个像素为43×61的图片
@@ -497,8 +497,7 @@ EquipScene::ItemMenu::init()
     auto cancelButton = Button::create();
     cancelButton->setTitleText("取消");
     cancelButton->setTitleFontSize(36);
-    cancelButton->loadTextures("settings_layer/buttonNormal.png",
-                               "settings_layer/buttonPressed.png");
+    cancelButton->loadTextures("menu/buttonNormal.png", "menu/buttonPressed.png");
     cancelButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     cancelButton->setPosition(Vec2(layout->getSize().width / 2.0, layout->getSize().height / 10.0));
     cancelButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
@@ -665,8 +664,7 @@ EquipScene::SpellCardMenu::init()
     auto cancelButton = Button::create();
     cancelButton->setTitleText("取消");
     cancelButton->setTitleFontSize(36);
-    cancelButton->loadTextures("settings_layer/buttonNormal.png",
-                               "settings_layer/buttonPressed.png");
+    cancelButton->loadTextures("menu/buttonNormal.png", "menu/buttonPressed.png");
     cancelButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     cancelButton->setPosition(Vec2(layout->getSize().width / 2.0, layout->getSize().height / 10.0));
     cancelButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {

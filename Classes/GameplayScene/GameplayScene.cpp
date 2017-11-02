@@ -83,12 +83,6 @@ GameplayScene::init()
         return false;
     }
 
-    //初始化子弹素材
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet1.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet2.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet3.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/laser1.plist");
-
     this->initWithPhysics();                                                //初始化物理世界
     Vect gravity(0, -gameGravity);                                          //游戏场景的重力
     this->getPhysicsWorld()->setGravity(gravity);                           //设置重力
@@ -253,6 +247,12 @@ GameplayScene::createPhysical(float scale)
 void
 GameplayScene::initAnimationCache()
 {
+    //初始化子弹素材
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet1.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet2.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/bullet3.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("emitter/bullets/laser1.plist");
+
     auto characterTags = GameData::getInstance()->getOnStageCharacterTagList();
 
     std::set<string> enemyTags;
@@ -302,6 +302,10 @@ GameplayScene::initAnimationCache()
                                        _enemy.fallAnimationKey);
         CREATE_AND_ADD_ANIMATION_CACHE(_enemy.dashFrame, _enemy.dashFrameDelay,
                                        _enemy.dashAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_enemy.hitFrame, _enemy.hitFrameDelay,
+                                       _enemy.hitAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_enemy.downFrame, _enemy.downFrameDelay,
+                                       _enemy.downAnimationKey);
     }
 
     auto sakuyaAttackA_1 = Animation::create();
@@ -354,17 +358,39 @@ GameplayScene::initAnimationCache()
     sakuyaUseSpellCard->setDelayPerUnit(0.10);
     AnimationCache::getInstance()->addAnimation(sakuyaUseSpellCard, "sakuyaUseSpellCard");
 
-    auto sakuyaKnockdown = Animation::create();
-    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down000.png");
-    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down001.png");
-    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down002.png");
-    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down003.png");
-    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down004.png");
-    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down005.png");
-    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down006.png");
-    sakuyaKnockdown->addSpriteFrameWithFile("gameplayscene/Sakuya/down007.png");
-    sakuyaKnockdown->setDelayPerUnit(0.10);
-    AnimationCache::getInstance()->addAnimation(sakuyaKnockdown, "sakuyaKnockdown");
+    //////////////////////////////////////
+
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("enemy/Stump.plist");
+    auto stumpStand = Animation::create();
+    stumpStand->addSpriteFrame(
+        SpriteFrameCache::getInstance()->getSpriteFrameByName("stump_stand.png"));
+    stumpStand->setDelayPerUnit(0.50);
+    AnimationCache::getInstance()->addAnimation(stumpStand, "stumpStand");
+    auto stumpMove = Animation::create();
+    stumpMove->addSpriteFrame(
+        SpriteFrameCache::getInstance()->getSpriteFrameByName("stump_move_1.png"));
+    stumpMove->addSpriteFrame(
+        SpriteFrameCache::getInstance()->getSpriteFrameByName("stump_move_2.png"));
+    stumpMove->addSpriteFrame(
+        SpriteFrameCache::getInstance()->getSpriteFrameByName("stump_move_3.png"));
+    stumpMove->addSpriteFrame(
+        SpriteFrameCache::getInstance()->getSpriteFrameByName("stump_move_4.png"));
+    stumpMove->setDelayPerUnit(0.20);
+    AnimationCache::getInstance()->addAnimation(stumpMove, "stumpMove");
+    auto stumpHit = Animation::create();
+    stumpHit->addSpriteFrame(
+        SpriteFrameCache::getInstance()->getSpriteFrameByName("stump_hit.png"));
+    stumpHit->setDelayPerUnit(0.60);
+    AnimationCache::getInstance()->addAnimation(stumpHit, "stumpHit");
+    auto stumpDown = Animation::create();
+    stumpDown->addSpriteFrame(
+        SpriteFrameCache::getInstance()->getSpriteFrameByName("stump_down_1.png"));
+    stumpDown->addSpriteFrame(
+        SpriteFrameCache::getInstance()->getSpriteFrameByName("stump_down_2.png"));
+    stumpDown->addSpriteFrame(
+        SpriteFrameCache::getInstance()->getSpriteFrameByName("stump_down_3.png"));
+    stumpDown->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(stumpDown, "stumpDown");
 }
 
 void

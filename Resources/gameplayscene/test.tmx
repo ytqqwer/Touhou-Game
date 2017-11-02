@@ -152,15 +152,15 @@
   <object id="104" x="2272" y="1168" width="24" height="24"/>
  </objectgroup>
  <objectgroup name="enemy">
-  <object id="64" x="2048" y="1656" width="48" height="44">
+  <object id="64" x="2048" y="1719" width="48" height="44">
    <properties>
     <property name="tag" value="Opossum"/>
     <property name="type" value=""/>
    </properties>
   </object>
-  <object id="65" x="2400" y="1656" width="52" height="40">
+  <object id="65" x="2400" y="1721" width="52" height="40">
    <properties>
-    <property name="tag" value="Opossum"/>
+    <property name="tag" value="Stump"/>
     <property name="type" value=""/>
    </properties>
   </object>
@@ -170,7 +170,7 @@
     <property name="type" value=""/>
    </properties>
   </object>
-  <object id="110" x="2824" y="1652" width="40" height="36">
+  <object id="110" x="2824" y="1692" width="40" height="36">
    <properties>
     <property name="tag" value="Frog"/>
     <property name="type" value=""/>

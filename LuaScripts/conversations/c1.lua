@@ -1,13 +1,13 @@
 dialogues = {
    function()
-      clayer:changeBgp('gamedata/conversations/c1_bgp.png')
-         :changeBgm('gamedata/locations/sample.mp3')
+      clayer:changeBgp('background/Forest_of_Magic.png')
+         :changeBgm('bgm/sample.mp3')
 
          :changeCharacter('LEFT',
                           'Kirisame Marisa',
-                          'gamedata/characters/marisa_pro.png',
+                          'avatar/marisa_pro.png',
                           {r=0xff, g=0xf8, b=0x7c},
-                          'gamedata/character/marisa_name_wordart.png')
+                          'wordArt/marisa_name_wordart.png')
          :changeText('Kirisame Marisa',
                      '哟，灵梦。我在这附近抓住了一只冰之妖精（⑨）哦')
          :playSoundEffect('se/happy.wav')
@@ -17,9 +17,9 @@ dialogues = {
    function()
       clayer:changeCharacter('RIGHT',
                              'Hakurei Reimu',
-                             'gamedata/characters/reimu_pro.png',
+                             'avatar/reimu_pro.png',
                              {r=0xfe, g=0x46, b=0x2b},
-                             'gamedata/character/reimu_name_wordart.png')
+                             'wordArt/reimu_name_wordart.png')
          :changeText('Hakurei Reimu',
                      '啊，欢迎光临，魔理沙。妖精这玩意啊，真是一个不注意就冒出来了呢')
    end,

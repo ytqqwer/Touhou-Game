@@ -33,7 +33,7 @@ KourindouPurchaseScene::init()
     }
 
     /*background*/
-    auto backGround = Sprite::create("InventoryScene/bg.png");
+    auto backGround = Sprite::create("background/blue_moon.png");
     backGround->setContentSize(Size(_visibleSize.width, _visibleSize.height));
     backGround->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
     addChild(backGround, 0, 1);
@@ -51,7 +51,7 @@ KourindouPurchaseScene::init()
     addChild(bg_3, 0, 3);
 
     /*返回按钮*/
-    auto backButton = Button::create("InventoryScene/p1.png", "", "");
+    auto backButton = Button::create("menu/p1.png", "", "");
     backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     backButton->setTitleText("返回");
     backButton->setTitleFontSize(20);
@@ -66,7 +66,7 @@ KourindouPurchaseScene::init()
     addChild(backButton, 0);
 
     /*普通道具*/
-    auto normalProps = Button::create("InventoryScene/p2.png", "", "");
+    auto normalProps = Button::create("menu/white.png", "", "");
     normalProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.75));
     normalProps->setTitleText("普通道具");
     normalProps->setTitleFontSize(20);
@@ -81,7 +81,7 @@ KourindouPurchaseScene::init()
     addChild(normalProps, 0);
 
     /*强化道具*/
-    auto strongProps = Button::create("InventoryScene/p2.png", "", "");
+    auto strongProps = Button::create("menu/white.png", "", "");
     strongProps->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.6));
     strongProps->setTitleText("强化道具");
     strongProps->setTitleFontSize(20);
@@ -96,7 +96,7 @@ KourindouPurchaseScene::init()
     addChild(strongProps, 0);
 
     /*解锁栏位*/
-    auto unlockColumn = Button::create("InventoryScene/p2.png", "", "");
+    auto unlockColumn = Button::create("menu/white.png", "", "");
     unlockColumn->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.45));
     unlockColumn->setTitleText("解锁栏位");
     unlockColumn->setTitleFontSize(20);
@@ -201,7 +201,7 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
                 itemSlotNumerLabel->setColor(Color3B::BLACK);
                 cell->addChild(itemSlotNumerLabel);
 
-                auto unlockItemSlotButton = Button::create("InventoryScene/p2.png", "", "");
+                auto unlockItemSlotButton = Button::create("menu/white.png", "", "");
                 unlockItemSlotButton->setPosition(Vec2(300, 85));
                 unlockItemSlotButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 unlockItemSlotButton->setTitleFontSize(30);
@@ -266,7 +266,7 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
                 cardSlotNumerLabel->setColor(Color3B::BLACK);
                 cell->addChild(cardSlotNumerLabel);
 
-                auto unlockCardSlotButton = Button::create("InventoryScene/p2.png", "", "");
+                auto unlockCardSlotButton = Button::create("menu/white.png", "", "");
                 unlockCardSlotButton->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 unlockCardSlotButton->setPosition(Vec2(600, 85));
                 unlockCardSlotButton->setTitleFontSize(30);

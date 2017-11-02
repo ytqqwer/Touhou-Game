@@ -1,7 +1,7 @@
 [{
    "tag" : "Opossum",
    "name" : "Opossum",
-   "defaultTexture" : "gameplayscene/Enemy/opossum-1.png",
+   "defaultTexture" : "enemy/opossum/opossum-1.png",
    "face" : "",
    "standFrameDelay" : 0.1,
    "runFrameDelay" : 0.15,
@@ -10,24 +10,28 @@
    "preFallFrameDelay" : 0.3,
    "fallFrameDelay" : 0.1,
    "dashFrameDelay" : 0.1,
+   "hitFrameDelay" : 0.1,
+   "downFrameDelay" : 0.1,
    "standFrame" : [],
    "runFrame" : [
-       "gameplayscene/Enemy/opossum-1.png", "gameplayscene/Enemy/opossum-2.png",
-       "gameplayscene/Enemy/opossum-3.png", "gameplayscene/Enemy/opossum-4.png",
-       "gameplayscene/Enemy/opossum-5.png", "gameplayscene/Enemy/opossum-6.png"
+       "enemy/opossum/opossum-1.png", "enemy/opossum/opossum-2.png",
+       "enemy/opossum/opossum-3.png", "enemy/opossum/opossum-4.png",
+       "enemy/opossum/opossum-5.png", "enemy/opossum/opossum-6.png"
    ],
    "preJumpFrame" : [],
    "jumpFrame" : [],
    "preFallFrame" : [],
    "fallFrame" : [],
    "dashFrame" : [],
+   "hitFrame" : [],
+   "downFrame" : [],
    "healthPoint" : 200
 },
  {
    "tag" : "Frog",
    "name" : "Frog",
    "face" : "",
-   "defaultTexture" : "gameplayscene/Enemy/frog-idle-1.png",
+   "defaultTexture" : "enemy/frog/frog-idle-1.png",
    "standFrameDelay" : 0.25,
    "runFrameDelay" : 0.15,
    "preJumpFrameDelay" : 0.3,
@@ -35,23 +39,52 @@
    "preFallFrameDelay" : 0.3,
    "fallFrameDelay" : 0.15,
    "dashFrameDelay" : 0.1,
+   "hitFrameDelay" : 0.1,
+   "downFrameDelay" : 0.1,
    "standFrame" : [
-       "gameplayscene/Enemy/frog-idle-1.png", "gameplayscene/Enemy/frog-idle-2.png",
-       "gameplayscene/Enemy/frog-idle-3.png", "gameplayscene/Enemy/frog-idle-4.png"
+       "enemy/frog/frog-idle-1.png", "enemy/frog/frog-idle-2.png",
+       "enemy/frog/frog-idle-3.png", "enemy/frog/frog-idle-4.png"
    ],
    "runFrame" : [],
    "preJumpFrame" : [],
-   "jumpFrame" : ["gameplayscene/Enemy/frog-jump-1.png"],
+   "jumpFrame" : ["enemy/frog/frog-jump-1.png"],
    "preFallFrame" : [],
-   "fallFrame" : ["gameplayscene/Enemy/frog-jump-2.png"],
+   "fallFrame" : ["enemy/frog/frog-jump-2.png"],
    "dashFrame" : [],
+   "hitFrame" : [],
+   "downFrame" : [],
    "healthPoint" : 100
+ },
+ {
+    "tag" : "Stump",
+    "name" : "Stump",
+    "defaultTexture" : "",
+    "face" : "",
+    "standFrameDelay" : 0.1,
+    "runFrameDelay" : 0.15,
+    "preJumpFrameDelay" : 0.3,
+    "jumpFrameDelay" : 0.3,
+    "preFallFrameDelay" : 0.3,
+    "fallFrameDelay" : 0.1,
+    "dashFrameDelay" : 0.1,
+    "hitFrameDelay" : 0.1,
+    "downFrameDelay" : 0.1,
+    "standFrame" : [],
+    "runFrame" : [],
+    "preJumpFrame" : [],
+    "jumpFrame" : [],
+    "preFallFrame" : [],
+    "fallFrame" : [],
+    "dashFrame" : [],
+    "hitFrame" : [],
+    "downFrame" : [],
+    "healthPoint" : 400
  },
  {
    "tag" : "Sakuya",
    "name" : "Sakuya",
-   "face" : "gameplayscene/Sakuya/face000.png",
-   "defaultTexture" : "gameplayscene/Sakuya/stand000.png",
+   "face" : "character/Sakuya/face000.png",
+   "defaultTexture" : "character/Sakuya/stand000.png",
    "standFrameDelay" : 0.12,
    "runFrameDelay" : 0.10,
    "preJumpFrameDelay" : 0.07,
@@ -59,38 +92,45 @@
    "preFallFrameDelay" : 0.07,
    "fallFrameDelay" : 0.10,
    "dashFrameDelay" : 0.10,
+   "hitFrameDelay" : 0.12,
+   "downFrameDelay" : 0.12,
    "standFrame" : [
-       "gameplayscene/Sakuya/stand000.png", "gameplayscene/Sakuya/stand001.png",
-       "gameplayscene/Sakuya/stand002.png", "gameplayscene/Sakuya/stand003.png",
-       "gameplayscene/Sakuya/stand004.png", "gameplayscene/Sakuya/stand005.png"
+       "character/Sakuya/stand000.png", "character/Sakuya/stand001.png",
+       "character/Sakuya/stand002.png", "character/Sakuya/stand003.png",
+       "character/Sakuya/stand004.png", "character/Sakuya/stand005.png"
    ],
    "runFrame" : [
-       "gameplayscene/Sakuya/walkFront000.png", "gameplayscene/Sakuya/walkFront001.png",
-       "gameplayscene/Sakuya/walkFront002.png", "gameplayscene/Sakuya/walkFront003.png",
-       "gameplayscene/Sakuya/walkFront004.png", "gameplayscene/Sakuya/walkFront005.png",
-       "gameplayscene/Sakuya/walkFront006.png", "gameplayscene/Sakuya/walkFront007.png",
-       "gameplayscene/Sakuya/walkFront008.png"
+       "character/Sakuya/walkFront000.png", "character/Sakuya/walkFront001.png",
+       "character/Sakuya/walkFront002.png", "character/Sakuya/walkFront003.png",
+       "character/Sakuya/walkFront004.png", "character/Sakuya/walkFront005.png",
+       "character/Sakuya/walkFront006.png", "character/Sakuya/walkFront007.png",
+       "character/Sakuya/walkFront008.png"
    ],
    "preJumpFrame" : [
-    "gameplayscene/Sakuya/jump000.png", "gameplayscene/Sakuya/jump001.png",
-    "gameplayscene/Sakuya/jump002.png"
+    "character/Sakuya/jump000.png", "character/Sakuya/jump001.png",
+    "character/Sakuya/jump002.png"
    ],
    "jumpFrame" : [
-    "gameplayscene/Sakuya/jump003.png", "gameplayscene/Sakuya/jump004.png"
+    "character/Sakuya/jump003.png", "character/Sakuya/jump004.png"
    ],
    "preFallFrame" : [
-    "gameplayscene/Sakuya/jump005.png", "gameplayscene/Sakuya/jump006.png",
-    "gameplayscene/Sakuya/jump007.png", "gameplayscene/Sakuya/jump008.png"
+    "character/Sakuya/jump005.png", "character/Sakuya/jump006.png",
+    "character/Sakuya/jump007.png", "character/Sakuya/jump008.png"
    ],
    "fallFrame" : [
-    "gameplayscene/Sakuya/jump009.png", "gameplayscene/Sakuya/jump010.png"
+    "character/Sakuya/jump009.png", "character/Sakuya/jump010.png"
    ],
    "dashFrame" : [
-    "gameplayscene/Sakuya/dashFront000.png", "gameplayscene/Sakuya/dashFront001.png",
-    "gameplayscene/Sakuya/dashFront002.png", "gameplayscene/Sakuya/dashFront003.png",
-    "gameplayscene/Sakuya/dashFront004.png", "gameplayscene/Sakuya/dashFront005.png",
-    "gameplayscene/Sakuya/dashFront006.png", "gameplayscene/Sakuya/dashFront007.png"
+    "character/Sakuya/dashFront000.png", "character/Sakuya/dashFront001.png",
+    "character/Sakuya/dashFront002.png", "character/Sakuya/dashFront003.png",
+    "character/Sakuya/dashFront004.png", "character/Sakuya/dashFront005.png",
+    "character/Sakuya/dashFront006.png", "character/Sakuya/dashFront007.png"
    ],
-   "healthPoint" : 1000
+   "hitFrame" : ["character/Sakuya/hitSpin000.png","character/Sakuya/hitSpin001.png",
+    "character/Sakuya/hitSpin002.png","character/Sakuya/hitSpin003.png","character/Sakuya/hitSpin004.png","character/Sakuya/hitSpin005.png",
+    "character/Sakuya/hitSpin006.png"],
+   "downFrame" : ["character/Sakuya/down000.png","character/Sakuya/down001.png",
+    "character/Sakuya/down002.png","character/Sakuya/down003.png","character/Sakuya/down004.png","character/Sakuya/down005.png","character/Sakuya/down006.png","character/Sakuya/down007.png"],
+   "healthPoint" : 1500
  }
 ]
