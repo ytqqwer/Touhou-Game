@@ -3,7 +3,7 @@ function nDialogues (dialoguestbl)
 end
 
 function playDialogue (dialoguestbl, i)
-   dialoguestbl[i]()
+   (dialoguestbl[i])()
 end
 
 clayer = tg.ConversationLayer:currInstance()

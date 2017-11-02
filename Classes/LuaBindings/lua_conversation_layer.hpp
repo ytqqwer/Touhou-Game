@@ -25,5 +25,4 @@ int register_all_tg_conversation_layer(lua_State* tolua_S);
 
 
 
-
 #endif // __tg_conversation_layer_h__

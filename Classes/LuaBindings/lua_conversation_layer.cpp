@@ -1,55 +1,8 @@
-#include "lua_conversation_layer.hpp"
-#include "../../Classes/Layers/ConversationLayerWithLua.h"
+﻿#include "lua_conversation_layer.hpp"
+#include "../../Classes/Layers/ConversationLayer.h"
 #include "scripting/lua-bindings/manual/tolua_fix.h"
 #include "scripting/lua-bindings/manual/LuaBasicConversions.h"
 
-int lua_tg_conversation_layer_ConversationLayer_quitConversation(lua_State* tolua_S)
-{
-    int argc = 0;
-    ConversationLayer* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"ConversationLayer",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (ConversationLayer*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_tg_conversation_layer_ConversationLayer_quitConversation'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_tg_conversation_layer_ConversationLayer_quitConversation'", nullptr);
-            return 0;
-        }
-        cobj->quitConversation();
-        lua_settop(tolua_S, 1);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ConversationLayer:quitConversation",argc, 0);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_quitConversation'.",&tolua_err);
-#endif
-
-    return 0;
-}
 int lua_tg_conversation_layer_ConversationLayer_playScreenEffect(lua_State* tolua_S)
 {
     int argc = 0;
@@ -96,6 +49,156 @@ int lua_tg_conversation_layer_ConversationLayer_playScreenEffect(lua_State* tolu
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_playScreenEffect'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_tg_conversation_layer_ConversationLayer_setDialogueInterval(lua_State* tolua_S)
+{
+    int argc = 0;
+    ConversationLayer* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ConversationLayer",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ConversationLayer*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_tg_conversation_layer_ConversationLayer_setDialogueInterval'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "ConversationLayer:setDialogueInterval");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_tg_conversation_layer_ConversationLayer_setDialogueInterval'", nullptr);
+            return 0;
+        }
+        cobj->setDialogueInterval(arg0);
+        lua_settop(tolua_S, 1);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ConversationLayer:setDialogueInterval",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_setDialogueInterval'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_tg_conversation_layer_ConversationLayer_changeBgp(lua_State* tolua_S)
+{
+    int argc = 0;
+    ConversationLayer* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ConversationLayer",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ConversationLayer*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_tg_conversation_layer_ConversationLayer_changeBgp'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        std::string arg0;
+
+        ok &= luaval_to_std_string(tolua_S, 2,&arg0, "ConversationLayer:changeBgp");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_tg_conversation_layer_ConversationLayer_changeBgp'", nullptr);
+            return 0;
+        }
+        ConversationLayer* ret = cobj->changeBgp(arg0);
+        object_to_luaval<ConversationLayer>(tolua_S, "ConversationLayer",(ConversationLayer*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ConversationLayer:changeBgp",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_changeBgp'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_tg_conversation_layer_ConversationLayer_changeBgm(lua_State* tolua_S)
+{
+    int argc = 0;
+    ConversationLayer* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ConversationLayer",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ConversationLayer*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_tg_conversation_layer_ConversationLayer_changeBgm'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        std::string arg0;
+
+        ok &= luaval_to_std_string(tolua_S, 2,&arg0, "ConversationLayer:changeBgm");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_tg_conversation_layer_ConversationLayer_changeBgm'", nullptr);
+            return 0;
+        }
+        ConversationLayer* ret = cobj->changeBgm(arg0);
+        object_to_luaval<ConversationLayer>(tolua_S, "ConversationLayer",(ConversationLayer*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ConversationLayer:changeBgm",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_changeBgm'.",&tolua_err);
 #endif
 
     return 0;
@@ -222,153 +325,6 @@ int lua_tg_conversation_layer_ConversationLayer_changeCharacter(lua_State* tolua
 
     return 0;
 }
-int lua_tg_conversation_layer_ConversationLayer_changeBgm(lua_State* tolua_S)
-{
-    int argc = 0;
-    ConversationLayer* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"ConversationLayer",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (ConversationLayer*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_tg_conversation_layer_ConversationLayer_changeBgm'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 1) 
-    {
-        std::string arg0;
-
-        ok &= luaval_to_std_string(tolua_S, 2,&arg0, "ConversationLayer:changeBgm");
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_tg_conversation_layer_ConversationLayer_changeBgm'", nullptr);
-            return 0;
-        }
-        ConversationLayer* ret = cobj->changeBgm(arg0);
-        object_to_luaval<ConversationLayer>(tolua_S, "ConversationLayer",(ConversationLayer*)ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ConversationLayer:changeBgm",argc, 1);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_changeBgm'.",&tolua_err);
-#endif
-
-    return 0;
-}
-int lua_tg_conversation_layer_ConversationLayer_changeBgp(lua_State* tolua_S)
-{
-    int argc = 0;
-    ConversationLayer* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"ConversationLayer",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (ConversationLayer*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_tg_conversation_layer_ConversationLayer_changeBgp'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 1) 
-    {
-        std::string arg0;
-
-        ok &= luaval_to_std_string(tolua_S, 2,&arg0, "ConversationLayer:changeBgp");
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_tg_conversation_layer_ConversationLayer_changeBgp'", nullptr);
-            return 0;
-        }
-        ConversationLayer* ret = cobj->changeBgp(arg0);
-        object_to_luaval<ConversationLayer>(tolua_S, "ConversationLayer",(ConversationLayer*)ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ConversationLayer:changeBgp",argc, 1);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_changeBgp'.",&tolua_err);
-#endif
-
-    return 0;
-}
-int lua_tg_conversation_layer_ConversationLayer_currInstance(lua_State* tolua_S)
-{
-    int argc = 0;
-    ConversationLayer* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"ConversationLayer",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (ConversationLayer*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_tg_conversation_layer_ConversationLayer_currInstance'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_tg_conversation_layer_ConversationLayer_currInstance'", nullptr);
-            return 0;
-        }
-        ConversationLayer* ret = cobj->currInstance();
-        object_to_luaval<ConversationLayer>(tolua_S, "ConversationLayer",(ConversationLayer*)ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ConversationLayer:currInstance",argc, 0);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_currInstance'.",&tolua_err);
-#endif
-
-    return 0;
-}
 int lua_tg_conversation_layer_ConversationLayer_setPauseNode(lua_State* tolua_S)
 {
     int argc = 0;
@@ -415,53 +371,6 @@ int lua_tg_conversation_layer_ConversationLayer_setPauseNode(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_setPauseNode'.",&tolua_err);
-#endif
-
-    return 0;
-}
-int lua_tg_conversation_layer_ConversationLayer_nextDialogue(lua_State* tolua_S)
-{
-    int argc = 0;
-    ConversationLayer* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"ConversationLayer",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (ConversationLayer*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_tg_conversation_layer_ConversationLayer_nextDialogue'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_tg_conversation_layer_ConversationLayer_nextDialogue'", nullptr);
-            return 0;
-        }
-        cobj->nextDialogue();
-        lua_settop(tolua_S, 1);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ConversationLayer:nextDialogue",argc, 0);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_nextDialogue'.",&tolua_err);
 #endif
 
     return 0;
@@ -692,6 +601,40 @@ int lua_tg_conversation_layer_ConversationLayer_createDebugScene(lua_State* tolu
 #endif
     return 0;
 }
+int lua_tg_conversation_layer_ConversationLayer_currInstance(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"ConversationLayer",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 0)
+    {
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_tg_conversation_layer_ConversationLayer_currInstance'", nullptr);
+            return 0;
+        }
+        ConversationLayer* ret = ConversationLayer::currInstance();
+        object_to_luaval<ConversationLayer>(tolua_S, "ConversationLayer",(ConversationLayer*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "ConversationLayer:currInstance",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_tg_conversation_layer_ConversationLayer_currInstance'.",&tolua_err);
+#endif
+    return 0;
+}
 static int lua_tg_conversation_layer_ConversationLayer_finalize(lua_State* tolua_S)
 {
     printf("luabindings: finalizing LUA object (ConversationLayer)");
@@ -704,19 +647,18 @@ int lua_register_tg_conversation_layer_ConversationLayer(lua_State* tolua_S)
     tolua_cclass(tolua_S,"ConversationLayer","ConversationLayer","cc.Layer",nullptr);
 
     tolua_beginmodule(tolua_S,"ConversationLayer");
-        tolua_function(tolua_S,"quitConversation",lua_tg_conversation_layer_ConversationLayer_quitConversation);
         tolua_function(tolua_S,"playScreenEffect",lua_tg_conversation_layer_ConversationLayer_playScreenEffect);
-        tolua_function(tolua_S,"changeCharacter",lua_tg_conversation_layer_ConversationLayer_changeCharacter);
-        tolua_function(tolua_S,"changeBgm",lua_tg_conversation_layer_ConversationLayer_changeBgm);
+        tolua_function(tolua_S,"setDialogueInterval",lua_tg_conversation_layer_ConversationLayer_setDialogueInterval);
         tolua_function(tolua_S,"changeBgp",lua_tg_conversation_layer_ConversationLayer_changeBgp);
-        tolua_function(tolua_S,"currInstance",lua_tg_conversation_layer_ConversationLayer_currInstance);
+        tolua_function(tolua_S,"changeBgm",lua_tg_conversation_layer_ConversationLayer_changeBgm);
+        tolua_function(tolua_S,"changeCharacter",lua_tg_conversation_layer_ConversationLayer_changeCharacter);
         tolua_function(tolua_S,"setPauseNode",lua_tg_conversation_layer_ConversationLayer_setPauseNode);
-        tolua_function(tolua_S,"nextDialogue",lua_tg_conversation_layer_ConversationLayer_nextDialogue);
         tolua_function(tolua_S,"playSoundEffect",lua_tg_conversation_layer_ConversationLayer_playSoundEffect);
         tolua_function(tolua_S,"changeSpeakerColor",lua_tg_conversation_layer_ConversationLayer_changeSpeakerColor);
         tolua_function(tolua_S,"changeText",lua_tg_conversation_layer_ConversationLayer_changeText);
         tolua_function(tolua_S,"create", lua_tg_conversation_layer_ConversationLayer_create);
         tolua_function(tolua_S,"createDebugScene", lua_tg_conversation_layer_ConversationLayer_createDebugScene);
+        tolua_function(tolua_S,"currInstance", lua_tg_conversation_layer_ConversationLayer_currInstance);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(ConversationLayer).name();
     g_luaType[typeName] = "ConversationLayer";

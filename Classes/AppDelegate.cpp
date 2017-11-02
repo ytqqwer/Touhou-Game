@@ -82,8 +82,10 @@ AppDelegate::applicationDidFinishLaunching()
     ScriptEngineManager::getInstance()->setScriptEngine(engine);
     lua_State* L = engine->getLuaStack()->getLuaState();
     register_all_tg_conversation_layer(L);
-    engine->addSearchPath("LuaScripts");
-    engine->addSearchPath("LuaScripts/cocos");
+    engine->addSearchPath("LuaScripts");       // for lua function 'require' to search module
+    engine->addSearchPath("LuaScripts/cocos"); // for lua function 'require' to search module
+    auto fileUtils = FileUtils::getInstance();
+    fileUtils->addSearchPath("LuaScripts"); // for LuaEngine to find lua file
 
     /*  5. other packages? just leave it alone */
 

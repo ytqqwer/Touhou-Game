@@ -164,7 +164,7 @@ set(GAME_SRC
   Classes/NonGameplayScenes/ConversationIndicatorButton.cpp
 
   # Layers
-  Classes/Layers/ConversationLayerWithLua.cpp
+  Classes/Layers/ConversationLayer.cpp
   Classes/Layers/LoadingLayer.cpp
   Classes/Layers/SettingsLayer.cpp
 
@@ -251,7 +251,7 @@ set(GAME_HEADERS
   Classes/NonGameplayScenes/ConversationIndicatorButton.h
 
   # Layers
-  Classes/Layers/ConversationLayerWithLua.h
+  Classes/Layers/ConversationLayer.h
   Classes/Layers/LoadingLayer.h
   Classes/Layers/SettingsLayer.h
 
@@ -334,15 +334,16 @@ else()
     COMMAND ${CMAKE_COMMAND} -E remove_directory ${APP_BIN_DIR}/LuaScripts
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resources ${APP_BIN_DIR}/Resources
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/LuaScripts ${APP_BIN_DIR}/Resources/LuaScripts
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/cocos2d ${APP_BIN_DIR}/Resources/LuaScripts/cocos
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/cocosdenshion ${APP_BIN_DIR}/Resources/LuaScripts/cocos
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/cocosbuilder ${APP_BIN_DIR}/Resources/LuaScripts/cocos
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/cocostudio ${APP_BIN_DIR}/Resources/LuaScripts/cocos
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/extension ${APP_BIN_DIR}/Resources/LuaScripts/cocos
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/network ${APP_BIN_DIR}/Resources/LuaScripts/cocos
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/ui ${APP_BIN_DIR}/Resources/LuaScripts/cocos
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/3d ${APP_BIN_DIR}/Resources/LuaScripts/cocos
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/physics3d ${APP_BIN_DIR}/Resources/LuaScripts/cocos
     )
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/cocos2d ${APP_BIN_DIR}/Resources/LuaScripts/cocos
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/cocosdenshion ${APP_BIN_DIR}/Resources/LuaScripts/cocos
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/cocosbuilder ${APP_BIN_DIR}/Resources/LuaScripts/cocos
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/cocostudio ${APP_BIN_DIR}/Resources/LuaScripts/cocos
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/extension ${APP_BIN_DIR}/Resources/LuaScripts/cocos
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/network ${APP_BIN_DIR}/Resources/LuaScripts/cocos
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/ui ${APP_BIN_DIR}/Resources/LuaScripts/cocos
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/3d ${APP_BIN_DIR}/Resources/LuaScripts/cocos
+    # COMMAND ${CMAKE_COMMAND} -E copy_directory ${COCOS2D_ROOT}/cocos/scripting/lua-bindings/script/physics3d ${APP_BIN_DIR}/Resources/LuaScripts/cocos
+    # )
 
 endif()

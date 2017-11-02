@@ -6,15 +6,30 @@
 
 --------------------------------
 -- 
--- @function [parent=#ConversationLayer] quitConversation 
+-- @function [parent=#ConversationLayer] playScreenEffect 
 -- @param self
+-- @param #string effect
+-- @return ConversationLayer#ConversationLayer ret (return value: ConversationLayer)
+        
+--------------------------------
+-- 
+-- @function [parent=#ConversationLayer] setDialogueInterval 
+-- @param self
+-- @param #float v
 -- @return ConversationLayer#ConversationLayer self (return value: ConversationLayer)
         
 --------------------------------
 -- 
--- @function [parent=#ConversationLayer] playScreenEffect 
+-- @function [parent=#ConversationLayer] changeBgp 
 -- @param self
--- @param #string effect
+-- @param #string bgp
+-- @return ConversationLayer#ConversationLayer ret (return value: ConversationLayer)
+        
+--------------------------------
+-- 
+-- @function [parent=#ConversationLayer] changeBgm 
+-- @param self
+-- @param #string bgm
 -- @return ConversationLayer#ConversationLayer ret (return value: ConversationLayer)
         
 --------------------------------
@@ -30,35 +45,9 @@
         
 --------------------------------
 -- 
--- @function [parent=#ConversationLayer] changeBgm 
--- @param self
--- @param #string bgm
--- @return ConversationLayer#ConversationLayer ret (return value: ConversationLayer)
-        
---------------------------------
--- 
--- @function [parent=#ConversationLayer] changeBgp 
--- @param self
--- @param #string bgp
--- @return ConversationLayer#ConversationLayer ret (return value: ConversationLayer)
-        
---------------------------------
--- 
--- @function [parent=#ConversationLayer] currInstance 
--- @param self
--- @return ConversationLayer#ConversationLayer ret (return value: ConversationLayer)
-        
---------------------------------
--- 
 -- @function [parent=#ConversationLayer] setPauseNode 
 -- @param self
 -- @param #cc.Node node
--- @return ConversationLayer#ConversationLayer self (return value: ConversationLayer)
-        
---------------------------------
--- 
--- @function [parent=#ConversationLayer] nextDialogue 
--- @param self
 -- @return ConversationLayer#ConversationLayer self (return value: ConversationLayer)
         
 --------------------------------
@@ -96,6 +85,12 @@
 -- @function [parent=#ConversationLayer] createDebugScene 
 -- @param self
 -- @return Scene#Scene ret (return value: cc.Scene)
+        
+--------------------------------
+-- 
+-- @function [parent=#ConversationLayer] currInstance 
+-- @param self
+-- @return ConversationLayer#ConversationLayer ret (return value: ConversationLayer)
         
 --------------------------------
 -- 
