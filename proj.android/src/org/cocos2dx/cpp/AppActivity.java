@@ -52,62 +52,47 @@ public class AppActivity extends Cocos2dxActivity {
         destStream.close();
     }
 
-    private static boolean deleteRecursively(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteRecursively(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        // 目录此时为空，可以删除
-        return dir.delete();
-    }
-
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /* 1. 删除手机内存储的 gamedata 目录
-         *    在开发时期，为方便起见，Android 应用每次启动时都重置
-         */
+        boolean overrideSaves = true;
 
-        File toDir = new File(this.getFilesDir().getAbsolutePath() + "/gamedata");
-        deleteRecursively(toDir);
+        String[] filesToCopy = {
+                "gamedata/awards.json",
+                "gamedata/characters.json",
+                "gamedata/conversations.json",
+                "gamedata/enemies.json",
+                "gamedata/events.json",
+                "gamedata/items.json",
+                "gamedata/locations.json",
+                "gamedata/saves.json",
+                "gamedata/spell_cards.json",
+                "gamedata/update.json",
+                "LuaScripts/conversations/init.lua",
+                "LuaScripts/conversations/c1.lua"
+        };
 
-        Log.d("AppActivity", ">> path 1: " + this.getFilesDir().getAbsolutePath() + "/gamedata");
+        for (String path : filesToCopy) {
+            Log.d("AppActivity", ">> path: " + path);
+            File file = new File(this.getFilesDir().getAbsolutePath() + "/" + path);
+            Log.d("AppActivity", ">> copying file " + file.toString());
 
-        /* 2. 在手机内创建新的 gamedata 目录 */
-
-        toDir.mkdir();
-
-        /* 3. 拷贝 assets */
-
-        String assetsPrefix = "gamedata/";
-        String[] filesToCopy = {"awards.json",
-                "characters.json",
-                "conversations.json",
-                "enemies.json",
-                "events.json",
-                "update.json",
-                "items.json",
-                "locations.json",
-                "saves.json",
-                "spell_cards.json"};
-
-        try {
-            InputStream is;
-            for (String f : filesToCopy) {
-                is = this.getAssets().open(assetsPrefix + f);
-                copy(is, getFilesDir() + "/gamedata/" + f);
-                Log.d("AppActivity", ">> path2: " + getFilesDir() + "/gamedata/" + f);
+            if (overrideSaves && file.getName().equals("saves.json") && file.exists()) {
+                continue;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            try {
+                if (file.exists())
+                    file.delete();
+
+                new File(file.getParent()).mkdirs();
+                copy(this.getAssets().open(path), file.toString());
+                Log.d("AppActivity", ">> copied " + path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
