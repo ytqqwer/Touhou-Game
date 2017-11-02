@@ -27,6 +27,8 @@
     </Filter>
     <Filter Include="Classes\GameplayScene\Shaders">
     </Filter>
+    <Filter Include="Classes\LuaBindings">
+    </Filter>
     <Filter Include="Classes\GameplayScene\Emitters">
       <UniqueIdentifier>{4e3f5bc7-5be0-4356-bdad-60d302cc49e7}</UniqueIdentifier>
     </Filter>
@@ -72,6 +74,12 @@
 
     <ClCompile Include="..\Classes\GameData\GameData.cpp">
       <Filter>Classes\GameData</Filter>
+    </ClCompile>
+
+    <!-- Classes\LuaBindings -->
+
+    <ClCompile Include="..\Classes\LuaBindings\lua_conversation_layer.cpp">
+      <Filter>Classes\LuaBindings</Filter>
     </ClCompile>
 
     <!-- Classes\NonGameplayScenes -->
@@ -297,6 +305,11 @@
     </ClInclude>
     <ClInclude Include="..\Classes\GameData\EventData.h">
       <Filter>Classes\GameData</Filter>
+    </ClInclude>
+
+    <!-- Classes\LuaBindings -->
+    <ClInclude Include="..\Classes\LuaBindings\lua_conversation_layer.hpp">
+      <Filter>Classes\LuaBindings</Filter>
     </ClInclude>
 
     <!-- Classes\NonGameplayScenes -->

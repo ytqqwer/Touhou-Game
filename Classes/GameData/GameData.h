@@ -75,10 +75,6 @@ public:
     // 在 HomeScene 中使用
     vector<ConversationIndicator> getConversationIndicators(const string& locationTag);
 
-    // 通过对话编号返回详细对话内容，包括对话的双方，对话的内容，对话过程中人物的变化
-    // 在 ConversationLayer 中使用
-    vector<Dialogue> getConversation(const string& conversationTag);
-
     ////////////////////////////////////////////////////////////////////////////////
     // 地点关卡与进度 Location / Round / Process
     // 区分 Location / Map / Round , Location 是地点，Map 特指 TMX 地图，Round 则是一个个关卡

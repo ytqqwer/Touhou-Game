@@ -20,9 +20,14 @@ proj.win32.github/Release/
 proj.win32.github/Release.win32/
 proj.win32.github/touhou-game.sdf
 
+# lua support
+!LuaScripts
+!tools
+
 # general temporaryy files
 *~
 *.swp
+*.pyc
 
 # tag files(linux only)
 GPATH

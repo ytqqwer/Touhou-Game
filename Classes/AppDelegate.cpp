@@ -4,8 +4,10 @@
 
 #include "AppDelegate.h"
 #include "GameData/GameData.h"
+#include "LuaBindings/lua_conversation_layer.hpp"
 #include "NonGameplayScenes/LogoAndDisclaimerScene.h"
 #include "SimpleAudioEngine.h"
+#include "scripting/lua-bindings/manual/CCLuaEngine.h"
 
 USING_NS_CC;
 
@@ -74,17 +76,28 @@ AppDelegate::applicationDidFinishLaunching()
     log(">> physical size of the device is %.0f x %.0f", physicalSize.width, physicalSize.height);
 #endif
 
-    /*  4. other packages? just leave it alone */
+    /*  4. lua support */
+
+    auto engine = LuaEngine::getInstance();
+    ScriptEngineManager::getInstance()->setScriptEngine(engine);
+    lua_State* L = engine->getLuaStack()->getLuaState();
+    register_all_tg_conversation_layer(L);
+    engine->addSearchPath("LuaScripts");       // for lua function 'require' to search module
+    engine->addSearchPath("LuaScripts/cocos"); // for lua function 'require' to search module
+    auto fileUtils = FileUtils::getInstance();
+    fileUtils->addSearchPath("LuaScripts"); // for LuaEngine to find lua file
+
+    /*  5. other packages? just leave it alone */
 
     register_all_packages();
 
-    /*  5. configure game */
+    /*  6. configure game */
 
     auto audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
     audioEngine->setBackgroundMusicVolume(GameData::getInstance()->getSavedBgmVolume());
     audioEngine->setEffectsVolume(GameData::getInstance()->getSavedEffectsVolume());
 
-    /*  6. run with scence */
+    /*  7. run with scence */
 
     auto scene = LogoAndDisclaimerScene::create();
     director->runWithScene(scene);

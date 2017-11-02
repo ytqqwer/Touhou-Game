@@ -3,6 +3,10 @@
         {
             "from": "../Resources",
             "to": ""
+        },
+        {
+            "form": "../LuaScripts",
+            "to": "LuaScripts"
         }
     ]
 }
