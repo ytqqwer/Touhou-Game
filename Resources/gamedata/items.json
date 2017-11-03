@@ -2,7 +2,7 @@
     {
         "tag": "I1",
         "name": "item 1",
-        "icon": "item/magic_bottle.png",
+        "icon": "item/yellow_gem.png",
         "description": "This is item1's description",
         "type": "NORMAL",
         "isCarriable": false,
@@ -17,7 +17,7 @@
     {
         "tag": "I2",
         "name": "item 2",
-        "icon": "item/magic_bottle.png",
+        "icon": "item/blue_gem.png",
         "description": "This is item2's description",
         "type": "NORMAL",
         "isCarriable": true,
@@ -32,7 +32,7 @@
     {
         "tag": "I3",
         "name": "item 3",
-        "icon": "item/magic_bottle.png",
+        "icon": "item/gold_milk.png",
         "description": "This is item3's description",
         "type": "SPECIAL",
         "isCarriable": false,
@@ -47,7 +47,7 @@
     {
         "tag": "I4",
         "name": "item 4",
-        "icon": "item/magic_bottle.png",
+        "icon": "item/pills.png",
         "description": "This is item4's description",
         "type": "SPECIAL",
         "isCarriable": true,
@@ -62,7 +62,7 @@
     {
         "tag": "I5",
         "name": "item 5",
-        "icon": "item/magic_bottle.png",
+        "icon": "item/little_gem.png",
         "description": "This is item5's description",
         "type": "STRENGTHEN",
         "isCarriable": false,
@@ -77,7 +77,7 @@
     {
         "tag": "I6",
         "name": "item 6",
-        "icon": "item/magic_bottle.png",
+        "icon": "item/ubisoft.png",
         "description": "This is item6's description",
         "type": "NORMAL",
         "isCarriable": false,
@@ -122,7 +122,7 @@
     {
         "tag": "I9",
         "name": "item 9",
-        "icon": "item/magic_bottle.png",
+        "icon": "item/red_gem.png",
         "description": "This is item9's description",
         "type": "STRENGTHEN",
         "isCarriable": false,

@@ -70,11 +70,11 @@ BossHpBar::init()
     this->addChild(hpClippingNode);
     this->addChild(centerObject);
 
-    Director::getInstance()->getEventDispatcher()->addCustomEventListener(
+    customListener = Director::getInstance()->getEventDispatcher()->addCustomEventListener(
         "hp_change", [this](EventCustom* e) {
             auto change = (Hp_Mp_Change*)e->getUserData();
             if (this->_target == change->target) {
-                auto currentWidth = _hpStencil->getContentSize().width;
+                auto currentWidth = this->_hpStencil->getContentSize().width;
                 auto originWidth = this->_hpBar->getContentSize().width;
 
                 double changePercent = -(double)change->value / this->_maxHp; //取反
@@ -85,11 +85,17 @@ BossHpBar::init()
                 } else if (currentHpPercent <= 0) {
                     currentHpPercent = 0;
                 }
-                _hpStencil->setContentSize(
+                this->_hpStencil->setContentSize(
                     Size(this->_hpBar->getContentSize().width * currentHpPercent,
                          this->_hpBar->getContentSize().height));
             }
         });
 
     return true;
+}
+
+void
+BossHpBar::removeListener()
+{
+    Director::getInstance()->getEventDispatcher()->removeEventListener(customListener);
 }

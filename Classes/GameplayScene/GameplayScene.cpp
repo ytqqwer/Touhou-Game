@@ -683,6 +683,10 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
                 mapLayer->addChild(_ps);
                 _ps->setPositionType(ParticleSystem::PositionType::RELATIVE);
                 _ps->setPosition(entityA->getPosition());
+                _ps->setLife(1.2);
+                _ps->setLifeVar(0.3);
+                _ps->setEndSize(0.0f);
+                _ps->setAutoRemoveOnFinish(true);
 
                 auto _enemy = (Enemy*)entityA;
                 auto _bullet = (Bullet*)entityB;

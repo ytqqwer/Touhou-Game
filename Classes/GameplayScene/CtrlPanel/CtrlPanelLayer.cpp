@@ -266,7 +266,9 @@ void
 CtrlPanelLayer::removeBossHpBar()
 {
     for (auto& hpBar : _hpBars) {
-        hpBar->removeFromParentAndCleanup(true);
+        auto bar = (BossHpBar*)hpBar;
+        bar->removeListener();
+        bar->removeFromParentAndCleanup(true);
     }
     _hpBars.clear();
 }

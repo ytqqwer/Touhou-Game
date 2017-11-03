@@ -674,8 +674,7 @@ GameData::updateSave(const std::string& updateTag)
                     ul["conversationIndicators"]; //将当前遍历对象的c..Indi..ors转化为json对象
                 const json& indicators = location.at("conversationIndicators");
                 for (auto& tag : indicators) {
-                    json newIndicatorRecord = { tag };
-                    indicatorsDom.push_back(newIndicatorRecord); //追加新的对话tag
+                    indicatorsDom.push_back(tag); //追加新的对话tag
                 }
                 isExist = true;
                 break;

@@ -81,7 +81,7 @@ public class AppActivity extends Cocos2dxActivity {
             File file = new File(this.getFilesDir().getAbsolutePath() + "/" + path);
             Log.d("AppActivity", ">> copying file " + file.toString());
 
-            if (overrideSaves && file.getName().equals("saves.json") && file.exists()) {
+            if (!overrideSaves && file.getName().equals("saves.json") && file.exists()) {
                 continue;
             }
 

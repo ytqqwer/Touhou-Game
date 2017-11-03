@@ -34,7 +34,6 @@ private:
 
     Layer* _characterCtrlPanel[2];
     unsigned int _currCharacterIdx;
-    unsigned int _hpBarCounts = 0;
 
     Vector<Node*> _hpBars;
 };
