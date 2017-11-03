@@ -250,24 +250,23 @@ CtrlPanelLayer::initKeyboardListener()
 }
 
 void
-CtrlPanelLayer::createBossHpBar(const Node* target, const int maxHpValue, const std::string face)
+CtrlPanelLayer::createBossHpBar(const Node* target, const int maxHpValue, const std::string& face)
 {
     auto bossHpBar = BossHpBar::create(target, maxHpValue, face);
     bossHpBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 
     bossHpBar->setPosition(_visibleSize.width * 0.800,
-                           _visibleSize.height * (0.910 - _hpBarCounts * 0.150));
+                           _visibleSize.height * (0.910 - _hpBars.size() * 0.150));
 
     this->addChild(bossHpBar);
-    bossHpBar->setTag(998);
-
-    _hpBarCounts++;
+    _hpBars.pushBack(bossHpBar);
 }
 
 void
 CtrlPanelLayer::removeBossHpBar()
 {
-    this->removeChildByTag(998, true);
-
-    _hpBarCounts = 0;
+    for (auto& hpBar : _hpBars) {
+        hpBar->removeFromParentAndCleanup(true);
+    }
+    _hpBars.clear();
 }

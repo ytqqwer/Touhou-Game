@@ -5,7 +5,7 @@ USING_NS_CC;
 using namespace std;
 
 BossHpBar*
-BossHpBar::create(const Node* target, const int maxHpValue, const std::string face)
+BossHpBar::create(const Node* target, const int maxHpValue, const std::string& face)
 {
     auto bar = new (std::nothrow) BossHpBar(target, maxHpValue, face);
     if (bar && bar->init()) {
@@ -18,7 +18,7 @@ BossHpBar::create(const Node* target, const int maxHpValue, const std::string fa
     }
 }
 
-BossHpBar::BossHpBar(const Node* target, const int maxHpValue, const std::string face)
+BossHpBar::BossHpBar(const Node* target, const int maxHpValue, const std::string& face)
 {
     this->_target = target;
     this->_maxHp = maxHpValue;

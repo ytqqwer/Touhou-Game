@@ -40,7 +40,7 @@ Stump::init(const std::string& tag)
     body->getFirstShape()->setContactTestBitmask(groundCategory | bulletCategory |
                                                  elevatorCategory | playerCategory);
     this->setPhysicsBody(body);
-    body->setPositionOffset(Vec2(0, 10));
+    body->setPositionOffset(Vec2(0, 8));
 
     //索敌检测框
     auto rect = PhysicsShapeBox::create(Size(200, 200));

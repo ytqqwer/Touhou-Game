@@ -70,7 +70,10 @@ public class AppActivity extends Cocos2dxActivity {
                 "gamedata/spell_cards.json",
                 "gamedata/update.json",
                 "LuaScripts/conversations/init.lua",
-                "LuaScripts/conversations/c1.lua"
+                "LuaScripts/conversations/c1.lua",
+                "LuaScripts/conversations/c2.lua",
+                "LuaScripts/conversations/c3.lua",
+                "LuaScripts/conversations/c4.lua"
         };
 
         for (String path : filesToCopy) {

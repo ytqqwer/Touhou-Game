@@ -1,22 +1,22 @@
 [
     {
         "conversationTag": "C1",
-        "icon": "gamedata/characters/cirno_avatar.png",
+        "icon": "avatar/cirno_avatar.png",
         "name": "Cirno"
     }, 
     {
         "conversationTag": "C2",
-        "icon": "gamedata/characters/marisa_avatar.png",
+        "icon": "avatar/marisa_avatar.png",
         "name": "Marisa"
     }, 
     {
         "conversationTag": "C3",
-        "icon": "gamedata/characters/reimu_avatar.png",
+        "icon": "avatar/reimu_avatar.png",
         "name": "Reimu"
     }, 
     {
         "conversationTag": "C4",
-        "icon": "gamedata/characters/alice_avatar.png",
+        "icon": "avatar/alice_avatar.png",
         "name": "Alice"
     }
 ]
