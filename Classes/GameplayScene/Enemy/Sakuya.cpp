@@ -43,8 +43,8 @@ Sakuya::init(const std::string& tag)
     body->getFirstShape()->setCollisionBitmask(groundCategory | bulletCategory | elevatorCategory);
     body->getFirstShape()->setContactTestBitmask(groundCategory | bulletCategory |
                                                  elevatorCategory | playerCategory);
-    this->setPhysicsBody(body);
     body->setPositionOffset(Vec2(0, -15));
+    this->setPhysicsBody(body);
 
     //设置速度上限
     body->setVelocityLimit(400);
@@ -525,8 +525,6 @@ Sakuya::UseSpellCard::Exit(Enemy* enemy)
 {
     auto sakuya = (Sakuya*)enemy;
     sakuya->enemySprite->stopAction(sakuya->currentAnimateAction);
-
-    // sakuya->emitter->stopAllStyle();
 }
 
 void

@@ -20,6 +20,19 @@
 
 #define PTM_RATIO 1
 
+#define PARALLAX_BACK_ZORDER -1
+#define PARALLAX_FORE_ZORDER 1
+#define CTRLPANEL_LAYER_ZORDER 3
+#define SETTING_LAYER_ZORDER 1000
+
+#define MAPLAYER_ZORDER 0
+
+#define MAPLAYER_TMXMAP_ZORDER 0
+#define MAPLAYER_CHARACTER_ZORDER 1
+#define MAPLAYER_ENEMY_ZORDER 1
+#define MAPLAYER_CAMERA_ZORDER -1
+#define MAPLAYER_OTHER_ZORDER 2
+
 const std::string GameplayScene::TAG{ "GameplayScene" };
 
 void
@@ -98,15 +111,20 @@ GameplayScene::init()
 }
 
 void
-GameplayScene::initBackGround()
+GameplayScene::initBackgroundAndForeground()
 {
-    backgroundPicture = Sprite::create();
-    backgroundPicture->setAnchorPoint(Point::ZERO);
-    backgroundPicture->setPosition(Point::ZERO);
+    backParallaxNode = ParallaxNode::create();
+    backParallaxNode->setAnchorPoint(Point::ZERO);
+    this->addChild(backParallaxNode, PARALLAX_BACK_ZORDER);
 
-    backgroundLayer = Layer::create();
-    backgroundLayer->addChild(backgroundPicture);
-    this->addChild(backgroundLayer, -100);
+    backParallaxNode->setPosition(visibleSize.width / 2.0, visibleSize.height / 2.0);
+
+    //背景图片之一，锚点为图片中心点
+    backgroundPicture = Sprite::create();
+    backgroundPicture->setAnchorPoint(Point::ANCHOR_MIDDLE);
+    //加入视差结点，子节点位置只和偏移量，比率因子等有关
+    backParallaxNode->addChild(backgroundPicture, 0, Vec2(0.06, 0.03),
+                               Vec2(visibleSize.width / 2.0, visibleSize.height / 2.0));
 }
 
 void
@@ -116,9 +134,9 @@ GameplayScene::initMap()
     _map = TMXTiledMap::create(selectedMap);
     //设置地图大小的倍率
     _map->setScale(1.0f);
-    mapLayer->addChild(_map);
+    mapLayer->addChild(_map, MAPLAYER_TMXMAP_ZORDER);
     mapLayer->setName("mapLayer");
-    this->addChild(mapLayer, 0);
+    this->addChild(mapLayer, MAPLAYER_ZORDER);
 
     //创建静态刚体墙
     createPhysical(1);
@@ -412,7 +430,7 @@ GameplayScene::initCharacter()
 
     curPlayer = p1Player;
     curPlayer->setName("curPlayer");
-    mapLayer->addChild(p1Player);
+    mapLayer->addChild(p1Player, MAPLAYER_CHARACTER_ZORDER);
 
     curPlayer->changeAttackType(p1Player->currentAttackType);
 }
@@ -422,7 +440,7 @@ GameplayScene::initCtrlPanel()
 {
     controlPanel = CtrlPanelLayer::create();
 
-    this->addChild(controlPanel);
+    this->addChild(controlPanel, CTRLPANEL_LAYER_ZORDER);
 }
 
 void
@@ -446,8 +464,9 @@ GameplayScene::initArea()
             auto width = backgroundPicture->getContentSize().width;
             auto height = backgroundPicture->getContentSize().height;
             auto bigger = width > height ? width : height;
-            float scale = visibleSize.width / bigger;
-            backgroundPicture->setScale(scale);
+            float scale = visibleSize.width / width;
+            backgroundPicture->setScale(scale * 1.1);
+
             //替换背景音乐
             if (dict["bgm"].asString() == "") {
                 AudioController::getInstance()->clearMusic();
@@ -470,9 +489,11 @@ GameplayScene::initArea()
 void
 GameplayScene::initCamera()
 {
-    auto mapSize = _map->getMapSize();
-    camera = Sprite::create();
-    mapLayer->addChild(camera);
+    camera = Node::create();
+    mapLayer->addChild(camera, MAPLAYER_CAMERA_ZORDER);
+
+    Vec2 poi = curPlayer->getPosition();
+    camera->setPosition(poi.x + 100, poi.y + 70); //移动摄像机
 
     auto cameraFollow = Follow::create(camera, curArea);
     cameraFollow->setTag(cameraTag);
@@ -495,7 +516,7 @@ GameplayScene::initLauncher()
         if (curArea.containsPoint(Vec2(x, y))) {
             auto _launcher = Sprite::create("CloseNormal.png");
             _launcher->setPosition(x, y);
-            mapLayer->addChild(_launcher);
+            mapLayer->addChild(_launcher, MAPLAYER_OTHER_ZORDER);
 
             auto fe = Emitter::create((Node**)(&curPlayer));
             _launcher->addChild(fe);
@@ -547,7 +568,7 @@ GameplayScene::initElevator()
 
             auto _elevator = Elevator::create();
             _elevator->setPosition(x, y);
-            mapLayer->addChild(_elevator);
+            mapLayer->addChild(_elevator, MAPLAYER_OTHER_ZORDER);
             _elevator->runAction(
                 RepeatForever::create(Sequence::create(seq, seq_reverse, nullptr)));
 
@@ -576,7 +597,7 @@ GameplayScene::initEnemy()
             std::string tag = dict["tag"].asString();
             Enemy* _enemy = Enemy::create(tag);
             _enemy->setPosition(x, y);
-            mapLayer->addChild(_enemy);
+            mapLayer->addChild(_enemy, MAPLAYER_ENEMY_ZORDER);
 
             /*临时项*/
             _enemy->setTarget(curPlayer);
@@ -621,7 +642,7 @@ GameplayScene::initEvent()
             body->setCollisionBitmask(0);
             body->setContactTestBitmask(playerCategory);
             _event->setPhysicsBody(body);
-            mapLayer->addChild(_event);
+            mapLayer->addChild(_event, MAPLAYER_OTHER_ZORDER);
 
             eventPoint.pushBack(_event);
         }
@@ -680,7 +701,7 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
                     "gameplayscene/smallOrb000.png"));
 
                 // cocos2dx的粒子系统有三种位置类型
-                mapLayer->addChild(_ps);
+                mapLayer->addChild(_ps, MAPLAYER_OTHER_ZORDER);
                 _ps->setPositionType(ParticleSystem::PositionType::RELATIVE);
                 _ps->setPosition(entityA->getPosition());
                 _ps->setLife(1.2);
@@ -897,6 +918,9 @@ GameplayScene::initCustomEventListener()
         } else if (itemTag == "I3") {
             hpChange.tag = curPlayer->playerTag;
             hpChange.value = -40;
+        } else if (itemTag == "I4") {
+            hpChange.tag = curPlayer->playerTag;
+            hpChange.value = 50;
         }
         EventCustom event("hp_change");
         event.setUserData((void*)&hpChange);
@@ -1026,7 +1050,7 @@ GameplayScene::onEventSwitchCharacter(EventCustom*)
     theOther->changeAttackType(theOther->currentAttackType);
 
     curPlayer = theOther;
-    mapLayer->addChild(theOther);
+    mapLayer->addChild(theOther, MAPLAYER_CHARACTER_ZORDER);
 }
 
 void
@@ -1048,7 +1072,7 @@ GameplayScene::onEventSettingsKeyPressed(EventCustom*)
     auto layer = SettingsLayer::create("GameplayScene");
     layer->setPauseNode(mapLayer);
     mapLayer->onExit();
-    this->addChild(layer, 1000);
+    this->addChild(layer, SETTING_LAYER_ZORDER);
 }
 
 void
@@ -1057,7 +1081,24 @@ GameplayScene::update(float dt)
     Vec2 poi = curPlayer->getPosition();
     camera->setPosition(poi.x + 100, poi.y + 70); //移动摄像机
 
-    if (curArea.containsPoint(curPlayer->getPosition())) {
+    //如果地图切换区域后首次执行update函数，则首先进行以下初始化操作
+    if (isPosUpdate) {
+        backParallaxNodePrePosition = Vec2::ZERO;
+        mapLayerPrePosition = mapLayer->getPosition();
+        isPosUpdate = false;
+    }
+    //取得TMX地图层的偏移量
+    auto mapLayerCurPosition = mapLayer->getPosition();
+    auto offsetX = mapLayerCurPosition.x - mapLayerPrePosition.x;
+    auto offsetY = mapLayerCurPosition.y - mapLayerPrePosition.y;
+    mapLayerPrePosition = mapLayerCurPosition;
+    //设置背景视差结点的偏移量
+    backParallaxNode->setPosition(backParallaxNodePrePosition.x + offsetX,
+                                  backParallaxNodePrePosition.y + offsetY);
+    backParallaxNodePrePosition =
+        Vec2(backParallaxNodePrePosition.x + offsetX, backParallaxNodePrePosition.y + offsetY);
+
+    if (curArea.containsPoint(poi)) {
         ;
     } else {
 
@@ -1068,7 +1109,6 @@ GameplayScene::update(float dt)
         for (auto v : eventPoint) {
             v->removeFromParentAndCleanup(true);
         }
-
         for (auto v : launcherList) {
             v->removeFromParentAndCleanup(true);
         }
@@ -1082,9 +1122,16 @@ GameplayScene::update(float dt)
 
         initArea();
 
+        //重置摄像机跟随
         mapLayer->stopActionByTag(cameraTag);
         auto cameraFollow = Follow::create(camera, curArea);
         cameraFollow->setTag(cameraTag);
         mapLayer->runAction(cameraFollow);
+
+        //重置偏移量，重置视差节点位置
+        backParallaxNode->setPosition(Vec2::ZERO);
+        backParallaxNodePrePosition = Vec2::ZERO;
+        mapLayerPrePosition = mapLayer->getPosition();
+        isPosUpdate = true;
     }
 }

@@ -31,7 +31,7 @@ public:
     void update(float dt);
 
     //初始化工作
-    void initBackGround();
+    void initBackgroundAndForeground();
     void initMap();
     void initAnimationCache();
     void initCtrlPanel();
@@ -79,13 +79,19 @@ private:
     EventFilterManager* _eventFilterMgr;
     EventScriptHanding* _eventScriptHanding;
 
+    //视差节点以及辅助变量
+    ParallaxNode* backParallaxNode;
+    Vec2 mapLayerPrePosition;
+    Vec2 backParallaxNodePrePosition;
+    bool isPosUpdate = true;
+
     //对curPlayer的操作就是对当前指定角色的操作
     Player* curPlayer;
     Player* p1Player;
     Player* p2Player;
 
     //摄像机节点
-    Sprite* camera;
+    Node* camera;
 
     //背景图片
     Sprite* backgroundPicture;
@@ -107,7 +113,6 @@ private:
     /*临时项*/
 
     //游戏场景的几个重要层
-    Layer* backgroundLayer;
     Layer* mapLayer;
     Layer* controlPanel;
 

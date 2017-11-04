@@ -112,7 +112,7 @@ LoadingLayer::onEnter()
 void
 LoadingLayer::initBackGround()
 {
-    gameplayScene->initBackGround();
+    gameplayScene->initBackgroundAndForeground();
 
     //由于加载十分迅速，如果不延迟几乎察觉不到有读取界面的存在
     this->scheduleOnce(
