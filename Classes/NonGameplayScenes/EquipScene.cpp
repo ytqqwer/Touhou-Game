@@ -109,13 +109,13 @@ EquipScene::init()
     }
 
     /*攻击方式切换箭头*/
-    auto deco_1 = Sprite::create("menu/euqip_scene_replace.png");
+    auto deco_1 = Sprite::create("menu/switch_arrow.png");
     deco_1->setContentSize(Size(_visibleSize.width * 0.04, _visibleSize.height * 0.055));
     deco_1->setPosition(
         Vec2(box_4->getContentSize().width * 0.9, box_4->getContentSize().height * 0.5));
     box_4->addChild(deco_1);
 
-    auto deco_2 = Sprite::create("menu/euqip_scene_replace.png");
+    auto deco_2 = Sprite::create("menu/switch_arrow.png");
     deco_2->setContentSize(Size(_visibleSize.width * 0.04, _visibleSize.height * 0.055));
     deco_2->setPosition(
         Vec2(box_4->getContentSize().width * 0.9, box_3->getContentSize().height * 0.162));
@@ -127,6 +127,25 @@ EquipScene::init()
         Vec2(box_3->getContentSize().width / 2, box_3->getContentSize().height * 0.85));
     attack->setColor(Color3B::BLACK);
     box_3->addChild(attack);
+
+    /*  init particle touch listener */
+
+    auto listener = EventListenerTouchAllAtOnce::create();
+    listener->onTouchesBegan = [this](const std::vector<Touch*>& touches, Event* event) { return; };
+    listener->onTouchesEnded = [this](const std::vector<Touch*>& touches, Event* event) {
+        auto touch = touches[0];
+        auto _emitter = ParticleFlower::createWithTotalParticles(15);
+        _emitter->setTexture(
+            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+        this->addChild(_emitter, 10);
+        _emitter->setPosition(touch->getLocation());
+        _emitter->setDuration(0.5);
+        _emitter->setEmissionRate(30);
+        _emitter->setLife(0.4);
+        _emitter->setLifeVar(0.1);
+        _emitter->setAutoRemoveOnFinish(true);
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     return true;
 }
@@ -244,16 +263,10 @@ EquipScene::loadCharacterProperty(const Character& character)
             }
         }
         if (!found) {
-            Sprite* none = Sprite::create("menu/equip_scene_forbid.png");
-
-            auto width = none->getContentSize().width;
-            auto height = none->getContentSize().height;
-            auto bigger = width > height ? width : height;
-            float scale = 61.0 / bigger;
-            none->setScale(scale);
-
+            auto none = Label::create("Select", "fonts/NotoSansCJKsc-Black.otf", 20);
+            none->setColor(Color3B::WHITE);
             none->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            none->setPosition(buttonSize.width / 5.0, buttonSize.height / 2.0);
+            none->setPosition(buttonSize.width / 4.0, buttonSize.height / 2.0);
             button->addChild(none);
         }
 
@@ -318,18 +331,10 @@ EquipScene::loadCharacterProperty(const Character& character)
             }
         }
         if (!found) {
-            Sprite* none = Sprite::create("menu/equip_scene_forbid.png");
-
-            //正常来说所有素材的图片像素都是一致的，所以根本不需要下列代码手动设置缩放大小
-            //缩放参照一个像素为43×61的图片
-            auto width = none->getContentSize().width;
-            auto height = none->getContentSize().height;
-            auto bigger = width > height ? width : height;
-            float scale = 61.0 / bigger;
-            none->setScale(scale);
-
+            auto none = Label::create("Select", "fonts/NotoSansCJKsc-Black.otf", 20);
+            none->setColor(Color3B::WHITE);
             none->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            none->setPosition(buttonSize.width / 5.0, buttonSize.height / 2.0);
+            none->setPosition(buttonSize.width / 4.0, buttonSize.height / 2.0);
             button->addChild(none);
         }
 

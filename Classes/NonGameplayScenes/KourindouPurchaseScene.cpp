@@ -51,12 +51,11 @@ KourindouPurchaseScene::init()
     addChild(bg_3, 0, 3);
 
     /*返回按钮*/
-    auto backButton = Button::create("menu/p1.png", "", "");
+    auto backButton = Button::create("menu/buttonNormal.png");
     backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     backButton->setTitleText("返回");
-    backButton->setTitleFontSize(20);
+    backButton->setTitleFontSize(25);
     backButton->setTitleColor(Color3B::WHITE);
-    backButton->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.15));
     backButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playReturnButtonEffect();
@@ -117,6 +116,25 @@ KourindouPurchaseScene::init()
     itemTable->setVerticalFillOrder(TableView::VerticalFillOrder::TOP_DOWN); //从小到大排列
     itemTable->setDelegate(this);                                            //委托代理
     bg_3->addChild(itemTable);
+
+    /*  init particle touch listener */
+
+    auto listener = EventListenerTouchAllAtOnce::create();
+    listener->onTouchesBegan = [this](const std::vector<Touch*>& touches, Event* event) { return; };
+    listener->onTouchesEnded = [this](const std::vector<Touch*>& touches, Event* event) {
+        auto touch = touches[0];
+        auto _emitter = ParticleFlower::createWithTotalParticles(15);
+        _emitter->setTexture(
+            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+        this->addChild(_emitter, 10);
+        _emitter->setPosition(touch->getLocation());
+        _emitter->setDuration(0.5);
+        _emitter->setEmissionRate(30);
+        _emitter->setLife(0.4);
+        _emitter->setLifeVar(0.1);
+        _emitter->setAutoRemoveOnFinish(true);
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     return true;
 }

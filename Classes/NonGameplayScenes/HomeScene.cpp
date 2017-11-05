@@ -24,6 +24,9 @@
 #include "ui/CocosGUI.h"
 using namespace ui;
 
+#include "cocos-ext.h"
+using namespace cocos2d::extension;
+
 // 静态数据成员必须在类定义 *外* 进行初始化
 // 为保证编译时静态数据成员最后只存在于一个目标文件中
 // 这个定义也不能写入 .h 文件中，放在对应的 .cpp 文件的开头是最好选择
@@ -67,27 +70,19 @@ HomeScene::init()
     });
     addChild(UpdateButton);
 
-    auto ret = Button::create("", "", "");
-    ret->setTitleText("返回");
-    ret->setTitleColor(Color3B(0, 0, 0));
-    ret->setTitleFontSize(20);
-    ret->setAnchorPoint(Vec2(0, 1));
-    ret->setPosition(Vec2(0, _visibleSize.height));
-    ret->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
-        if (type == Widget::TouchEventType::ENDED) {
-            Director::getInstance()->replaceScene(MainMenuScene::create());
-        }
-    });
-    addChild(ret, 2);
-
 #endif
 
     /*出发按钮*/
     auto button_start = Button::create(IMG_HOME_BIG_BUTTON);
-    button_start->setTitleFontName("fonts/dengxian.ttf");
+    button_start->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     button_start->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.705));
     button_start->setTitleText("出发");
-    button_start->setTitleFontSize(25);
+    button_start->setTitleFontSize(75);
+    button_start->setTitleColor(Color3B::BLACK);
+    button_start->setScale(0.33);
+    // button_start->setScale9Enabled(true);
+    // button_start->setCapInsets(Rect(50, 70, 567, 242));
+    // button_start->setContentSize(Size(200,100));
     button_start->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -99,10 +94,12 @@ HomeScene::init()
 
     /*整备按钮*/
     auto button_equip = Button::create(IMG_HOME_BIG_BUTTON);
-    button_equip->setTitleFontName("fonts/dengxian.ttf");
+    button_equip->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     button_equip->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.525));
     button_equip->setTitleText("整备");
-    button_equip->setTitleFontSize(25);
+    button_equip->setTitleFontSize(75);
+    button_equip->setTitleColor(Color3B::BLACK);
+    button_equip->setScale(0.33);
     button_equip->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -114,10 +111,12 @@ HomeScene::init()
 
     /*道具库按钮*/
     auto button_inventory = Button::create(IMG_HOME_BIG_BUTTON);
-    button_inventory->setTitleFontName("fonts/dengxian.ttf");
+    button_inventory->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     button_inventory->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.345));
     button_inventory->setTitleText("道具库");
-    button_inventory->setTitleFontSize(25);
+    button_inventory->setTitleFontSize(75);
+    button_inventory->setTitleColor(Color3B::BLACK);
+    button_inventory->setScale(0.33);
     button_inventory->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -129,10 +128,12 @@ HomeScene::init()
 
     /*其他地图按钮*/
     auto button_map = Button::create(IMG_HOME_BIG_BUTTON);
-    button_map->setTitleFontName("fonts/dengxian.ttf");
+    button_map->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     button_map->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.165));
     button_map->setTitleText("前往其他地图");
-    button_map->setTitleFontSize(25);
+    button_map->setTitleFontSize(75);
+    button_map->setTitleColor(Color3B::BLACK);
+    button_map->setScale(0.33);
     button_map->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -171,20 +172,40 @@ HomeScene::init()
     addChild(cards[2]);
 
     /*地点,进度...等背景*/
-    auto info_bg = Sprite::create(IMG_HOME_LITTLE_BUTTON_LAYOUT);
-    info_bg->setAnchorPoint(Vec2(0, 1));
-    info_bg->setPosition(Vec2(_visibleSize.width * 0.52, _visibleSize.height));
-    info_bg->setOpacity(150);
-    addChild(info_bg);
+    auto information_Layout = Scale9Sprite::create(IMG_HOME_LITTLE_BUTTON_LAYOUT);
+    information_Layout->setAnchorPoint(Vec2(1, 1));
+    information_Layout->setContentSize(Size(680, 120));
+    information_Layout->setPosition(Vec2(_visibleSize.width * 0.98, _visibleSize.height * 0.98));
+    information_Layout->setOpacity(50);
+    addChild(information_Layout);
+
+    /*设置按钮*/
+    auto set_button = Button::create(IMG_HOME_LITTLE_BUTTON);
+    set_button->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
+    set_button->setAnchorPoint(Vec2(0.5, 0.5));
+    set_button->setPosition(Vec2(600, 60));
+    set_button->setTitleText("设置");
+    set_button->setTitleColor(Color3B::BLACK);
+    set_button->setTitleFontSize(60);
+    set_button->setScale(0.33);
+    set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playClickButtonEffect();
+            auto lay = SettingsLayer::create("HomeScene");
+            this->addChild(lay, 5);
+        }
+    });
+    information_Layout->addChild(set_button);
 
     /*资料库按钮*/
     auto know_button = Button::create(IMG_HOME_LITTLE_BUTTON);
-    know_button->setTitleFontName("fonts/dengxian.ttf");
-    know_button->setAnchorPoint(Vec2(0, 1));
-    know_button->setPosition(Vec2(_visibleSize.width * 0.84, _visibleSize.height * 0.99));
+    know_button->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
+    know_button->setAnchorPoint(Vec2(0.5, 0.5));
+    know_button->setPosition(Vec2(500, 60));
     know_button->setTitleText("资料库");
-    know_button->setTitleFontSize(20);
-    know_button->setScale(0.87);
+    know_button->setTitleFontSize(60);
+    know_button->setTitleColor(Color3B::BLACK);
+    know_button->setScale(0.33);
     know_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -193,69 +214,80 @@ HomeScene::init()
             Director::getInstance()->pushScene(transition);
         }
     });
-    addChild(know_button);
+    information_Layout->addChild(know_button);
 
     /*系统商店*/
     auto store_button = Button::create(IMG_HOME_LITTLE_BUTTON);
-    store_button->setTitleFontName("fonts/dengxian.ttf");
-    store_button->setAnchorPoint(Vec2(0, 1));
-    store_button->setPosition(Vec2(_visibleSize.width * 0.774, _visibleSize.height * 0.99));
+    store_button->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
+    store_button->setAnchorPoint(Vec2(0.5, 0.5));
+    store_button->setPosition(Vec2(400, 60));
     store_button->setTitleText("系统商店");
-    store_button->setTitleFontSize(20);
-    store_button->setScale(0.87);
+    store_button->setTitleFontSize(60);
+    store_button->setTitleColor(Color3B::BLACK);
+    store_button->setScale(0.33);
     store_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
         }
     });
-    addChild(store_button);
-
-    /*设置按钮*/
-    auto set_button = Button::create(IMG_HOME_LITTLE_BUTTON);
-    set_button->setTitleFontName("fonts/dengxian.ttf");
-    set_button->setAnchorPoint(Vec2(0, 1));
-    set_button->setPosition(Vec2(_visibleSize.width * 0.905, _visibleSize.height * 0.99));
-    set_button->setTitleText("设置");
-    set_button->setTitleFontSize(20);
-    set_button->setScale(0.87);
-    set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
-        if (type == Widget::TouchEventType::ENDED) {
-            AudioController::getInstance()->playClickButtonEffect();
-            auto lay = SettingsLayer::create("HomeScene");
-            this->addChild(lay, 5);
-        }
-    });
-    addChild(set_button);
+    information_Layout->addChild(store_button);
 
     /*进度*/
-    auto progress = Label::createWithTTF("进度:", "fonts/dengxian.ttf", 20);
-    progress->setAnchorPoint(Vec2(0, 1));
-    progress->setPosition(Vec2(_visibleSize.width * 0.615, _visibleSize.height * 0.94));
-    progress->setColor(Color3B::BLACK);
-    addChild(progress);
-    prog_text = Label::createWithTTF("", "fonts/dengxian.ttf", 20);
-    addChild(prog_text);
+    prog_text = Label::create("", "fonts/NotoSansCJKsc-Black.otf", 20);
+    prog_text->setAnchorPoint(Vec2(0.5, 0.5));
+    prog_text->setPosition(Vec2(200, 60));
+    prog_text->setColor(Color3B::WHITE);
+    information_Layout->addChild(prog_text);
 
     /*钱币*/
-    auto coin = Label::createWithTTF("钱币:", "fonts/dengxian.ttf", 20);
-    coin->setAnchorPoint(Vec2(0, 1));
-    coin->setPosition(Vec2(_visibleSize.width * 0.69, _visibleSize.height * 0.94));
-    coin->setColor(Color3B::BLACK);
-    addChild(coin);
-    money_text = Label::createWithTTF("", "fonts/dengxian.ttf", 20);
-    money_text->setPosition(Vec2(_visibleSize.width * 0.745, _visibleSize.height * 0.925));
-    addChild(money_text);
+    auto coin = Sprite::create("item/coin.png");
+    coin->setAnchorPoint(Vec2(0.5, 0.5));
+    coin->setPosition(Vec2(250, 60));
+    information_Layout->addChild(coin);
 
-    backGround = Sprite::create();
-    addChild(backGround, -1);
+    money_text = Label::create("", "fonts/NotoSansCJKsc-Black.otf", 20);
+    money_text->setAnchorPoint(Vec2(0.5, 0.5));
+    money_text->setColor(Color3B::WHITE);
+    money_text->setPosition(Vec2(300, 60));
+    information_Layout->addChild(money_text);
+
+    /*艺术字*/
     wordArt = Sprite::create();
-    addChild(wordArt);
+    wordArt->setAnchorPoint(Vec2(0.5, 0.5));
+    wordArt->setPosition(Vec2(140, 60));
+    information_Layout->addChild(wordArt);
 
+    //背景
+    backGround = Sprite::create();
+    backGround->setAnchorPoint(Vec2(0.5, 0.5));
+    backGround->setPosition(_visibleSize / 2);
+    this->addChild(backGround, -1);
+
+    //立绘
     personPortrait = Sprite::create();
     personPortrait->setAnchorPoint(Vec2(0, 0));
     personPortrait->setPosition(Vec2(_visibleSize.width * 0.05, 0));
     personPortrait->setScale(1.3);
-    addChild(personPortrait);
+    this->addChild(personPortrait);
+
+    /* init particle touch listener */
+
+    auto listener = EventListenerTouchAllAtOnce::create();
+    listener->onTouchesBegan = [this](const std::vector<Touch*>& touches, Event* event) { return; };
+    listener->onTouchesEnded = [this](const std::vector<Touch*>& touches, Event* event) {
+        auto touch = touches[0];
+        auto _emitter = ParticleFlower::createWithTotalParticles(15);
+        _emitter->setTexture(
+            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+        this->addChild(_emitter, 10);
+        _emitter->setPosition(touch->getLocation());
+        _emitter->setDuration(0.5);
+        _emitter->setEmissionRate(30);
+        _emitter->setLife(0.4);
+        _emitter->setLifeVar(0.1);
+        _emitter->setAutoRemoveOnFinish(true);
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     return true;
 }
@@ -274,13 +306,9 @@ HomeScene::onEnter()
     /*背景*/
     backGround->setTexture(location.backgroundPicture);
     backGround->setContentSize(_visibleSize);
-    backGround->setPosition(_visibleSize / 2);
 
     /*地点艺术字*/
     wordArt->setTexture(location.wordArt);
-    wordArt->setAnchorPoint(Vec2(0, 1));
-    wordArt->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.077));
-    wordArt->setPosition(Vec2(_visibleSize.width * 0.53, _visibleSize.height * 0.955));
 
     /*具体进度*/
     int cnt = 0;
@@ -290,14 +318,11 @@ HomeScene::onEnter()
     str[cnt++] = '/';
     sprintf(str + cnt, "%d", location.totalRound);
     string prog = str;
-    prog_text->setPosition(Vec2(_visibleSize.width * 0.67, _visibleSize.height * 0.925));
-    prog_text->setColor(Color3B::BLACK);
     prog_text->setString(prog);
 
     /*具体钱币*/
     sprintf(str, "%ld", gamedata->getMoneyNum());
     prog = str;
-    money_text->setColor(Color3B::BLACK);
     money_text->setString(prog);
 
     /*人物*/
@@ -330,7 +355,7 @@ HomeScene::getPeople()
         if (i < card.size())
             img = card[i].icon;
         else {
-            img = "menu/p2.png";
+            img = IMG_HOME_CHARACTER_CARD_DISABLE;
             width = height = 0.047;
         }
         cards[i]->setTexture(img);

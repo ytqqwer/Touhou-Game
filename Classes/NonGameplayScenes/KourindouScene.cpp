@@ -59,32 +59,6 @@ KourindouScene::init()
     bg_1->setPosition(_visibleSize / 2);
     addChild(bg_1);
 
-    /*地点,进度...等背景*/
-    auto info_bg = Sprite::create(IMG_KOURINDOU_LITTLE_BUTTON_LAYOUT);
-    info_bg->setAnchorPoint(Vec2(0, 1));
-    info_bg->setPosition(Vec2(_visibleSize.width * 0.52, _visibleSize.height));
-    info_bg->setContentSize(Size(_visibleSize.width * 580 / 1280, _visibleSize.height * 106 / 720));
-    info_bg->setOpacity(150);
-    addChild(info_bg);
-
-    /*地点艺术字*/
-    // auto wordArt = Sprite::create();
-    // wordArt->setTexture("KourindouScene/word_art.png");
-    // wordArt->setAnchorPoint(Vec2(0, 1));
-    // wordArt->setContentSize(Size(_visibleSize.width * 0.15, _visibleSize.height * 0.077));
-    // wordArt->setPosition(Vec2(_visibleSize.width * 0.53, _visibleSize.height * 0.955));
-    // addChild(wordArt);
-
-    /*钱币*/
-    auto coin = Label::createWithTTF("钱币:", "fonts/dengxian.ttf", 20);
-    coin->setAnchorPoint(Vec2(0, 1));
-    coin->setPosition(Vec2(_visibleSize.width * 0.69, _visibleSize.height * 0.94));
-    coin->setColor(Color3B::BLACK);
-    addChild(coin);
-    money_text = Label::createWithTTF("", "fonts/dengxian.ttf", 20);
-    money_text->setPosition(Vec2(_visibleSize.width * 0.745, _visibleSize.height * 0.925));
-    addChild(money_text);
-
     /*购买按钮*/
     auto button_start = Button::create(IMG_KOURINDOU_BIG_BUTTON);
     button_start->setTitleFontName("fonts/dengxian.ttf");
@@ -147,14 +121,51 @@ KourindouScene::init()
     });
     addChild(button_map);
 
+    /*地点,进度...等背景*/
+    auto info_bg = Sprite::create(IMG_KOURINDOU_LITTLE_BUTTON_LAYOUT);
+    info_bg->setAnchorPoint(Vec2(1, 1));
+    info_bg->setContentSize(Size(480, 120));
+    info_bg->setOpacity(50);
+    info_bg->setPosition(Vec2(_visibleSize.width * 0.98, _visibleSize.height * 0.98));
+    addChild(info_bg);
+
+    /*钱币*/
+    auto coin = Sprite::create("item/coin.png");
+    coin->setAnchorPoint(Vec2(0.5, 0.5));
+    coin->setPosition(Vec2(50, 60));
+    info_bg->addChild(coin);
+
+    money_text = Label::create("", "fonts/NotoSansCJKsc-Black.otf", 20);
+    money_text->setAnchorPoint(Vec2(0.5, 0.5));
+    money_text->setColor(Color3B::WHITE);
+    money_text->setPosition(Vec2(100, 60));
+    info_bg->addChild(money_text);
+
+    /*系统商店*/
+    auto store_button = Button::create(IMG_KOURINDOU_LITTLE_BUTTON);
+    store_button->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
+    store_button->setAnchorPoint(Vec2(0.5, 0.5));
+    store_button->setPosition(Vec2(200, 60));
+    store_button->setTitleText("系统商店");
+    store_button->setTitleFontSize(60);
+    store_button->setTitleColor(Color3B::BLACK);
+    store_button->setScale(0.33);
+    store_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+        if (type == Widget::TouchEventType::ENDED) {
+            AudioController::getInstance()->playClickButtonEffect();
+        }
+    });
+    info_bg->addChild(store_button);
+
     /*资料库按钮*/
     auto know_button = Button::create(IMG_KOURINDOU_LITTLE_BUTTON);
-    know_button->setTitleFontName("fonts/dengxian.ttf");
-    know_button->setAnchorPoint(Vec2(0, 1));
-    know_button->setPosition(Vec2(_visibleSize.width * 0.84, _visibleSize.height * 0.99));
+    know_button->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
+    know_button->setAnchorPoint(Vec2(0.5, 0.5));
+    know_button->setPosition(Vec2(300, 60));
     know_button->setTitleText("资料库");
-    know_button->setTitleFontSize(20);
-    know_button->setScale(0.87);
+    know_button->setTitleFontSize(60);
+    know_button->setTitleColor(Color3B::BLACK);
+    know_button->setScale(0.33);
     know_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -163,31 +174,17 @@ KourindouScene::init()
             Director::getInstance()->pushScene(transition);
         }
     });
-    addChild(know_button);
-
-    /*系统商店*/
-    auto store_button = Button::create(IMG_KOURINDOU_LITTLE_BUTTON);
-    store_button->setTitleFontName("fonts/dengxian.ttf");
-    store_button->setAnchorPoint(Vec2(0, 1));
-    store_button->setPosition(Vec2(_visibleSize.width * 0.774, _visibleSize.height * 0.99));
-    store_button->setTitleText("系统商店");
-    store_button->setTitleFontSize(20);
-    store_button->setScale(0.87);
-    store_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
-        if (type == Widget::TouchEventType::ENDED) {
-            AudioController::getInstance()->playClickButtonEffect();
-        }
-    });
-    addChild(store_button);
+    info_bg->addChild(know_button);
 
     /*设置按钮*/
     auto set_button = Button::create(IMG_KOURINDOU_LITTLE_BUTTON);
-    set_button->setTitleFontName("fonts/dengxian.ttf");
-    set_button->setAnchorPoint(Vec2(0, 1));
-    set_button->setPosition(Vec2(_visibleSize.width * 0.905, _visibleSize.height * 0.99));
+    set_button->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
+    set_button->setAnchorPoint(Vec2(0.5, 0.5));
+    set_button->setPosition(Vec2(400, 60));
     set_button->setTitleText("设置");
-    set_button->setTitleFontSize(20);
-    set_button->setScale(0.87);
+    set_button->setTitleColor(Color3B::BLACK);
+    set_button->setTitleFontSize(60);
+    set_button->setScale(0.33);
     set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -195,7 +192,26 @@ KourindouScene::init()
             this->addChild(lay, 5);
         }
     });
-    addChild(set_button);
+    info_bg->addChild(set_button);
+
+    /*  init particle touch listener */
+
+    auto listener = EventListenerTouchAllAtOnce::create();
+    listener->onTouchesBegan = [this](const std::vector<Touch*>& touches, Event* event) { return; };
+    listener->onTouchesEnded = [this](const std::vector<Touch*>& touches, Event* event) {
+        auto touch = touches[0];
+        auto _emitter = ParticleFlower::createWithTotalParticles(15);
+        _emitter->setTexture(
+            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+        this->addChild(_emitter, 10);
+        _emitter->setPosition(touch->getLocation());
+        _emitter->setDuration(0.5);
+        _emitter->setEmissionRate(30);
+        _emitter->setLife(0.4);
+        _emitter->setLifeVar(0.1);
+        _emitter->setAutoRemoveOnFinish(true);
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     return true;
 }
@@ -213,7 +229,6 @@ KourindouScene::onEnter()
     /*钱币*/
     char str[10];
     sprintf(str, "%ld", GameData::getInstance()->getMoneyNum());
-    money_text->setColor(Color3B::BLACK);
     money_text->setString(str);
 
     /*对话图标*/

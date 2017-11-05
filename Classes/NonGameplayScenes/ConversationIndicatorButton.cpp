@@ -47,7 +47,7 @@ ConversationIndicatorButton::init()
     float scale = 120.0 / bigger;
     this->setScale(scale);
 
-    newTip = Sprite::create("menu/p7.png");
+    newTip = Sprite::create("menu/tip.png");
     // newTip->setContentSize(Size());
     newTip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height));
     newTip->setScale(1 / scale);

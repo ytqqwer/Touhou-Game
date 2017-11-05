@@ -7,8 +7,6 @@
 #include "NonGameplayScenesCache.h"
 #include "PlaceHolder.h"
 
-// #include "resources.h.dir/main_menu.h"
-
 #include "GameData/GameData.h"
 #include "Layers/LoadingLayer.h"
 
@@ -36,6 +34,25 @@ RoundSelectScene::init()
         return false;
     }
 
+    /*  init particle touch listener */
+
+    auto listener = EventListenerTouchAllAtOnce::create();
+    listener->onTouchesBegan = [this](const std::vector<Touch*>& touches, Event* event) { return; };
+    listener->onTouchesEnded = [this](const std::vector<Touch*>& touches, Event* event) {
+        auto touch = touches[0];
+        auto _emitter = ParticleFlower::createWithTotalParticles(15);
+        _emitter->setTexture(
+            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+        this->addChild(_emitter, 10);
+        _emitter->setPosition(touch->getLocation());
+        _emitter->setDuration(0.5);
+        _emitter->setEmissionRate(30);
+        _emitter->setLife(0.4);
+        _emitter->setLifeVar(0.1);
+        _emitter->setAutoRemoveOnFinish(true);
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
     return true;
 }
 
@@ -57,13 +74,13 @@ RoundSelectScene::onEnter()
     backGround->setPosition(Vec2(_visibleSize.width * 0.5, _visibleSize.height * 0.5));
     this->addChild(backGround);
 
-    auto backGround1 = Sprite::create("menu/layer_1.png");
-    backGround1->setContentSize(Size(_visibleSize.width * 0.6, _visibleSize.height * 0.25));
+    auto backGround1 = PlaceHolder::createRect(
+        Size(_visibleSize.width * 0.6, _visibleSize.height * 0.25), "", 16, Color3B(91, 155, 213));
     backGround1->setPosition(Vec2(_visibleSize.width * 0.65, _visibleSize.height * 0.7));
     this->addChild(backGround1);
 
-    auto backGround2 = Sprite::create("menu/layer_2.png");
-    backGround2->setContentSize(Size(_visibleSize.width * 0.6, _visibleSize.height * 0.5));
+    auto backGround2 = PlaceHolder::createRect(
+        Size(_visibleSize.width * 0.6, _visibleSize.height * 0.5), "", 16, Color3B(91, 155, 213));
     backGround2->setPosition(Vec2(_visibleSize.width * 0.65, _visibleSize.height * 0.3));
     this->addChild(backGround2);
 
@@ -81,13 +98,16 @@ RoundSelectScene::onEnter()
     this->addChild(backButton);
 
     //创建游戏开始按钮,等创建好了gameScene会添加一个事件监听器
-    auto beginButton = Button::create("menu/p10.png", "", "");
+    auto beginButton = Button::create("menu/start.png");
+    beginButton->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     beginButton->setTitleText("开始游戏");
-    beginButton->setTitleFontSize(20);
-    beginButton->setPosition(Vec2(_visibleSize.width * 0.9, _visibleSize.height * 0.2));
+    beginButton->setTitleFontSize(65);
+    beginButton->setScale(0.4);
+    beginButton->setPosition(Vec2(_visibleSize.width * 0.87, _visibleSize.height * 0.2));
     beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             //进入游戏场景前需要做一些清理工作
+            Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
             AudioController::getInstance()->playClickButtonEffect();
             AudioController::getInstance()->clearMusic();
             auto loadingLayer = LoadingLayer::create(this->selectedMap);
@@ -121,9 +141,8 @@ RoundSelectScene::onEnter()
 
     //设置5颗空星，表示难度，然后根据不同的回合难度换成相应的实心
     for (int i = 0; i < 5; ++i) {
-        difficult[i] = Sprite::create("menu/star_2.png");
-        difficult[i]->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
-        // difficult[i]->setScale(0.1);
+        difficult[i] = Sprite::create("menu/grey_star.png");
+        difficult[i]->setScale(2);
         difficult[i]->setPosition(
             Vec2(_visibleSize.width * (0.7 + 0.05 * i), _visibleSize.height * 0.75));
         this->addChild(difficult[i]);
@@ -132,9 +151,7 @@ RoundSelectScene::onEnter()
     //根据当前难度，切换相应的星形 ,获得当前关卡的难度，并显示出来
     int difficulty(static_cast<int>(rounds[0].difficulty));
     for (int i = 0; i < difficulty; ++i) {
-        difficult[i]->setTexture("menu/star_1.png");
-        // difficult[i]->setScale(0.1);
-        difficult[i]->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+        difficult[i]->setTexture("menu/gold_star.png");
     }
 
     //获得当前关卡的描述
@@ -146,7 +163,7 @@ RoundSelectScene::onEnter()
     /*************创建当前地点的关卡选择,循环创建，不固定,同时设置关卡标签的监听事件，改变上面的固定的值******************/
     for (unsigned int i = 0; i < location.totalRound; ++i) {
         if (i < location.passedRound - 1) { //对于已经通关的关卡的关卡
-            auto roundButton = Button::create("menu/forbid_button.png", "", "");
+            auto roundButton = Button::create("menu/p1.png");
             roundButton->setPosition(
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(rounds[i].name);
@@ -164,7 +181,7 @@ RoundSelectScene::onEnter()
         }
 
         if (i == location.passedRound - 1) { //对于可以打，但还没通关的关卡
-            auto roundButton = Button::create("menu/forbid_button.png", "", "");
+            auto roundButton = Button::create("menu/p1.png");
             roundButton->setPosition(
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(rounds[i].name);
@@ -182,7 +199,7 @@ RoundSelectScene::onEnter()
         }
 
         if (i >= location.passedRound) { //对于没有通关的关卡
-            auto roundButton = Button::create("menu/forbid_button.png", "", "");
+            auto roundButton = Button::create("menu/p1.png");
             roundButton->setPosition(
                 Vec2(_visibleSize.width * 0.2, _visibleSize.height * (0.8 - 0.15 * (i + 1))));
             roundButton->setTitleText(rounds[i].name);
@@ -198,16 +215,16 @@ RoundSelectScene::onEnter()
         }
     }
 
-    //当前场景人物的描述
-    auto bottom1 = Sprite::create("menu/layer_3.png");
-    bottom1->setPosition(Vec2(_visibleSize.width * (0.5), _visibleSize.height * 0.3));
-    bottom1->setContentSize(Size(_visibleSize.width * 0.19, _visibleSize.height * 0.4));
-    this->addChild(bottom1);
+    //当前场景人物的描述255 242 204
+    auto bottom1 = PlaceHolder::createRect(
+        Size(_visibleSize.width * 0.19, _visibleSize.height * 0.4), "", 16, Color3B(255, 242, 204));
+    bottom1->setPosition(_visibleSize.width * (0.5), _visibleSize.height * 0.3);
+    addChild(bottom1);
 
-    auto bottom2 = Sprite::create("menu/layer_3.png");
-    bottom2->setPosition(Vec2(_visibleSize.width * (0.7), _visibleSize.height * 0.3));
-    bottom2->setContentSize(Size(_visibleSize.width * 0.19, _visibleSize.height * 0.4));
-    this->addChild(bottom2);
+    auto bottom2 = PlaceHolder::createRect(
+        Size(_visibleSize.width * 0.19, _visibleSize.height * 0.4), "", 16, Color3B(255, 242, 204));
+    bottom2->setPosition(_visibleSize.width * (0.7), _visibleSize.height * 0.3);
+    addChild(bottom2);
 
     //人物,以及人物信息
     vector<string> onStageCharacter = GameData::getInstance()->getOnStageCharacterTagList();
@@ -233,7 +250,7 @@ RoundSelectScene::onEnter()
     setItem(p1.tag, p1ItemSprites, 0.45);
 
     // p1的修改按钮
-    auto p1Button = Button::create("menu/right.png");
+    auto p1Button = Button::create("menu/right_arrow.png");
     p1Button->setPosition(Vec2(_visibleSize.width * (0.43), _visibleSize.height * 0.4));
     this->addChild(p1Button, 3);
 
@@ -298,7 +315,7 @@ RoundSelectScene::onEnter()
     setItem(p2.tag, p2ItemSprites, 0.65);
 
     // p2的修改按钮
-    auto p2Button = Button::create("menu/right.png");
+    auto p2Button = Button::create("menu/right_arrow.png");
     p2Button->setPosition(Vec2(_visibleSize.width * (0.63), _visibleSize.height * 0.4));
     this->addChild(p2Button, 3);
     p2Button->addTouchEventListener([&](Ref* pSender, Widget::TouchEventType type) {
@@ -357,12 +374,10 @@ RoundSelectScene::setRoundInformation(Round round)
     //根据点击的按钮设置当前的关卡难度，同时将当前选择的关卡保存，接口尚未实现，以后添加
     int difficulty(static_cast<int>(round.difficulty));
     for (int i = 0; i < difficulty; ++i) {
-        difficult[i]->setTexture("menu/star_1.png");
-        difficult[i]->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+        difficult[i]->setTexture("menu/gold_star.png");
     }
     for (int i = difficulty; i < 5; ++i) {
-        difficult[i]->setTexture("menu/star_2.png");
-        difficult[i]->setContentSize(Size(_visibleSize.width * 0.05, _visibleSize.height * 0.05));
+        difficult[i]->setTexture("menu/grey_star.png");
     }
     preViewPic->setTexture(round.previewPicture);
     preViewPic->setContentSize(Size(_visibleSize.width * 0.2, _visibleSize.height * 0.2));

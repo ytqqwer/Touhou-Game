@@ -34,16 +34,6 @@ ArmsStorePurchaseScene::init()
         return false;
     }
 
-/*  2. debug info */
-
-#ifndef NDEBUG
-    auto sceneTag = Label::createWithTTF("ArmsStorePurchaseScene", "fonts/arial.ttf", 16);
-    sceneTag->setAnchorPoint(Vec2(0, 1));
-    sceneTag->setPosition(Vec2(0, _visibleSize.height));
-    sceneTag->setColor(Color3B::WHITE);
-    this->addChild(sceneTag);
-#endif
-
     /*background*/
     auto backGround = Sprite::create("background/blue_moon.png");
     backGround->setContentSize(Size(_visibleSize.width, _visibleSize.height));
@@ -63,7 +53,7 @@ ArmsStorePurchaseScene::init()
     addChild(bg_3, 0, 3);
 
     /*返回按钮*/
-    auto backButton = Button::create("menu/p1.png", "", "");
+    auto backButton = Button::create("menu/buttonNormal.png");
     backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     backButton->setTitleText("返回");
     backButton->setTitleFontSize(20);
@@ -113,6 +103,25 @@ ArmsStorePurchaseScene::init()
     itemTable->setVerticalFillOrder(TableView::VerticalFillOrder::TOP_DOWN); //从小到大排列
     itemTable->setDelegate(this);                                            //委托代理
     bg_3->addChild(itemTable);
+
+    /*  init particle touch listener */
+
+    auto listener = EventListenerTouchAllAtOnce::create();
+    listener->onTouchesBegan = [this](const std::vector<Touch*>& touches, Event* event) { return; };
+    listener->onTouchesEnded = [this](const std::vector<Touch*>& touches, Event* event) {
+        auto touch = touches[0];
+        auto _emitter = ParticleFlower::createWithTotalParticles(15);
+        _emitter->setTexture(
+            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+        this->addChild(_emitter, 10);
+        _emitter->setPosition(touch->getLocation());
+        _emitter->setDuration(0.5);
+        _emitter->setEmissionRate(30);
+        _emitter->setLife(0.4);
+        _emitter->setLifeVar(0.1);
+        _emitter->setAutoRemoveOnFinish(true);
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     return true;
 }
@@ -182,7 +191,7 @@ ArmsStorePurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
             description->setColor(Color3B::BLACK);
             cell->addChild(description);
 
-            string temp = "";
+            string temp;
             string money;
             stringstream ss;
             ss << currentItems[idx].price;
@@ -195,8 +204,7 @@ ArmsStorePurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
                     break;
                 }
             }
-
-            auto status = Label::createWithTTF(temp, "fonts/dengxian.ttf", 20);
+            auto status = Label::create(temp, "fonts/NotoSansCJKsc-Black.otf", 20);
             status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             status->setPosition(Vec2(600, 50));
             status->setColor(Color3B::BLACK);

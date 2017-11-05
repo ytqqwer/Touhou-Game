@@ -29,24 +29,19 @@ MainMenuScene::MainMenuScene()
 bool
 MainMenuScene::init()
 {
-    /*  1. super init first */
+    /* 1. super init first */
 
     if (!Scene::init()) {
         return false;
     }
 
-/*  2. debug info */
+/* 2. debug info */
 
 #ifndef NDEBUG
-    auto sceneTag = Label::createWithTTF("MainMenuScene", "fonts/arial.ttf", 16);
-    sceneTag->setAnchorPoint(Vec2(0, 1));
-    sceneTag->setPosition(Vec2(0, _visibleSize.height));
-    sceneTag->setColor(Color3B::WHITE);
-    this->addChild(sceneTag);
 
     auto JTButton = Button::create("", "", "");
     JTButton->setTitleText("跳转表");
-    JTButton->setTitleFontName("fonts/dengxian.ttf");
+    JTButton->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     JTButton->setTitleColor(Color3B(194, 134, 11));
     JTButton->setTitleFontSize(30);
     JTButton->setAnchorPoint(Vec2(0, 0));
@@ -62,7 +57,7 @@ MainMenuScene::init()
 
 #endif
 
-    /*  3. init background */
+    /* 3. init background */
 
     backGround = Sprite::create(IMG_MAIN_MENU_BACKGROUND);
     backGround->setScale(1.35);
@@ -80,12 +75,31 @@ MainMenuScene::init()
     test2->setBlendFunc(cb2);
     addChild(test2);
 
-    /*  4. init button */
+    /* 4. init particle touch listener */
+
+    auto listener = EventListenerTouchAllAtOnce::create();
+    listener->onTouchesEnded = [this](const std::vector<Touch*>& touches, Event* event) {
+        auto touch = touches[0];
+        auto _emitter = ParticleFlower::createWithTotalParticles(15);
+        _emitter->setTexture(
+            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+        this->addChild(_emitter, 10);
+        _emitter->setPosition(touch->getLocation());
+        _emitter->setDuration(0.5);
+        //_emitter->setEmissionRate(_emitter->getTotalParticles()/ _emitter->getLife());
+        _emitter->setEmissionRate(30);
+        _emitter->setLife(0.4);
+        _emitter->setLifeVar(0.1);
+        _emitter->setAutoRemoveOnFinish(true);
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+    /* 5. init button */
 
     /*新游戏*/
     auto NGButton = Button::create("", "", "");
     NGButton->setTitleText("新游戏");
-    NGButton->setTitleFontName("fonts/dengxian.ttf");
+    NGButton->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     NGButton->setTitleColor(Color3B(194, 134, 11));
     NGButton->setTitleFontSize(50);
     NGButton->setAnchorPoint(Vec2(0, 0));
@@ -106,7 +120,7 @@ MainMenuScene::init()
     /*继续上次游戏*/
     auto CButton = Button::create("", "", "");
     CButton->setTitleText("继续游戏");
-    CButton->setTitleFontName("fonts/dengxian.ttf");
+    CButton->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     CButton->setTitleColor(Color3B(194, 134, 11));
     CButton->setTitleFontSize(50);
     CButton->setAnchorPoint(Vec2(0, 0));
@@ -129,7 +143,7 @@ MainMenuScene::init()
     /*载入游戏*/
     auto LGButton = Button::create("", "", "");
     LGButton->setTitleText("载入游戏");
-    LGButton->setTitleFontName("fonts/dengxian.ttf");
+    LGButton->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     LGButton->setTitleColor(Color3B(194, 134, 11));
     LGButton->setTitleFontSize(50);
     LGButton->setAnchorPoint(Vec2(0, 0));
@@ -146,8 +160,8 @@ MainMenuScene::init()
     /*设置*/
     auto SGButton = Button::create("", "", "");
     SGButton->setTitleText("设置");
-    SGButton->setTitleFontName("fonts/dengxian.ttf");
-    SGButton->setTitleColor(Color3B(194, 134, 11));
+    SGButton->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
+    SGButton->setTitleColor(Color3B::WHITE);
     SGButton->setTitleFontSize(30);
     SGButton->setAnchorPoint(Vec2(0, 0));
     SGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.34));
@@ -163,8 +177,8 @@ MainMenuScene::init()
     /*职员表*/
     auto ZGButton = Button::create("", "", "");
     ZGButton->setTitleText("职员表");
-    ZGButton->setTitleFontName("fonts/dengxian.ttf");
-    ZGButton->setTitleColor(Color3B(194, 134, 11));
+    ZGButton->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
+    ZGButton->setTitleColor(Color3B::WHITE);
     ZGButton->setTitleFontSize(30);
     ZGButton->setAnchorPoint(Vec2(0, 0));
     ZGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.27));
@@ -180,8 +194,8 @@ MainMenuScene::init()
     /*退出游戏*/
     auto exitButton = Button::create("", "", "");
     exitButton->setTitleText("退出");
-    exitButton->setTitleFontName("fonts/dengxian.ttf");
-    exitButton->setTitleColor(Color3B(184, 134, 11));
+    exitButton->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
+    exitButton->setTitleColor(Color3B::WHITE);
     exitButton->setTitleFontSize(25);
     exitButton->setAnchorPoint(Vec2(0, 0));
     exitButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.2));
@@ -191,6 +205,8 @@ MainMenuScene::init()
         }
     });
     addChild(exitButton);
+
+    auto menu = Menu::create(nullptr);
 
     return true;
 }

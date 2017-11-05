@@ -62,7 +62,22 @@ SettingsLayer::init()
     EventDispatcher* eventDispatcher = Director::getInstance()->getEventDispatcher();
     auto listener = EventListenerTouchOneByOne::create();
     listener->setSwallowTouches(true);
-    listener->onTouchBegan = [](Touch* t, Event* e) { return true; };
+    listener->onTouchBegan = [this](Touch* t, Event* e) {
+
+        /* 显示粒子特效 */
+        auto _emitter = ParticleFlower::createWithTotalParticles(15);
+        _emitter->setTexture(
+            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+        this->addChild(_emitter, 10);
+        _emitter->setPosition(t->getLocation());
+        _emitter->setDuration(0.5);
+        _emitter->setEmissionRate(30);
+        _emitter->setLife(0.4);
+        _emitter->setLifeVar(0.1);
+        _emitter->setAutoRemoveOnFinish(true);
+
+        return true;
+    };
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener,
                                                                                           this);
 
