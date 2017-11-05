@@ -52,7 +52,6 @@ public:
     bool contactBegin(const PhysicsContact& contact);
     bool contactSeparate(const PhysicsContact& contact);
 
-    //
     void endGame();
 
 public:
@@ -73,6 +72,8 @@ private:
     //析构函数，释放事件脚本处理器内存等
     ~GameplayScene();
 
+    void initDecoration(Layer* layer, const std::string& objectGroup);
+
 private:
     //实用的全局量
     Size visibleSize;
@@ -80,10 +81,19 @@ private:
     EventScriptHanding* _eventScriptHanding;
 
     //视差节点以及辅助变量
-    ParallaxNode* backParallaxNode;
-    Vec2 mapLayerPrePosition;
+    ParallaxNode* backgroundParallaxNode;
+    ParallaxNode* foregroundParallaxNode;
     Vec2 backParallaxNodePrePosition;
-    bool isPosUpdate = true;
+    Vec2 foreParallaxNodePrePosition;
+    Vec2 mapLayerPrePosition;
+    bool isParallaxPositionInit = true;
+    //背景
+    Sprite* backgroundParallaxPicture;
+    Layer* backgroundParallaxDecoration;
+    Layer* backgroundStaticDecoration;
+    //前景
+    Layer* foregroundParallaxDecoration;
+    Layer* foregroundStaticDecoration;
 
     //对curPlayer的操作就是对当前指定角色的操作
     Player* curPlayer;
@@ -92,9 +102,6 @@ private:
 
     //摄像机节点
     Node* camera;
-
-    //背景图片
-    Sprite* backgroundPicture;
 
     //瓦片地图对象，需要从中读取数据
     std::string selectedMap;

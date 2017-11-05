@@ -20,18 +20,18 @@
 
 #define PTM_RATIO 1
 
-#define PARALLAX_BACK_ZORDER -1
-#define PARALLAX_FORE_ZORDER 1
-#define CTRLPANEL_LAYER_ZORDER 3
+#define BACK_PARALLAX_ZORDER -10
+#define FORE_PARALLAX_ZORDER 10
+
+#define CTRLPANEL_LAYER_ZORDER 100
 #define SETTING_LAYER_ZORDER 1000
+#define MAP_LAYER_ZORDER 0
 
-#define MAPLAYER_ZORDER 0
-
-#define MAPLAYER_TMXMAP_ZORDER 0
-#define MAPLAYER_CHARACTER_ZORDER 1
-#define MAPLAYER_ENEMY_ZORDER 1
-#define MAPLAYER_CAMERA_ZORDER -1
-#define MAPLAYER_OTHER_ZORDER 2
+#define MAP_LAYER_TMXMAP_ZORDER 0
+#define MAP_LAYER_CHARACTER_ZORDER 1
+#define MAP_LAYER_ENEMY_ZORDER 1
+#define MAP_LAYER_CAMERA_ZORDER -1
+#define MAP_LAYER_OTHER_ZORDER 2
 
 const std::string GameplayScene::TAG{ "GameplayScene" };
 
@@ -113,18 +113,38 @@ GameplayScene::init()
 void
 GameplayScene::initBackgroundAndForeground()
 {
-    backParallaxNode = ParallaxNode::create();
-    backParallaxNode->setAnchorPoint(Point::ZERO);
-    this->addChild(backParallaxNode, PARALLAX_BACK_ZORDER);
-
-    backParallaxNode->setPosition(visibleSize.width / 2.0, visibleSize.height / 2.0);
-
-    //背景图片之一，锚点为图片中心点
-    backgroundPicture = Sprite::create();
-    backgroundPicture->setAnchorPoint(Point::ANCHOR_MIDDLE);
+    //视差背景
+    backgroundParallaxNode = ParallaxNode::create();
+    this->addChild(backgroundParallaxNode, BACK_PARALLAX_ZORDER);
+    backgroundParallaxNode->setPosition(0, 0);
+    //背景图片，锚点为图片中心点
+    backgroundParallaxPicture = Sprite::create();
+    backgroundParallaxPicture->setAnchorPoint(Point::ANCHOR_MIDDLE);
     //加入视差结点，子节点位置只和偏移量，比率因子等有关
-    backParallaxNode->addChild(backgroundPicture, 0, Vec2(0.06, 0.03),
-                               Vec2(visibleSize.width / 2.0, visibleSize.height / 2.0));
+    //参数分别为：添加的子节点，父节点内Z轴顺序，移动比率，相对父节点偏移量
+    backgroundParallaxNode->addChild(backgroundParallaxPicture, -10, Vec2(0.06, 0.03),
+                                     Vec2(visibleSize.width / 2.0, visibleSize.height / 2.0));
+    //视差背景装饰物层
+    backgroundParallaxDecoration = Layer::create();
+    backgroundParallaxDecoration->setAnchorPoint(Point::ZERO);
+    backgroundParallaxNode->addChild(backgroundParallaxDecoration, -5, Vec2(0.20, 0.9), Vec2(0, 0));
+    //静态背景装饰物层，相对视差结点同步移动
+    backgroundStaticDecoration = Layer::create();
+    backgroundStaticDecoration->setAnchorPoint(Point::ZERO);
+    backgroundParallaxNode->addChild(backgroundStaticDecoration, 0, Vec2(1.0, 1.0), Vec2(0, 0));
+
+    //视差前景
+    foregroundParallaxNode = ParallaxNode::create();
+    this->addChild(foregroundParallaxNode, FORE_PARALLAX_ZORDER);
+    foregroundParallaxNode->setPosition(0, 0);
+    //静态前景装饰物层
+    foregroundStaticDecoration = Layer::create();
+    foregroundStaticDecoration->setAnchorPoint(Point::ZERO);
+    foregroundParallaxNode->addChild(foregroundStaticDecoration, 0, Vec2(1.0, 1.0), Vec2(0, 0));
+    //视差前景装饰物层
+    foregroundParallaxDecoration = Layer::create();
+    foregroundParallaxDecoration->setAnchorPoint(Point::ZERO);
+    foregroundParallaxNode->addChild(foregroundParallaxDecoration, 5, Vec2(0.20, 0.9), Vec2(0, 0));
 }
 
 void
@@ -134,9 +154,9 @@ GameplayScene::initMap()
     _map = TMXTiledMap::create(selectedMap);
     //设置地图大小的倍率
     _map->setScale(1.0f);
-    mapLayer->addChild(_map, MAPLAYER_TMXMAP_ZORDER);
+    mapLayer->addChild(_map, MAP_LAYER_TMXMAP_ZORDER);
     mapLayer->setName("mapLayer");
-    this->addChild(mapLayer, MAPLAYER_ZORDER);
+    this->addChild(mapLayer, MAP_LAYER_ZORDER);
 
     //创建静态刚体墙
     createPhysical(1);
@@ -430,7 +450,7 @@ GameplayScene::initCharacter()
 
     curPlayer = p1Player;
     curPlayer->setName("curPlayer");
-    mapLayer->addChild(p1Player, MAPLAYER_CHARACTER_ZORDER);
+    mapLayer->addChild(p1Player, MAP_LAYER_CHARACTER_ZORDER);
 
     curPlayer->changeAttackType(p1Player->currentAttackType);
 }
@@ -460,12 +480,18 @@ GameplayScene::initArea()
         curArea.setRect(x, y, width, height);
         if (curArea.containsPoint(playerPos)) {
             //替换背景图片
-            backgroundPicture->setTexture(dict["background"].asString());
-            auto width = backgroundPicture->getContentSize().width;
-            auto height = backgroundPicture->getContentSize().height;
+            backgroundParallaxPicture->setTexture(dict["background"].asString());
+            auto width = backgroundParallaxPicture->getContentSize().width;
+            auto height = backgroundParallaxPicture->getContentSize().height;
             auto bigger = width > height ? width : height;
-            float scale = visibleSize.width / width;
-            backgroundPicture->setScale(scale * 1.1);
+            float scale = visibleSize.width / height;
+            backgroundParallaxPicture->setScale(scale * 1.1);
+
+            //加载装饰物
+            initDecoration(backgroundParallaxDecoration, "backgroundParallaxDecoration");
+            initDecoration(backgroundStaticDecoration, "backgroundStaticDecoration");
+            initDecoration(foregroundParallaxDecoration, "foregroundParallaxDecoration");
+            initDecoration(foregroundStaticDecoration, "foregroundStaticDecoration");
 
             //替换背景音乐
             if (dict["bgm"].asString() == "") {
@@ -487,10 +513,34 @@ GameplayScene::initArea()
 }
 
 void
+GameplayScene::initDecoration(Layer* layer, const std::string& objectGroup)
+{
+    //背景 视差
+    layer->removeAllChildren();
+    auto decorations = _map->getObjectGroup(objectGroup)->getObjects();
+    for (auto& v : decorations) {
+        auto decoration = v.asValueMap();
+        if (decoration.size() == 0) {
+            continue;
+        }
+        float x = decoration["x"].asFloat();
+        float y = decoration["y"].asFloat();
+        if (curArea.containsPoint(Point(x, y))) {
+            auto newDecoration = Sprite::create(decoration["name"].asString());
+            newDecoration->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+            layer->addChild(newDecoration);
+            auto offsetX = x - curArea.getMinX();
+            auto offsetY = y - curArea.getMinY();
+            newDecoration->setPosition(offsetX, offsetY);
+        }
+    }
+}
+
+void
 GameplayScene::initCamera()
 {
     camera = Node::create();
-    mapLayer->addChild(camera, MAPLAYER_CAMERA_ZORDER);
+    mapLayer->addChild(camera, MAP_LAYER_CAMERA_ZORDER);
 
     Vec2 poi = curPlayer->getPosition();
     camera->setPosition(poi.x + 100, poi.y + 70); //移动摄像机
@@ -516,7 +566,7 @@ GameplayScene::initLauncher()
         if (curArea.containsPoint(Vec2(x, y))) {
             auto _launcher = Sprite::create("CloseNormal.png");
             _launcher->setPosition(x, y);
-            mapLayer->addChild(_launcher, MAPLAYER_OTHER_ZORDER);
+            mapLayer->addChild(_launcher, MAP_LAYER_OTHER_ZORDER);
 
             auto fe = Emitter::create((Node**)(&curPlayer));
             _launcher->addChild(fe);
@@ -568,7 +618,7 @@ GameplayScene::initElevator()
 
             auto _elevator = Elevator::create();
             _elevator->setPosition(x, y);
-            mapLayer->addChild(_elevator, MAPLAYER_OTHER_ZORDER);
+            mapLayer->addChild(_elevator, MAP_LAYER_OTHER_ZORDER);
             _elevator->runAction(
                 RepeatForever::create(Sequence::create(seq, seq_reverse, nullptr)));
 
@@ -597,7 +647,7 @@ GameplayScene::initEnemy()
             std::string tag = dict["tag"].asString();
             Enemy* _enemy = Enemy::create(tag);
             _enemy->setPosition(x, y);
-            mapLayer->addChild(_enemy, MAPLAYER_ENEMY_ZORDER);
+            mapLayer->addChild(_enemy, MAP_LAYER_ENEMY_ZORDER);
 
             /*临时项*/
             _enemy->setTarget(curPlayer);
@@ -642,7 +692,7 @@ GameplayScene::initEvent()
             body->setCollisionBitmask(0);
             body->setContactTestBitmask(playerCategory);
             _event->setPhysicsBody(body);
-            mapLayer->addChild(_event, MAPLAYER_OTHER_ZORDER);
+            mapLayer->addChild(_event, MAP_LAYER_OTHER_ZORDER);
 
             eventPoint.pushBack(_event);
         }
@@ -701,7 +751,7 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
                     "gameplayscene/smallOrb000.png"));
 
                 // cocos2dx的粒子系统有三种位置类型
-                mapLayer->addChild(_ps, MAPLAYER_OTHER_ZORDER);
+                mapLayer->addChild(_ps, MAP_LAYER_OTHER_ZORDER);
                 _ps->setPositionType(ParticleSystem::PositionType::RELATIVE);
                 _ps->setPosition(entityA->getPosition());
                 _ps->setLife(1.2);
@@ -1050,7 +1100,7 @@ GameplayScene::onEventSwitchCharacter(EventCustom*)
     theOther->changeAttackType(theOther->currentAttackType);
 
     curPlayer = theOther;
-    mapLayer->addChild(theOther, MAPLAYER_CHARACTER_ZORDER);
+    mapLayer->addChild(theOther, MAP_LAYER_CHARACTER_ZORDER);
 }
 
 void
@@ -1082,21 +1132,40 @@ GameplayScene::update(float dt)
     camera->setPosition(poi.x + 100, poi.y + 70); //移动摄像机
 
     //如果地图切换区域后首次执行update函数，则首先进行以下初始化操作
-    if (isPosUpdate) {
-        backParallaxNodePrePosition = Vec2::ZERO;
+    if (isParallaxPositionInit) {
         mapLayerPrePosition = mapLayer->getPosition();
-        isPosUpdate = false;
+        if (mapLayer->getPosition().x <= 0) {
+            auto offsetX = abs(mapLayer->getPosition().x) - curArea.getMinX();
+            auto offsetY = abs(mapLayer->getPosition().y) - curArea.getMinY();
+            backgroundParallaxNode->setPosition(-offsetX, -offsetY);
+            foregroundParallaxNode->setPosition(-offsetX, -offsetY);
+        } else {
+            //一般而言地图偏移量并不会为正
+            auto offsetX = mapLayer->getPosition().x - curArea.getMinX();
+            auto offsetY = mapLayer->getPosition().y - curArea.getMinY();
+            backgroundParallaxNode->setPosition(offsetX, offsetY);
+            foregroundParallaxNode->setPosition(offsetX, offsetY);
+        }
+        backParallaxNodePrePosition = backgroundParallaxNode->getPosition();
+        foreParallaxNodePrePosition = foregroundParallaxNode->getPosition();
+        isParallaxPositionInit = false;
     }
+
     //取得TMX地图层的偏移量
     auto mapLayerCurPosition = mapLayer->getPosition();
     auto offsetX = mapLayerCurPosition.x - mapLayerPrePosition.x;
     auto offsetY = mapLayerCurPosition.y - mapLayerPrePosition.y;
     mapLayerPrePosition = mapLayerCurPosition;
     //设置背景视差结点的偏移量
-    backParallaxNode->setPosition(backParallaxNodePrePosition.x + offsetX,
-                                  backParallaxNodePrePosition.y + offsetY);
+    backgroundParallaxNode->setPosition(backParallaxNodePrePosition.x + offsetX,
+                                        backParallaxNodePrePosition.y + offsetY);
     backParallaxNodePrePosition =
         Vec2(backParallaxNodePrePosition.x + offsetX, backParallaxNodePrePosition.y + offsetY);
+    //设置前景视差结点的偏移量
+    foregroundParallaxNode->setPosition(foreParallaxNodePrePosition.x + offsetX,
+                                        foreParallaxNodePrePosition.y + offsetY);
+    foreParallaxNodePrePosition =
+        Vec2(foreParallaxNodePrePosition.x + offsetX, foreParallaxNodePrePosition.y + offsetY);
 
     if (curArea.containsPoint(poi)) {
         ;
@@ -1129,9 +1198,6 @@ GameplayScene::update(float dt)
         mapLayer->runAction(cameraFollow);
 
         //重置偏移量，重置视差节点位置
-        backParallaxNode->setPosition(Vec2::ZERO);
-        backParallaxNodePrePosition = Vec2::ZERO;
-        mapLayerPrePosition = mapLayer->getPosition();
-        isPosUpdate = true;
+        isParallaxPositionInit = true;
     }
 }

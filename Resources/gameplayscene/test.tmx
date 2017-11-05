@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="390" height="120" tilewidth="16" tileheight="16" nextobjectid="189">
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="390" height="120" tilewidth="16" tileheight="16" nextobjectid="202">
  <tileset firstgid="1" name="jungle tileset" tilewidth="16" tileheight="16" tilecount="741" columns="39">
   <image source="jungle tileset.png" trans="000000" width="624" height="304"/>
  </tileset>
@@ -14,38 +14,6 @@
   <properties>
    <property name="onExitTriggerEvent" value="E3"/>
   </properties>
- </objectgroup>
- <objectgroup name="area">
-  <object id="132" x="0" y="800" width="1728" height="1120">
-   <properties>
-    <property name="background" value="gameplayscene/gbg.png"/>
-    <property name="bgm" value="bgm/bgm001.mp3"/>
-   </properties>
-  </object>
-  <object id="134" x="1728" y="800" width="1472" height="1120">
-   <properties>
-    <property name="background" value="gameplayscene/gbg.png"/>
-    <property name="bgm" value="bgm/bgm001.mp3"/>
-   </properties>
-  </object>
-  <object id="159" x="3200" y="800" width="1520" height="1120">
-   <properties>
-    <property name="background" value="gameplayscene/bg919_cruel.png"/>
-    <property name="bgm" value=""/>
-   </properties>
-  </object>
-  <object id="162" x="4720" y="800" width="1520" height="1120">
-   <properties>
-    <property name="background" value="gameplayscene/bg919_cruel.png"/>
-    <property name="bgm" value="bgm/bgm004.mp3"/>
-   </properties>
-  </object>
-  <object id="166" x="0" y="0" width="3200" height="800">
-   <properties>
-    <property name="background" value="gameplayscene/bg087.png"/>
-    <property name="bgm" value="bgm/bgm001.mp3"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup name="physics">
   <object id="77" x="688" y="1296">
@@ -130,6 +98,38 @@
    <polyline points="0,0 88,0"/>
   </object>
  </objectgroup>
+ <objectgroup name="area">
+  <object id="132" x="0" y="800" width="1728" height="1120">
+   <properties>
+    <property name="background" value="gameplayscene/gbg.png"/>
+    <property name="bgm" value="bgm/bgm001.mp3"/>
+   </properties>
+  </object>
+  <object id="134" x="1728" y="800" width="1472" height="1120">
+   <properties>
+    <property name="background" value="gameplayscene/gbg.png"/>
+    <property name="bgm" value="bgm/bgm001.mp3"/>
+   </properties>
+  </object>
+  <object id="159" x="3200" y="800" width="1520" height="1120">
+   <properties>
+    <property name="background" value="gameplayscene/bg919_cruel.png"/>
+    <property name="bgm" value=""/>
+   </properties>
+  </object>
+  <object id="162" x="4720" y="800" width="1520" height="1120">
+   <properties>
+    <property name="background" value="gameplayscene/bg919_cruel.png"/>
+    <property name="bgm" value="bgm/bgm004.mp3"/>
+   </properties>
+  </object>
+  <object id="166" x="0" y="0" width="3200" height="800">
+   <properties>
+    <property name="background" value="gameplayscene/bg087.png"/>
+    <property name="bgm" value="bgm/bgm001.mp3"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup name="event">
   <object id="141" x="512" y="1168" width="32" height="32">
    <properties>
@@ -191,6 +191,22 @@
  </objectgroup>
  <objectgroup name="player">
   <object id="25" name="birthPoint" x="264" y="428" width="24" height="24"/>
+ </objectgroup>
+ <objectgroup name="backgroundParallaxDecoration">
+  <object id="189" name="gameplayscene/Obj_globalJP.img.ghost.nature.35.0.png" x="1320" y="1652" width="32" height="40"/>
+  <object id="193" name="gameplayscene/Obj_globalJP.img.ghost.nature.39.0.png" x="2512" y="1648" width="32" height="40"/>
+ </objectgroup>
+ <objectgroup name="backgroundStaticDecoration">
+  <object id="198" name="gameplayscene/Obj_globalJP.img.ghost.nature.20.0.png" x="3116" y="1224" width="12" height="12"/>
+  <object id="201" name="gameplayscene/Obj_globalJP.img.ghost.nature.35.0.png" x="256" y="1560" width="28" height="16"/>
+ </objectgroup>
+ <objectgroup name="foregroundParallaxDecoration">
+  <object id="196" name="gameplayscene/cloud.png" x="344" y="548" width="24" height="24"/>
+  <object id="197" name="gameplayscene/cloud.png" x="1940" y="640" width="24" height="24"/>
+ </objectgroup>
+ <objectgroup name="foregroundStaticDecoration">
+  <object id="194" name="gameplayscene/Obj_connect.img.ladder.0.4.0.png" x="3028" y="1516" width="28" height="28"/>
+  <object id="199" name="gameplayscene/Obj_connect.img.ladder.0.4.0.png" x="3132" y="1512" width="28" height="28"/>
  </objectgroup>
  <layer name="mapchip001" width="390" height="120">
   <data encoding="base64" compression="zlib">
