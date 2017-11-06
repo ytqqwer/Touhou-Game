@@ -77,7 +77,6 @@ Parabola::spawnBullet()
 {
     if (this->counterInside == sc.countThenChangePos) {
         this->counterInside = 0;
-        return;
     } else {
         this->counterInside++;
     }

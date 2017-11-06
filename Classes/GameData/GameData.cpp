@@ -200,7 +200,8 @@ from_json(const json& j, Character& c)
     c.name = it->at("name");
     c.rectAvatar = it->at("rectAvatar");
     c.circularAvatar = it->at("circularAvatar");
-    c.portrait = it->at("protrait");
+    c.portrait = it->at("portrait");
+	c.useSpellCardPortrait = it->at("useSpellCardPortrait");
 
     for (auto const& p : it->at("preview")) {
         c.preview.push_back(p);
@@ -228,7 +229,10 @@ from_json(const json& j, Character& c)
     }
     for (auto const& p : it->at("dashFrame")) {
         c.dashFrame.push_back(p);
-    }
+    }    
+	for (auto const& p : it->at("useSpellCardFrame")) {
+		c.useSpellCardFrame.push_back(p);
+	}
 
     c.standAnimationKey = c.tag + ("StandAnimation");
     c.runAnimationKey = c.tag + ("RunAnimation");
@@ -237,6 +241,7 @@ from_json(const json& j, Character& c)
     c.preFallAnimationKey = c.tag + ("PreFallAnimation");
     c.fallAnimationKey = c.tag + ("FallAnimation");
     c.dashAnimationKey = c.tag + ("DashAnimation");
+	c.useSpellCardAnimationKey = c.tag + ("UseSpellCardAnimation");
 
     c.standFrameDelay = it->at("standFrameDelay");
     c.runFrameDelay = it->at("runFrameDelay");
@@ -245,6 +250,7 @@ from_json(const json& j, Character& c)
     c.preFallFrameDelay = it->at("preFallFrameDelay");
     c.fallFrameDelay = it->at("fallFrameDelay");
     c.dashFrameDelay = it->at("dashFrameDelay");
+	c.useSpellCardFrameDelay = it->at("useSpellCardFrameDelay");
 
     c.healthPointBase = it->at("healthPointBase");
     c.manaBase = it->at("manaBase");
@@ -1494,6 +1500,7 @@ GameData::unlockItemSlot(const string& characterTag)
             break;
         }
     }
+	increaseMoney(-5000);
 }
 
 void
@@ -1506,6 +1513,7 @@ GameData::unlockSpellCardSlot(const string& characterTag)
             break;
         }
     }
+	increaseMoney(-5000);
 }
 
 EnemyData
@@ -1863,7 +1871,7 @@ testSelf()
         cout << "  itemSlotNum: " << c.itemSlotNum << endl;
         cout << "  spellCardSlotNum: " << c.spellCardSlotNum << endl;
         cout << "  healthPointBase: " << c.healthPointBase << endl;
-        cout << "  manaBase: " << c.manaBase << endl;
+        cout << "  baseMana: " << c.manaBase << endl;
         cout << "  ..." << endl;
     }
 

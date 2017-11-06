@@ -14,6 +14,9 @@
 #include "AudioController.h"
 #include "SimpleAudioEngine.h"
 
+#include "cocos-ext.h"
+using namespace cocos2d::extension;
+
 ConversationLayer* ConversationLayer::_self = nullptr;
 
 ConversationLayer*
@@ -75,32 +78,29 @@ ConversationLayer::init()
 
     _lCharacter = Sprite::create();
     _lCharacter->setVisible(false);
-    _lCharacter->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height / 2));
-    _lCharacter->setContentSize(Size(0.35 * _visibleSize.width, _visibleSize.height));
+    _lCharacter->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height / 2 + 50));
     addChild(_lCharacter);
 
     _mCharacter = Sprite::create();
     _mCharacter->setVisible(false);
-    _mCharacter->setPosition(_visibleSize * 0.5);
-    _mCharacter->setContentSize(Size(0.3 * _visibleSize.width, _visibleSize.height));
+    _mCharacter->setPosition(_visibleSize.width * 0.5, _visibleSize.height / 2 + 50);
     addChild(_mCharacter);
 
     _rCharacter = Sprite::create();
     _rCharacter->setVisible(false);
-    _rCharacter->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height / 2));
-    _rCharacter->setContentSize(Size(0.35 * _visibleSize.width, _visibleSize.height));
+    _rCharacter->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height / 2 + 50));
     _rCharacter->setFlippedX(true);
     addChild(_rCharacter);
 
-    _textBlk = Sprite::create("place_holder.png");
+    auto _textBlk = Scale9Sprite::create("menu/panel.png");
+    _textBlk->setCapInsets(Rect(10, 10, 180, 80));
     _textBlk->setColor(Color3B(69, 69, 69));
-    // _textBlk->setOpacityModifyRGB(true);
-    // _textBlk->setOpacity(64);
-    _textBlk->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height * 0.1));
-    _textBlk->setContentSize(Size(_visibleSize.width, _visibleSize.height * 0.2));
+    _textBlk->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    _textBlk->setPosition(Vec2(0, 0));
+    _textBlk->setContentSize(Size(_visibleSize.width, _visibleSize.height * 0.28));
     addChild(_textBlk);
 
-    _speaker = Label::createWithTTF("", "fonts/dengxian.ttf", 24);
+    _speaker = Label::createWithTTF("", "fonts/dengxian.ttf", 30);
     _speaker->enableBold();
     // 相对于 _textBlk 布局
     _speaker->setAnchorPoint(Vec2(0, 0));
@@ -108,7 +108,7 @@ ConversationLayer::init()
         Vec2(_textBlk->getContentSize().width * 0.18, _textBlk->getContentSize().height * 0.7));
     _textBlk->addChild(_speaker);
 
-    _text = Label::createWithTTF("", "fonts/dengxian.ttf", 18);
+    _text = Label::create("", "fonts/NotoSansCJKsc-Black.otf", 24);
     _text->setColor(Color3B::WHITE);
     // 相对于 _textBlk 布局
     _text->setAnchorPoint(Vec2(0, 1));

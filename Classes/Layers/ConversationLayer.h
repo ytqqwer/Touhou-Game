@@ -69,7 +69,6 @@ private:
     Sprite* _mCharacter;
     Sprite* _rCharacter;
 
-    Sprite* _textBlk;
     Label* _speaker;
     Label* _text;
 

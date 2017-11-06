@@ -101,7 +101,7 @@ EquipScene::init()
     string content[3] = { "生命", "灵力", "速度" };
     double height = 0.81;
     for (int i = 0; i < 3; i++) {
-        text[i] = Label::createWithTTF(content[i], "fonts/dengxian.ttf", 20);
+        text[i] = Label::create(content[i], "fonts/dengxian.ttf", 20);
         text[i]->setPosition(Vec2(_visibleSize.width * 0.4, _visibleSize.height * height));
         text[i]->setColor(Color3B::BLACK);
         addChild(text[i]);
@@ -122,7 +122,7 @@ EquipScene::init()
     box_3->addChild(deco_2);
 
     /*攻击方式*/
-    auto attack = Label::createWithTTF("攻击方式", "fonts/dengxian.ttf", 20);
+    auto attack = Label::create("攻击方式", "fonts/dengxian.ttf", 20);
     attack->setPosition(
         Vec2(box_3->getContentSize().width / 2, box_3->getContentSize().height * 0.85));
     attack->setColor(Color3B::BLACK);
@@ -188,19 +188,18 @@ EquipScene::loadCharacterProperty(const Character& character)
     addChild(portrait, 1, ++tagSum);
 
     /*生命*/
-    auto text_1 = Label::createWithTTF(getNumber(character.healthPointBase, 0),
-                                       "fonts/dengxian.ttf", 18); //属性加成暂时使用0代替
+    auto text_1 = Label::create(getNumber(character.healthPointBase, 0), "fonts/dengxian.ttf",
+                                18); //属性加成暂时使用0代替
     text_1->setPosition(Vec2(_visibleSize.width * 0.47, _visibleSize.height * 0.81));
     text_1->setColor(Color3B::BLACK);
     addChild(text_1, 0, ++tagSum);
     /*灵力*/
-    auto text_2 = Label::createWithTTF(getNumber(character.manaBase, 0), "fonts/dengxian.ttf", 18);
+    auto text_2 = Label::create(getNumber(character.manaBase, 0), "fonts/dengxian.ttf", 18);
     text_2->setPosition(Vec2(_visibleSize.width * 0.47, _visibleSize.height * 0.74));
     text_2->setColor(Color3B::BLACK);
     addChild(text_2, 0, ++tagSum);
     /*速度*/
-    auto text_3 =
-        Label::createWithTTF(getNumber(character.walkSpeedBase, 0), "fonts/dengxian.ttf", 18);
+    auto text_3 = Label::create(getNumber(character.walkSpeedBase, 0), "fonts/dengxian.ttf", 18);
     text_3->setPosition(Vec2(_visibleSize.width * 0.47, _visibleSize.height * 0.67));
     text_3->setColor(Color3B::BLACK);
     addChild(text_3, 0, ++tagSum);
@@ -211,11 +210,11 @@ EquipScene::loadCharacterProperty(const Character& character)
     for (int i = 0; i < attackList.size(); i++) {
         Label* attack_text;
         if (attackList[i].type == Character::Attack::Type::FOCUS)
-            attack_text = Label::createWithTTF("集中  " + attackList[i].description,
-                                               "fonts/dengxian.ttf", 20);
+            attack_text =
+                Label::create("集中  " + attackList[i].description, "fonts/dengxian.ttf", 20);
         else
-            attack_text = Label::createWithTTF("发散  " + attackList[i].description,
-                                               "fonts/dengxian.ttf", 20);
+            attack_text =
+                Label::create("发散  " + attackList[i].description, "fonts/dengxian.ttf", 20);
         attack_text->setAnchorPoint(Vec2(0, 0));
         attack_text->setPosition(Vec2(_visibleSize.width * 0.6, _visibleSize.height * high));
         attack_text->setColor(Color3B::BLACK);
@@ -263,7 +262,7 @@ EquipScene::loadCharacterProperty(const Character& character)
             }
         }
         if (!found) {
-            auto none = Label::create("Select", "fonts/NotoSansCJKsc-Black.otf", 20);
+            auto none = Label::create("Select", "fonts/dengxian.ttf", 20);
             none->setColor(Color3B::WHITE);
             none->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             none->setPosition(buttonSize.width / 4.0, buttonSize.height / 2.0);
@@ -331,7 +330,7 @@ EquipScene::loadCharacterProperty(const Character& character)
             }
         }
         if (!found) {
-            auto none = Label::create("Select", "fonts/NotoSansCJKsc-Black.otf", 20);
+            auto none = Label::create("Select", "fonts/dengxian.ttf", 20);
             none->setColor(Color3B::WHITE);
             none->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             none->setPosition(buttonSize.width / 4.0, buttonSize.height / 2.0);
@@ -548,7 +547,7 @@ EquipScene::ItemMenu::tableCellAtIndex(TableView* table, ssize_t idx)
         icon->setPosition(Vec2(30, 50));
         cell->addChild(icon);
 
-        auto name = Label::createWithTTF(items[idx].name, "fonts/dengxian.ttf", 20);
+        auto name = Label::create(items[idx].name, "fonts/dengxian.ttf", 20);
         name->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         name->setPosition(Vec2(120, 50));
         name->setColor(Color3B::BLACK);
@@ -571,13 +570,13 @@ EquipScene::ItemMenu::tableCellAtIndex(TableView* table, ssize_t idx)
                 break;
             }
         }
-        auto userLabel = Label::createWithTTF("使用者: ", "fonts/dengxian.ttf", 20);
+        auto userLabel = Label::create("使用者: ", "fonts/dengxian.ttf", 20);
         userLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         userLabel->setPosition(Vec2(210, 60));
         userLabel->setColor(Color3B::BLACK);
         cell->addChild(userLabel);
 
-        auto status = Label::createWithTTF(userName, "fonts/dengxian.ttf", 20);
+        auto status = Label::create(userName, "fonts/dengxian.ttf", 20);
         status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         status->setPosition(Vec2(210, 40));
         status->setColor(Color3B::BLACK);
@@ -715,7 +714,7 @@ EquipScene::SpellCardMenu::tableCellAtIndex(TableView* table, ssize_t idx)
         icon->setPosition(Vec2(30, 50));
         cell->addChild(icon);
 
-        auto name = Label::createWithTTF(spellCards[idx].name, "fonts/dengxian.ttf", 20);
+        auto name = Label::create(spellCards[idx].name, "fonts/dengxian.ttf", 20);
         name->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         name->setPosition(Vec2(120, 50));
         name->setColor(Color3B::BLACK);
@@ -738,13 +737,13 @@ EquipScene::SpellCardMenu::tableCellAtIndex(TableView* table, ssize_t idx)
                 break;
             }
         }
-        auto userLabel = Label::createWithTTF("使用者: ", "fonts/dengxian.ttf", 20);
+        auto userLabel = Label::create("使用者: ", "fonts/dengxian.ttf", 20);
         userLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         userLabel->setPosition(Vec2(210, 60));
         userLabel->setColor(Color3B::BLACK);
         cell->addChild(userLabel);
 
-        auto status = Label::createWithTTF(userName, "fonts/dengxian.ttf", 20);
+        auto status = Label::create(userName, "fonts/dengxian.ttf", 20);
         status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         status->setPosition(Vec2(210, 40));
         status->setColor(Color3B::BLACK);

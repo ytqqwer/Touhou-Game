@@ -195,6 +195,9 @@
     <ClCompile Include="..\Classes\GameplayScene\Enemy\Stump.cpp">
       <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\GameplayScene\Enemy\Udonge.cpp">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClCompile>
 
     <!-- Classes\GameplayScene\CtrlPanel -->
 
@@ -435,6 +438,9 @@
       <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GameplayScene\Enemy\Stump.h">
+      <Filter>Classes\GameplayScene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameplayScene\Enemy\Udonge.h">
       <Filter>Classes\GameplayScene\Enemy</Filter>
     </ClInclude>
 

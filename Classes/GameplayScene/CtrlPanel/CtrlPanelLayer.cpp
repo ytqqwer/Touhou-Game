@@ -104,7 +104,7 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
 
             panel->addChild(btn);
             btn->setPosition(
-                Vec2(_visibleSize.width * 0.330 + increment, _visibleSize.height * 0.080));
+                Vec2(_visibleSize.width * 0.310 + increment, _visibleSize.height * 0.080));
 
             increment = increment + btn->getContentSize().width + 50;
         }
@@ -112,7 +112,7 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
         /*  2. 符卡 SpellCard */
 
         increment = 0;
-        auto spellCardList = _gamedata->getCharacterEquipedSpellCards(characterTagList[0]);
+        auto spellCardList = _gamedata->getCharacterEquipedSpellCards(characterTagList[i]);
         for (int j = 0; j < spellCardList.size(); j++) {
             SpellCard card = spellCardList[j];
             CoolDownButton* btn = SpellCardButton::create(card);
@@ -160,16 +160,29 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
         float scale = 100.0 / bigger;
         switchCharacterBtn->setScale(scale);
 
+        switchCharacterBtn->setTag(998);
+
         switchCharacterBtn->addTouchEventListener(
-            [this, i, switchCharacterBtn](Ref* pSender, Widget::TouchEventType type) {
+            [this, i](Ref* pSender, Widget::TouchEventType type) {
                 if (type == Widget::TouchEventType::ENDED) {
                     // 处理自己
                     this->_characterCtrlPanel[1 - i]->setVisible(true);
                     this->_characterCtrlPanel[_currCharacterIdx]->setVisible(false);
                     _currCharacterIdx = 1 - i;
-
                     // 向外部发出事件
                     this->_eventDispatcher->dispatchCustomEvent("switch_character");
+
+                    //进入冷却
+                    auto node = this->_characterCtrlPanel[1 - i]->getChildByTag(998);
+                    auto button = (Button*)node;
+                    button->setColor(Color3B(64, 64, 64));
+                    button->setTouchEnabled(false);
+                    button->scheduleOnce(
+                        [button](float dt) {
+                            button->setColor(Color3B(0xff, 0xff, 0xff));
+                            button->setTouchEnabled(true);
+                        },
+                        2.0, "recover");
                 }
             });
         panel->addChild(switchCharacterBtn);

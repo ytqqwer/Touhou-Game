@@ -71,18 +71,38 @@ HomeScene::init()
     addChild(UpdateButton);
 
 #endif
+    auto layout_button = Layout::create();
+    layout_button->setBackGroundImage("menu/18-5.png");
+    layout_button->setContentSize(Size(214, _visibleSize.height * 0.6));
+    this->addChild(layout_button);
+
+    auto layout_button_size = layout_button->getContentSize();
+    layout_button->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    layout_button->setPosition(Vec2(_visibleSize.width * 0.77, _visibleSize.height * 0.42));
+
+    auto layout_top = Sprite::create("menu/18-4.png");
+    layout_top->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    layout_top->setPosition(Vec2(layout_button_size.width / 2.0, layout_button_size.height + 50));
+    auto layout_bottom = Sprite::create("menu/18-6.png");
+    layout_bottom->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    layout_bottom->setPosition(Vec2(layout_button_size.width / 2.0, -50));
+
+    layout_button->setBackGroundImageOpacity(220);
+    layout_top->setOpacity(220);
+    layout_bottom->setOpacity(220);
+
+    layout_button->addChild(layout_top);
+    layout_button->addChild(layout_bottom);
 
     /*出发按钮*/
-    auto button_start = Button::create(IMG_HOME_BIG_BUTTON);
+    auto button_start = Button::create();
+    button_start->isIgnoreContentAdaptWithSize();
+    button_start->setScale9Enabled(true);
+    button_start->setContentSize(Size(200, 100));
     button_start->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
-    button_start->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.705));
     button_start->setTitleText("出发");
-    button_start->setTitleFontSize(75);
-    button_start->setTitleColor(Color3B::BLACK);
-    button_start->setScale(0.33);
-    // button_start->setScale9Enabled(true);
-    // button_start->setCapInsets(Rect(50, 70, 567, 242));
-    // button_start->setContentSize(Size(200,100));
+    button_start->setTitleFontSize(50);
+    button_start->setTitleColor(Color3B::WHITE);
     button_start->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -90,16 +110,20 @@ HomeScene::init()
             Director::getInstance()->replaceScene(transition);
         }
     });
-    addChild(button_start);
+    button_start->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    button_start->setPosition(
+        Vec2(layout_button_size.width / 2, layout_button_size.height * 7 / 8));
+    layout_button->addChild(button_start);
 
     /*整备按钮*/
-    auto button_equip = Button::create(IMG_HOME_BIG_BUTTON);
+    auto button_equip = Button::create();
+    button_equip->isIgnoreContentAdaptWithSize();
+    button_equip->setScale9Enabled(true);
+    button_equip->setContentSize(Size(200, 100));
     button_equip->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
-    button_equip->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.525));
     button_equip->setTitleText("整备");
-    button_equip->setTitleFontSize(75);
-    button_equip->setTitleColor(Color3B::BLACK);
-    button_equip->setScale(0.33);
+    button_equip->setTitleFontSize(50);
+    button_equip->setTitleColor(Color3B::WHITE);
     button_equip->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -107,16 +131,20 @@ HomeScene::init()
             Director::getInstance()->pushScene(transition);
         }
     });
-    addChild(button_equip);
+    button_equip->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    button_equip->setPosition(
+        Vec2(layout_button_size.width / 2, layout_button_size.height * 5 / 8));
+    layout_button->addChild(button_equip);
 
     /*道具库按钮*/
-    auto button_inventory = Button::create(IMG_HOME_BIG_BUTTON);
+    auto button_inventory = Button::create();
+    button_inventory->isIgnoreContentAdaptWithSize();
+    button_inventory->setScale9Enabled(true);
+    button_inventory->setContentSize(Size(200, 100));
     button_inventory->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
-    button_inventory->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.345));
     button_inventory->setTitleText("道具库");
-    button_inventory->setTitleFontSize(75);
-    button_inventory->setTitleColor(Color3B::BLACK);
-    button_inventory->setScale(0.33);
+    button_inventory->setTitleFontSize(50);
+    button_inventory->setTitleColor(Color3B::WHITE);
     button_inventory->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -124,16 +152,20 @@ HomeScene::init()
             Director::getInstance()->pushScene(transition);
         }
     });
-    addChild(button_inventory);
+    button_inventory->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    button_inventory->setPosition(
+        Vec2(layout_button_size.width / 2, layout_button_size.height * 3 / 8));
+    layout_button->addChild(button_inventory);
 
     /*其他地图按钮*/
-    auto button_map = Button::create(IMG_HOME_BIG_BUTTON);
+    auto button_map = Button::create();
+    button_map->isIgnoreContentAdaptWithSize();
+    button_map->setScale9Enabled(true);
+    button_map->setContentSize(Size(200, 100));
     button_map->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
-    button_map->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.165));
-    button_map->setTitleText("前往其他地图");
-    button_map->setTitleFontSize(75);
-    button_map->setTitleColor(Color3B::BLACK);
-    button_map->setScale(0.33);
+    button_map->setTitleText("地图");
+    button_map->setTitleFontSize(50);
+    button_map->setTitleColor(Color3B::WHITE);
     button_map->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -142,7 +174,9 @@ HomeScene::init()
             Director::getInstance()->pushScene(transition);
         }
     });
-    addChild(button_map);
+    button_map->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    button_map->setPosition(Vec2(layout_button_size.width / 2, layout_button_size.height * 1 / 8));
+    layout_button->addChild(button_map);
 
     /*更换角色*/
     auto role_change = Button::create(IMG_HOME_SWITCH_CHARACTER_BUTTON);
@@ -176,7 +210,7 @@ HomeScene::init()
     information_Layout->setAnchorPoint(Vec2(1, 1));
     information_Layout->setContentSize(Size(680, 120));
     information_Layout->setPosition(Vec2(_visibleSize.width * 0.98, _visibleSize.height * 0.98));
-    information_Layout->setOpacity(50);
+    information_Layout->setOpacity(220);
     addChild(information_Layout);
 
     /*设置按钮*/
@@ -185,9 +219,8 @@ HomeScene::init()
     set_button->setAnchorPoint(Vec2(0.5, 0.5));
     set_button->setPosition(Vec2(600, 60));
     set_button->setTitleText("设置");
-    set_button->setTitleColor(Color3B::BLACK);
-    set_button->setTitleFontSize(60);
-    set_button->setScale(0.33);
+    set_button->setTitleColor(Color3B::WHITE);
+    set_button->setTitleFontSize(25);
     set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -203,9 +236,8 @@ HomeScene::init()
     know_button->setAnchorPoint(Vec2(0.5, 0.5));
     know_button->setPosition(Vec2(500, 60));
     know_button->setTitleText("资料库");
-    know_button->setTitleFontSize(60);
-    know_button->setTitleColor(Color3B::BLACK);
-    know_button->setScale(0.33);
+    know_button->setTitleFontSize(25);
+    know_button->setTitleColor(Color3B::WHITE);
     know_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -221,10 +253,9 @@ HomeScene::init()
     store_button->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     store_button->setAnchorPoint(Vec2(0.5, 0.5));
     store_button->setPosition(Vec2(400, 60));
-    store_button->setTitleText("系统商店");
-    store_button->setTitleFontSize(60);
-    store_button->setTitleColor(Color3B::BLACK);
-    store_button->setScale(0.33);
+    store_button->setTitleText("商城");
+    store_button->setTitleFontSize(25);
+    store_button->setTitleColor(Color3B::WHITE);
     store_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();

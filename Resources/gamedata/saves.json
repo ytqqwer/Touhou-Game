@@ -18,10 +18,6 @@
                     {
                         "tag": "I6",
                         "slot": 1
-                    },
-                    {
-                        "tag": "I3",
-                        "slot": 2
                     }
                 ],
                 "strengthenItems": ["I5"],

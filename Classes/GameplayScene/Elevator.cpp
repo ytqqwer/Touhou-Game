@@ -52,3 +52,47 @@ Elevator::moveTogether(float dt)
         }
     }
 }
+
+bool
+Broom::init()
+{
+    if (!Node::init())
+        return false;
+
+    this->setTag(elevatorCategoryTag);
+
+    auto mop = Sprite::create("gameplayscene/broom.png");
+    mop->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
+    this->addChild(mop);
+
+    PhysicsBody* _body = PhysicsBody::createEdgeSegment(Vec2(0, 0), Vec2(300, 0),
+                                                        PHYSICSBODY_MATERIAL_DEFAULT, 7.0f);
+    _body->getFirstShape()->setDensity(0);
+    _body->getFirstShape()->setFriction(1.0);
+    _body->getFirstShape()->setRestitution(0);
+    _body->setCategoryBitmask(elevatorCategory);
+    _body->setContactTestBitmask(playerCategory | groundCategory);
+    _body->setCollisionBitmask(playerCategory);
+    this->setPhysicsBody(_body);
+
+    this->prePosition = this->getPosition();
+    this->schedule(CC_SCHEDULE_SELECTOR(Broom::moveTogether));
+
+    return true;
+}
+
+void
+Broom::moveTogether(float dt)
+{
+    auto posE = this->getPosition();
+    auto offX = posE.x - prePosition.x;
+    auto offY = posE.y - prePosition.y;
+    prePosition = posE;
+
+    if (!(passengers.empty())) {
+        for (auto it = passengers.begin(); it != passengers.end(); ++it) {
+            auto posN = (*it)->getPosition();
+            (*it)->setPosition(posN.x + offX, posN.y + offY);
+        }
+    }
+}

@@ -57,6 +57,8 @@ struct StyleConfig
     /* Scatter参数 */
     int startAngle; //起始角度
     int endAngle;   //终止角度
+
+    int deltaAngle; //角度增量
 };
 
 #endif

@@ -15,7 +15,7 @@ Scatter::Scatter()
     this->sc.totalDuration = FLT_MAX;
     this->sc.cycleTimes = -1;
 
-    this->sc.bc.name = "b2_2_1.png";
+    this->sc.bc.name = "b1_3_3.png";
     this->sc.bc.length = 20;
     this->sc.bc.width = 10;
     this->sc.bc.harm = 10;
@@ -25,6 +25,7 @@ Scatter::Scatter()
 
     this->sc.startAngle = 90;
     this->sc.endAngle = 180;
+    this->sc.deltaAngle = 5;
 
     this->isPlayer = false;
 
@@ -59,6 +60,7 @@ Scatter::Scatter(Direction* direction)
     this->sc.bc.name = "b1_3_3.png";
     this->sc.startAngle = 269;
     this->sc.endAngle = 271;
+    this->sc.deltaAngle = 5;
     this->isPlayer = true;
 
     this->direction = direction;
@@ -120,6 +122,9 @@ Scatter::spawnBullet()
     auto mapLayer = character->getParent();
 
     auto winSize = Director::getInstance()->getWinSize();
+    sc.startAngle += sc.deltaAngle;
+    sc.endAngle += sc.deltaAngle;
+
     float angle = CC_DEGREES_TO_RADIANS(sc.endAngle - sc.startAngle) / (sc.number - 1);
     float distance = sqrt(winSize.width * winSize.width + winSize.height * winSize.height);
 

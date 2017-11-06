@@ -12,6 +12,8 @@
 
 #include "GameplayScene/Shaders/BlendAction.h"
 
+#include "GameData/GameData.h"
+
 Player*
 Player::create(const std::string& tag)
 {
@@ -93,6 +95,11 @@ Player::getHit(DamageInfo* damageInfo, EventFilterManager* eventFilterManager)
     EventCustom event("hp_change");
     event.setUserData((void*)&hpChange);
     _eventDispatcher->dispatchEvent(&event);
+
+    this->currentHP -= damageInfo->damage;
+    if (this->currentHP < 0) {
+        this->currentHP = 0;
+    }
 
     //应用着色器
     auto rColor = BlendAction::create(0.1f, Color4B::RED);
@@ -300,6 +307,47 @@ Player::Dash::Exit(Player* player)
 
 void
 Player::Dash::defaultChangeState(Player* player)
+{
+    player->stateMachine->changeState(Player::Stand::getInstance());
+}
+
+Player::UseSpellCard*
+Player::UseSpellCard::getInstance()
+{
+    static UseSpellCard instance;
+    return &instance;
+}
+
+void
+Player::UseSpellCard::Enter(Player* player)
+{
+    Sprite* portrait = Sprite::create(player->useSpellCardPortrait);
+    player->addChild(portrait);
+    portrait->setOpacity(50);
+    portrait->runAction(
+        Sequence::create(MoveBy::create(0.8, Vec2(0, 150)), FadeOut::create(0.3f), NULL));
+    portrait->scheduleOnce([portrait](float dt) { portrait->removeFromParent(); }, 1.5, "remove");
+
+    std::function<void(Ref*)> shoot = [player](Ref*) {
+        player->emitter->playStyle(player->spellCardStyleConfig);
+    };
+
+    auto actionDone =
+        CallFuncN::create(CC_CALLBACK_0(UseSpellCard::defaultChangeState, this, player));
+    auto animate = Animate::create(player->useSpellCardAnimation);
+    player->currentAnimateAction =
+        Sequence::create(animate, CallFuncN::create(shoot), actionDone, NULL);
+    player->playerSprite->runAction(player->currentAnimateAction);
+}
+
+void
+Player::UseSpellCard::Exit(Player* player)
+{
+    player->playerSprite->stopAction(player->currentAnimateAction);
+}
+
+void
+Player::UseSpellCard::defaultChangeState(Player* player)
 {
     player->stateMachine->changeState(Player::Stand::getInstance());
 }

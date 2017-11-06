@@ -125,7 +125,6 @@ Parallel::spawnBullet()
             if (isPlayer == false) {
                 this->targetPos = (*target)->getPosition(); //更新目标位置
             }
-            // return;
         } else {
             this->counterInside++;
         }
@@ -159,7 +158,7 @@ Parallel::spawnBullet()
                       distance * sin(CC_DEGREES_TO_RADIANS(90.0 - angle)));
     } else {
         startPos = Vec2(datumPos.x, datumPos.y + (sc.number - 1) * (intervalDis / 2.0));
-        deltaP = Vec2(0, distance);
+        deltaP = Vec2(distance, 0);
     }
 
     for (int i = 0; i < sc.number; i++) {

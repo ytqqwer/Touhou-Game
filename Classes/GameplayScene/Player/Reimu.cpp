@@ -28,11 +28,14 @@ Reimu::init(const std::string& tag)
     //此处必须初始化一张角色纹理，否则后面无法切换纹理
     playerSprite = Sprite::create(_character.defaultTexture);
     this->addChild(playerSprite);
+    playerSprite->setPosition(20, 0);
 
+    //释放符卡立绘
+    useSpellCardPortrait = _character.useSpellCardPortrait;
     //设置属性值
     this->baseHP = _character.healthPointBase;
     this->currentHP = _character.healthPointBase;
-    this->manaBase = _character.manaBase;
+    this->baseMana = _character.manaBase;
     this->currentMana = _character.manaBase;
     this->walkSpeedBase = _character.walkSpeedBase;
     this->walkMaxSpeed = _character.walkMaxSpeed;
@@ -65,6 +68,8 @@ Reimu::init(const std::string& tag)
     preFallAnimation = AnimationCache::getInstance()->getAnimation(_character.preFallAnimationKey);
     fallAnimation = AnimationCache::getInstance()->getAnimation(_character.fallAnimationKey);
     dashAnimation = AnimationCache::getInstance()->getAnimation(_character.dashAnimationKey);
+    useSpellCardAnimation =
+        AnimationCache::getInstance()->getAnimation(_character.useSpellCardAnimationKey);
     this->standAnimation->setLoops(-1);
     this->moveAnimation->setLoops(-1);
     this->jumpAnimation->setLoops(-1);
@@ -102,6 +107,8 @@ Reimu::horizontallyAccelerate(float dt)
     auto velocity = body->getVelocity();
 
     if (this->playerDirection == Direction::RIGHT) {
+        playerSprite->setPosition(20, 0); //修正角色中心偏移
+
         Vec2 impluse = Vec2(0, 0);
 
         if (velocity.x < -10) {
@@ -113,6 +120,8 @@ Reimu::horizontallyAccelerate(float dt)
         }
         body->applyImpulse(impluse);
     } else {
+        playerSprite->setPosition(-20, 0);
+
         Vec2 impluse = Vec2(0, 0);
 
         if (velocity.x > 10) {
@@ -152,10 +161,10 @@ Reimu::dash()
     //留空，将y轴速度短暂锁定为0，可以使角色不受重力
 
     if (this->playerDirection == Direction::RIGHT) {
-        Vec2 impluse = Vec2(dashAccelerationBase + 100, 0.0f);
+        Vec2 impluse = Vec2(dashAccelerationBase + 150, 0.0f);
         body->applyImpulse(impluse);
     } else {
-        Vec2 impluse = Vec2(-(dashAccelerationBase + 100), 0.0f);
+        Vec2 impluse = Vec2(-(dashAccelerationBase + 150), 0.0f);
         body->applyImpulse(impluse);
     }
 

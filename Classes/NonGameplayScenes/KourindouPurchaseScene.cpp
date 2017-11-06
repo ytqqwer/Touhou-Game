@@ -202,7 +202,7 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
 
             /*道具栏解锁相关*/
             do {
-                auto itemSlotLabel = Label::createWithTTF("道具栏", "fonts/dengxian.ttf", 20);
+                auto itemSlotLabel = Label::create("道具栏", "fonts/NotoSansCJKsc-Black.otf", 20);
                 itemSlotLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 itemSlotLabel->setPosition(Vec2(150, 100));
                 itemSlotLabel->setColor(Color3B::BLACK);
@@ -213,7 +213,7 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
                 ss << characters[idx].itemSlotNum;
                 ss >> temp;
                 auto itemSlotNumerLabel =
-                    Label::createWithTTF(temp + "/3", "fonts/dengxian.ttf", 20);
+                    Label::create(temp + "/3", "fonts/NotoSansCJKsc-Black.otf", 20);
                 itemSlotNumerLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 itemSlotNumerLabel->setPosition(Vec2(150, 70));
                 itemSlotNumerLabel->setColor(Color3B::BLACK);
@@ -267,7 +267,7 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
 
             /*符卡栏解锁相关*/
             do {
-                auto cardSlotLabel = Label::createWithTTF("符卡栏", "fonts/dengxian.ttf", 20);
+                auto cardSlotLabel = Label::create("符卡栏", "fonts/NotoSansCJKsc-Black.otf", 20);
                 cardSlotLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 cardSlotLabel->setPosition(Vec2(450, 100));
                 cardSlotLabel->setColor(Color3B::BLACK);
@@ -278,7 +278,7 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
                 ss << characters[idx].spellCardSlotNum;
                 ss >> temp;
                 auto cardSlotNumerLabel =
-                    Label::createWithTTF(temp + "/3", "fonts/dengxian.ttf", 20);
+                    Label::create(temp + "/3", "fonts/NotoSansCJKsc-Black.otf", 20);
                 cardSlotNumerLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
                 cardSlotNumerLabel->setPosition(Vec2(450, 70));
                 cardSlotNumerLabel->setColor(Color3B::BLACK);
@@ -351,16 +351,16 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
             icon->setPosition(Vec2(30, 50));
             cell->addChild(icon);
 
-            auto name = Label::createWithTTF(currentItems[idx].name, "fonts/dengxian.ttf", 20);
+            auto name = Label::create(currentItems[idx].name, "fonts/dengxian.ttf", 20);
             name->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
             name->setPosition(Vec2(130, 50));
             name->setColor(Color3B::BLACK);
             cell->addChild(name);
 
             auto description =
-                Label::createWithTTF(currentItems[idx].description, "fonts/dengxian.ttf", 20);
+                Label::create(currentItems[idx].description, "fonts/dengxian.ttf", 20);
             description->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            description->setPosition(Vec2(350, 50));
+            description->setPosition(Vec2(400, 50));
             description->setColor(Color3B::BLACK);
             cell->addChild(description);
 
@@ -377,9 +377,9 @@ KourindouPurchaseScene::tableCellAtIndex(TableView* table, ssize_t idx)
                     break;
                 }
             }
-            auto status = Label::createWithTTF(temp, "fonts/dengxian.ttf", 20);
+            auto status = Label::create(temp, "fonts/dengxian.ttf", 20);
             status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-            status->setPosition(Vec2(600, 50));
+            status->setPosition(Vec2(650, 50));
             status->setColor(Color3B::BLACK);
             status->setName("status");
             cell->addChild(status);

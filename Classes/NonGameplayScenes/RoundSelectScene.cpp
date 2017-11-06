@@ -98,11 +98,21 @@ RoundSelectScene::onEnter()
     this->addChild(backButton);
 
     //创建游戏开始按钮,等创建好了gameScene会添加一个事件监听器
-    auto beginButton = Button::create("menu/start.png");
+    auto beginButton = Button::create();
+    beginButton->isIgnoreContentAdaptWithSize();
+    beginButton->setScale9Enabled(true);
+    beginButton->setContentSize(Size(120, 120));
+
+    auto beginButtonBg = Sprite::create("menu/start.png");
+    beginButtonBg->setScale(0.4);
+    beginButtonBg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    beginButtonBg->setPosition(60, 60);
+    beginButtonBg->runAction(RepeatForever::create(RotateBy::create(6.0, 360)));
+    beginButton->addChild(beginButtonBg, -10);
+
     beginButton->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     beginButton->setTitleText("开始游戏");
-    beginButton->setTitleFontSize(65);
-    beginButton->setScale(0.4);
+    beginButton->setTitleFontSize(30);
     beginButton->setPosition(Vec2(_visibleSize.width * 0.87, _visibleSize.height * 0.2));
     beginButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {

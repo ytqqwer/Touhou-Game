@@ -30,9 +30,10 @@ struct Character
     string name;       //角色名
     string rectAvatar; //人物头像或图标地址
     string circularAvatar;
-    string portrait;        //人物立绘，就一张
-    vector<string> preview; //人物的动作预览图，在代码中组合成动态图片，
-                            //用在 EquipScene 和 RoundSelectScene
+    string portrait;             //人物立绘，就一张
+    string useSpellCardPortrait; //使用符卡立绘
+    vector<string> preview;      //人物的动作预览图，在代码中组合成动态图片，
+                                 //用在 EquipScene 和 RoundSelectScene
 
     /* 人物动画 */
 
@@ -44,14 +45,16 @@ struct Character
     vector<string> preFallFrame;
     vector<string> fallFrame;
     vector<string> dashFrame;
+    vector<string> useSpellCardFrame;
 
-	string standAnimationKey;
-	string runAnimationKey;
-	string preJumpAnimationKey;
-	string jumpAnimationKey;
-	string preFallAnimationKey;
-	string fallAnimationKey;
-	string dashAnimationKey;
+    string standAnimationKey;
+    string runAnimationKey;
+    string preJumpAnimationKey;
+    string jumpAnimationKey;
+    string preFallAnimationKey;
+    string fallAnimationKey;
+    string dashAnimationKey;
+    string useSpellCardAnimationKey;
 
     float standFrameDelay;
     float runFrameDelay;
@@ -60,6 +63,7 @@ struct Character
     float preFallFrameDelay;
     float fallFrameDelay;
     float dashFrameDelay;
+    float useSpellCardFrameDelay;
 
     /* 人物各项属性 */
 
@@ -73,7 +77,6 @@ struct Character
     float walkAccelerationTimeBase;
     float walkAccelerationBase;
     float dashAccelerationBase;
-
 };
 
 #endif

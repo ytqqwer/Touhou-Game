@@ -28,10 +28,13 @@ Alice::init(const std::string& tag)
     playerSprite = Sprite::create(_character.defaultTexture);
     this->addChild(playerSprite);
 
+    //释放符卡立绘
+    useSpellCardPortrait = _character.useSpellCardPortrait;
+
     //设置属性值
     this->baseHP = _character.healthPointBase;
     this->currentHP = _character.healthPointBase;
-    this->manaBase = _character.manaBase;
+    this->baseMana = _character.manaBase;
     this->currentMana = _character.manaBase;
     this->walkSpeedBase = _character.walkSpeedBase;
     this->walkMaxSpeed = _character.walkMaxSpeed;
@@ -63,6 +66,9 @@ Alice::init(const std::string& tag)
     preFallAnimation = AnimationCache::getInstance()->getAnimation(_character.preFallAnimationKey);
     fallAnimation = AnimationCache::getInstance()->getAnimation(_character.fallAnimationKey);
     dashAnimation = AnimationCache::getInstance()->getAnimation(_character.dashAnimationKey);
+    useSpellCardAnimation =
+        AnimationCache::getInstance()->getAnimation(_character.useSpellCardAnimationKey);
+
     // Sequence不能执行RepeatForever，故在创建动画的时候设置循环属性
     this->standAnimation->setLoops(-1);
     this->moveAnimation->setLoops(-1);

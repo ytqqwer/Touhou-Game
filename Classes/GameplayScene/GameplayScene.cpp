@@ -259,8 +259,9 @@ GameplayScene::createPhysical(float scale)
             _pBody->getFirstShape()->setRestitution(0);
             _pBody->setDynamic(false);
             _pBody->setCategoryBitmask(groundCategory); //给矩形地面设置掩码，默认值为0xFFFFFFFF
-            _pBody->setCollisionBitmask(playerCategory | enemyCategory);   //默认值为0xFFFFFFFF
-            _pBody->setContactTestBitmask(playerCategory | enemyCategory); //默认值为0
+            _pBody->setCollisionBitmask(playerCategory | enemyCategory); //默认值为0xFFFFFFFF
+            _pBody->setContactTestBitmask(playerCategory | enemyCategory |
+                                          elevatorCategory); //默认值为0
 
             auto sprite = Sprite::create();
             sprite->setTag(groundCategoryTag);
@@ -321,6 +322,9 @@ GameplayScene::initAnimationCache()
                                        _character.fallAnimationKey);
         CREATE_AND_ADD_ANIMATION_CACHE(_character.dashFrame, _character.dashFrameDelay,
                                        _character.dashAnimationKey);
+        CREATE_AND_ADD_ANIMATION_CACHE(_character.useSpellCardFrame,
+                                       _character.useSpellCardFrameDelay,
+                                       _character.useSpellCardAnimationKey);
     }
 
     for (auto& s : enemyTags) {
@@ -345,6 +349,25 @@ GameplayScene::initAnimationCache()
         CREATE_AND_ADD_ANIMATION_CACHE(_enemy.downFrame, _enemy.downFrameDelay,
                                        _enemy.downAnimationKey);
     }
+
+    ///////////////////////////////////////////////
+
+    auto use = Animation::create();
+    use->addSpriteFrameWithFile("effect/superJump000.png");
+    use->addSpriteFrameWithFile("effect/superJump001.png");
+    use->addSpriteFrameWithFile("effect/superJump002.png");
+    use->addSpriteFrameWithFile("effect/superJump003.png");
+    use->addSpriteFrameWithFile("effect/superJump004.png");
+    use->addSpriteFrameWithFile("effect/superJump005.png");
+    use->addSpriteFrameWithFile("effect/superJump006.png");
+    use->addSpriteFrameWithFile("effect/superJump007.png");
+    use->addSpriteFrameWithFile("effect/superJump008.png");
+    use->addSpriteFrameWithFile("effect/superJump009.png");
+    use->addSpriteFrameWithFile("effect/superJump010.png");
+    use->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(use, "use");
+
+    ///////////////////////////////////////////////
 
     auto sakuyaAttackA_1 = Animation::create();
     sakuyaAttackA_1->addSpriteFrameWithFile("character/Sakuya/shotAb000.png");
@@ -395,6 +418,74 @@ GameplayScene::initAnimationCache()
     sakuyaUseSpellCard->addSpriteFrameWithFile("character/Sakuya/spellDa009.png");
     sakuyaUseSpellCard->setDelayPerUnit(0.10);
     AnimationCache::getInstance()->addAnimation(sakuyaUseSpellCard, "sakuyaUseSpellCard");
+
+    //////////////////////////////////////
+
+    auto udongeAttackAa_1 = Animation::create();
+    udongeAttackAa_1->addSpriteFrameWithFile("character/Udonge/shotAa000.png");
+    udongeAttackAa_1->addSpriteFrameWithFile("character/Udonge/shotAa001.png");
+    udongeAttackAa_1->addSpriteFrameWithFile("character/Udonge/shotAa002.png");
+    udongeAttackAa_1->addSpriteFrameWithFile("character/Udonge/shotAa003.png");
+    udongeAttackAa_1->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(udongeAttackAa_1, "udongeAttackAa_1");
+    auto udongeAttackAa_2 = Animation::create();
+    udongeAttackAa_2->addSpriteFrameWithFile("character/Udonge/shotAa004.png");
+    udongeAttackAa_2->addSpriteFrameWithFile("character/Udonge/shotAa005.png");
+    udongeAttackAa_2->setDelayPerUnit(0.15);
+    AnimationCache::getInstance()->addAnimation(udongeAttackAa_2, "udongeAttackAa_2");
+
+    auto udongeAttackBa_1 = Animation::create();
+    udongeAttackBa_1->addSpriteFrameWithFile("character/Udonge/shotBa000.png");
+    udongeAttackBa_1->addSpriteFrameWithFile("character/Udonge/shotBa001.png");
+    udongeAttackBa_1->addSpriteFrameWithFile("character/Udonge/shotBa002.png");
+    udongeAttackBa_1->addSpriteFrameWithFile("character/Udonge/shotBa003.png");
+    udongeAttackBa_1->addSpriteFrameWithFile("character/Udonge/shotBa004.png");
+    udongeAttackBa_1->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(udongeAttackBa_1, "udongeAttackBa_1");
+    auto udongeAttackBa_2 = Animation::create();
+    udongeAttackBa_2->addSpriteFrameWithFile("character/Udonge/shotBa005.png");
+    udongeAttackBa_2->addSpriteFrameWithFile("character/Udonge/shotBa006.png");
+    udongeAttackBa_2->addSpriteFrameWithFile("character/Udonge/shotBa007.png");
+    udongeAttackBa_2->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(udongeAttackBa_2, "udongeAttackBa_2");
+
+    auto udongeAttackBD_1 = Animation::create();
+    udongeAttackBD_1->addSpriteFrameWithFile("character/Udonge/shotBd000.png");
+    udongeAttackBD_1->addSpriteFrameWithFile("character/Udonge/shotBd001.png");
+    udongeAttackBD_1->addSpriteFrameWithFile("character/Udonge/shotBd002.png");
+    udongeAttackBD_1->addSpriteFrameWithFile("character/Udonge/shotBd003.png");
+    udongeAttackBD_1->addSpriteFrameWithFile("character/Udonge/shotBd004.png");
+    udongeAttackBD_1->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(udongeAttackBD_1, "udongeAttackBd_1");
+    auto udongeAttackBD_2 = Animation::create();
+    udongeAttackBD_2->addSpriteFrameWithFile("character/Udonge/shotBd005.png");
+    udongeAttackBD_2->addSpriteFrameWithFile("character/Udonge/shotBd006.png");
+    udongeAttackBD_2->addSpriteFrameWithFile("character/Udonge/shotBd007.png");
+    udongeAttackBD_2->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(udongeAttackBD_2, "udongeAttackBd_2");
+
+    auto udongeAttackAd_1 = Animation::create();
+    udongeAttackAd_1->addSpriteFrameWithFile("character/Udonge/shotAd000.png");
+    udongeAttackAd_1->addSpriteFrameWithFile("character/Udonge/shotAd001.png");
+    udongeAttackAd_1->addSpriteFrameWithFile("character/Udonge/shotAd002.png");
+    udongeAttackAd_1->addSpriteFrameWithFile("character/Udonge/shotAd003.png");
+    udongeAttackAd_1->addSpriteFrameWithFile("character/Udonge/shotAd004.png");
+    udongeAttackAd_1->addSpriteFrameWithFile("character/Udonge/shotAd005.png");
+    udongeAttackAd_1->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(udongeAttackAd_1, "udongeAttackAd_1");
+
+    auto udongeUseSpellCard = Animation::create();
+    udongeUseSpellCard->addSpriteFrameWithFile("character/Udonge/spellCall000.png");
+    udongeUseSpellCard->addSpriteFrameWithFile("character/Udonge/spellCall001.png");
+    udongeUseSpellCard->addSpriteFrameWithFile("character/Udonge/spellCall002.png");
+    udongeUseSpellCard->addSpriteFrameWithFile("character/Udonge/spellCall003.png");
+    udongeUseSpellCard->addSpriteFrameWithFile("character/Udonge/spellCall004.png");
+    udongeUseSpellCard->addSpriteFrameWithFile("character/Udonge/spellCall005.png");
+    udongeUseSpellCard->addSpriteFrameWithFile("character/Udonge/spellCall006.png");
+    udongeUseSpellCard->addSpriteFrameWithFile("character/Udonge/spellCall007.png");
+    udongeUseSpellCard->addSpriteFrameWithFile("character/Udonge/spellCall008.png");
+    udongeUseSpellCard->setDelayPerUnit(0.10);
+    AnimationCache::getInstance()->addAnimation(udongeUseSpellCard, "udongeUseSpellCard");
 
     //////////////////////////////////////
 
@@ -570,9 +661,9 @@ GameplayScene::initLauncher()
 
             auto fe = Emitter::create((Node**)(&curPlayer));
             _launcher->addChild(fe);
-            // fe->playStyle(StyleType::SCATTER);
+            fe->playStyle(StyleType::SCATTER);
             // fe->playStyle(StyleType::ODDEVEN);
-            fe->playStyle(StyleType::PARALLEL);
+            // fe->playStyle(StyleType::P);
 
             launcherList.pushBack(_launcher);
         }
@@ -855,6 +946,28 @@ GameplayScene::contactBegin(const PhysicsContact& contact)
             }
             //其他
         }
+
+        //飞行扫把
+        if (tagA == elevatorCategoryTag || tagB == elevatorCategoryTag) {
+            if (nodeA->getTag() == elevatorCategoryTag) {
+                entityA = nodeA;
+                entityB = nodeB;
+                entityA_shape = shapeA;
+                entityB_shape = shapeB;
+            } else if (nodeB->getTag() == elevatorCategoryTag) {
+                entityA = nodeB;
+                entityB = nodeA;
+                entityA_shape = shapeB;
+                entityB_shape = shapeA;
+            }
+
+            //当拖把碰到了地形
+            if (entityB->getTag() == groundCategoryTag) {
+                entityA->removeFromParent();
+            }
+        }
+
+        //其他
     }
     return true;
 }
@@ -958,25 +1071,97 @@ GameplayScene::initCustomEventListener()
 
     _eventDispatcher->addCustomEventListener("use_item", [this](EventCustom* e) {
         string itemTag = (char*)e->getUserData();
-        Hp_Mp_Change hpChange;
-        if (itemTag == "I1") {
-            hpChange.tag = curPlayer->playerTag;
-            hpChange.value = 20;
-        } else if (itemTag == "I2") {
-            hpChange.tag = curPlayer->playerTag;
-            hpChange.value = -40;
-        } else if (itemTag == "I3") {
-            hpChange.tag = curPlayer->playerTag;
-            hpChange.value = -40;
-        } else if (itemTag == "I4") {
-            hpChange.tag = curPlayer->playerTag;
-            hpChange.value = 50;
-        }
-        EventCustom event("hp_change");
-        event.setUserData((void*)&hpChange);
-        _eventDispatcher->dispatchEvent(&event);
 
-        curPlayer->currentHP += hpChange.value;
+        if (itemTag == "I1") {
+            if (curPlayer->currentMana != curPlayer->baseMana) {
+                Hp_Mp_Change mpChange;
+                mpChange.tag = curPlayer->playerTag;
+                mpChange.value = 30;
+
+                EventCustom event("mp_change");
+                event.setUserData((void*)&mpChange);
+                _eventDispatcher->dispatchEvent(&event);
+
+                curPlayer->currentMana += mpChange.value;
+                if (curPlayer->currentMana > curPlayer->baseMana) {
+                    curPlayer->currentMana = curPlayer->baseMana;
+                }
+            }
+        } else if (itemTag == "I2") {
+            if (curPlayer->currentMana != curPlayer->baseMana) {
+                Hp_Mp_Change mpChange;
+                mpChange.tag = curPlayer->playerTag;
+                mpChange.value = 50;
+
+                EventCustom event("mp_change");
+                event.setUserData((void*)&mpChange);
+                _eventDispatcher->dispatchEvent(&event);
+
+                curPlayer->currentMana += mpChange.value;
+                if (curPlayer->currentMana > curPlayer->baseMana) {
+                    curPlayer->currentMana = curPlayer->baseMana;
+                }
+            }
+        } else if (itemTag == "I3") {
+            if (curPlayer->currentHP != curPlayer->baseHP) {
+                Hp_Mp_Change hpChange;
+                hpChange.tag = curPlayer->playerTag;
+                hpChange.value = 100;
+
+                EventCustom event("hp_change");
+                event.setUserData((void*)&hpChange);
+                _eventDispatcher->dispatchEvent(&event);
+
+                curPlayer->currentHP += hpChange.value;
+                if (curPlayer->currentHP > curPlayer->baseHP) {
+                    curPlayer->currentHP = curPlayer->baseHP;
+                }
+            }
+        } else if (itemTag == "I4") {
+            if (curPlayer->currentHP != curPlayer->baseHP) {
+                Hp_Mp_Change hpChange;
+                hpChange.tag = curPlayer->playerTag;
+                hpChange.value = 999;
+
+                EventCustom event("hp_change");
+                event.setUserData((void*)&hpChange);
+                _eventDispatcher->dispatchEvent(&event);
+
+                curPlayer->currentHP += hpChange.value;
+                if (curPlayer->currentHP > curPlayer->baseHP) {
+                    curPlayer->currentHP = curPlayer->baseHP;
+                }
+            }
+        } else if (itemTag == "I7") {
+            auto playerPos = curPlayer->getPosition();
+            auto mop = Broom::create();
+            mapLayer->addChild(mop);
+            mop->setPosition(playerPos.x, playerPos.y + 50);
+            std::function<void(Ref*)> remove = [mop](Ref*) { mop->removeFromParent(); };
+            if (curPlayer->playerDirection == Direction::RIGHT) {
+                mop->runAction(Sequence::create(DelayTime::create(1.0f),
+                                                MoveBy::create(5.0, Vec2(1500, 0)),
+                                                CallFuncN::create(remove), NULL));
+            } else {
+                mop->setScale(-1);
+                mop->runAction(Sequence::create(DelayTime::create(1.0f),
+                                                MoveBy::create(5.0, Vec2(-1500, 0)),
+                                                CallFuncN::create(remove), NULL));
+            }
+
+        } else if (itemTag == "I8") {
+            Vec2 impluse = Vec2(0.0f, 1500.0f);
+            curPlayer->getPhysicsBody()->applyImpulse(impluse);
+        }
+
+        auto effect = Sprite::create();
+        effect->setBlendFunc({ GL_SRC_ALPHA, GL_ONE });
+        curPlayer->addChild(effect);
+        auto animation = AnimationCache::getInstance()->getAnimation("use");
+        std::function<void(Ref*)> remove = [effect](Ref*) { effect->removeFromParent(); };
+        effect->runAction(
+            Sequence::create(Animate::create(animation), CallFuncN::create(remove), NULL));
+
     });
 
     _eventDispatcher->addCustomEventListener("use_spell_card", [this](EventCustom* e) {
@@ -985,15 +1170,105 @@ GameplayScene::initCustomEventListener()
         if (spellTag == "C1") {
             mpChange.tag = curPlayer->playerTag;
             mpChange.value = -20;
+
+            auto& sc = curPlayer->spellCardStyleConfig;
+            sc.style = StyleType::PARABOLA;
+            sc.frequency = 0.06f;
+            sc.bulletDuration = 2.5;
+            sc.number = 10;
+            sc.countThenChangePos = 4;
+            sc.cycleTimes = -1;
+            sc.totalDuration = 0.8;
+            sc.height = 30;
+            sc.distance = 600;
+            sc.bc.name = "b3_1_3.png";
+            sc.bc.length = 25;
+            sc.bc.width = 25;
+            sc.bc.harm = 10;
+            sc.bc._categoryBitmask = bulletCategory;
+            sc.bc._collisionBitmask = enemyCategory;
+            sc.bc._contactTestBitmask = enemyCategory;
+
+            EventCustom event("mana_change");
+            event.setUserData((void*)&mpChange);
+            _eventDispatcher->dispatchEvent(&event);
+            curPlayer->currentMana -= mpChange.value;
+            if (curPlayer->currentMana < 0) {
+                curPlayer->currentMana = 0;
+            }
+
+            this->curPlayer->stateMachine->changeState(Player::UseSpellCard::getInstance());
         } else if (spellTag == "C2") {
             mpChange.tag = curPlayer->playerTag;
             mpChange.value = -30;
-        }
-        EventCustom event("mana_change");
-        event.setUserData((void*)&mpChange);
-        _eventDispatcher->dispatchEvent(&event);
 
-        curPlayer->currentMana += mpChange.value;
+            auto& sc = curPlayer->spellCardStyleConfig; //引用
+            sc.style = StyleType::PARALLEL;
+
+            sc.frequency = 0.2f;
+            sc.bulletDuration = 2.4f;
+            sc.countThenChangePos = 1;
+            sc.interval = 1.2f;
+            sc.number = 5;
+            sc.cycleTimes = -1;
+            sc.totalDuration = 2.0;
+
+            sc.bc.name = "b3_2_1.png";
+            sc.bc.length = 15;
+            sc.bc.width = 15;
+            sc.bc.harm = 10;
+            sc.bc._categoryBitmask = bulletCategory;
+            sc.bc._collisionBitmask = enemyCategory;
+            sc.bc._contactTestBitmask = enemyCategory;
+
+            EventCustom event("mana_change");
+            event.setUserData((void*)&mpChange);
+            _eventDispatcher->dispatchEvent(&event);
+            curPlayer->currentMana -= mpChange.value;
+            if (curPlayer->currentMana < 0) {
+                curPlayer->currentMana = 0;
+            }
+
+            this->curPlayer->stateMachine->changeState(Player::UseSpellCard::getInstance());
+        } else if (spellTag == "C3") {
+            mpChange.tag = curPlayer->playerTag;
+            mpChange.value = -30;
+
+            auto& sc = curPlayer->spellCardStyleConfig; //引用
+
+            sc.style = StyleType::SCATTER;
+
+            sc.frequency = 0.10f;
+            sc.bulletDuration = 3.0;
+            sc.number = 5;
+            sc.bc.name = "b1_3_3.png";
+            sc.startAngle = 250;
+            sc.endAngle = 290;
+            sc.deltaAngle = 0;
+
+            sc.cycleTimes = -1;
+            sc.totalDuration = 2.0;
+
+            sc.bc.name = "b3_2_1.png";
+            sc.bc.length = 15;
+            sc.bc.width = 15;
+            sc.bc.harm = 10;
+            sc.bc._categoryBitmask = bulletCategory;
+            sc.bc._collisionBitmask = enemyCategory;
+            sc.bc._contactTestBitmask = enemyCategory;
+
+            EventCustom event("mana_change");
+            event.setUserData((void*)&mpChange);
+            _eventDispatcher->dispatchEvent(&event);
+            curPlayer->currentMana -= mpChange.value;
+            if (curPlayer->currentMana < 0) {
+                curPlayer->currentMana = 0;
+            }
+
+            this->curPlayer->stateMachine->changeState(Player::UseSpellCard::getInstance());
+        }
+
+        AudioController::getInstance()->playEffect("se/use_spell_card.wav");
     });
 
     _eventDispatcher->addCustomEventListener("kill_boss", [this](EventCustom* e) {
@@ -1059,6 +1334,9 @@ GameplayScene::onEventJumpKeyPressed(EventCustom*)
     if (curPlayer->jumpCounts == 0) {
         return;
     }
+    if (curPlayer->stateMachine->getCurrentState() == Player::UseSpellCard::getInstance()) {
+        return;
+    }
     curPlayer->stateMachine->changeState(Player::Jump::getInstance());
 }
 
@@ -1066,6 +1344,9 @@ void
 GameplayScene::onEventDashKeyPressed(EventCustom*)
 {
     if (curPlayer->dashCounts == 0) {
+        return;
+    }
+    if (curPlayer->stateMachine->getCurrentState() == Player::UseSpellCard::getInstance()) {
         return;
     }
     curPlayer->stateMachine->changeState(Player::Dash::getInstance());
@@ -1101,6 +1382,15 @@ GameplayScene::onEventSwitchCharacter(EventCustom*)
 
     curPlayer = theOther;
     mapLayer->addChild(theOther, MAP_LAYER_CHARACTER_ZORDER);
+
+    auto effect = Sprite::create("effect/comboLimit.png");
+    BlendFunc cbl = { GL_SRC_ALPHA, GL_ONE };
+    effect->setBlendFunc(cbl);
+    effect->setOpacity(130);
+    curPlayer->addChild(effect);
+    std::function<void(Ref*)> remove = [effect](Ref*) { effect->removeFromParent(); };
+    effect->runAction(Sequence::create(Repeat::create(RotateBy::create(1.0, 360), 2),
+                                       CallFuncN::create(remove), NULL));
 }
 
 void

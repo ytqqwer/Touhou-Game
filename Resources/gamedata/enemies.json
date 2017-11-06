@@ -131,6 +131,59 @@
     "character/Sakuya/hitSpin006.png"],
    "downFrame" : ["character/Sakuya/down000.png","character/Sakuya/down001.png",
     "character/Sakuya/down002.png","character/Sakuya/down003.png","character/Sakuya/down004.png","character/Sakuya/down005.png","character/Sakuya/down006.png","character/Sakuya/down007.png"],
-   "healthPoint" : 1500
+   "healthPoint" : 2000
+ },
+ {
+   "tag" : "Udonge",
+   "name" : "Udonge",
+   "face" : "character/Udonge/face000.png",
+   "defaultTexture" : "character/Udonge/stand000.png",
+   "standFrameDelay" : 0.12,
+   "runFrameDelay" : 0.10,
+   "preJumpFrameDelay" : 0.07,
+   "jumpFrameDelay" : 0.10,
+   "preFallFrameDelay" : 0.07,
+   "fallFrameDelay" : 0.10,
+   "dashFrameDelay" : 0.10,
+   "hitFrameDelay" : 0.15,
+   "downFrameDelay" : 0.12,
+   "standFrame" : [
+       "character/Udonge/stand000.png", "character/Udonge/stand001.png",
+       "character/Udonge/stand002.png", "character/Udonge/stand003.png",
+       "character/Udonge/stand004.png", "character/Udonge/stand005.png",
+       "character/Udonge/stand006.png", "character/Udonge/stand007.png"
+   ],
+   "runFrame" : [
+       "character/Udonge/walkFront000.png", "character/Udonge/walkFront001.png",
+       "character/Udonge/walkFront002.png", "character/Udonge/walkFront003.png",
+       "character/Udonge/walkFront004.png", "character/Udonge/walkFront005.png",
+       "character/Udonge/walkFront006.png", "character/Udonge/walkFront007.png"
+   ],
+   "preJumpFrame" : [
+    "character/Udonge/jump000.png", "character/Udonge/jump001.png",
+    "character/Udonge/jump002.png"
+   ],
+   "jumpFrame" : [
+    "character/Udonge/jump003.png", "character/Udonge/jump004.png"
+   ],
+   "preFallFrame" : [
+    "character/Udonge/jump005.png"
+   ],
+   "fallFrame" : [
+    "character/Udonge/jump006.png", "character/Udonge/jump007.png", "character/Udonge/jump008.png"
+   ],
+   "dashFrame" : [
+    "character/Udonge/dashFront000.png", "character/Udonge/dashFront001.png",
+    "character/Udonge/dashFront002.png", "character/Udonge/dashFront003.png",
+    "character/Udonge/dashFront004.png", "character/Udonge/dashFront005.png",
+    "character/Udonge/dashFront006.png", "character/Udonge/dashFront007.png",
+    "character/Udonge/dashFront008.png", "character/Udonge/dashFront009.png",
+    "character/Udonge/dashFront010.png", "character/Udonge/dashFront011.png"
+   ],
+   "hitFrame" : ["character/Udonge/hitUpper000.png","character/Udonge/hitUpper001.png",
+    "character/Udonge/hitUpper002.png","character/Udonge/hitUpper003.png","character/Udonge/hitUpper004.png"],
+   "downFrame" : ["character/Udonge/down000.png","character/Udonge/down001.png",
+    "character/Udonge/down002.png","character/Udonge/down003.png","character/Udonge/down004.png","character/Udonge/down005.png","character/Udonge/down006.png","character/Udonge/down007.png","character/Udonge/down008.png"],
+   "healthPoint" : 2000
  }
 ]

@@ -40,6 +40,9 @@ private:
     Direction* direction;       //玩家方向
     unsigned int counterInside; //计数器
 
+    int startAngle;
+    int endAngle;
+
     float timeAccumulation;
     float elapsed;
     unsigned int spawnBulletCycleTimes; //发射函数循环次数

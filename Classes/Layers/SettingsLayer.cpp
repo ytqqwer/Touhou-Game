@@ -108,7 +108,7 @@ SettingsLayer::init()
     /*  4.音乐和音效*/
 
     string music = "音乐";
-    auto musicVolume = Label::createWithTTF(music, "fonts/dengxian.ttf", 20);
+    auto musicVolume = Label::create(music, "fonts/NotoSansCJKsc-Black.otf", 20);
     musicVolume->setTag(1);
     musicVolume->setAnchorPoint(Vec2(0.0, 0.5));
 
@@ -124,7 +124,7 @@ SettingsLayer::init()
     _sliderMusicVolume->addEventListener(CC_CALLBACK_2(SettingsLayer::sliderEvent, this));
 
     string effect = "音效";
-    auto effectVolume = Label::createWithTTF(effect, "fonts/dengxian.ttf", 20);
+    auto effectVolume = Label::create(effect, "fonts/NotoSansCJKsc-Black.otf", 20);
     effectVolume->setTag(3);
     effectVolume->setAnchorPoint(Vec2(0.0, 0.5));
 
@@ -178,7 +178,7 @@ SettingsLayer::init()
 
     if ((currentScene == "HomeScene") || (currentScene == "MainMenuScene")) {
         string texSpeed = "文字播放速度";
-        auto texPlaySpeed = Label::createWithTTF(texSpeed, "fonts/dengxian.ttf", 20);
+        auto texPlaySpeed = Label::create(texSpeed, "fonts/NotoSansCJKsc-Black.otf", 20);
         texPlaySpeed->setTag(5);
         texPlaySpeed->setAnchorPoint(Vec2(0.0, 0.5));
         if (currentScene == "MainMenuScene") {

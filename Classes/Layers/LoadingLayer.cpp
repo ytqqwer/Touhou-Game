@@ -92,7 +92,7 @@ LoadingLayer::init()
     loadingProgress->setPercentage(0.0f);
     this->addChild(loadingProgress);
 
-    text = Label::createWithTTF("加载中", "fonts/dengxian.ttf", 20);
+    text = Label::create("加载中", "fonts/dengxian.ttf", 20);
     text->setPosition(
         Vec2(visibleOrigin.x + 100 + progressBackSize.width / 2, visibleOrigin.y + 60));
     text->setColor(Color3B::BLUE);

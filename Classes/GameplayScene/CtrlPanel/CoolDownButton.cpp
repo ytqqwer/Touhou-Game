@@ -33,7 +33,7 @@ CoolDownButton::initRemainingUseLabel()
         return;
 
     _remainingUseLabel =
-        Label::createWithTTF(to_string(_remainingUseCount), "fonts/dengxian.ttf", 10);
+        Label::create(to_string(_remainingUseCount), "fonts/NotoSansCJKsc-Black.otf", 10);
     _remainingUseLabel->setColor(Color3B::WHITE);
 
     this->addChild(_remainingUseLabel);
@@ -44,7 +44,7 @@ CoolDownButton::initRemainingUseLabel()
 void
 CoolDownButton::initRemainingCoolDownTimeLabel()
 {
-    _remainingCoolDownTimeLabel = Label::createWithTTF("0", "fonts/dengxian.ttf", 28);
+    _remainingCoolDownTimeLabel = Label::create("0", "fonts/NotoSansCJKsc-Black.otf", 28);
     _remainingCoolDownTimeLabel->setVisible(false);
 
     this->addChild(_remainingCoolDownTimeLabel);
@@ -68,6 +68,10 @@ CoolDownButton::unFreeze()
 void
 CoolDownButton::coolDown()
 {
+    if (_coolDownTime == 0) {
+        unFreeze();
+        return;
+    }
     _remainingCoolDownTime = _coolDownTime;
 
     _remainingCoolDownTimeLabel->setString(to_string((int)_remainingCoolDownTime));

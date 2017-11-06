@@ -214,16 +214,15 @@ InventoryScene::tableCellAtIndex(TableView* table, ssize_t idx)
         icon->setPosition(Vec2(30, 50));
         cell->addChild(icon);
 
-        auto name = Label::createWithTTF(currentItems[idx].name, "fonts/dengxian.ttf", 20);
+        auto name = Label::create(currentItems[idx].name, "fonts/dengxian.ttf", 20);
         name->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
         name->setPosition(Vec2(130, 50));
         name->setColor(Color3B::BLACK);
         cell->addChild(name);
 
-        auto description =
-            Label::createWithTTF(currentItems[idx].description, "fonts/dengxian.ttf", 20);
+        auto description = Label::create(currentItems[idx].description, "fonts/dengxian.ttf", 20);
         description->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        description->setPosition(Vec2(350, 50));
+        description->setPosition(Vec2(370, 50));
         description->setColor(Color3B::BLACK);
         cell->addChild(description);
 
@@ -243,15 +242,15 @@ InventoryScene::tableCellAtIndex(TableView* table, ssize_t idx)
                 break;
             }
         }
-        auto userLabel = Label::createWithTTF("使用者: ", "fonts/dengxian.ttf", 20);
+        auto userLabel = Label::create("使用者: ", "fonts/dengxian.ttf", 20);
         userLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        userLabel->setPosition(Vec2(600, 60));
+        userLabel->setPosition(Vec2(620, 60));
         userLabel->setColor(Color3B::BLACK);
         cell->addChild(userLabel);
 
-        auto status = Label::createWithTTF(userName, "fonts/dengxian.ttf", 20);
+        auto status = Label::create(userName, "fonts/dengxian.ttf", 20);
         status->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        status->setPosition(Vec2(600, 40));
+        status->setPosition(Vec2(620, 40));
         status->setColor(Color3B::BLACK);
         status->setName("status");
         cell->addChild(status);

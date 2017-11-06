@@ -61,7 +61,7 @@ KourindouScene::init()
 
     /*购买按钮*/
     auto button_start = Button::create(IMG_KOURINDOU_BIG_BUTTON);
-    button_start->setTitleFontName("fonts/dengxian.ttf");
+    button_start->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     button_start->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.705));
     button_start->setTitleText("购买");
     button_start->setTitleFontSize(25);
@@ -77,7 +77,7 @@ KourindouScene::init()
 
     /*整备按钮*/
     auto button_equip = Button::create(IMG_KOURINDOU_BIG_BUTTON);
-    button_equip->setTitleFontName("fonts/dengxian.ttf");
+    button_equip->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     button_equip->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.525));
     button_equip->setTitleText("整备");
     button_equip->setTitleFontSize(25);
@@ -92,7 +92,7 @@ KourindouScene::init()
 
     /*道具库按钮*/
     auto button_inventory = Button::create(IMG_KOURINDOU_BIG_BUTTON);
-    button_inventory->setTitleFontName("fonts/dengxian.ttf");
+    button_inventory->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     button_inventory->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.345));
     button_inventory->setTitleText("道具库");
     button_inventory->setTitleFontSize(25);
@@ -107,7 +107,7 @@ KourindouScene::init()
 
     /*其他地图按钮*/
     auto button_map = Button::create(IMG_KOURINDOU_BIG_BUTTON);
-    button_map->setTitleFontName("fonts/dengxian.ttf");
+    button_map->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     button_map->setPosition(Vec2(_visibleSize.width * 0.743, _visibleSize.height * 0.165));
     button_map->setTitleText("前往其他地图");
     button_map->setTitleFontSize(25);
@@ -125,7 +125,7 @@ KourindouScene::init()
     auto info_bg = Sprite::create(IMG_KOURINDOU_LITTLE_BUTTON_LAYOUT);
     info_bg->setAnchorPoint(Vec2(1, 1));
     info_bg->setContentSize(Size(480, 120));
-    info_bg->setOpacity(50);
+    info_bg->setOpacity(220);
     info_bg->setPosition(Vec2(_visibleSize.width * 0.98, _visibleSize.height * 0.98));
     addChild(info_bg);
 
@@ -146,10 +146,9 @@ KourindouScene::init()
     store_button->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     store_button->setAnchorPoint(Vec2(0.5, 0.5));
     store_button->setPosition(Vec2(200, 60));
-    store_button->setTitleText("系统商店");
-    store_button->setTitleFontSize(60);
-    store_button->setTitleColor(Color3B::BLACK);
-    store_button->setScale(0.33);
+    store_button->setTitleText("商城");
+    store_button->setTitleFontSize(25);
+    store_button->setTitleColor(Color3B::WHITE);
     store_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -163,9 +162,8 @@ KourindouScene::init()
     know_button->setAnchorPoint(Vec2(0.5, 0.5));
     know_button->setPosition(Vec2(300, 60));
     know_button->setTitleText("资料库");
-    know_button->setTitleFontSize(60);
-    know_button->setTitleColor(Color3B::BLACK);
-    know_button->setScale(0.33);
+    know_button->setTitleFontSize(25);
+    know_button->setTitleColor(Color3B::WHITE);
     know_button->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();
@@ -182,9 +180,8 @@ KourindouScene::init()
     set_button->setAnchorPoint(Vec2(0.5, 0.5));
     set_button->setPosition(Vec2(400, 60));
     set_button->setTitleText("设置");
-    set_button->setTitleColor(Color3B::BLACK);
-    set_button->setTitleFontSize(60);
-    set_button->setScale(0.33);
+    set_button->setTitleColor(Color3B::WHITE);
+    set_button->setTitleFontSize(25);
     set_button->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             AudioController::getInstance()->playClickButtonEffect();

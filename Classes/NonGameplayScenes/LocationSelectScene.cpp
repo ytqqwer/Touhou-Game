@@ -52,7 +52,7 @@ LocationSelectScene::init()
 
     /*返回*/
     auto ret = Button::create("menu/p1.png");
-    ret->setTitleFontName("fonts/dengxian.ttf");
+    ret->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     ret->setTitleText("返回");
     ret->setTitleFontSize(30);
     ret->setAnchorPoint(Vec2(0, 1));
@@ -67,7 +67,7 @@ LocationSelectScene::init()
 
     /*特殊地点   红魔馆大图书馆*/
     auto koumakanLibrary = Button::create("menu/p1.png");
-    koumakanLibrary->setTitleFontName("fonts/dengxian.ttf");
+    koumakanLibrary->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     koumakanLibrary->setTitleText("红魔馆大图书馆");
     koumakanLibrary->setTitleFontSize(30);
     koumakanLibrary->setAnchorPoint(Vec2(0, 1));
@@ -85,7 +85,7 @@ LocationSelectScene::init()
 
     /*特殊地点   香霖堂*/
     auto Kourindou = Button::create("menu/p1.png");
-    Kourindou->setTitleFontName("fonts/dengxian.ttf");
+    Kourindou->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     Kourindou->setTitleText("香霖堂");
     Kourindou->setTitleFontSize(30);
     Kourindou->setAnchorPoint(Vec2(0, 1));
@@ -102,7 +102,7 @@ LocationSelectScene::init()
 
     /*特殊地点   军火店*/
     auto ArmsStore = Button::create("menu/p1.png");
-    ArmsStore->setTitleFontName("fonts/dengxian.ttf");
+    ArmsStore->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     ArmsStore->setTitleText("夜雀烤鳗店");
     ArmsStore->setTitleFontSize(30);
     ArmsStore->setAnchorPoint(Vec2(0, 1));
@@ -228,8 +228,8 @@ LocationSelectScene::SelectLocationMenuItem::init()
     auto WordArt = Sprite::create(location.wordArt);
     WordArt->setScale(0.7);
     auto progress =
-        Label::createWithTTF(to_string(location.passedRound) + "/" + to_string(location.totalRound),
-                             "fonts/dengxian.ttf", 16);
+        Label::create(to_string(location.passedRound) + "/" + to_string(location.totalRound),
+                      "fonts/NotoSansCJKsc-Black.otf", 16);
 
     auto PreviewPicture = Sprite::create(location.previewPicture);
     PreviewPicture->setContentSize(Size(200, 100));

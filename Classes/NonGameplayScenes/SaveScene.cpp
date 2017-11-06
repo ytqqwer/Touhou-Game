@@ -61,7 +61,7 @@ SaveScene::init()
 
     auto BackButton = Button::create();
     BackButton->setTitleText("返回");
-    BackButton->setTitleFontName("fonts/dengxian.ttf");
+    BackButton->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
     BackButton->setTitleColor(Color3B(194, 134, 11));
     BackButton->setTitleFontSize(50);
     BackButton->setAnchorPoint(Vec2(0, 0));
@@ -105,7 +105,7 @@ SaveScene::onEnter()
         auto saveList = GameData::getInstance()->getSaveList();
         for (int index = 1; index <= 9; index++) {
             auto button = Button::create();
-            button->setTitleFontName("fonts/dengxian.ttf");
+            button->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
             button->setTitleColor(Color3B(194, 134, 11));
             button->setTitleFontSize(25);
             button->setAnchorPoint(Vec2(0, 0));
@@ -147,7 +147,7 @@ SaveScene::onEnter()
         auto saveList = GameData::getInstance()->getSaveList();
         for (int index = 1; index <= 9; index++) {
             auto button = Button::create();
-            button->setTitleFontName("fonts/dengxian.ttf");
+            button->setTitleFontName("fonts/NotoSansCJKsc-Black.otf");
             button->setTitleColor(Color3B(194, 134, 11));
             button->setTitleFontSize(25);
             button->setAnchorPoint(Vec2(0, 0));

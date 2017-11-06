@@ -7,6 +7,7 @@
 #include "GameplayScene/Enemy/Opossum.h"
 #include "GameplayScene/Enemy/Sakuya.h"
 #include "GameplayScene/Enemy/Stump.h"
+#include "GameplayScene/Enemy/Udonge.h"
 
 Enemy*
 Enemy::create(const std::string& tag)
@@ -20,6 +21,8 @@ Enemy::create(const std::string& tag)
         pRet = new (std::nothrow) Stump();
     } else if (tag == "Sakuya") {
         pRet = new (std::nothrow) Sakuya();
+    } else if (tag == "Udonge") {
+        pRet = new (std::nothrow) Udonge();
     }
 
     if (pRet && pRet->init(tag)) {

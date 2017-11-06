@@ -51,14 +51,18 @@ public:
     Sprite* playerSprite;
     Direction playerDirection = Direction::RIGHT;
 
+    //释放符卡立绘
+    std::string useSpellCardPortrait;
+
     //绑定发射器
     Emitter* emitter;
+    StyleConfig spellCardStyleConfig;
 
     //生命值
     int baseHP;
     int currentHP;
     //灵力值
-    int manaBase;
+    int baseMana;
     int currentMana;
 
     //行走相关
@@ -95,6 +99,7 @@ protected:
     Animation* preFallAnimation;
     Animation* fallAnimation;
     Animation* dashAnimation;
+    Animation* useSpellCardAnimation;
 
     Action* currentAnimateAction;
 
@@ -139,6 +144,15 @@ public:
     {
     public:
         static Dash* getInstance();
+        void Enter(Player*);
+        void Exit(Player*);
+        void defaultChangeState(Player*);
+    };
+
+    class UseSpellCard : public State<Player>
+    {
+    public:
+        static UseSpellCard* getInstance();
         void Enter(Player*);
         void Exit(Player*);
         void defaultChangeState(Player*);

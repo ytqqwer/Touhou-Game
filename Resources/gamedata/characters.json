@@ -3,9 +3,10 @@
    "name" : "Hakurei Reimu",
    "rectAvatar" : "avatar/reimu_avatar_rect.png",
    "circularAvatar" : "avatar/reimu_avatar.png",
-   "protrait" : "avatar/reimu_pro.png",
+   "portrait" : "avatar/reimu_pro.png",
    "preview" : ["place_holder.png"],
    "defaultTexture" : "character/Reimu/walkFront000.png",
+   "useSpellCardPortrait" : "character/Reimu/useSpellCard.png",
    "standFrameDelay" : 0.1,
    "runFrameDelay" : 0.15,
    "preJumpFrameDelay" : 0.3,
@@ -13,6 +14,7 @@
    "preFallFrameDelay" : 0.3,
    "fallFrameDelay" : 0.2,
    "dashFrameDelay" : 0.1,
+   "useSpellCardFrameDelay" : 0.08,
    "standFrame" : [
        "character/Reimu/stand000.png", "character/Reimu/stand001.png",
        "character/Reimu/stand002.png", "character/Reimu/stand003.png",
@@ -38,7 +40,13 @@
        "character/Reimu/dashFront002.png", "character/Reimu/dashFront003.png",
        "character/Reimu/dashFront004.png", "character/Reimu/dashFront005.png",
        "character/Reimu/dashFront006.png", "character/Reimu/dashFront007.png"
-   ],
+   ],   
+   "useSpellCardFrame" : [
+    "character/Reimu/spellCall000.png", "character/Reimu/spellCall001.png",
+    "character/Reimu/spellCall002.png", "character/Reimu/spellCall003.png",
+    "character/Reimu/spellCall004.png", "character/Reimu/spellCall005.png",
+    "character/Reimu/spellCall006.png", "character/Reimu/spellCall007.png"
+  ],
    "healthPointBase" : 100,
    "manaBase" : 140,
    "walkMaxSpeed" : 400,
@@ -74,9 +82,10 @@
    "name" : "Kirisame Marisa",
    "rectAvatar" : "avatar/marisa_avatar_rect.png",
    "circularAvatar" : "avatar/marisa_avatar.png",
-   "protrait" : "avatar/marisa_pro.png",
+   "portrait" : "avatar/marisa_pro.png",
    "preview" : ["place_holder.png"],
    "defaultTexture" : "character/Marisa/walkFront000.png",
+   "useSpellCardPortrait" : "character/Marisa/useSpellCard.png",
    "standFrameDelay" : 0.1,
    "runFrameDelay" : 0.15,
    "preJumpFrameDelay" : 0.08,
@@ -84,6 +93,7 @@
    "preFallFrameDelay" : 0.08,
    "fallFrameDelay" : 0.15,
    "dashFrameDelay" : 0.08,
+   "useSpellCardFrameDelay" : 0.08,
    "standFrame" : [
        "character/Marisa/stand000.png", "character/Marisa/stand001.png",
        "character/Marisa/stand002.png", "character/Marisa/stand003.png",
@@ -113,7 +123,13 @@
        "character/Marisa/dashFront004.png", "character/Marisa/dashFront005.png",
        "character/Marisa/dashFront006.png", "character/Marisa/dashFront007.png",
        "character/Marisa/dashFront008.png"
-   ],
+   ], 
+   "useSpellCardFrame" : [
+    "character/Marisa/spellCall000.png", "character/Marisa/spellCall001.png",
+    "character/Marisa/spellCall002.png", "character/Marisa/spellCall003.png",
+    "character/Marisa/spellCall004.png", "character/Marisa/spellCall005.png",
+    "character/Marisa/spellCall006.png", "character/Marisa/spellCall007.png"
+  ],
    "healthPointBase" : 120,
    "manaBase" : 120,
    "walkMaxSpeed" : 500,
@@ -149,9 +165,10 @@
    "name" : "Alice Margatroid",
    "rectAvatar" : "avatar/alice_avatar_rect.png",
    "circularAvatar" : "avatar/alice_avatar.png",
-   "protrait" : "avatar/alice_pro.png",
+   "portrait" : "avatar/alice_pro.png",
    "preview" : ["place_holder.png"],
    "defaultTexture" : "place_holder.png",
+   "useSpellCardPortrait" : "character/Alice/useSpellCard.png",
    "standFrameDelay" : 0.1,
    "runFrameDelay" : 0.15,
    "preJumpFrameDelay" : 0.1,
@@ -159,6 +176,7 @@
    "preFallFrameDelay" : 0.15,
    "fallFrameDelay" : 0.1,
    "dashFrameDelay" : 0.1,
+   "useSpellCardFrameDelay" : 0.08,
    "standFrame" : [
     "character/Alice/stand000.png", "character/Alice/stand001.png",
     "character/Alice/stand002.png", "character/Alice/stand003.png",
@@ -180,6 +198,13 @@
    "preFallFrame" : ["character/Alice/jump006.png"],
    "fallFrame" : ["character/Alice/jump007.png","character/Alice/jump008.png"],
    "dashFrame" : ["character/Alice/dashFront000.png","character/Alice/dashFront001.png","character/Alice/dashFront002.png","character/Alice/dashFront003.png","character/Alice/dashFront004.png","character/Alice/dashFront005.png","character/Alice/dashFront006.png"],
+   "useSpellCardFrame" : [
+    "character/Alice/spellCall000.png", "character/Alice/spellCall001.png",
+    "character/Alice/spellCall002.png", "character/Alice/spellCall003.png",
+    "character/Alice/spellCall004.png", "character/Alice/spellCall005.png",
+    "character/Alice/spellCall006.png", "character/Alice/spellCall007.png",
+    "character/Alice/spellCall008.png", "character/Alice/spellCall009.png"
+  ],
    "healthPointBase" : 120,
    "manaBase" : 120,
    "walkMaxSpeed" : 400,
