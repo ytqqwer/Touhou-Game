@@ -52,7 +52,7 @@ LoadingLayer::init()
         /* 显示粒子特效 */
         auto _emitter = ParticleFlower::createWithTotalParticles(15);
         _emitter->setTexture(
-            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+            Director::getInstance()->getTextureCache()->addImage("particle/stars.png"));
         this->addChild(_emitter, 10);
         _emitter->setPosition(t->getLocation());
         _emitter->setDuration(0.5);
@@ -105,8 +105,14 @@ LoadingLayer::init()
 void
 LoadingLayer::onEnter()
 {
-    /* 重要！必须首先重载父类的初始化函数 */
     Layer::onEnter();
+}
+
+void
+LoadingLayer::onEnterTransitionDidFinish()
+{
+    /* 重要！必须首先重载父类的初始化函数 */
+    Layer::onEnterTransitionDidFinish();
 
     gameplayScene = GameplayScene::create(this->_map);
     //避免后续初始化过程中被释放

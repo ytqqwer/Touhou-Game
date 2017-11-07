@@ -15,6 +15,7 @@ class LoadingLayer : public Layer
 public:
     bool init();
     void onEnter() override;
+    void onEnterTransitionDidFinish() override;
 
     static LoadingLayer* create(const std::string&);
 

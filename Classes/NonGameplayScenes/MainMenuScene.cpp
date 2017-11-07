@@ -55,16 +55,16 @@ MainMenuScene::init()
     });
     addChild(JTButton);
 
-    auto test1 = Sprite::create("effect/comboLimit.png");
-    test1->setPosition(_visibleSize.width * 0.2, _visibleSize.height * 0.13);
-    BlendFunc cbl = { GL_SRC_ALPHA, GL_ONE };
-    test1->setBlendFunc(cbl);
-    addChild(test1);
-    auto test2 = Sprite::create("effect/comboLimit.png");
-    test2->setPosition(_visibleSize.width * 0.4, _visibleSize.height * 0.33);
-    BlendFunc cb2 = { GL_ONE, GL_SRC_ALPHA };
-    test2->setBlendFunc(cb2);
-    addChild(test2);
+// auto test1 = Sprite::create("effect/comboLimit.png");
+// test1->setPosition(_visibleSize.width * 0.2, _visibleSize.height * 0.13);
+// BlendFunc cbl = { GL_SRC_ALPHA, GL_ONE };
+// test1->setBlendFunc(cbl);
+// addChild(test1);
+// auto test2 = Sprite::create("effect/comboLimit.png");
+// test2->setPosition(_visibleSize.width * 0.4, _visibleSize.height * 0.33);
+// BlendFunc cb2 = { GL_ONE, GL_SRC_ALPHA };
+// test2->setBlendFunc(cb2);
+// addChild(test2);
 
 #endif
 
@@ -82,7 +82,7 @@ MainMenuScene::init()
         auto touch = touches[0];
         auto _emitter = ParticleFlower::createWithTotalParticles(15);
         _emitter->setTexture(
-            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+            Director::getInstance()->getTextureCache()->addImage("particle/stars.png"));
         this->addChild(_emitter, 10);
         _emitter->setPosition(touch->getLocation());
         _emitter->setDuration(0.5);

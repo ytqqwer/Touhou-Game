@@ -158,6 +158,12 @@ void
 Udonge::StandAndChooseAction::Enter(Enemy* enemy)
 {
     auto udonge = (Udonge*)enemy;
+
+    if (udonge->CurrentHp < 0) {
+        udonge->stateMachine->changeState(Udonge::Knockdown::getInstance());
+        return;
+    }
+
     udonge->currentAnimateAction = Animate::create(udonge->standAnimation);
     udonge->enemySprite->runAction(udonge->currentAnimateAction);
     udonge->schedule(CC_SCHEDULE_SELECTOR(Udonge::autoChangeDirection), 0.50);
@@ -664,6 +670,8 @@ void
 Udonge::Knockdown::Enter(Enemy* enemy)
 {
     auto udonge = (Udonge*)enemy;
+    udonge->enemySprite->stopAction(udonge->currentAnimateAction);
+
     auto animate = Animate::create(udonge->downAnimation);
     udonge->enemySprite->runAction(animate);
 
@@ -677,9 +685,12 @@ Udonge::Knockdown::Enter(Enemy* enemy)
 void
 Udonge::Knockdown::Exit(Enemy* enemy)
 {
+    auto udonge = (Udonge*)enemy;
+    udonge->enemySprite->stopAction(udonge->currentAnimateAction);
 }
 
 void
 Udonge::Knockdown::defaultChangeState(Enemy* enemy)
 {
+    enemy->stateMachine->changeState(Udonge::Knockdown::getInstance());
 }

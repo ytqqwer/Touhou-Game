@@ -128,7 +128,7 @@ ConversationLayer::init()
         /* 显示粒子特效 */
         auto _emitter = ParticleFlower::createWithTotalParticles(15);
         _emitter->setTexture(
-            Director::getInstance()->getTextureCache()->addImage("Particle/stars.png"));
+            Director::getInstance()->getTextureCache()->addImage("particle/stars.png"));
         this->addChild(_emitter, 10);
         _emitter->setPosition(t->getLocation());
         _emitter->setDuration(0.5);

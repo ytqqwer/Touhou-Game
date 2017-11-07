@@ -158,6 +158,12 @@ void
 Sakuya::StandAndChooseAction::Enter(Enemy* enemy)
 {
     auto sakuya = (Sakuya*)enemy;
+
+    if (sakuya->CurrentHp < 0) {
+        sakuya->stateMachine->changeState(Sakuya::Knockdown::getInstance());
+        return;
+    }
+
     sakuya->currentAnimateAction = Animate::create(sakuya->standAnimation);
     sakuya->enemySprite->runAction(sakuya->currentAnimateAction);
     sakuya->schedule(CC_SCHEDULE_SELECTOR(Sakuya::autoChangeDirection), 0.50);
@@ -575,6 +581,8 @@ void
 Sakuya::Knockdown::Enter(Enemy* enemy)
 {
     auto sakuya = (Sakuya*)enemy;
+    sakuya->enemySprite->stopAction(sakuya->currentAnimateAction);
+
     auto animate = Animate::create(sakuya->downAnimation);
     sakuya->enemySprite->runAction(animate);
 
@@ -588,9 +596,12 @@ Sakuya::Knockdown::Enter(Enemy* enemy)
 void
 Sakuya::Knockdown::Exit(Enemy* enemy)
 {
+    auto sakuya = (Sakuya*)enemy;
+    sakuya->enemySprite->stopAction(sakuya->currentAnimateAction);
 }
 
 void
 Sakuya::Knockdown::defaultChangeState(Enemy* enemy)
 {
+    enemy->stateMachine->changeState(Sakuya::Knockdown::getInstance());
 }
