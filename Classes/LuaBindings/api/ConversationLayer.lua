@@ -41,6 +41,7 @@
 -- @param #string pic
 -- @param #color3b_table color
 -- @param #string wordArt
+-- @param #vec2_table anchorPoint
 -- @return ConversationLayer#ConversationLayer ret (return value: ConversationLayer)
         
 --------------------------------

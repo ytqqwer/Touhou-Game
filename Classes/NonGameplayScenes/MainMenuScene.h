@@ -20,6 +20,9 @@ public:
     virtual void onEnter();
     virtual void onExit();
 
+    void initCustomEventListener();
+    void onEventConversationEnd(EventCustom*);
+
 private:
     MainMenuScene();
 

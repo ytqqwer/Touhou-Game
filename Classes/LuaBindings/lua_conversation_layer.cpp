@@ -315,6 +315,35 @@ int lua_tg_conversation_layer_ConversationLayer_changeCharacter(lua_State* tolua
         object_to_luaval<ConversationLayer>(tolua_S, "ConversationLayer",(ConversationLayer*)ret);
         return 1;
     }
+    if (argc == 6) 
+    {
+        std::string arg0;
+        std::string arg1;
+        std::string arg2;
+        cocos2d::Color3B arg3;
+        std::string arg4;
+        cocos2d::Vec2 arg5;
+
+        ok &= luaval_to_std_string(tolua_S, 2,&arg0, "ConversationLayer:changeCharacter");
+
+        ok &= luaval_to_std_string(tolua_S, 3,&arg1, "ConversationLayer:changeCharacter");
+
+        ok &= luaval_to_std_string(tolua_S, 4,&arg2, "ConversationLayer:changeCharacter");
+
+        ok &= luaval_to_color3b(tolua_S, 5, &arg3, "ConversationLayer:changeCharacter");
+
+        ok &= luaval_to_std_string(tolua_S, 6,&arg4, "ConversationLayer:changeCharacter");
+
+        ok &= luaval_to_vec2(tolua_S, 7, &arg5, "ConversationLayer:changeCharacter");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_tg_conversation_layer_ConversationLayer_changeCharacter'", nullptr);
+            return 0;
+        }
+        ConversationLayer* ret = cobj->changeCharacter(arg0, arg1, arg2, arg3, arg4, arg5);
+        object_to_luaval<ConversationLayer>(tolua_S, "ConversationLayer",(ConversationLayer*)ret);
+        return 1;
+    }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ConversationLayer:changeCharacter",argc, 2);
     return 0;
 

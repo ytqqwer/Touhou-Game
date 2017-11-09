@@ -42,7 +42,7 @@ Scene*
 ConversationLayer::createDebugScene()
 {
     auto s = Scene::create();
-    auto l = ConversationLayer::create("C1");
+    auto l = ConversationLayer::create("tutorial");
 
     if (s && l) {
         s->addChild(l);
@@ -236,7 +236,7 @@ ConversationLayer::changeBgm(const string& bgm)
 
 ConversationLayer*
 ConversationLayer::changeCharacter(const string& pos, const string& name, const string& pic,
-                                   const Color3B& color, const string& wordArt)
+                                   const Color3B& color, const string& wordArt, const Vec2& anchor)
 {
 #ifndef NDEBUG
     log("[ConversationLayer] change %s character to %s", pos.c_str(), name.c_str());
@@ -256,6 +256,7 @@ ConversationLayer::changeCharacter(const string& pos, const string& name, const 
     } else {
         cToChange->setTexture(pic);
         cToChange->setVisible(true);
+        cToChange->setAnchorPoint(anchor);
     }
 
     if (!name.empty()) {

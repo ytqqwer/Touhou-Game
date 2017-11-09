@@ -73,7 +73,8 @@ public class AppActivity extends Cocos2dxActivity {
                 "LuaScripts/conversations/c1.lua",
                 "LuaScripts/conversations/c2.lua",
                 "LuaScripts/conversations/c3.lua",
-                "LuaScripts/conversations/c4.lua"
+                "LuaScripts/conversations/c4.lua",
+                "LuaScripts/conversations/tutorial.lua",
         };
 
         for (String path : filesToCopy) {

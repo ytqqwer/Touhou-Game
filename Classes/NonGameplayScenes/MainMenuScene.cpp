@@ -5,6 +5,7 @@
 #include "NonGameplayScenes/MainMenuScene.h"
 #include "GameData/GameData.h"
 #include "JumpTableScene.h"
+#include "Layers/ConversationLayer.h"
 #include "Layers/SettingsLayer.h"
 #include "NonGameplayScenes/HomeScene.h"
 #include "NonGameplayScenes/SaveScene.h"
@@ -104,14 +105,14 @@ MainMenuScene::init()
     NGButton->setTitleFontSize(50);
     NGButton->setAnchorPoint(Vec2(0, 0));
     NGButton->setPosition(Vec2(_visibleSize.width * 0.8, _visibleSize.height * 0.71));
-    NGButton->addTouchEventListener([](Ref* pSender, Widget::TouchEventType type) {
+    NGButton->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             auto canNew = GameData::getInstance()->newGame();
             if (canNew) {
                 AudioController::getInstance()->stopMusic();
                 AudioController::getInstance()->playClickButtonEffect();
-                TransitionScene* transition = TransitionFade::create(1.0f, HomeScene::create());
-                Director::getInstance()->replaceScene(transition);
+
+                this->addChild(ConversationLayer::create("tutorial"));
             }
         }
     });
@@ -208,6 +209,8 @@ MainMenuScene::init()
 
     auto menu = Menu::create(nullptr);
 
+    initCustomEventListener();
+
     return true;
 }
 
@@ -231,4 +234,18 @@ MainMenuScene::onExit()
     Scene::onExit();
 
     backGround->stopAllActions();
+}
+
+void
+MainMenuScene::initCustomEventListener()
+{
+    _eventDispatcher->addCustomEventListener(
+        "conversation_end", [this](EventCustom* e) { this->onEventConversationEnd(e); });
+}
+
+void
+MainMenuScene::onEventConversationEnd(EventCustom* e)
+{
+    TransitionScene* transition = TransitionFade::create(1.0f, HomeScene::create());
+    Director::getInstance()->replaceScene(transition);
 }

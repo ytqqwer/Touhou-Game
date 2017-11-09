@@ -38,7 +38,8 @@ public:
     ConversationLayer* changeCharacter(const string& pos, const string& name,
                                        const string& pic = "",
                                        const Color3B& color = Color3B::WHITE,
-                                       const string& wordArt = "");
+                                       const string& wordArt = "",
+                                       const Vec2& anchorPoint = Vec2(0.5, 0.5));
     ConversationLayer* changeSpeakerColor(const string& speaker, const Color3B& color);
     ConversationLayer* changeText(const string& speaker, const string& text);
     ConversationLayer* playSoundEffect(const string& effect);
