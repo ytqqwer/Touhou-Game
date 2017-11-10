@@ -663,7 +663,6 @@ GameplayScene::initLauncher()
             _launcher->addChild(fe);
             fe->playStyle(StyleType::SCATTER);
             // fe->playStyle(StyleType::ODDEVEN);
-            // fe->playStyle(StyleType::P);
 
             launcherList.pushBack(_launcher);
         }
@@ -1181,10 +1180,12 @@ GameplayScene::initCustomEventListener()
             sc.totalDuration = 0.8;
             sc.height = 30;
             sc.distance = 600;
+            sc.startAngle = 10;
+            sc.endAngle = 50;
             sc.bc.name = "b3_1_3.png";
             sc.bc.length = 25;
             sc.bc.width = 25;
-            sc.bc.harm = 10;
+            sc.bc.harm = 5;
             sc.bc._categoryBitmask = bulletCategory;
             sc.bc._collisionBitmask = enemyCategory;
             sc.bc._contactTestBitmask = enemyCategory;
@@ -1216,7 +1217,7 @@ GameplayScene::initCustomEventListener()
             sc.bc.name = "b3_2_1.png";
             sc.bc.length = 15;
             sc.bc.width = 15;
-            sc.bc.harm = 10;
+            sc.bc.harm = 5;
             sc.bc._categoryBitmask = bulletCategory;
             sc.bc._collisionBitmask = enemyCategory;
             sc.bc._contactTestBitmask = enemyCategory;
@@ -1242,8 +1243,8 @@ GameplayScene::initCustomEventListener()
             sc.bulletDuration = 3.0;
             sc.number = 5;
             sc.bc.name = "b1_3_3.png";
-            sc.startAngle = 250;
-            sc.endAngle = 290;
+            sc.startAngle = 260;
+            sc.endAngle = 280;
             sc.deltaAngle = 0;
 
             sc.cycleTimes = -1;
@@ -1252,7 +1253,7 @@ GameplayScene::initCustomEventListener()
             sc.bc.name = "b3_2_1.png";
             sc.bc.length = 15;
             sc.bc.width = 15;
-            sc.bc.harm = 10;
+            sc.bc.harm = 5;
             sc.bc._categoryBitmask = bulletCategory;
             sc.bc._collisionBitmask = enemyCategory;
             sc.bc._contactTestBitmask = enemyCategory;

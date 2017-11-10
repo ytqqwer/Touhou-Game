@@ -46,17 +46,19 @@ Player::changeAttackType(const std::string& startType)
         StyleConfig sc1;
         sc1.style = StyleType::PARABOLA;
         sc1.frequency = 0.15f;
-        sc1.bulletDuration = 2;
-        sc1.number = 7;
+        sc1.bulletDuration = 1.5;
+        sc1.number = 13;
         sc1.countThenChangePos = 4;
         sc1.cycleTimes = -1;
         sc1.totalDuration = FLT_MAX;
-        sc1.height = 150;
-        sc1.distance = 600;
+        sc1.height = 66;
+        sc1.distance = 345;
+        sc1.startAngle = -13;
+        sc1.endAngle = 53;
         sc1.bc.name = "b3_1_3.png";
         sc1.bc.length = 30;
         sc1.bc.width = 30;
-        sc1.bc.harm = 8;
+        sc1.bc.harm = 5;
         sc1.bc._categoryBitmask = bulletCategory;
         sc1.bc._collisionBitmask = enemyCategory;
         sc1.bc._contactTestBitmask = enemyCategory;
@@ -64,6 +66,27 @@ Player::changeAttackType(const std::string& startType)
         /*临时代码*/
     } else {
         // this->emitter->playStyle(sc2);//传入弹幕参数
+
+        /*临时代码*/
+        StyleConfig sc2;
+        sc2.style = StyleType::SCATTER;
+        sc2.frequency = 0.15f;
+        sc2.bulletDuration = 4;
+        sc2.number = 2;
+        sc2.countThenChangePos = 4;
+        sc2.cycleTimes = -1;
+        sc2.totalDuration = FLT_MAX;
+        sc2.startAngle = 269;
+        sc2.endAngle = 271;
+        sc2.deltaAngle = 0;
+        sc2.bc.name = "b1_3_3.png";
+        sc2.bc.length = 30;
+        sc2.bc.width = 30;
+        sc2.bc.harm = 5;
+        sc2.bc._categoryBitmask = bulletCategory;
+        sc2.bc._collisionBitmask = enemyCategory;
+        sc2.bc._contactTestBitmask = enemyCategory;
+        emitter->playStyle(sc2);
     }
     this->currentAttackType = startType;
 }

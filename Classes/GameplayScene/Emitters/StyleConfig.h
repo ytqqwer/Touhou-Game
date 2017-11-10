@@ -54,7 +54,7 @@ struct StyleConfig
     /* Parallel参数 */
     float interval; //间距，以36像素为单位
 
-    /* Scatter参数 */
+    /* Scatter、Parabola参数 */
     int startAngle; //起始角度
     int endAngle;   //终止角度
 

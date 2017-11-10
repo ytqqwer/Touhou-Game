@@ -10,6 +10,8 @@ Parabola::Parabola(Direction* direction)
     this->sc.countThenChangePos = 3;
     this->sc.height = 100;
     this->sc.distance = 500;
+    this->sc.startAngle = 15;
+    this->sc.endAngle = 70;
 
     this->sc.totalDuration = FLT_MAX;
     this->sc.cycleTimes = -1;
@@ -102,7 +104,7 @@ Parabola::spawnBullet()
         }
 
         float height = sc.height + 50.0 * CCRANDOM_0_1();
-        float angle = 15.0 + 60.0 * CCRANDOM_0_1();
+        float angle = sc.startAngle + (sc.endAngle - sc.startAngle) * CCRANDOM_0_1();
 
         float q1x = startPoint.x + (endPoint.x - startPoint.x) / 4.0;
         auto controlPoint1 =

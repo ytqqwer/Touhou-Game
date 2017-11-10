@@ -10,7 +10,7 @@ Scatter::Scatter()
     this->sc.style = StyleType::SCATTER;
     this->sc.frequency = 0.5f;
     this->sc.bulletDuration = 6.0;
-    this->sc.number = 20;
+    this->sc.number = 13;
 
     this->sc.totalDuration = FLT_MAX;
     this->sc.cycleTimes = -1;
