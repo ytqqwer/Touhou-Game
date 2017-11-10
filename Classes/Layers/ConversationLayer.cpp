@@ -163,7 +163,10 @@ void
 ConversationLayer::nextDialogue()
 {
     static int n = nDialogues(); // 总对话数量
-    static int i = 0;            // 已经播放过的对话数量
+    if (n == 0) {
+        n = nDialogues();
+    }
+    static int i = 0; // 已经播放过的对话数量
 
     if (i < n) {
         ++i;
@@ -185,6 +188,7 @@ ConversationLayer::nextDialogue()
         quitConversation();
         //不要忘了使i归位
         i = 0;
+        n = 0;
     }
 }
 

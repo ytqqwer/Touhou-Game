@@ -56,7 +56,7 @@ public class AppActivity extends Cocos2dxActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        boolean overrideSaves = true;
+        boolean overrideSaves = false;
 
         String[] filesToCopy = {
                 "gamedata/awards.json",

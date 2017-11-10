@@ -62,6 +62,8 @@ GameplayScene::cleanup()
     _eventFilterMgr->removeAllEventFilters();
 
     AnimationCache::getInstance()->destroyInstance();
+    p1Player->release();
+    p2Player->release();
 }
 
 GameplayScene*
@@ -96,10 +98,12 @@ GameplayScene::init()
         return false;
     }
 
-    this->initWithPhysics();                                                //初始化物理世界
-    Vect gravity(0, -gameGravity);                                          //游戏场景的重力
-    this->getPhysicsWorld()->setGravity(gravity);                           //设置重力
+    this->initWithPhysics();                      //初始化物理世界
+    Vect gravity(0, -gameGravity);                //游戏场景的重力
+    this->getPhysicsWorld()->setGravity(gravity); //设置重力
+#ifndef NDEBUG
     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL); //调试模式看包围盒
+#endif
 
     // 用于支持符卡 buf 效果的 EventFilterManager
     this->_eventFilterMgr = EventFilterManager::create();

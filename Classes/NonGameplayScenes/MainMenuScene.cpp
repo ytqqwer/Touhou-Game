@@ -207,10 +207,6 @@ MainMenuScene::init()
     });
     addChild(exitButton);
 
-    auto menu = Menu::create(nullptr);
-
-    initCustomEventListener();
-
     return true;
 }
 
@@ -226,6 +222,8 @@ MainMenuScene::onEnter()
     auto seq = Sequence::create(move, move_back, nullptr);
     backGround->runAction(RepeatForever::create(seq));
     backGround->setPosition(_visibleSize / 2);
+
+    initCustomEventListener();
 }
 
 void
@@ -234,12 +232,13 @@ MainMenuScene::onExit()
     Scene::onExit();
 
     backGround->stopAllActions();
+    _eventDispatcher->removeEventListener(_conversationEndListener);
 }
 
 void
 MainMenuScene::initCustomEventListener()
 {
-    _eventDispatcher->addCustomEventListener(
+    _conversationEndListener = _eventDispatcher->addCustomEventListener(
         "conversation_end", [this](EventCustom* e) { this->onEventConversationEnd(e); });
 }
 

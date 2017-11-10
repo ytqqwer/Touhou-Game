@@ -37,13 +37,15 @@ LogoAndDisclaimerScene::init()
     auto logoLayer = Layer::create();
     logoLayer->addChild(whiteBg);
 
-    auto logoImg = PlaceHolder::createCircle(100, "Logo", 48);
+    // auto logoImg = PlaceHolder::createCircle(100, "Logo", 48);
+    auto logoImg = Sprite::create("logo/icon.png");
+    logoImg->setContentSize(Size(300, 300));
     logoImg->setPosition(_visibleSize / 2 + Size(0, 100));
     logoLayer->addChild(logoImg);
 
-    auto studioLabel = Label::createWithTTF("Torch Studio", "fonts/arial.ttf", 64);
+    auto studioLabel = Label::createWithTTF("火 炬 工 作 室", "fonts/dengxian.ttf", 36);
     studioLabel->setColor(Color3B::BLACK);
-    studioLabel->setPosition(_visibleSize / 2 - Size(0, 100));
+    studioLabel->setPosition(_visibleSize / 2 - Size(0, 120));
     logoLayer->addChild(studioLabel);
 
     /*  3. 构建 disclaimerLayer 的 UI 树 */
@@ -98,6 +100,7 @@ LogoAndDisclaimerScene::init()
     this->scheduleOnce([this](float) { _director->replaceScene(BackgroundIntroScene::create()); },
                        _logoLast + _disclaimerLast, "nextScene");
 
+#ifndef NDEBUG
     /*  5. 一点击画面就会进入 JumpTable
      *     Non-Gameplay 一些重要场景开发尚未完成，需要 JumpTable
      */
@@ -111,6 +114,7 @@ LogoAndDisclaimerScene::init()
     };
 
     _director->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
+#endif
 
     return true;
 }

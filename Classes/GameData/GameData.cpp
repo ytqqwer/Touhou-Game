@@ -95,8 +95,15 @@ getCurrentTime()
 static void
 syncSaveChangesToFile()
 {
-    ofstream saves_json(FileUtils::getInstance()->fullPathForFilename("gamedata/saves.json"),
+    auto fileUtils = FileUtils::getInstance();
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    string prefix = fileUtils->getWritablePath();
+    ofstream saves_json(prefix + "gamedata/saves.json", ios_base::trunc | ios_base::out);
+#else
+    ofstream saves_json(fileUtils->fullPathForFilename("gamedata/saves.json"),
                         ios_base::trunc | ios_base::out);
+#endif
     saves_json << setw(4) << savesDom;
 }
 

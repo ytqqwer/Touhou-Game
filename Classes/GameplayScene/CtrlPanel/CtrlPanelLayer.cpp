@@ -53,9 +53,9 @@ CtrlPanelLayer::init()
     /*  3. 设置, dash 按钮 */
 
     // 设置按钮
-    auto settingsBtn = Button::create("CloseNormal.png");
-    settingsBtn->setPosition(Vec2(_visibleSize.width * 0.060, _visibleSize.height * 0.920));
-    settingsBtn->setScale(1.8);
+    auto settingsBtn = Button::create("settings.icon.png");
+    settingsBtn->setPosition(Vec2(_visibleSize.width * 0.33, _visibleSize.height * 0.912));
+    settingsBtn->setScale(0.25);
     settingsBtn->addTouchEventListener([this](Ref* pSender, Widget::TouchEventType type) {
         if (type == Widget::TouchEventType::ENDED) {
             this->_eventDispatcher->dispatchCustomEvent("settings_key_pressed");
@@ -129,7 +129,7 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
         auto hpManaBar = HpManaBar::create(characterTagList[i], characterList[i].healthPointBase,
                                            characterList[i].manaBase);
         hpManaBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-        hpManaBar->setPosition(Vec2(_visibleSize.width * 0.270, _visibleSize.height * 0.930));
+        hpManaBar->setPosition(Vec2(_visibleSize.width * 0.290, _visibleSize.height * 0.930));
         panel->addChild(hpManaBar);
 
         /*  4. 切换攻击方式按钮 */
@@ -152,7 +152,7 @@ CtrlPanelLayer::initCharacterPanelUIAndListener()
         // i 不是 0 就是 1, 所以此处用了 [1-i] 来表示非当前角色
         auto switchCharacterBtn = Button::create(characterList[i].circularAvatar);
         switchCharacterBtn->setPosition(
-            Vec2(_visibleSize.width * 0.060, _visibleSize.height * 0.820));
+            Vec2(_visibleSize.width * 0.060, _visibleSize.height * 0.920));
 
         auto width = switchCharacterBtn->getContentSize().width;
         auto height = switchCharacterBtn->getContentSize().height;

@@ -31,6 +31,7 @@ private:
 
     Sprite* backGround;
     Size _visibleSize;
+    EventListener* _conversationEndListener;
 };
 
 #endif // MAIN_MENU_SCENE_H

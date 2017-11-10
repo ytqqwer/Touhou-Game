@@ -54,6 +54,7 @@ ArmsStorePurchaseScene::init()
 
     /*返回按钮*/
     auto backButton = Button::create("menu/buttonNormal.png");
+    backButton->setScale(0.65);
     backButton->setPosition(Vec2(_visibleSize.width * 0.2, _visibleSize.height * 0.2));
     backButton->setTitleText("返回");
     backButton->setTitleFontSize(20);

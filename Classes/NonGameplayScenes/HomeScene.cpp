@@ -73,6 +73,7 @@ HomeScene::init()
 #endif
     auto layout_button = Layout::create();
     layout_button->setBackGroundImage("menu/18-5.png");
+    layout_button->setOpacity(128);
     layout_button->setContentSize(Size(214, _visibleSize.height * 0.6));
     this->addChild(layout_button);
 
@@ -83,13 +84,15 @@ HomeScene::init()
     auto layout_top = Sprite::create("menu/18-4.png");
     layout_top->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     layout_top->setPosition(Vec2(layout_button_size.width / 2.0, layout_button_size.height + 50));
+    layout_top->setOpacity(128);
     auto layout_bottom = Sprite::create("menu/18-6.png");
     layout_bottom->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     layout_bottom->setPosition(Vec2(layout_button_size.width / 2.0, -50));
+    layout_bottom->setOpacity(128);
 
-    layout_button->setBackGroundImageOpacity(220);
-    layout_top->setOpacity(220);
-    layout_bottom->setOpacity(220);
+    // layout_button->setBackGroundImageOpacity(220);
+    // layout_top->setOpacity(220);
+    // layout_bottom->setOpacity(220);
 
     layout_button->addChild(layout_top);
     layout_button->addChild(layout_bottom);

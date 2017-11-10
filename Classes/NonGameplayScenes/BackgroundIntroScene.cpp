@@ -72,37 +72,40 @@ BackgroundIntroScene::onEnter()
 
     background = Sprite::create();
     this->addChild(background);
-    label = Label::create();
+    label = Label::createWithTTF("", "fonts/dengxian.ttf", 25);
+    label->setMaxLineWidth(600);
+    label->setLineSpacing(20);
+    label->setColor(Color3B(200, 200, 200));
     background->addChild(label);
 
     std::function<void(Ref*)> step1 = [&](Ref*) {
         background->setTexture(IMG_BACKGROUND_INTRODUCE_SEQUENCE_1);
         background->setContentSize(_visibleSize * 1.2);
         background->setPosition(_visibleSize / 2);
-        label->setString("Test1");
-        label->setBMFontSize(25);
-        label->setPosition(_visibleSize.width / 4, _visibleSize.height * 2 / 3);
-        background->runAction(MoveBy::create(3.0, Vec2(50, 0)));
+        label->setString("站在博丽神社门前的灵梦看着将要落山的太阳\n"
+                         "『又好像是平静的一天呢』，她喃喃自语......");
+        label->setPosition(_visibleSize.width / 3, _visibleSize.height * 2 / 3);
+        background->runAction(MoveBy::create(5.0, Vec2(50, 0)));
     };
 
     std::function<void(Ref*)> step2 = [&](Ref*) {
         background->setTexture(IMG_BACKGROUND_INTRODUCE_SEQUENCE_2);
         background->setContentSize(_visibleSize * 1.2);
         background->setPosition(_visibleSize / 2);
-        label->setString("Test2");
-        label->setBMFontSize(25);
-        label->setPosition(_visibleSize.width / 3, _visibleSize.height / 2);
-        background->runAction(MoveBy::create(3.0, Vec2(-50, 0)));
+        label->setString("『让我们把幻想乡变得更 『安静』 一些吧』\n"
+                         "另一组看着夕阳的三人这么想到");
+        label->setPosition(_visibleSize.width * 0.4, _visibleSize.height * 3 / 4);
+        background->runAction(MoveBy::create(5.0, Vec2(-50, 0)));
     };
 
     std::function<void(Ref*)> step3 = [&](Ref*) {
         background->setTexture(IMG_BACKGROUND_INTRODUCE_SEQUENCE_3);
         background->setContentSize(_visibleSize * 1.3);
         background->setPosition(_visibleSize / 2);
-        label->setString("Test3");
-        label->setBMFontSize(25);
-        label->setPosition(_visibleSize.width * 3 / 4, _visibleSize.height * 3 / 4);
-        background->runAction(MoveBy::create(3.0, Vec2(50, 0)));
+        label->setString("幻想乡是否如同灵梦说的那样是平静\n"
+                         "...还是说... 『安静』 呢 ?");
+        label->setPosition(_visibleSize.width * 4 / 5, _visibleSize.height * 4 / 5);
+        background->runAction(MoveBy::create(5.0, Vec2(50, 0)));
     };
 
     std::function<void(Ref*)> step4 = [&](Ref*) {
