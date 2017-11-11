@@ -51,7 +51,7 @@ Player::changeAttackType(const std::string& startType)
         sc1.countThenChangePos = 4;
         sc1.cycleTimes = -1;
         sc1.totalDuration = FLT_MAX;
-        sc1.height = 66;
+        sc1.height = 50;
         sc1.distance = 345;
         sc1.startAngle = -13;
         sc1.endAngle = 53;
@@ -71,7 +71,7 @@ Player::changeAttackType(const std::string& startType)
         StyleConfig sc2;
         sc2.style = StyleType::SCATTER;
         sc2.frequency = 0.15f;
-        sc2.bulletDuration = 4;
+        sc2.bulletDuration = 2;
         sc2.number = 2;
         sc2.countThenChangePos = 4;
         sc2.cycleTimes = -1;
