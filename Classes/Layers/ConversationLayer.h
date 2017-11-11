@@ -74,7 +74,7 @@ private:
     Label* _text;
 
     std::map<string, Color3B> _speakerColor;
-    float _dialogueInterval = 2.0;
+    float _dialogueInterval = 5.0;
 };
 
 #endif // CONVERSATION_LAYER_H

@@ -263,10 +263,10 @@ ConversationLayer::changeCharacter(const string& pos, const string& name, const 
         cToChange->setAnchorPoint(anchor);
     }
 
-    if (!name.empty()) {
-        _speakerColor[name] = color;
-        showWordArt(pos, wordArt);
-    }
+    // if (!name.empty()) {
+    //     _speakerColor[name] = color;
+    //     showWordArt(pos, wordArt);
+    // }
 
     return this;
 }
